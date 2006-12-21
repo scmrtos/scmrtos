@@ -12,8 +12,8 @@
 //*
 //*     Version:   3.00-beta
 //*
-//*     $Revision: 64 $
-//*     $Date: 2006-12-20 17:58:52 +0200 (Ср, 20 дек 2006) $
+//*     $Revision$
+//*     $Date$
 //*
 //*     Copyright (c) 2003-2006, Harry E. Zhurov
 //*     Copyright (c) 2005-2006, Sergey A. Borshch
