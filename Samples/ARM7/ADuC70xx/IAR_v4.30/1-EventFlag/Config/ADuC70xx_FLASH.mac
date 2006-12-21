@@ -1,0 +1,86 @@
+//********************************************************************************
+//*
+//*     FULLNAME:  Single-Chip Microcontroller Real-Time Operating System
+//*
+//*     NICKNAME:  scmRTOS
+//*
+//*     PROCESSOR: ADuc70xx (Analog Devices)
+//*
+//*     TOOLKIT:   EWARM (IAR Systems)
+//*
+//*     PURPOSE:   C-Spy debugger setup macros
+//*
+//*     Version:   3.00-beta
+//*
+//*     $Revision: 39 $
+//*     $Date: 2006-12-17 17:46:00 +0200 (Вс, 17 дек 2006) $
+//*
+//*     Copyright (c) 2003-2006, Harry E. Zhurov
+//*
+//*     =================================================================
+//*     scmRTOS is free software; you can redistribute it and/or
+//*     modify it under the terms of the GNU General Public License
+//*     as published by the Free Software Foundation; either version 2
+//*     of the License, or (at your option) any later version.
+//*
+//*     This program is distributed in the hope that it will be useful,
+//*     but WITHOUT ANY WARRANTY; without even the implied warranty of
+//*     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//*     GNU General Public License for more details.
+//*
+//*     You should have received a copy of the GNU General Public License
+//*     along with this program; if not, write to the Free Software
+//*     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+//*     MA  02110-1301, USA.
+//*     =================================================================
+//*
+//*     =================================================================
+//*     See http://scmrtos.sourceforge.net for documentation, latest
+//*     information, license and contact details.
+//*     =================================================================
+//*
+//********************************************************************************
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006
+
+execUserPreload()
+{
+    Reset();
+    Remap_FLASH();
+
+    __writeMemory32(0xD3, 0x98, "Register");                        // CPSR = SVC mode, ARM, IRQ, FIQ disabled
+}
+
+execUserReset()
+{
+    Reset();
+    Remap_FLASH();
+
+    __writeMemory32(0xD3, 0x98, "Register");                        // CPSR = SVC mode, ARM, IRQ, FIQ disabled
+    __writeMemory32(0x00000000, 0xB4, "Register");                  // set PC to reset vector
+}
+
+Remap_FLASH()
+{
+    __writeMemory8(0x00, 0xFFFF0220, "Memory");
+    __message " remap " ;
+}
+
+
+Reset()
+{
+    __writeMemory32(0x00000000,0xFFFF0010,"Memory");    // SWICFG: clear unmaskable ints
+    __writeMemory32(0xFFFFFFFF,0xFFFF000C,"Memory");    // IRQCLR: disable all maskable IRQ
+    __writeMemory32(0xFFFFFFFF,0xFFFF010C,"Memory");    // FIQCLR: disable all maskable FIQ
+
+    __writeMemory8(0x06,0xFFFF0234,"Memory");           // RSTCLR: clear reset source bits, emulate power-on reset
+
+    __writeMemory16(0x0088,0xFFFF0308,"Memory");        // T0CON: enable timer
+    __writeMemory8(0x00,0xFFFF030C,"Memory");           // T0CLRI: clear int flag
+    __writeMemory16(0x0000,0xFFFF0308,"Memory");        // T0CON: disable timer
+    __writeMemory16(0x0000,0xFFFF0300,"Memory");        // T0LD: clear
+
+    __writeMemory16(0x0088,0xFFFF0308,"Memory");        // T0CON: enable timer
+    __writeMemory8(0x00,0xFFFF030C,"Memory");           // T0CLRI: clear int flag
+    __writeMemory16(0x0000,0xFFFF0308,"Memory");        // T0CON: disable timer
+    __writeMemory16(0x0000,0xFFFF0300,"Memory");        // T0LD: clear
+}

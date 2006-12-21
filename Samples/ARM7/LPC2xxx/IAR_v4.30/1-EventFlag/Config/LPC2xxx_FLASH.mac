@@ -1,0 +1,160 @@
+//********************************************************************************
+//*
+//*     FULLNAME:  Single-Chip Microcontroller Real-Time Operating System
+//*
+//*     NICKNAME:  scmRTOS
+//*
+//*     PROCESSOR: LPC2xxx (NXP)
+//*
+//*     TOOLKIT:   EWARM (IAR Systems)
+//*
+//*     PURPOSE:   C-Spy debugger setup macros
+//*
+//*     Version:   3.00-beta
+//*
+//*     $Revision: 39 $
+//*     $Date: 2006-12-17 17:46:00 +0200 (Вс, 17 дек 2006) $
+//*
+//*     Copyright (c) 2003-2006, Harry E. Zhurov
+//*
+//*     =================================================================
+//*     scmRTOS is free software; you can redistribute it and/or
+//*     modify it under the terms of the GNU General Public License
+//*     as published by the Free Software Foundation; either version 2
+//*     of the License, or (at your option) any later version.
+//*
+//*     This program is distributed in the hope that it will be useful,
+//*     but WITHOUT ANY WARRANTY; without even the implied warranty of
+//*     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//*     GNU General Public License for more details.
+//*
+//*     You should have received a copy of the GNU General Public License
+//*     along with this program; if not, write to the Free Software
+//*     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+//*     MA  02110-1301, USA.
+//*     =================================================================
+//*
+//*     =================================================================
+//*     See http://scmrtos.sourceforge.net for documentation, latest
+//*     information, license and contact details.
+//*     =================================================================
+//*
+//********************************************************************************
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006
+
+execUserReset()
+{
+    Reset();
+    Remap_Flash();
+}
+
+execUserPreload()
+{
+    Reset();
+    Remap_Flash();
+}
+
+Remap_Flash()
+{
+    __var i;
+    __var tmp;
+
+    // remap throw JTAG
+    writeMasked8(0x01,0xE01FC040,0x03);	                // MEMMAP, remap vectors to Flash
+    __message " remap done ";
+
+}
+
+Reset()
+{
+    writeMasked32(0x00000000,0xE01FC0C0,0x00000003);    // PCON, disable power-down
+    writeMasked32(0x000017BE,0xE01FC0C4,0x000017BE);    // PCONP, all periph. enabled
+
+    __writeMemory32(0x00000000,0xE0028008,"Memory");    // I0DIR
+    __writeMemory32(0xFFFFFFFF,0xE002800C,"Memory");    // I0CLR
+    __writeMemory32(0x00000000,0xE0028018,"Memory");    // I1DIR
+    __writeMemory32(0xFFFFFFFF,0xE002801C,"Memory");    // I1CLR
+    __writeMemory32(0x00000000,0xE0028028,"Memory");    // I2DIR
+    __writeMemory32(0xFFFFFFFF,0xE002802C,"Memory");    // I2CLR
+    __writeMemory32(0x00000000,0xE0028038,"Memory");    // I3DIR
+    __writeMemory32(0xFFFFFFFF,0xE002803C,"Memory");    // I3CLR
+
+    __writeMemory32(0x00000000,0xE002C000,"Memory");    // PINSEL0
+    __writeMemory32(0x15400000,0xE002C004,"Memory");    // PINSEL1
+    writeMasked32(0x006100F0,0xE002C014,0x0FF3E9F0);    // PINSEL2
+
+    writeMasked8(0x00,0xE01FC100,0x33);                 // VPBDIV, pclk/4
+
+    __writeMemory32(0xFFFFFFFF,0xFFFFF014,"Memory");    // VICIntEnClr, disable ints
+
+    writeMasked8(0x00,0xE01FC148,0x0F);                 // EXTMODE
+    writeMasked8(0x00,0xE01FC144,0x0F);                 // EXTWAKE
+    writeMasked8(0x00,0xE01FC14C,0x0F);                 // EXTPOLAR
+    writeMasked8(0x0F,0xE01FC140,0x0F);                 // EXTINT, reset flags
+
+    __writeMemory8(0x00, 0xE0004004,"Memory");          // Timer0 TCR disable timer
+    __writeMemory8(0xFF, 0xE0004000,"Memory");          // Timer0 IR clear pending int flags
+    __writeMemory8(0x00, 0xE0008004,"Memory");          // Timer1 TCR disable timer
+    __writeMemory8(0xFF, 0xE0008000,"Memory");          // Timer1 IR clear pending int flags
+/*
+    // SPI0
+    __readMemory8(0xE0020004,"Memory");                 // SPSR clear status & int flags
+    // SPI1
+    __readMemory8(0xE0030004,"Memory");                 // SPSR clear status & int flags
+    // UART0
+    __readMemory8(0xE000C008,"Memory");                 // U0IIR
+    __readMemory8(0xE000C014,"Memory");	                // U0LSR
+    // UART1
+    __readMemory8(0xE0001008,"Memory");                 // U1IIR
+    __readMemory8(0xE0001014,"Memory");                 // U1LSR
+    __readMemory8(0xE0001018,"Memory");                 // U1MSR
+    // I2C
+    __writeMemory8(0x6C, 0xE001C018,"Memory");          // I2C CONCLR
+    __readMemory8(0xE001C004,"Memory");                 // I2C STAT
+    // PWM
+    __writeMemory32(0x00000000, 0xE0014004,"Memory");   // PWMTCR, disable timer
+    __writeMemory32(0x00000000, 0xE0014008,"Memory");   // PWMTR, clear timer
+    __writeMemory32(0x0000070F, 0xE0014000,"Memory");   // PWMIR clear pending int flags
+
+    // Reset VIC
+    __writeMemory32(0xFFFFFFFF,0xFFFFF01C,"Memory");    // VICSoftIntClr, clear sof int flags
+    __writeMemory32(0x00000000,0xFFFFF00C,"Memory");    // VICIntSelect, all ints are IRQ
+    __writeMemory32(0x00000000,0xFFFFF020,"Memory");    // VICProtection, disable protection
+
+    __writeMemory32(0x00000000,0xFFFFF034,"Memory");    // VICDefVectAddr
+
+    for( i = 0; i < 16; i++ )
+    {
+        __writeMemory32(0x00000000,0xFFFFF100 + i * 4,"Memory");    // VICVecAdr_x
+        __writeMemory32(0x00000000,0xFFFFF200 + i * 4,"Memory");    // VICVecCntl_x
+    }
+
+    __writeMemory32(0x00000000,0xFFFFF030,"Memory");    // VICVecAddr, reset controller
+*/
+
+    if( __driverType("sim"))
+    {
+        __writeMemory16(0x0400, 0xE01FC088, "Memory");  // PLLSTAT, emulate PLL lock
+    }
+
+    __writeMemory32(0xD3, 0x98, "Register");            // CPSR = SVC mode, ARM, IRQ, FIQ disabled
+    __writeMemory32(0x00000000, 0xB4 ,"Register");      // SET PC
+}
+
+writeMasked8(value, location, mask) {                   // mask: 1's on bits allowed to overwrite
+    __var NewValue;
+    NewValue = __readMemory8(location,"Memory");
+    NewValue = NewValue & ~mask;                        // clear unmasked bits
+    value = value & mask;                               // clear masked bits
+    NewValue = NewValue | value;                        // set desired bits
+    __writeMemory8(NewValue, location,"Memory");
+}
+
+writeMasked32(value, location, mask) {                  // mask: 1's on bits allowed to overwrite
+    __var NewValue;
+    NewValue = __readMemory32(location,"Memory");
+    NewValue = NewValue & ~mask;                        // clear unmasked bits
+    value = value & mask;                               // clear masked bits
+    NewValue = NewValue | value;                        // set desired bits
+    __writeMemory32(NewValue, location,"Memory");
+}
