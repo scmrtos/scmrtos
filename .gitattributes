@@ -56,6 +56,7 @@ Samples/ARM7/ADuC70xx/IAR_v4.30/3-Channel/slon.dep -text
 Samples/ARM7/ADuC70xx/IAR_v4.30/3-Channel/slon.ewd -text
 Samples/ARM7/ADuC70xx/IAR_v4.30/3-Channel/slon.ewp -text
 Samples/ARM7/ADuC70xx/IAR_v4.30/3-Channel/slon.eww -text
+Samples/ARM7/ADuC70xx/IAR_v4.30/release_notes.arm7_aduc70xx.html -text
 Samples/ARM7/AT91SAM7/IAR_v4.30/1-EventFlag/Config/AT91SAM7_FLASH.mac -text
 Samples/ARM7/AT91SAM7/IAR_v4.30/1-EventFlag/Config/AT91SAM7_FLASH.xcl -text
 Samples/ARM7/AT91SAM7/IAR_v4.30/1-EventFlag/Config/AT91SAM7_RAM.mac -text
@@ -81,6 +82,7 @@ Samples/ARM7/AT91SAM7/IAR_v4.30/3-Channel/Src/scmRTOS_config.h -text
 Samples/ARM7/AT91SAM7/IAR_v4.30/3-Channel/slon.ewd -text
 Samples/ARM7/AT91SAM7/IAR_v4.30/3-Channel/slon.ewp -text
 Samples/ARM7/AT91SAM7/IAR_v4.30/3-Channel/slon.eww -text
+Samples/ARM7/AT91SAM7/IAR_v4.30/release_notes.arm7_at91sam7.html -text
 Samples/ARM7/LPC2xxx/IAR_v4.30/1-EventFlag/Config/LPC2xxx_FLASH.mac -text
 Samples/ARM7/LPC2xxx/IAR_v4.30/1-EventFlag/Config/LPC2xxx_FLASH.xcl -text
 Samples/ARM7/LPC2xxx/IAR_v4.30/1-EventFlag/Config/LPC2xxx_RAM.mac -text
@@ -106,6 +108,7 @@ Samples/ARM7/LPC2xxx/IAR_v4.30/3-Channel/Src/scmRTOS_config.h -text
 Samples/ARM7/LPC2xxx/IAR_v4.30/3-Channel/slon.ewd -text
 Samples/ARM7/LPC2xxx/IAR_v4.30/3-Channel/slon.ewp -text
 Samples/ARM7/LPC2xxx/IAR_v4.30/3-Channel/slon.eww -text
+Samples/ARM7/LPC2xxx/IAR_v4.30/release_notes.arm7_lpc2xxx.html -text
 Samples/ARM7/get_samples.bat -text
 Samples/AVR/IAR_v4.20/1-EventFlag/Config/lnkm32s.xcl -text
 Samples/AVR/IAR_v4.20/1-EventFlag/SConstruct -text
