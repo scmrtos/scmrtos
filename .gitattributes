@@ -148,6 +148,7 @@ Samples/AVR/IAR_v4.20/3-Channel/slon.ewd -text
 Samples/AVR/IAR_v4.20/3-Channel/slon.ewp -text
 Samples/AVR/IAR_v4.20/3-Channel/slon.eww -text
 Samples/AVR/IAR_v4.20/3-Channel/slon.vpj -text
+Samples/AVR/IAR_v4.20/release_notes.avr.html -text
 Samples/BF533/VDSP_4.0.2006.04/1-EventFlag/Config/bf532_init.ldf -text
 Samples/BF533/VDSP_4.0.2006.04/1-EventFlag/Config/bf533cpp.ldf -text
 Samples/BF533/VDSP_4.0.2006.04/1-EventFlag/Config/get_info.py -text
@@ -199,6 +200,7 @@ Samples/BF533/VDSP_4.0.2006.04/3-Channel/Src/scmRTOS_TARGET_CFG.h -text
 Samples/BF533/VDSP_4.0.2006.04/3-Channel/Src/startup.sbf -text
 Samples/BF533/VDSP_4.0.2006.04/3-Channel/slon.Blackfin.vpw -text
 Samples/BF533/VDSP_4.0.2006.04/3-Channel/slon.vpj -text
+Samples/BF533/VDSP_4.0.2006.04/release_notes.bf533.html -text
 Samples/MSP430/IAR_v3.41/1-EventFlag/Config/lnk430F149.xcl -text
 Samples/MSP430/IAR_v3.41/1-EventFlag/Config/lnk430F169.xcl -text
 Samples/MSP430/IAR_v3.41/1-EventFlag/SConstruct -text
@@ -246,3 +248,4 @@ Samples/MSP430/IAR_v3.41/3-Channel/slon.ewd -text
 Samples/MSP430/IAR_v3.41/3-Channel/slon.ewp -text
 Samples/MSP430/IAR_v3.41/3-Channel/slon.eww -text
 Samples/MSP430/IAR_v3.41/3-Channel/slon.vpj -text
+Samples/MSP430/IAR_v3.41/release_notes.msp430.html -text
