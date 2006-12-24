@@ -104,7 +104,7 @@ public:
 TAfricanSlon African;   
 TIndianSlon  Indian;    
     
-OS::channel<TSlon*, 8> SlonQueue; // OS::channel object for 8 'TSlon' items
+OS::channel<TSlon*, 8> SlonQueue; // OS::channel object for 8 'TSlon*' items
 
 EX_INTERRUPT_HANDLER(Timer0_ISR);
 OS::TEventFlag ef_timer0;
