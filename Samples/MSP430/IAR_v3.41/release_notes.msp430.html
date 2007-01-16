@@ -10,12 +10,384 @@
 <style type="text/css">
 
 body {
-	color: Black;
-/*	background-color: #E6EEFC; */
-	background-color: #F1F6FE;
-	font-family: "Trebuchet MS", Garamond, Tahoma, "Courier New", Courier, sans-serif;
-	font-size: medium;
+	background-color: #E5EDFF;
+	color: #000;
+	font-family: Verdana, Tahoma, Geneva, Arial, Helvetica, sans-serif;
+	margin: 0px;
 }
+
+br {
+	background-color: Aqua;
+}
+/*
+from docutils
+.borderless, table.borderless td, table.borderless th {
+  border: 0 }
+*/
+.borderless, table.borderless td, table.borderless th 
+{
+  border: 0 
+}
+  
+
+div.hint, div.important, div.note, div.tip, div.warning {
+  margin: 2em ;
+  border: medium outset ;
+  padding: 7px; 
+  width: 33%;
+  background-color: #E9E9E9;
+/*  font: "Times New Roman", Times, serif;
+  font-size: 20%;
+  */
+  }
+
+
+a {
+	text-decoration: none;
+	color: #4169E1;
+}
+
+table.a {
+	text-decoration: none;
+	color: #4169E1;
+}
+
+a:hover {
+	text-decoration: underline;
+/*	color: #25B026;*/
+/*	background-color: #DEB887; */
+}
+
+a:visited {
+	color: #8B008B; /* #4169E1;	*/
+}
+
+table {
+   clear: both;
+	background-color: #E5EDFF;
+	color: #000;
+	font-family: "Trebuchet MS", Georgia, System, Verdana, Tahoma, Geneva, Arial, Helvetica, sans-serif;
+/*	font-weight: bold; */
+}
+
+table.filelist {
+   clear: both;
+	background-color: #FFFEF6;
+	color: #000;
+	font-family: "Trebuchet MS", Georgia, System, Verdana, Tahoma, Geneva, Arial, Helvetica, sans-serif;
+	width: 70%;
+}
+
+table.targetlist {
+   clear: both;
+	color: #000;
+	font-family: "Trebuchet MS", Georgia, System, Verdana, Tahoma, Geneva, Arial, Helvetica, sans-serif;
+	width: 50%;
+}
+
+table.marklist {
+   clear: both;
+	color: #000;
+	font-family: "Trebuchet MS", Georgia, System, Verdana, Tahoma, Geneva, Arial, Helvetica, sans-serif;
+	width: 35%;
+}
+
+.marklist {
+   clear: both;
+	color: #000;
+	font-family: "Trebuchet MS", Georgia, System, Verdana, Tahoma, Geneva, Arial, Helvetica, sans-serif;
+	width: 60%;
+}
+
+
+li {
+	font-family: Garamond, sans-serif;
+	font-size: small;
+	font-weight: normal;
+	color: Black;
+}
+
+ul.plain li {
+	font-family: Arial, Garamond, sans-serif;
+	font-size: 100%;
+	font-weight: normal;
+	color: Black;
+	list-style: disc;
+	width: 70%;
+	line-height: 120%;
+	text-decoration: none;
+	text-align: justify;
+	padding-bottom: 6px;
+}
+
+ul.plain2 li {
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 90%;
+	font-weight: normal;
+	color: Black;
+	list-style: square;
+	width: 70%;
+	line-height: 120%;
+	text-decoration: none;
+	text-align: justify;
+	padding-top: 3px;
+/*	padding-bottom: 6px; */
+}
+
+ul.plain3 li {
+	font-family: Arial, Garamond, sans-serif;
+	font-size: 100%;
+	font-weight: normal;
+	color: Black;
+	list-style: square;
+	width: 50%;
+	line-height: 120%;
+	text-decoration: none;
+	text-align: justify;
+	padding-bottom: 6px;
+}
+
+
+ul.numeric li {
+	font-family: Arial, Garamond, sans-serif;
+	font-size: 100%;
+	font-weight: normal;
+	color: Black;
+	list-style: decimal;
+	width: 70%;
+	line-height: 120%;
+	text-decoration: none;
+	text-align: justify;
+	border: solid;
+	border-style: none;
+	padding-bottom: 6px;
+}
+
+h3 {
+	color: #8A2256;
+	font-size: 120%;	
+}
+h4 {
+	color: #8A2256;
+	font-size: 100%;	
+}
+h5 {
+	color: #8A2256;
+	font-size: 90%;	
+}
+h6 {
+	color: #8A2256;
+	font-size: 80%;
+	font-style: italic;
+}
+
+#banner td {
+	background-color: #0A275A;
+/*	color: #F5DEB3;*/
+   color: #F0E68C;
+	font-family: Tahoma, "Trebuchet MS", sans-serif;
+	padding: 4px;
+}
+#banner h1 {
+	color: #F0E68C;
+	display: inline;
+	font-family: Tahoma, "Trebuchet MS", sans-serif;
+	font-size: 14pt;
+	/*font-weight: bold;*/
+}
+
+#banner h11 {
+	color: #F0E68C;
+	display: inline;
+	font-family: Tahoma, "Trebuchet MS", sans-serif;
+	font-size: 14pt;
+	font-weight: bold;
+}
+
+
+#subtitle {
+	text-indent: 10ex;
+	font-size: 19pt;
+	/*font-style: italic;*/
+	font-weight: bold;
+}
+#menu td {
+	background-color: #228B22;
+	color: #E0FFFF;	
+	font-size: 80%;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+#menu td.topmenu {
+	background-color: #E0FFFF;
+/*	background-color: #DEB887;*/
+	color: #0000CD;
+	border: 1px solid #228B22;
+	font-style: italic;
+}
+a.amenu {
+	background-color: #6495ED;
+	color: #E0FFFF;
+}
+a.amenu:hover {
+/*	background-color: #228B22; */
+	background-color: #191970;
+	color: #fff;
+	text-decoration: underline;
+}
+a.amenu:visited {
+	color: #708090;	
+}
+#footer {
+	background-color: #0A275A;
+	color: #F0E68C;
+	font-size: 80%;	
+}
+#breadcrumbs {
+	font: sans-serif;
+	font-size: 80%;
+	font-weight: bold;
+	padding: 1ex;
+	margin-bottom: 1ex;
+	margin-top: 2px;
+	border-bottom: 1px solid #A9A9A9;
+}
+#breadcrumbs a {
+	color: #00008B;	
+}
+#main {
+	border-left: 1px solid #A9A9A9;
+}
+#text {
+	font-size: 95%;
+	padding-left: 8px;
+	padding-bottom: 1em;
+	padding-right: 1em;
+}
+#text p {
+	text-align: justify;
+/* disabled for compatibility with Makehtml.py v.1.3
+	text-indent: 2em; */
+}
+
+/* 2004-09-10 bialix */
+#text div.document p {
+	text-indent: 0;
+}
+th.field-name {
+	text-align: left;
+	padding-left: 6px;
+	padding-right: 1em;
+}
+/* end 2004-09-10 bialix */
+
+div.attention
+{
+/*  color: red ;*/
+  font-weight: bold ;
+  font-family: sans-serif;
+
+  margin: 2em ;
+  border: medium outset ;
+  padding: 1em }
+
+blockquote.epigraph {
+  font-style: italic;
+  font-size: 85%;
+  font-family: sans-serif;
+
+  margin-right: 2em;
+  border: medium outset;
+  padding: 1em;
+  width: 30%;
+  float: right;
+}
+
+/* 2005-05-02 bialix */
+div.menu {
+	margin: 5px; 
+   width: 10ex;
+}
+
+div.menu p {
+	display: block; 
+   border: 1px solid #228B22; 
+	padding: 4px 8px;
+	margin: 0;
+	font-size: 80%;
+	font-style: italic;
+	color: #228B22;
+}
+
+div.menu ul {
+	display: block; 
+   margin: 0; 
+   padding: 0;
+}
+
+div.menu li {
+	display: block; 
+   border: 1px solid #A9A9A9;
+	padding: 3px 8px;
+	margin-top: 5px;
+	font-size: 80%;
+	background-color: #228B22;
+	color: #A9A9A9;
+}
+
+/* 2005-07-12 for compatibility with IE6 must be a.reference */
+div.menu a.reference {
+	background-color: #228B22;
+	color: #A9A9A9;
+}
+
+/* end  2005-05-02 bialix */
+
+/* 2005-07-14 bialix */
+td.menu2 {
+	width: 13%;
+}
+.gridmenu td {
+	background-color: #495C61; /* #7A8D96 */
+	color: #FAFAD2;	
+/*	font-family:  Tahoma, Geneva, Arial, Helvetica, sans-serif; */
+	font-weight: bold;
+	font-size: 80%;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+.gridmenu th {
+	border: 1px solid #DCDCDC;
+	color: #00008B;
+	font-family:  Tahoma, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 90%;
+	padding-left: 8px;
+	padding-right: 8px;
+	text-align: left;
+}
+
+.gridmenu a.reference {
+	background-color: #495C61;
+	color: #87CEEB; /* #00FF02 */
+	font-family:  Tahoma, Geneva, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.gridmenu a.reference:hover {
+	background-color: #495C61; /* #BBB8E2 */
+	color: #DAA520;
+	text-decoration: underline;
+}
+.gridmenu a.reference:visited {
+	background-color: #495C61;
+	color: #DBA083;	
+}
+
+/* end 2005-07-14 bialix */
+
+
+
+/**********************************************************/
 
 pre {
 	background-color: #D4D8DE;
@@ -48,15 +420,23 @@ h1.title {
 h1 {
 	background-color: #AEC8F6;
 	border: none;
-	font-family: Verdana, Tahoma, sans-serif;
-	font-weight: bold;
+	font-family: Verdana, Tahoma, Geneva, Arial, Helvetica, sans-serif;
 	font-size: 20px;
+}
+
+h11 {
+/*	background-color: #AEC8F6; */
+	border: none;
+	font-family: Verdana, Tahoma, Geneva, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	font-size: 20px; 
 }
 	
 	
 h2 {
 	font-family: Verdana, Tahoma, sans-serif;
 	font-size: 16px;
+	padding-top: 12px;
 }
 
 a {
@@ -64,12 +444,12 @@ a {
 }
 
 A:visited {
-	color: #DBA083; /* #4169E1;	*/
+	color: #8B008B; /* #4169E1;	*/
 }
 
 p {
-	font-family: "Trebuchet MS", Garamond, System, Verdana, Tahoma, sans-serif;
-	font-size: medium;
+	font-family: Garamond, System, Verdana, Tahoma, sans-serif;
+	font-size: 130%;
 	font-weight: normal;
 	color: Black;
 }
@@ -148,7 +528,7 @@ stand at <tt class="docutils literal"><span class="pre">Common</span></tt> subfo
 <ul class="simple">
 <li>Target-level configuration macros;</li>
 <li>Critical section definition;</li>
-<li>Some performance-critical finctions;</li>
+<li>Some performance-critical functions;</li>
 <li>Interrupt and interrupt service routines support;</li>
 <li>Target processor specific process's constructor;</li>
 <li>Idle process declaration.</li>
@@ -169,24 +549,22 @@ need.</p>
 <div class="section">
 <h1><a class="toc-backref" href="#id9" id="sample-structure" name="sample-structure">Sample Structure</a></h1>
 <p>The sample consists of three parts:</p>
-<blockquote>
 <ul class="simple">
-<li>EventFlag;</li>
-<li>message;</li>
+<li>EventFlag.</li>
+<li>message.</li>
 <li>channel.</li>
 </ul>
-</blockquote>
 <p><tt class="docutils literal"><span class="pre">EventFlag</span></tt> sample brings test on speed. <tt class="docutils literal"><span class="pre">OS::TEventFlag</span></tt>  is the simplest and
 fastest   service   of   the   RTOS.   In  this  example  program  control  flow
 transferred  from   timer   interrupt   service   routine   (ISR)   to   waiting
-process.  Dedicated  processor's   pin   is  set  to '1' before signaling of the
+process.  Dedicated  processor's   pin   is  set  to '1' before signalling of the
 <tt class="docutils literal"><span class="pre">EventFlag</span></tt>  and set to '0' inside  waiting  process.  So, positive pulse width on
 this pin corresponds with program control flow transfer time.</p>
 <p><tt class="docutils literal"><span class="pre">OS::message</span></tt> sample demonstrates ability to send arbitrary information from ISRs
 and  processes  to  processes.  In the example one process waits the message and
 timer  ISR and another process send the message. Message content is different in
 each case, so, process-receiver can distinguish the source of the message.</p>
-<p>Sample  with  <tt class="docutils literal"><span class="pre">OS::channel</span></tt>  showes  a  message  queue. Since the message can have
+<p>Sample  with  <tt class="docutils literal"><span class="pre">OS::channel</span></tt>  shows  a  message  queue. Since the message can have
 arbitrary type, current example uses pointers to class types. In the example two
 more  priority  processes  &quot;delegate&quot;  some  actions to the third (low-priority)
 process. See scmRTOS User's Manual Appendix section for more details about this
@@ -195,7 +573,7 @@ mechanism.</p>
 in its own folder.</p>
 <p>Structure of test project folder (folders are in brackets '[]'):</p>
 <pre class="literal-block">
-[Config]          - linker scripts and other utilites
+[Config]          - linker scripts and other utilities
 [Exe]             - executable product[s]
 [List]            - listings and other temporary text files
 [Obj]             - objects and other intermediate files
@@ -204,7 +582,7 @@ in its own folder.</p>
 slon.vpj          - SlickEdit project file
 slon.MSP430.vpw   - SlickEdit workspace file
 SConstruct        - Scons main script file
-slon.ewd          - IAR IDE auxillary file
+slon.ewd          - IAR IDE auxiliary file
 slon.ewp          - IAR IDE project
 slon.eww          - IAR IDE workspace
 </pre>
@@ -213,7 +591,7 @@ slon.eww          - IAR IDE workspace
 <pre class="literal-block">
 scmRTOS
   Common            - common RTOS sources
-  MSP430            - potrable part
+  MSP430            - portable part
 </pre>
 </div>
 <hr class="docutils" />
@@ -342,7 +720,7 @@ dl430fn.r43
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id2" name="id5">[2]</a></td><td>SConstruct file contains variable <tt class="docutils literal"><span class="pre">TOOLKIT_PATH</span></tt> that specifies path to toolkit on particular PC.
 The user should correct this path according to his PC toolkit location. The path can be specified
-directly or through system enviroinment variables as well.</td></tr>
+directly or through system environment variables as well.</td></tr>
 </tbody>
 </table>
 <table class="docutils footnote" frame="void" id="id6" rules="none">

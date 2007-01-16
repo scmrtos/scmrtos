@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.5: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.4: http://docutils.sourceforge.net/" />
 <title>scmRTOS v3 LPC2xxx/EWARM Release Notes</title>
 <meta name="author" content="Harry E.Zhurov, Sergey A. Borshch" />
 <meta name="date" content="$Date $" />
@@ -131,7 +131,7 @@ p {
 <p>Release includes a sample set that contains three samples and RTOS sources.
 The purpose of the sample set is to show use examples and primary RTOS
 functionality and features. Each sample EW project has two targets: RAM and FLASH
-to run sample from RAM or ROM memory respectivly using J-Link debugger.</p>
+to run sample from RAM or ROM memory respectively using J-Link debugger.</p>
 </div>
 <hr class="docutils" />
 <div class="section">
@@ -154,7 +154,7 @@ stand at <tt class="docutils literal"><span class="pre">Common</span></tt> subfo
 <li>Target processor specific process's constructor;</li>
 <li>Idle process declaration.</li>
 </ul>
-<p>Project-dependent part includes two header files:</p>
+<p>Project-dependent part includes three header files:</p>
 <ul class="simple">
 <li>scmRTOS_CONFIG.h;</li>
 <li>scmRTOS_TARGET_CFG.h.</li>
@@ -165,7 +165,8 @@ stand at <tt class="docutils literal"><span class="pre">Common</span></tt> subfo
 System Timer and context switch software interrupt stuff. By default, Match channel 0
 of Timer0 is used as System Timer, and VIC channel 1 (reserved for software interrupts)
 as Software Context Switch Interrupt. The user can change these settings to be more
-project-suitable if need.</p>
+project-suitable if needed.</p>
+<p><tt class="docutils literal"><span class="pre">device.h</span></tt> used to include proper sfr definition file.</p>
 </div>
 <hr class="docutils" />
 <div class="section">
@@ -181,7 +182,7 @@ project-suitable if need.</p>
 <p><tt class="docutils literal"><span class="pre">EventFlag</span></tt> sample brings test on speed. <tt class="docutils literal"><span class="pre">OS::TEventFlag</span></tt>  is the simplest and
 fastest   service   of   the   RTOS.   In  this  example  program  control  flow
 transferred  from   timer   interrupt   service   routine   (ISR)   to   waiting
-process.  Dedicated  processor's   pin   is  set  to '1' before signaling of the
+process.  Dedicated  processor's   pin   is  set  to '1' before signalling of the
 <tt class="docutils literal"><span class="pre">EventFlag</span></tt>  and set to '0' inside  waiting  process.  So, positive pulse width on
 this pin corresponds with program control flow transfer time.</p>
 <p><tt class="docutils literal"><span class="pre">OS::message</span></tt> sample demonstrates ability to send arbitrary information from ISRs
@@ -200,22 +201,22 @@ in its own folder.</p>
 [Config]          - linker scripts and C-Spy startup macros
 [Exe]             - executable product[s]
 [List]            - listings and other temporary text files
-[Obj]             - objects and other intermediate files
+[Obj]             - object and other intermediate files
 [settings]        - IAR IDE auxiliary files
 [Src]             - test project sources
-slon.ewd          - IAR C-Spy project setings
+slon.ewd          - IAR C-Spy project settings
 slon.ewp          - IAR IDE project
 slon.eww          - IAR IDE workspace
 </pre>
 <p><strong>slon</strong> is test project name.
 Linker scripts are suitable to test example on any LPC2xxx device except LPC2101 and 2102.
-If you want to use this script in your own scmRTOS-baset project you have to adjust RAMEND
+If you want to use this scripts in your own scmRTOS-based project you have to adjust RAMEND
 and ROMEND definitions to fit your chip memory sizes.</p>
 <p>Structure of the RTOS folder:</p>
 <pre class="literal-block">
 scmRTOS
   Common            - common RTOS sources
-  ARM7              - potrable part
+  ARM7              - portable part
 </pre>
 </div>
 <hr class="docutils" />
@@ -242,12 +243,12 @@ folders and files:</p>
 <div class="line-block">
 <div class="line"><tt class="docutils literal"><span class="pre">scmRTOS/Common</span> <span class="pre">to</span> <span class="pre">$REP$/Common</span></tt></div>
 <div class="line"><tt class="docutils literal"><span class="pre">scmRTOS/ARM7</span> <span class="pre">to</span> <span class="pre">$REP$/Ports/ARM7/IAR_vX.XX</span></tt></div>
-<div class="line"><tt class="docutils literal"><span class="pre">2-Message/Config</span> <span class="pre">to</span> <span class="pre">$REP$/Examples/ARM7/IAR_vX.XX/LPC2xxx/1-EventFlag/Config</span></tt></div>
-<div class="line"><tt class="docutils literal"><span class="pre">3-Channel/Config</span> <span class="pre">to</span> <span class="pre">$REP$/Examples/ARM7/IAR_vX.XX/LPC2xxx/1-EventFlag/Config</span></tt></div>
-<div class="line"><tt class="docutils literal"><span class="pre">2-Message/Src/device.h</span> <span class="pre">to</span> <span class="pre">$REP$/Examples/ARM7/IAR_vX.XX/LPC2xxx/1-EventFlag/Src/device.h</span></tt></div>
-<div class="line"><tt class="docutils literal"><span class="pre">3-Channel/Src/device.h</span> <span class="pre">to</span> <span class="pre">$REP$/Examples/ARM7/IAR_vX.XX/LPC2xxx/1-EventFlag/Src/device.h</span></tt></div>
+<div class="line"><tt class="docutils literal"><span class="pre">2-Message/Config</span> <span class="pre">to</span> <span class="pre">$REP$/Examples/ARM7/LPC2xxx/IAR_vX.XX/1-EventFlag/Config</span></tt></div>
+<div class="line"><tt class="docutils literal"><span class="pre">3-Channel/Config</span> <span class="pre">to</span> <span class="pre">$REP$/Examples/ARM7/LPC2xxx/IAR_vX.XX/1-EventFlag/Config</span></tt></div>
+<div class="line"><tt class="docutils literal"><span class="pre">2-Message/Src/device.h</span> <span class="pre">to</span> <span class="pre">$REP$/Examples/ARM7/LPC2xxx/IAR_vX.XX/1-EventFlag/Src/device.h</span></tt></div>
+<div class="line"><tt class="docutils literal"><span class="pre">3-Channel/Src/device.h</span> <span class="pre">to</span> <span class="pre">$REP$/Examples/ARM7/LPC2xxx/IAR_vX.XX/1-EventFlag/Src/device.h</span></tt></div>
 </div>
-<p>where <tt class="docutils literal"><span class="pre">$REP$</span></tt> is proper branch of the repository and XXX is corresponding version
+<p>where <tt class="docutils literal"><span class="pre">$REP$</span></tt> is proper branch of the repository and vX.XX is corresponding version
 name of toolkit.</p>
 <p>After this working copy is ready to build.</p>
 </div>
@@ -275,18 +276,16 @@ RTOS repository</a>.</p>
 <p>Just launch IDE, open appropriate workspace (*.eww file), choose project target (RAM/Flash),
 and build the project.
 Default chip type the sample project is targeted for is LPC2119. To alter chip type, three
-settings has to be changed:</p>
-<ol class="arabic simple">
-<li>Project-&gt;Options-&gt;General Options-&gt;Target-&gt;Device</li>
-<li>Project-&gt;Options-&gt;C/C++ Compiler-&gt;Preprocessor-&gt;Defined symbols (consult device.h for appropriate value)</li>
-<li>Project-&gt;Options-&gt;Assembler-&gt;Preprocessor-&gt;Defined symbols (consult device.h for appropriate value)</li>
-</ol>
+settings has to be changed:
+1) Project-&gt;Options-&gt;General Options-&gt;Target-&gt;Device
+2) Project-&gt;Options-&gt;C/C++ Compiler-&gt;Preprocessor-&gt;Defined symbols (consult device.h for appropriate value)
+3) Project-&gt;Options-&gt;Assembler-&gt;Preprocessor-&gt;Defined symbols (consult device.h for appropriate value)</p>
 <p>If  user want to use his own build system <a class="footnote-reference" href="#id4" id="id2" name="id2">[2]</a> he has to specify the following
 command-line options for various tools:</p>
 <div class="section">
 <h2><a class="toc-backref" href="#id13" id="assembler" name="assembler">Assembler:</a></h2>
 <pre class="literal-block">
--DLPC2119
+-DLPC2119  (or another suitable LPC2xxx chip type, consult device.h)
 --cpu ARM7TDMI
 --fpu None
 -r
@@ -304,7 +303,7 @@ command-line options for various tools:</p>
 -e
 --eec++
 -s9
--DLPC2119
+-DLPC2119  (or another suitable LPC2xxx chip type, consult device.h)
 -lCN List
 -o Obj
 --debug
