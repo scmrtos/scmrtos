@@ -80,6 +80,7 @@ namespace OS
     //
     class TEventFlag
     {
+    public:
         enum TValue { efOn = 1, efOff= 0 }; // prefix 'ef' means: "Event Flag"
 
     public:
