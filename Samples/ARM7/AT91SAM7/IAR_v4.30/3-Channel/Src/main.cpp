@@ -1,4 +1,4 @@
-//********************************************************************************
+//******************************************************************************
 //*
 //*     FULLNAME:  Single-Chip Microcontroller Real-Time Operating System
 //*
@@ -17,29 +17,31 @@
 //*
 //*     Copyright (c) 2003-2006, Harry E. Zhurov
 //*
-//*     =================================================================
-//*     scmRTOS is free software; you can redistribute it and/or
-//*     modify it under the terms of the GNU General Public License
-//*     as published by the Free Software Foundation; either version 2
-//*     of the License, or (at your option) any later version.
+//*     Permission is hereby granted, free of charge, to any person 
+//*     obtaining  a copy of this software and associated documentation 
+//*     files (the "Software"), to deal in the Software without restriction, 
+//*     including without limitation the rights to use, copy, modify, merge, 
+//*     publish, distribute, sublicense, and/or sell copies of the Software, 
+//*     and to permit persons to whom the Software is furnished to do so, 
+//*     subject to the following conditions:
 //*
-//*     This program is distributed in the hope that it will be useful,
-//*     but WITHOUT ANY WARRANTY; without even the implied warranty of
-//*     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//*     GNU General Public License for more details.
+//*     The above copyright notice and this permission notice shall be included 
+//*     in all copies or substantial portions of the Software.
 //*
-//*     You should have received a copy of the GNU General Public License
-//*     along with this program; if not, write to the Free Software
-//*     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-//*     MA  02110-1301, USA.
-//*     =================================================================
+//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
+//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
+//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
+//*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //*
 //*     =================================================================
 //*     See http://scmrtos.sourceforge.net for documentation, latest
 //*     information, license and contact details.
 //*     =================================================================
 //*
-//********************************************************************************
+//******************************************************************************
 //*     ARM port by Sergey A. Borshch, Copyright (c) 2006
 
 
@@ -170,18 +172,18 @@ _C_LIB_DECL
 #pragma language=extended
 #pragma location="ICODE"
 
-#define	RTOS_TICK_RATE  1000		// Hz
-#define	SLCK            32768L			// something about :-(
-#define	MAINCLK         1843200LL
-#define	PLLMUL          26
-#define	PLLDIV          5
-#define	PLLCLK          ((MAINCLK * PLLMUL) / PLLDIV)
-#define	MCK             (PLLCLK / 2)
-#define	PCK             SLCK
-#define	TEST_TIMER_RATE 3500		// Hz
+#define RTOS_TICK_RATE  1000        // Hz
+#define SLCK            32768L          // something about :-(
+#define MAINCLK         1843200LL
+#define PLLMUL          26
+#define PLLDIV          5
+#define PLLCLK          ((MAINCLK * PLLMUL) / PLLDIV)
+#define MCK             (PLLCLK / 2)
+#define PCK             SLCK
+#define TEST_TIMER_RATE 3500        // Hz
 
-#ifndef	AT91C_AIC_SRCTYPE_INT_POSITIVE_EDGE     // ioAT91SAM7Sxx.h patch
-#define	AT91C_AIC_SRCTYPE_INT_POSITIVE_EDGE	AT91C_AIC_SRCTYPE_INT_EDGE_TRIGGERED
+#ifndef AT91C_AIC_SRCTYPE_INT_POSITIVE_EDGE     // ioAT91SAM7Sxx.h patch
+#define AT91C_AIC_SRCTYPE_INT_POSITIVE_EDGE AT91C_AIC_SRCTYPE_INT_EDGE_TRIGGERED
 #endif
 
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
@@ -190,11 +192,11 @@ extern "C" void ContextSwitcher_ISR();
 int __low_level_init(void)
 {
 
-    AT91C_BASE_PIOA->PIO_MDDR = ~0;		            // push-pull
-    AT91C_BASE_PIOA->PIO_PPUDR = ~0;	        	// pull-up disable
-    AT91C_BASE_PIOA->PIO_OER = (1 << 0);		    // pin 0 = output
+    AT91C_BASE_PIOA->PIO_MDDR = ~0;                 // push-pull
+    AT91C_BASE_PIOA->PIO_PPUDR = ~0;                // pull-up disable
+    AT91C_BASE_PIOA->PIO_OER = (1 << 0);            // pin 0 = output
 
-	// Main oscillator
+    // Main oscillator
     AT91C_BASE_CKGR->CKGR_MOR = (1 * AT91C_CKGR_MOSCEN) | (0 * AT91C_CKGR_OSCBYPASS) | (0xFF * AT91C_CKGR_OSCOUNT);
     while( ! AT91C_BASE_PMC->PMC_SR & (1<<AT91C_PMC_MOSCS));
 

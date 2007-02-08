@@ -1,4 +1,4 @@
-//********************************************************************************
+//******************************************************************************
 //*
 //*     FULLNAME:  Single-Chip Microcontroller Real-Time Operating System
 //*
@@ -17,29 +17,31 @@
 //*
 //*     Copyright (c) 2003-2006, Harry E. Zhurov
 //*
-//*     =================================================================
-//*     scmRTOS is free software; you can redistribute it and/or
-//*     modify it under the terms of the GNU General Public License
-//*     as published by the Free Software Foundation; either version 2
-//*     of the License, or (at your option) any later version.
+//*     Permission is hereby granted, free of charge, to any person 
+//*     obtaining  a copy of this software and associated documentation 
+//*     files (the "Software"), to deal in the Software without restriction, 
+//*     including without limitation the rights to use, copy, modify, merge, 
+//*     publish, distribute, sublicense, and/or sell copies of the Software, 
+//*     and to permit persons to whom the Software is furnished to do so, 
+//*     subject to the following conditions:
 //*
-//*     This program is distributed in the hope that it will be useful,
-//*     but WITHOUT ANY WARRANTY; without even the implied warranty of
-//*     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//*     GNU General Public License for more details.
+//*     The above copyright notice and this permission notice shall be included 
+//*     in all copies or substantial portions of the Software.
 //*
-//*     You should have received a copy of the GNU General Public License
-//*     along with this program; if not, write to the Free Software
-//*     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-//*     MA  02110-1301, USA.
-//*     =================================================================
+//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
+//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
+//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
+//*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //*
 //*     =================================================================
 //*     See http://scmrtos.sourceforge.net for documentation, latest
 //*     information, license and contact details.
 //*     =================================================================
 //*
-//********************************************************************************
+//******************************************************************************
 //*     ARM port by Sergey A. Borshch, Copyright (c) 2006
 
 #include <scmRTOS.h>
@@ -68,29 +70,29 @@ TBaseProcess::TBaseProcess(TStackItem* Stack, TPriority pr, void (*exec)())
     //
     //  Prepare Process Stack Frame
     //
-    *(--StackPointer) = (dword)exec;		// return from interrupt address
+    *(--StackPointer) = (dword)exec;        // return from interrupt address
     // debug: initial register values.
 
-    *(--StackPointer) = 0xcccccccc;			// r12
-    *(--StackPointer) = 0xbbbbbbbb;			// r11
-    *(--StackPointer) = 0xaaaaaaaa;			// r10
-    *(--StackPointer) = 0x99999999;			// r9
-    *(--StackPointer) = 0x88888888;			// r8
-    *(--StackPointer) = 0x77777777;			// r7
-    *(--StackPointer) = 0x66666666;			// r6
-    *(--StackPointer) = 0x55555555;			// r5
-    *(--StackPointer) = 0x44444444;			// r4
-    *(--StackPointer) = 0x33333333;			// r3
-    *(--StackPointer) = 0x22222222;			// r2
-    *(--StackPointer) = 0x11111111;			// r1
-    *(--StackPointer) = 0x00000000;			// r0
-    *(--StackPointer) = 0xdddddddd;			// LR
+    *(--StackPointer) = 0xcccccccc;         // r12
+    *(--StackPointer) = 0xbbbbbbbb;         // r11
+    *(--StackPointer) = 0xaaaaaaaa;         // r10
+    *(--StackPointer) = 0x99999999;         // r9
+    *(--StackPointer) = 0x88888888;         // r8
+    *(--StackPointer) = 0x77777777;         // r7
+    *(--StackPointer) = 0x66666666;         // r6
+    *(--StackPointer) = 0x55555555;         // r5
+    *(--StackPointer) = 0x44444444;         // r4
+    *(--StackPointer) = 0x33333333;         // r3
+    *(--StackPointer) = 0x22222222;         // r2
+    *(--StackPointer) = 0x11111111;         // r1
+    *(--StackPointer) = 0x00000000;         // r0
+    *(--StackPointer) = 0xdddddddd;         // LR
 
-//	StackPointer -= 14;						// emulate "push R0-R12, LR"
+//  StackPointer -= 14;                     // emulate "push R0-R12, LR"
 #if __CPU_MODE__ == 1
-    *(--StackPointer) =   0x003F;			// SR value: system mode, FIQ & IRQ enabled, THUMB
+    *(--StackPointer) =   0x003F;           // SR value: system mode, FIQ & IRQ enabled, THUMB
 #else
-    *(--StackPointer) =   0x001F;			// SR value: system mode, FIQ & IRQ enabled, ARM
+    *(--StackPointer) =   0x001F;           // SR value: system mode, FIQ & IRQ enabled, ARM
 #endif
 }
 //-----------------------------------------------------------------------------
@@ -201,8 +203,8 @@ namespace OS {
             (TPriority)29,      (TPriority)0xFF,    (TPriority)22,      (TPriority)18,
             (TPriority)28,      (TPriority)17,      (TPriority)16,      (TPriority)0xFF
         };
-    #endif	// scmRTOS_PROCESS_COUNT
-#else 	// scmRTOS_PRIORITY_ORDER == 1
+    #endif  // scmRTOS_PROCESS_COUNT
+#else   // scmRTOS_PRIORITY_ORDER == 1
     #if scmRTOS_PROCESS_COUNT == 1
         extern TPriority const PriorityTable[] =
         {
@@ -268,7 +270,7 @@ namespace OS {
             (TPriority)0xFF,    (TPriority)7,       (TPriority)24,      (TPriority)0xFF,
             (TPriority)23,      (TPriority)0xFF,    (TPriority)31,      (TPriority)0xFF
         };
-    #endif	// scmRTOS_PROCESS_COUNT
+    #endif  // scmRTOS_PROCESS_COUNT
 #endif // scmRTOS_PRIORITY_ORDER
-}	//namespace
+}   //namespace
 //--------------------------------------------------------------------------
