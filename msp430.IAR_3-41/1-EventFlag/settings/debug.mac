@@ -1,0 +1,132 @@
+// Setting up a periodic interrupt simulation:
+
+__var IntervalTimer_period;
+__var Timer_B_period;
+
+__var slon;
+__var tmp;
+
+__var WDT_Int_ID;
+__var CA_Int_ID;
+__var TB_Int_ID;
+
+__var fid;
+__var data;
+
+// -----------------------------------------------------------------------------
+execUserSetup()
+{
+    __message "execUserSetup() called\n";
+
+    // Call the simulation setup
+    SimulationSetup();
+}
+// -----------------------------------------------------------------------------
+execUserReset()
+{
+    __message "execUserReset() called\n";
+
+    if(fid)
+    {
+        __resetFile(fid);
+    }
+}
+// -----------------------------------------------------------------------------
+execUserExit()
+{
+    __message "execUserExit() called\n";
+
+    // Call the Simulation shutdown
+    SimulationShutdown();
+}
+// -----------------------------------------------------------------------------
+SetWDT_Flag()
+{
+    __message "Set WDT Overflow Interrupt Flag\n";
+    tmp = __readMemoryByte(0x02, "Memory");
+    tmp |= 0x01;
+    __writeMemoryByte(tmp, 0x02, "Memory");
+}
+// -----------------------------------------------------------------------------
+ClearCAIE()
+{
+    __message "Clear CA IE\n";
+    tmp = __readMemoryByte(0x59, "Memory");
+    tmp &= ~0x03;
+    __writeMemoryByte(tmp, 0x59, "Memory");
+}
+// -----------------------------------------------------------------------------
+WriteToFile()
+{
+    __message "Write To File\n";
+
+    data = __readMemory16(0x566, "RAM");
+    __writeFile(fid, data);
+    slon = 0;
+}
+// -----------------------------------------------------------------------------
+Continue()
+{
+    slon = 1;
+    return slon;
+}
+// -----------------------------------------------------------------------------
+SimulationSetup()
+{
+
+    IntervalTimer_period;
+
+    fid = __openFile("D:\\1\\Naves\\430\\Slon.txt", "w");
+
+    __cancelAllInterrupts();        
+    tmp = __enableInterrupts();
+    __message "__enableInterrupts() return value = ", tmp;
+    __message "\n";
+
+    // ------------------------------------------------------
+    // 
+    //   set Interval Timer (WatchDog) overflow interrupt
+    //
+    //
+    WDT_Int_ID = __orderInterrupt("WDT_VECTOR              0x14        2        IE1.WDTIE     IFG1.WDTIFG", 
+                     7000, 5000, 0, 1, 0, 100); 
+
+
+    // ------------------------------------------------------
+    // 
+    //   set ComparatorA interrupt
+    //
+    //
+    CA_Int_ID = __orderInterrupt("COMPARATORA_VECTOR 0x16         2       CACTL1.CAIE             CACTL1.CAIFG", 
+                     1, 1, 0, 1, 0, 100); 
+
+
+    // ------------------------------------------------------
+    // 
+    //   set Timer B  overflow interrupt
+    //
+    //
+    TB_Int_ID = __orderInterrupt("TIMERB0_VECTOR     0x1A         2       TBCCTL0.CCIE            TBCCTL0.CCIFG", 
+                     7022, 5000, 0, 1, 0, 100); 
+
+                     
+
+   // __setDataBreak("Memory:0x02", 1, "", "TRUE", "W", "SetWDT_Flag()");
+
+   __setDataBreak("Memory:0x566", 1, "Continue()", "TRUE", "W", "WriteToFile()");
+
+ //  __setSimBreak("..\\..\\scmRTOS\\Common\\OS_Kernel.cpp.63.59", "R", ClearCAIE());
+   __setCodeBreak("{D:\\slon\\scmRTOS\\!New\\Samples\\MSP430\\IAR_v3.41\\scmRTOS\\Common\\OS_Kernel}.cpp.63.59", 0, "1", "TRUE", ClearCAIE());
+
+}
+// -----------------------------------------------------------------------------
+SimulationShutdown()
+{
+    __cancelAllInterrupts();
+
+    if(fid)
+    {
+        __closeFile(fid);
+    }
+}
+// -----------------------------------------------------------------------------

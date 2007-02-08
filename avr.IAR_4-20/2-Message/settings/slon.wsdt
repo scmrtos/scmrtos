@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<Workspace>
+  <ConfigDictionary>
+    
+  <CurrentConfigs><Project>slon/Debug</Project></CurrentConfigs></ConfigDictionary>
+  <Desktop>
+    <Static>
+      <Workspace>
+        <ColumnWidths>
+          
+          
+          
+          
+        <Column0>124</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
+      </Workspace>
+      <Build>
+        
+        
+        
+        
+      <ColumnWidth0>20</ColumnWidth0><ColumnWidth1>1158</ColumnWidth1><ColumnWidth2>309</ColumnWidth2><ColumnWidth3>77</ColumnWidth3></Build>
+      <TerminalIO/>
+      <CodeCoveragePlugin/>
+      <Profiling/>
+      <Debug-Log/>
+    </Static>
+    <Windows>
+      
+      
+    <Wnd2>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-8395-26107</Identity>
+            <TabName>Workspace</TabName>
+            <Factory>Workspace</Factory>
+            <Session>
+              
+            <NodeDict><ExpandedNode>slon</ExpandedNode></NodeDict></Session>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd2><Wnd3>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-7872-26117</Identity>
+            <TabName>Build</TabName>
+            <Factory>Build</Factory>
+            <Session/>
+          </Tab>
+          <Tab>
+            <Identity>TabID-9504-26496</Identity>
+            <TabName>Debug Log</TabName>
+            <Factory>Debug-Log</Factory>
+            <Session/>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd3></Windows>
+    <Editor>
+      
+      
+      
+      
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\AVR\IAR_v4.20\scmRTOS\AVR\OS_Target.h</Filename><XPos>0</XPos><YPos>57</YPos><SelStart>2123</SelStart><SelEnd>2123</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\AVR\IAR_v4.20\scmRTOS\Common\OS_Services.h</Filename><XPos>0</XPos><YPos>396</YPos><SelStart>14208</SelStart><SelEnd>14208</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\AVR\IAR_v4.20\scmRTOS\Common\OS_Kernel.h</Filename><XPos>0</XPos><YPos>108</YPos><SelStart>4150</SelStart><SelEnd>4150</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\AVR\IAR_v4.20\2-Message\Src\scmRTOS_TARGET_CFG.h</Filename><XPos>0</XPos><YPos>40</YPos><SelStart>2044</SelStart><SelEnd>2044</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\AVR\IAR_v4.20\scmRTOS\AVR\OS_Target_cpp.cpp</Filename><XPos>0</XPos><YPos>58</YPos><SelStart>2645</SelStart><SelEnd>2645</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\AVR\IAR_v4.20\2-Message\Src\main.cpp</Filename><XPos>0</XPos><YPos>37</YPos><SelStart>1709</SelStart><SelEnd>1709</SelEnd></Tab><ActiveTab>5</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\AVR\IAR_v4.20\scmRTOS\Common\OS_Kernel.cpp</Filename><XPos>0</XPos><YPos>32</YPos><SelStart>1639</SelStart><SelEnd>1639</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Positions>
+      
+      
+      
+      
+      
+    <Top><Row0><Sizes><Toolbar-0084f570><key>iaridepm1</key></Toolbar-0084f570></Sizes></Row0><Row1><Sizes><Toolbar-0120b5d8><key>debuggergui1</key></Toolbar-0120b5d8></Sizes></Row1></Top><Left><Row0><Sizes><Wnd2><Rect><Top>-2</Top><Left>-2</Left><Bottom>892</Bottom><Right>198</Right><x>-2</x><y>-2</y><xscreen>200</xscreen><yscreen>200</yscreen><sizeHorzCX>125000</sizeHorzCX><sizeHorzCY>176367</sizeHorzCY><sizeVertCX>125000</sizeVertCX><sizeVertCY>788360</sizeVertCY></Rect></Wnd2></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd3><Rect><Top>-2</Top><Left>-2</Left><Bottom>198</Bottom><Right>1602</Right><x>-2</x><y>-2</y><xscreen>1604</xscreen><yscreen>200</yscreen><sizeHorzCX>1002500</sizeHorzCX><sizeHorzCY>176367</sizeHorzCY><sizeVertCX>125000</sizeVertCX><sizeVertCY>176367</sizeVertCY></Rect></Wnd3></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+  </Desktop>
+</Workspace>
+
+

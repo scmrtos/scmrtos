@@ -1,0 +1,72 @@
+//********************************************************************************
+//*
+//*     FULLNAME:  Single-Chip Microcontroller Real-Time Operating System
+//*
+//*     NICKNAME:  scmRTOS
+//*
+//*     PROCESSOR: AT91SAM7xxx (Atmel)
+//*
+//*     TOOLKIT:   EWARM (IAR Systems)
+//*
+//*     PURPOSE:   Linker control file
+//*
+//*     Version:   3.00-beta
+//*
+//*     $Revision$
+//*     $Date$
+//*
+//*     Copyright (c) 2003-2006, Harry E. Zhurov
+//*
+//*     =================================================================
+//*     scmRTOS is free software; you can redistribute it and/or
+//*     modify it under the terms of the GNU General Public License
+//*     as published by the Free Software Foundation; either version 2
+//*     of the License, or (at your option) any later version.
+//*
+//*     This program is distributed in the hope that it will be useful,
+//*     but WITHOUT ANY WARRANTY; without even the implied warranty of
+//*     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//*     GNU General Public License for more details.
+//*
+//*     You should have received a copy of the GNU General Public License
+//*     along with this program; if not, write to the Free Software
+//*     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+//*     MA  02110-1301, USA.
+//*     =================================================================
+//*
+//*     =================================================================
+//*     See http://scmrtos.sourceforge.net for documentation, latest
+//*     information, license and contact details.
+//*     =================================================================
+//*
+//********************************************************************************
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006
+
+-cARM
+// place code to ram
+-DROMSTART=00000040                     // reserve space for INTVEC
+-DROMEND=00003FFF                       // any AT91SAM7 has at least 4K RAM
+-DRAMSTART=00000040
+-DRAMEND=00003FFF
+
+// Intvec always linked to 0x00-0x3F
+-Z(CODE)INTVEC=00-3F
+
+// ROM
+-Z(CODE)ICODE,DIFUNCT,SWITAB,CODE=ROMSTART-ROMEND
+-Z(CONST)INITTAB,DATA_ID,DATA_C=ROMSTART-ROMEND
+-Z(CONST)CODE_ID=ROMSTART-ROMEND    // __ramfunc code init data
+
+// RAM
+-Z(DATA)DATA_I,DATA_Z,DATA_N=RAMSTART-RAMEND
+-Z(DATA)CODE_I=RAMSTART-RAMEND      // __ramfunc code in ram
+
+-QCODE_I=CODE_ID
+
+// irq stack not used, don't reserve space
+-Z(DATA)IRQ_STACK=RAMSTART-RAMEND
+
+-DSTACK_SIZE=100
+// CSTACK used instead of IRQ_STACK
+// place interupt stack at the bottom of RAM
+-Z(DATA)CSTACK+STACK_SIZE#RAMSTART-RAMEND

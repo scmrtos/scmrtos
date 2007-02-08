@@ -1,0 +1,228 @@
+//********************************************************************************
+//*
+//*     FULLNAME:  Single-Chip Microcontroller Real-Time Operating System
+//*
+//*     NICKNAME:  scmRTOS
+//*
+//*     PROCESSOR: ARM7
+//*
+//*     TOOLKIT:   EWARM (IAR Systems)
+//*
+//*     PURPOSE:   Target Dependent Low-Level Stuff
+//*
+//*     Version:   3.00-beta
+//*
+//*     $Revision$
+//*     $Date$
+//*
+//*     Copyright (c) 2003-2006, Harry E. Zhurov
+//*
+//*     =================================================================
+//*     scmRTOS is free software; you can redistribute it and/or
+//*     modify it under the terms of the GNU General Public License
+//*     as published by the Free Software Foundation; either version 2
+//*     of the License, or (at your option) any later version.
+//*
+//*     This program is distributed in the hope that it will be useful,
+//*     but WITHOUT ANY WARRANTY; without even the implied warranty of
+//*     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//*     GNU General Public License for more details.
+//*
+//*     You should have received a copy of the GNU General Public License
+//*     along with this program; if not, write to the Free Software
+//*     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+//*     MA  02110-1301, USA.
+//*     =================================================================
+//*
+//*     =================================================================
+//*     See http://scmrtos.sourceforge.net for documentation, latest
+//*     information, license and contact details.
+//*     =================================================================
+//*
+//********************************************************************************
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006
+
+
+#include "scmRTOS_CONFIG.h"
+#include "scmRTOS_TARGET_CFG.h"
+#include "OS_Target_core.h"
+
+        module  scmRTOS_Asm
+
+
+#define MODE_USER       0x10
+#define MODE_FIQ        0x11
+#define MODE_IRQ        0x12
+#define MODE_SVC        0x13
+#define MODE_ABORT      0x17
+#define MODE_UND        0x1B
+#define MODE_SYS        0x1F
+
+#define NIRQ            (1<<7)
+#define NFIQ            (1<<6)
+#define THUMB           (1<<5)
+
+//  Context structure:
+//        lo address
+//  CPSR
+//  R14 (LR)
+//  R0
+//  R1
+//  R2
+//  R3
+//  R4
+//  R5
+//  R6
+//  R7
+//  R8
+//  R9
+//  R10
+//  R11
+//  R12
+//  Process interrupt point (return address)
+//        hi address
+
+        CODE32
+;-------------------------------------------------------------------------------
+
+#if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
+        COMMON  INTVEC:CODE:ROOT
+        org     0x00000008
+		LDR     PC, Context_Switcher_Adr    ; Branch to swi_handler
+        org     0x00000018
+        LDR     PC, IRQ_Wrapper_Adr
+        org     0x00000020
+
+        org     0x00000028
+Context_Switcher_Adr:
+        DC32    Context_Switcher
+        org     0x00000038
+IRQ_Wrapper_Adr:
+        DC32    IRQ_Wrapper
+
+;-------------------------------------------------------------------------------
+        RSEG    ICODE:CODE
+
+IRQ_Wrapper:
+        MSR     CPSR_c, #(NIRQ | MODE_SYS)  ; switching to System mode, because context has to be saved
+                                            ; on top of user mode stack, enable FIQ
+        STMFD   SP!, {R0-R12,LR}            ; store R0_R12, dummy store LR to reserve space in context
+        STMFD   SP!, {R1,LR}                ; reserve space for CPSR, store LR_user on top of context
+
+        MOV     R0, SP                      ; store context pointer in non-banked register
+        MSR     CPSR_c, #(NIRQ | MODE_IRQ)  ; switching back to IRQ mode
+        SUB     LR, LR, #4                  ; adjusting return address
+        STR     LR, [R0, #4*15]             ; store return address in reserved space (instead of saved LR_user)
+        MRS     R1, SPSR                    ; move stored CPSR of process to non-banked register
+        STR     R1, [R0]                    ; store SPSR in reserved space (instead of saved R1)
+
+        IRQ_SWITCH                          ; call IRQ handler
+
+        MSR     CPSR_c, #(NIRQ | MODE_SYS)  ; switching to System mode, because context has to be restored
+                                            ; from user mode stack, enable FIQ
+        MOV     R0, SP
+        B       ContextRestore              ; restore saved IRQ context
+
+        RSEG    ICODE:CODE
+        PUBLIC  SaveSP
+        PUBLIC  Set_New_SP
+
+SaveSP:
+    //    __arm void SaveSP(TStackItem** Curr_SP)
+        MSR     CPSR_c, #(NIRQ | MODE_SYS)  ; switching to System mode, to get access to sp_user
+        STR     SP, [R0]
+        MSR     CPSR_c, #(NIRQ | MODE_IRQ)  ; switching back to IRQ mode
+        BX      LR
+Set_New_SP:
+    //    __arm void SetNewSP(TStackItem* New_SP)
+        MSR     CPSR_c, #(NIRQ | MODE_SYS)  ; switching to System mode, to get access to sp_user
+        MOV     SP, R0
+        MSR     CPSR_c, #(NIRQ | MODE_IRQ)  ; switching back to IRQ mode
+        BX      LR
+
+;-------------------------------------------------------------------------------
+//      __swi __arm void OS_ContextSwitcher(TStackItem** Curr_SP, TStackItem* Next_SP);
+Context_Switcher:
+        MSR     CPSR_c, #(NIRQ | MODE_SYS)  ; switching to System mode, because context has to be saved
+                                            ; on top of user mode stack, enable FIQ
+        STMFD   SP!, {R0-R12,LR}            ; store R0_R12, dummy store LR to reserve space in context
+
+        SUB     R2, SP, #4*2                ; store context pointer in non-banked register (reserve space for CPSR, LR)
+        MSR     CPSR_c, #(NIRQ | MODE_SVC)  ; switching back to supervisor mode
+        STR     LR, [R2, #4*15]             ; store return address in reserved space (instead of saved LR_user)
+        MRS     R3, SPSR                    ; move stored CPSR of process to non-banked register
+        MSR     CPSR_c, #(NIRQ | MODE_SYS)  ; switching back to System mode
+
+        STMFD   SP!, {R3,LR}                ; store CPSR, LR_user on top of context and adjust SP_user
+        STR     SP,[R0]
+        MOV     R0, R1
+ContextRestore
+        LDMFD   R0!, {R1, LR}               ; restoring LR_user, saved CPSR_user
+        ADD     SP, R0, #4*14               ; set process SP
+
+        MSR     CPSR_c, #(NIRQ | MODE_IRQ)  ; switch to IRQ mode to get access to SPSR_irq
+        MSR     SPSR_cxsf, R1               ; store process CPSR to SPSR_irq to restore at return from irq
+
+        LDMFD   R0, {R0-R12,PC}^            ; restoring remaining context, CPSR and reti
+
+#else	//if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
+;-------------------------------------------------------------------------------
+        COMMON  INTVEC:CODE:ROOT
+
+        org     0x00000018
+        IRQ_SWITCH                          ; переход по адресу из векторного контроллера
+;-------------------------------------------------------------------------------
+        RSEG    ICODE:CODE
+        // TStackItem* OS_ContextSwitchHook(TStackItem* sp);
+        EXTERN  OS_ContextSwitchHook
+        PUBLIC  ContextSwitcher_ISR
+ContextSwitcher_ISR:
+        MSR     CPSR_c, #(NIRQ | MODE_SYS)  ; switching to System mode, because context has to be saved
+                                            ; on top of user mode stack, enable FIQ
+        STMFD   SP!, {R0-R12,LR}            ; store R0_R12, dummy store LR to reserve space in context
+
+        SUB     R0, SP, #4*2                ; store context pointer in non-banked register (reserve space for CPSR, LR)
+        MSR     CPSR_c, #(NIRQ | MODE_IRQ)  ; switching back to IRQ mode
+        SUB     LR, LR, #4                  ; adjusting return address
+        STR     LR, [R0, #4*15]             ; store return address in reserved space (instead of saved LR_user)
+        MRS     R1, SPSR                    ; move stored CPSR of process to non-banked register
+        MSR     CPSR_c, #(NIRQ | MODE_SYS)  ; switching back to System mode
+
+        STMFD   SP!, {R1,LR}                ; store CPSR, LR_user on top of context and adjust SP_user
+                                            ; to use process stack in OS_ContextSwitchHook
+        _BLF    OS_ContextSwitchHook, Hook_Relay    ; store context pointer(R0), get new context pointer(R0)
+        IRQ_DONE                            ; reset interrupt controller
+ContextRestore
+        LDMFD   R0!, {R1, LR}               ; restoring LR_user, saved CPSR_user
+        ADD     SP, R0, #4*14               ; set process SP
+
+        MSR     CPSR_c, #(NIRQ | MODE_IRQ)  ; switch to IRQ mode to get access to SPSR_irq
+        MSR     SPSR_cxsf, R1               ; store process CPSR to SPSR_irq to restore at return from irq
+
+        LDMFD   R0, {R0-R12,PC}^            ; restoring remining context, CPSR and reti
+
+        RSEG	ICODE:CODE
+Hook_Relay:
+        LDR     R1, =OS_ContextSwitchHook   ; call Thumb mode routine
+        BX		R1
+#endif
+
+
+;-------------------------------------------------------------------------------
+        RSEG    CSTACK:DATA
+        RSEG    ICODE:CODE
+// Set SP_irq to main() stack, restore context referenced by R0
+
+        // void OS_Start(TStackItem* sp);
+        PUBLIC  OS_Start
+OS_Start:
+        MSR     CPSR_c, #(NIRQ | NFIQ | MODE_IRQ)   ; switching to IRQ mode, disable FIQ & IRQ
+        LDR     SP, =SFE(CSTACK) & 0xFFFFFFF8       ; End of CSTACK
+        MSR     CPSR_c, #(NIRQ | NFIQ | MODE_SYS)   ; switching back to System mode, disable FIQ & IRQ
+                                                    ; ContextRestore typically called from System mode
+
+        B       ContextRestore                      ; Restore context = run process
+;-------------------------------------------------------------------------------
+        ENDMOD
+
+        END
