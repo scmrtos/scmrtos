@@ -1,0 +1,81 @@
+/*                      - lnkm32.xcl -
+ *
+ *   XLINK command file for the ICCAVR C-compiler using the --cpu=m32, -ms
+ *   options. 
+ *
+ *   Usage: xlink your_file(s) -f lnkm32
+ *
+ *   File version: $Revision: 1.7 $
+ */
+
+/*
+ * Modify the lines below to alter the size of the RSTACK, CSTACK and HEAP
+ * segments. These need to be fine tuned to suit your specific application.
+ * The '_..X_' prefix is used by C-SPY as an indication that the label should
+ * not be displayed in the dissassembly window.
+ */
+-D_..X_CSTACK_SIZE=50  /*  80 bytes for auto variables and saved registers. */
+-D_..X_RSTACK_SIZE=20   /* 32 bytes for return addresses, equivalent to 16 */
+                        /* levels of calls, including interrupts. */
+-D_..X_HEAP_SIZE=80     /* 128 bytes of heap. */
+-D_..X_NEAR_HEAP_SIZE=80     /* 128 bytes of heap. */
+
+/* Define CPU */
+-ca90
+
+/*
+ * The following segments are located in the internal memory of
+ * the ATmega32. Do not change these lines.
+ */
+
+/* Code memory */
+
+-Z(CODE)INTVEC=0-57 /* 21 Interrupt vectors * 4 bytes each */
+
+/* Fill unused interrupt vector's with RETI */
+-H1895 -h(CODE)0-57
+
+-Z(CODE)TINY_F=58-FF
+-Z(CODE)NEAR_F,SWITCH,INITTAB,DIFUNCT=58-7FFF
+-Z(CODE)CODE=58-7FFF
+-Z(CODE)TINY_ID,NEAR_ID=58-7FFF
+-Z(CODE)CHECKSUM#7FFF
+
+/* Internal data memory */
+-Z(DATA)TINY_I,TINY_Z,TINY_N=60-FF
+-Z(DATA)NEAR_I,NEAR_Z=60-85F
+-Z(DATA)RSTACK+_..X_RSTACK_SIZE=60-85F
+-Z(DATA)CSTACK+_..X_CSTACK_SIZE=60-85F
+-Z(DATA)HEAP+_..X_HEAP_SIZE=60-85F
+-Z(DATA)IOSTREAM_N#60-85F
+-Z(DATA)NEAR_HEAP+_..X_NEAR_HEAP_SIZE=60-85F
+
+/* Internal eeprom memory */
+-Z(XDATA)EEPROM_I,EEPROM_N=0-3FF
+
+/* Select reduced "printf" support to reduce library size.
+   See configuration section in manual concerning printf/sprintf. */
+
+/*Dlib*/
+-e_PrintfSmall=_Printf
+
+/*Clib*/
+-e_small_write=_formatted_write
+-e_small_write_P=_formatted_write_P
+
+/* Disable floating-point support in "scanf" to reduce library size.
+   See configuration section in manual concerning scanf/sscanf */
+
+/*Dlib*/
+-e_ScanfSmall=_Scanf
+
+/*Clib*/
+-e_medium_read=_formatted_read
+-e_medium_read_P=_formatted_read_P
+
+/* Suppress one warning which is not relevant for this processor */
+-w29
+
+/* Code will now reside in file aout.a90 or aout.d90, unless -o is specified */
+/* .d90 is the default if debug system is linked (option -r) */
+/* .a90 is the default without debugging. Default format is -Fmotorola */
