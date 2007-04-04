@@ -103,7 +103,7 @@ TBaseProcess::TBaseProcess(TStackItem*** Stack, TPriority pr)
 //     }
 // }
 
-typedef OS::process<OS::prIDLE, 768> TIdleProc;
+typedef OS::process<OS::prIDLE, scmRTOS_IDLE_PROCESS_STACK_SIZE> TIdleProc;
 
 TIdleProc IdleProc;
 
