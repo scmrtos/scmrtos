@@ -1,0 +1,16 @@
+-g
+-w 2
+-I "SRC"
+-I "..\MB91270"
+-O 0
+-linf ON
+-lsrc ON
+-lsec ON
+-lcros OFF
+-linc ON
+-lexp OBJ
+-pl 60
+-pw 100
+-tab 8
+-cwno
+-cpu MB91F272

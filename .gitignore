@@ -94,6 +94,15 @@ Samples/BF533/VDSP_4.0.2006.04/3-Channel/List/*.*
 Samples/BF533/VDSP_4.0.2006.04/3-Channel/Obj/*.*
 Samples/BF533/VDSP_4.0.2006.04/3-Channel/slon.Blackfin.vpwhist
 Samples/BF533/VDSP_4.0.2006.04/3-Channel/slon.Blackfin.vtg
+Samples/FR/Softune_V6/1-EventFlag/Debug/ABS/*.*
+Samples/FR/Softune_V6/1-EventFlag/Debug/LST/*.*
+Samples/FR/Softune_V6/1-EventFlag/Debug/OBJ/*.*
+Samples/FR/Softune_V6/2-Message/Debug/ABS/*.*
+Samples/FR/Softune_V6/2-Message/Debug/LST/*.*
+Samples/FR/Softune_V6/2-Message/Debug/OBJ/*.*
+Samples/FR/Softune_V6/3-Channel/Debug/ABS/*.*
+Samples/FR/Softune_V6/3-Channel/Debug/LST/*.*
+Samples/FR/Softune_V6/3-Channel/Debug/OBJ/*.*
 Samples/MSP430/IAR_v3.41/1-EventFlag/.sconsign.dblite
 Samples/MSP430/IAR_v3.41/1-EventFlag/Exe/*.*
 Samples/MSP430/IAR_v3.41/1-EventFlag/List/*.*

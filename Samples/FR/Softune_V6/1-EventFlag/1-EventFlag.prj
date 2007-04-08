@@ -1,0 +1,173 @@
+[Version]
+DLLVer=02.5006.00.2
+PRJVer=1
+
+[PRJKIND]
+mode=1
+
+[CPUTYPE]
+CpuSerise=911
+
+[DirInfo]
+PRJ=E:\scmrtos-fr\1-EventFlag\
+
+[PrjInfo]
+Count=1
+PrjInfo-0=Debug
+Active=Debug
+
+[MEMBER]
+F0=14
+F1=0 f Source Files
+F2=0 cc SRC\hwinit.cpp
+F3=0 cc SRC\main.cpp
+F4=0 c ..\MB91270\mb91270.c
+F5=0 a SRC\Start91270.asm
+F6=0 c SRC\vectors.c
+F7=0 f Source Files\Common
+F8=0 cc ..\scmRTOS\Common\OS_Kernel.cpp
+F9=0 cc ..\scmRTOS\Common\OS_Services.cpp
+F10=0 cc ..\scmRTOS\Common\usrlib.cpp
+F11=0 f Source Files\FR
+F12=0 a ..\scmRTOS\FR\OS_Target_asm.asm
+F13=0 cc ..\scmRTOS\FR\OS_Target_cpp.cpp
+F14=0 f Include Files
+
+[OPTIONFILE]
+FILE=1-EventFlag.dat
+
+[CPUTYPE-Debug]
+CsvFile=Lib\911\911.csv
+CpuName=MB91F272
+Count=0
+
+[DirInfo-Debug]
+CONFIG=Debug\
+OBJ=Debug\OBJ\
+LST=Debug\LST\
+OPT=Debug\OPT\
+
+[MEMBER-Debug]
+F0=11
+F1=0 m 1 Debug\ABS\1-EventFlag.abs
+F2=4 cc 1 SRC\hwinit.cpp
+F2-1=- ..\scmRTOS\FR\commdefs.h
+F2-2=- SRC\device_def.h
+F2-3=- ..\MB91270\mb91270.h
+F2-4=- SRC\scmRTOS_TARGET_CFG.h
+F3=13 cc 1 SRC\main.cpp
+F3-1=- ..\scmRTOS\Common\scmRTOS.h
+F3-2=- C:\Softune6\LIB\911\INCLUDE\stddef.h
+F3-3=- ..\scmRTOS\FR\commdefs.h
+F3-4=- ..\scmRTOS\Common\usrlib.h
+F3-5=- ..\scmRTOS\Common\scmRTOS_defs.h
+F3-6=- SRC\scmRTOS_config.h
+F3-7=- ..\scmRTOS\FR\OS_Target.h
+F3-8=- SRC\scmRTOS_TARGET_CFG.h
+F3-9=- SRC\device_def.h
+F3-10=- ..\MB91270\mb91270.h
+F3-11=- ..\scmRTOS\Common\OS_Kernel.h
+F3-12=- ..\scmRTOS\Common\OS_Services.h
+F3-13=- SRC\hwtools.h
+F4=1 c 1 SRC\vectors.c
+F4-1=- ..\MB91270\mb91270.h
+F5=0 a 1 SRC\Start91270.asm
+F6=1 c 1 ..\MB91270\mb91270.c
+F6-1=- ..\MB91270\mb91270.h
+F7=12 cc 1 ..\scmRTOS\Common\OS_Kernel.cpp
+F7-1=- ..\scmRTOS\Common\scmRTOS.h
+F7-2=- C:\Softune6\LIB\911\INCLUDE\stddef.h
+F7-3=- ..\scmRTOS\FR\commdefs.h
+F7-4=- ..\scmRTOS\Common\usrlib.h
+F7-5=- ..\scmRTOS\Common\scmRTOS_defs.h
+F7-6=- SRC\scmRTOS_config.h
+F7-7=- ..\scmRTOS\FR\OS_Target.h
+F7-8=- SRC\scmRTOS_TARGET_CFG.h
+F7-9=- SRC\device_def.h
+F7-10=- ..\MB91270\mb91270.h
+F7-11=- ..\scmRTOS\Common\OS_Kernel.h
+F7-12=- ..\scmRTOS\Common\OS_Services.h
+F8=12 cc 1 ..\scmRTOS\Common\OS_Services.cpp
+F8-1=- ..\scmRTOS\Common\scmRTOS.h
+F8-2=- C:\Softune6\LIB\911\INCLUDE\stddef.h
+F8-3=- ..\scmRTOS\FR\commdefs.h
+F8-4=- ..\scmRTOS\Common\usrlib.h
+F8-5=- ..\scmRTOS\Common\scmRTOS_defs.h
+F8-6=- SRC\scmRTOS_config.h
+F8-7=- ..\scmRTOS\FR\OS_Target.h
+F8-8=- SRC\scmRTOS_TARGET_CFG.h
+F8-9=- SRC\device_def.h
+F8-10=- ..\MB91270\mb91270.h
+F8-11=- ..\scmRTOS\Common\OS_Kernel.h
+F8-12=- ..\scmRTOS\Common\OS_Services.h
+F9=2 cc 1 ..\scmRTOS\Common\usrlib.cpp
+F9-1=- ..\scmRTOS\Common\usrlib.h
+F9-2=- ..\scmRTOS\FR\commdefs.h
+F10=12 cc 1 ..\scmRTOS\FR\OS_Target_cpp.cpp
+F10-1=- ..\scmRTOS\Common\scmRTOS.h
+F10-2=- C:\Softune6\LIB\911\INCLUDE\stddef.h
+F10-3=- ..\scmRTOS\FR\commdefs.h
+F10-4=- ..\scmRTOS\Common\usrlib.h
+F10-5=- ..\scmRTOS\Common\scmRTOS_defs.h
+F10-6=- SRC\scmRTOS_config.h
+F10-7=- ..\scmRTOS\FR\OS_Target.h
+F10-8=- SRC\scmRTOS_TARGET_CFG.h
+F10-9=- SRC\device_def.h
+F10-10=- ..\MB91270\mb91270.h
+F10-11=- ..\scmRTOS\Common\OS_Kernel.h
+F10-12=- ..\scmRTOS\Common\OS_Services.h
+F11=3 a 1 ..\scmRTOS\FR\OS_Target_asm.asm
+F11-1=- SRC\scmRTOS_TARGET_CFG.h
+F11-2=- SRC\device_def.h
+F11-3=- ..\MB91270\mb91270.h
+
+[BUILDMODE-Debug]
+kernel=1
+
+[RUNSET-Debug]
+CONVERT=1
+CONVERTKIND=0
+
+[DebState-Debug]
+SupCount=1
+Supfile-0=Debug\1-EventFlag.sup
+Current=1-EventFlag.sup
+AliasFile=
+CPURunMode=
+
+[AsmBefore]
+Count=0
+
+[AsmAfter]
+Count=0
+
+[CcBefore]
+Count=0
+
+[CcAfter]
+Count=0
+
+[LnkBefore]
+Count=0
+
+[LnkAfter]
+Count=0
+
+[LibBefore]
+Count=0
+
+[LibAfter]
+Count=0
+
+[CnvBefore]
+Count=0
+
+[CnvAfter]
+Count=0
+
+[ConfigBefore]
+Count=0
+
+[ConfigAfter]
+Count=0
+
