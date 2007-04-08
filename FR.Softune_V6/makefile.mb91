@@ -1,0 +1,179 @@
+#-----------------------------------------------------------------------------
+#
+# Common sets and rules
+#
+# Note: Use 'sed' tools for prepare dependence files
+#
+#-----------------------------------------------------------------------------
+
+-include c:\Softune.mk
+
+OS_cmd_rm	:= del
+OS_cmd_sed	:= sed
+
+
+# ****************************
+ifdef FETOOL_32
+FETOOL	:=      $(FETOOL_32)
+endif
+
+
+# *********************** GLOBAL
+ifndef FETOOL
+$(error Not SET "FETOOL" or "FETOOL_32" in system environment or C:\SOFTUNE.MK)
+endif
+
+P_inc	:= $(FETOOL)\lib\911\include
+P_lib	:= $(FETOOL)\lib
+
+
+#---------! MAIN -----
+default: all
+
+#---------! COMMANDS LINE UTILS -----------------
+CC		:=	$(FETOOL)\bin\fcc911s.exe
+ASM		:=	$(FETOOL)\bin\fasm911s.exe
+LINK	:=	$(FETOOL)\bin\flnk911s.EXE
+CONV	:=	$(FETOOL)\bin\f2ms.EXE
+
+
+#---------! DIRs
+D_src	:=	src $(D_o_src)
+
+D_inc_c	:=	$(D_src) $(D_o_inc) $(P_inc)
+
+D_inc_a	:=	$(D_src) $(D_o_inc)
+
+D_abs	:=	debug/abs
+D_lst	:=	debug/lst
+D_obj	:=	debug/obj
+D_dep	:=	$(D_obj)
+D_opt	:=	debug/opt
+
+#---------! MODEs
+CMODE	:=	$(D_opt)\$(PRJ).opc
+AMODE	:=	$(D_opt)\$(PRJ).opa
+LMODE	:=	$(D_opt)\$(PRJ).opl
+VMODE	:=	$(D_opt)\$(PRJ).opv
+
+#---------! FLAGS
+CFLAGS	:=	-f $(CMODE) -B $(foreach buff, $(D_inc_c),-I $(buff))\
+			$(foreach buff, $(DEF_ALL),-D $(buff)) $(ADDPRM) \
+			-Y a,$(FETOOL)\bin
+
+AFLAGS	:=	-f $(AMODE) $(foreach buff, $(D_inc_a),-I $(buff))\
+			$(ADDPRM)
+
+LFLAGS	:=	-f $(LMODE) -m "$(D_lst)/$(PRJ).map" -L $(P_lib)\
+			$(ADDPRM)
+
+VFLAGS	:=	-f $(VMODE)
+
+DFLAGS_C	:=	-H -f $(CMODE) \
+			$(foreach buff, $(D_inc_c),-I$(buff)) \
+			$(foreach buff, $(DEF_ALL),-D $(buff))
+
+DFLAGS_A	:=	-H -f $(AMODE) -Xo \
+			$(foreach buff, $(D_inc_a),-I$(buff))
+
+
+#=============================
+.SUFFIXES:
+.SUFFIXES: .c .cpp .asm .obj .abs .mhx .d
+
+#---------! PATH for find files
+vpath
+vpath	%.c		$(D_inc_c)
+vpath	%.cpp	$(D_inc_c)
+vpath	%.h		$(D_inc_c)
+vpath	%.asm	$(D_inc_a)
+vpath	%.obj	$(D_obj)
+vpath	%.d		$(D_dep)
+vpath	%.abs	$(D_abs)
+vpath	%.mhx	$(D_abs)
+
+#---------! Rules
+%.obj:	%.c
+	$(CC) $< $(CFLAGS) -o $(D_obj)\$(notdir $*.obj)
+
+%.obj:	%.cpp
+	$(CC) $< $(CFLAGS) -o $(D_obj)\$(notdir $*.obj)
+
+%.obj:	%.asm
+	$(ASM) $< $(AFLAGS) -o $(D_obj)\$@
+
+%.abs:
+	$(LINK) $(LFLAGS) 
+
+%.mhx:
+	$(CONV) $(VFLAGS)
+
+$(D_dep)/%.d:	%.c
+	@$(CC) $(DFLAGS_C) $< >$*.dd
+	@$(OS_cmd_sed) -e 1i"$(*F).obj $(D_dep)/$(*F).d:"\\ \
+	-e "s/.*/\t&\t\\/" \
+	$(*F).dd > $(D_dep)\$(*F).d
+	@$(OS_cmd_rm) $(*F).dd
+
+$(D_dep)/%.d:	%.cpp
+	@$(CC) $(DFLAGS_C) $< >$*.dd
+	@$(OS_cmd_sed) -e 1i"$(*F).obj $(D_dep)/$(*F).d:"\\ \
+	-e "s/.*/\t&\t\\/" \
+	$(*F).dd > $(D_dep)\$(*F).d
+	@$(OS_cmd_rm) $(*F).dd
+
+$(D_dep)/%.d:	%.asm
+	@$(ASM) $(DFLAGS_A) $< >$*.dd
+	@$(OS_cmd_sed) -e 1i"$(*F).obj $(D_dep)/$(*F).d:"\\ \
+	-e "s/.*/\t\t&\t\\/" \
+	$(*F).dd > $(D_dep)\$(*F).d
+	@$(OS_cmd_rm) $(*F).dd
+
+#=============================
+CPPS	:=	$(wildcard $(addsuffix /*.c,$(D_src))) $(D_o_c)
+DEPC    :=	$(notdir $(CPPS:.c=.d))
+
+CPPS1	:=	$(wildcard $(addsuffix /*.cpp,$(D_src))) $(D_o_c)
+DEPC1	:=	$(notdir $(CPPS1:.cpp=.d))
+
+ASMS	:=	$(wildcard $(addsuffix /*.asm,$(D_src))) $(D_o_asm)
+DEPA    :=	$(notdir $(ASMS:.asm=.d))
+
+DEPS	:=	$(addprefix $(D_dep)/,$(DEPC) $(DEPC1) $(DEPA))
+
+OBJC	:=	$(notdir $(CPPS:.c=.obj))
+OBJC1	:=	$(notdir $(CPPS1:.cpp=.obj))
+OBJA	:=	$(notdir $(ASMS:.asm=.obj))
+OBJS	:=	$(OBJC) $(OBJC1) $(OBJA)
+
+ABSS	:=	$(PRJ).abs
+HEXS	:=	$(PRJ).mhx
+
+#============================= DEPENDENCE
+# = = = = = = = AUTO genaration
+include $(DEPS)
+
+# = = = = = = = STATIC
+
+$(DEPS):	makefile
+
+$(OBJC):	$(CMODE)
+
+$(OBJS):	$(AMODE) makefile
+
+$(BINS):	$(HEXS)
+
+$(HEXS):	$(ABSS) $(VMODE)
+
+$(ABSS):	$(OBJS) $(LMODE)
+
+
+#=============================
+#=============================
+#=============================
+all:	$(HEXS)
+	@echo --- MAKE "$(PRJ)": Ok
+
+
+load:	$(HEXS)
+	$(LOAD_MB90) /$(CPU) /b $< /n /s$(ROMstart)
