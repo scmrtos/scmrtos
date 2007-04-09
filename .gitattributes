@@ -30,6 +30,15 @@ FR.Softune_V6/3-Channel/makefile -text
 FR.Softune_V6/makefile -text
 FR.Softune_V6/makefile.mb91 -text
 FR.Softune_V6/scmRTOS.wsp -text
+FR.Softune_V6/scmRTOS/Common/OS_Kernel.cpp -text
+FR.Softune_V6/scmRTOS/Common/OS_Kernel.h -text
+FR.Softune_V6/scmRTOS/Common/OS_Services.cpp -text
+FR.Softune_V6/scmRTOS/Common/OS_Services.h -text
+FR.Softune_V6/scmRTOS/Common/scmRTOS.h -text
+FR.Softune_V6/scmRTOS/Common/scmRTOS_defs.h -text
+FR.Softune_V6/scmRTOS/Common/usrlib.cpp -text
+FR.Softune_V6/scmRTOS/Common/usrlib.h -text
+FR.Softune_V6/scmRTOS/FR/OS_Target_asm.asm -text
 arm7.ADuC70xx.IAR_4-30/IAR_v4.30/1-EventFlag/Config/ADuC70xx_FLASH.mac -text
 arm7.ADuC70xx.IAR_4-30/IAR_v4.30/1-EventFlag/Config/ADuC70xx_FLASH.xcl -text
 arm7.ADuC70xx.IAR_4-30/IAR_v4.30/1-EventFlag/Config/ADuC70xx_RAM.mac -text
