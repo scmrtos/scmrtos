@@ -213,7 +213,7 @@ namespace OS
     {
     public:
         message() : TBaseMessage()   { }
-        void operator=(const T& msg) { TCritSect cs; Msg = msg;  }
+        const T& operator=(const T& msg) { TCritSect cs; Msg = msg; return Msg; }
         operator     T() const       { TCritSect cs; return Msg; }
 
     private:
