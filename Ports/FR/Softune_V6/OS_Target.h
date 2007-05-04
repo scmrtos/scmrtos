@@ -73,7 +73,7 @@
 //
 //
 typedef dword TStackItem;
-//typedef word  TStatusReg;
+typedef dword TStatusReg;
 
 //-----------------------------------------------------------------------------
 //
@@ -104,14 +104,17 @@ typedef dword TStackItem;
 //     The Critital Section Wrapper
 //
 //
+extern "C" TStatusReg   _cli();
+extern "C" void         _sti(TStatusReg StatusReg);
+
 class TCritSect
 {
 public:
-    TCritSect () { __DI(); }
-    ~TCritSect() { __EI(); }
+    TCritSect () : StatusReg(_cli()) { }
+    ~TCritSect() { _sti(StatusReg); }
 
-//private:
-//    TStatusReg StatusReg;
+private:
+    TStatusReg StatusReg;
 };
 //-----------------------------------------------------------------------------
 //
@@ -150,7 +153,7 @@ namespace OS
 INLINE inline void SetInterruptState()      { }
 
 INLINE inline void EnableInterrupts()       { }
-INLINE inline void DisableInterrupts()      { __DI(); }
+INLINE inline void DisableInterrupts()      { __set_il(scmRTOS_OS_DI_LEVEL); }
 
 INLINE inline void EnableContextSwitch()    { }
 INLINE inline void DisableContextSwitch()   { }
@@ -171,7 +174,11 @@ namespace OS
     void IdleProcessUserHook();
 #endif
 
-    inline void RaiseContextSwitch() { asm(" int #63 "); } // raise software interrupt
+    inline void RaiseContextSwitch()
+    {
+        DICR = 1;
+        //__asm(" int #63 ");
+    } // raise software interrupt
     void SystemTimer_ISR(void);
 
 }

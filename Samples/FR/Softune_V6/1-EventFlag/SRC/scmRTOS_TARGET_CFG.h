@@ -54,6 +54,12 @@
 
 #define  scmRTOS_SYSTIMER_CLEAR_FLAG()  TBCR_TBIF = 0;        // Clear INT flag
 
+// Level for disable interrupts with OS services
+#define  scmRTOS_OS_DI_LEVEL 20
+
+// Setup interrupt priority for Delayed Interrupt (ContextSwitcher_ISR)
+#define  scmRTOS_OS_INT_SETUP() ICR47 = scmRTOS_OS_DI_LEVEL - 1;
+
 #endif // scmRTOS_TARGET_CFG_H
 //-----------------------------------------------------------------------------
 

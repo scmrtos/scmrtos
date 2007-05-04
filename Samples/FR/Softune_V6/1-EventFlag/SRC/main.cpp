@@ -74,6 +74,8 @@ int main(void)
 
     HardwareInit();
 
+    scmRTOS_OS_INT_SETUP();
+
     scmRTOS_SYSTIMER_SETUP();
 
     OS::Run();
@@ -106,6 +108,7 @@ OS_PROCESS void TProc2::Exec()
 //---------------------------------------------------------------------------
 OS_PROCESS void TProc3::Exec()
 {
+    PDR5_P56 = 1;   // LED 2 ON
     for(;;)
     {
 #if 0
