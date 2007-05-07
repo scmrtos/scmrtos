@@ -50,7 +50,7 @@
 //-----------------------------------------------------------------------------
 //
 //
-//   Macro for Channel Type definition
+///   Macro for Channel Type definition
 //
 //
 #define DefineChannel(Name, Capacity)                                            \
@@ -128,7 +128,7 @@ private:                                                                        
 
 //-----------------------------------------------------------------------------
 //
-//    Priority and process map type definitions
+///    Priority and process map type definitions
 //
 //
 namespace OS

@@ -84,9 +84,9 @@ namespace OS
     //
     //     NAME       :   TKernel
     //
-    //     PURPOSE    :   Implements kernel-level operations such as
-    //                    process management, process-level scheduling,
-    //                    ISR-level scheduling, system timing.
+    ///  Implements kernel-level operations such as
+    ///  process management, process-level scheduling,
+    ///  ISR-level scheduling, system timing.
     //
     //     DESCRIPTION:
     //
@@ -178,9 +178,9 @@ namespace OS
 
     //--------------------------------------------------------------------------
     //
-    //      NAME       :   BaseProcess
-    //
-    //      PURPOSE    :   Implements base class-type for application processes
+    /// BaseProcess
+    ///
+    /// Implements base class-type for application processes
     //
     //      DESCRIPTION:
     //
@@ -222,9 +222,9 @@ namespace OS
 
     //--------------------------------------------------------------------------
     //
-    //      NAME       :   process
-    //
-    //      PURPOSE    :   Implements template for application processes instantiation
+    ///  process
+    ///
+    ///  Implements template for application processes instantiation
     //
     //      DESCRIPTION:
     //
@@ -308,8 +308,9 @@ namespace OS
 
 //------------------------------------------------------------------------------
 //
-//   Register Process : Places pointer to process in kernel's process table
-// 
+///  Register Process
+///
+///  Places pointer to process in kernel's process table
 // 
 void OS::TKernel::RegisterProcess(OS::TBaseProcess* const p)
 {
@@ -317,9 +318,10 @@ void OS::TKernel::RegisterProcess(OS::TBaseProcess* const p)
 }
 //------------------------------------------------------------------------------
 //
-//   System Timer Implementation : Performs process's timeouts checking and
-//                                 moving processes to ready-to-run state
-// 
+/// System Timer Implementation
+///
+/// Performs process's timeouts checking and
+///               moving processes to ready-to-run state
 // 
 void OS::TKernel::SystemTimer()
 {
@@ -349,9 +351,9 @@ void OS::TKernel::SystemTimer()
 }
 //------------------------------------------------------------------------------
 //
-//    ISR optimized sheduler
-// 
-//    !!! IMPORTANT: This function must be call from ISR services only !!!
+///    ISR optimized sheduler
+///
+///    !!! IMPORTANT: This function must be call from ISR services only !!!
 //
 //
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
@@ -379,8 +381,8 @@ void OS::TKernel::SchedISR()
 //------------------------------------------------------------------------------
 bool OS::TKernel::IsContextSwitchDone() const volatile
 {
-     byte cur    = CurProcPriority;    // reading to temporary vars is performed due to
-     byte sched  = SchedProcPriority;  // suppress warning about order of volatile access
+     byte cur    = CurProcPriority;    ///< reading to temporary vars is performed due to
+     byte sched  = SchedProcPriority;  ///< suppress warning about order of volatile access
      return cur == sched;
 }
 //------------------------------------------------------------------------------

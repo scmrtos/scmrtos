@@ -103,6 +103,7 @@ Samples/FR/Softune_V6/2-Message/Debug/OBJ/*.*
 Samples/FR/Softune_V6/3-Channel/Debug/ABS/*.*
 Samples/FR/Softune_V6/3-Channel/Debug/LST/*.*
 Samples/FR/Softune_V6/3-Channel/Debug/OBJ/*.*
+Samples/FR/Softune_V6/Doxygen
 Samples/MSP430/IAR_v3.41/1-EventFlag/.sconsign.dblite
 Samples/MSP430/IAR_v3.41/1-EventFlag/Exe/*.*
 Samples/MSP430/IAR_v3.41/1-EventFlag/List/*.*

@@ -53,16 +53,16 @@ namespace usr
 {
     //------------------------------------------------------------------------------
     //
-    //     The Circular Buffer
+    ///     The Circular Buffer
     //
-    //         Byte-wide FIFO.
+    ///         Byte-wide FIFO.
     //
-    //         Allows to:
-    //             add byte,
-    //             get byte,
-    //             write bytes from array,
-    //             read bytes to array,
-    //             and some other service actions.
+    ///         Allows to:
+    ///             add byte,
+    ///             get byte,
+    ///             write bytes from array,
+    ///             read bytes to array,
+    ///             and some other service actions.
     //
     class TCbuf
     {
@@ -82,8 +82,8 @@ namespace usr
        //
        //  DESCRIPTON: For internal purposes
        //
-        void push(const byte item); // Use this function with care - it doesn't perform free size check
-        byte pop();                 // Use this function with care - it doesn't perform count check
+        void push(const byte item); ///< Use this function with care - it doesn't perform free size check
+        byte pop();                 ///< Use this function with care - it doesn't perform count check
        //------------------------------------------------------------------------------
 
     private:
@@ -99,18 +99,18 @@ namespace usr
 
     //-----------------------------------------------------------------------
     //
-    //     The Ring Buffer Template
-    //
-    //         Carries out FIFO functionality for
-    //         arbitrary data types
-    //
-    //         Allows to:
-    //             add item to back (default),
-    //             add item to front,
-    //             get item at front (default),
-    //             get item from back,
-    //             write items from array,
-    //             read items to array and some other actions
+    ///     The Ring Buffer Template
+    ///
+    ///         Carries out FIFO functionality for
+    ///         arbitrary data types
+    ///
+    ///         Allows to:
+    ///             add item to back (default),
+    ///             add item to front,
+    ///             get item at front (default),
+    ///             get item from back,
+    ///             write items from array,
+    ///             read items to array and some other actions
     //
     //
     //

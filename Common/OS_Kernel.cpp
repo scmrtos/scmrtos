@@ -46,6 +46,7 @@ using namespace OS;
 OS::TKernel OS::Kernel;
 
 //-----------------------------------------------------------------------------
+/// Start Operation
 void OS::Run()
 {
     TStackItem* sp = Kernel.ProcessTable[pr0]->StackPointer;

@@ -237,6 +237,7 @@ Samples/FR/Softune_V6/3-Channel/Debug/OPT/3-Channel.opl -text
 Samples/FR/Softune_V6/3-Channel/Debug/OPT/3-Channel.opv -text
 Samples/FR/Softune_V6/3-Channel/SRC/Start91270.asm -text
 Samples/FR/Softune_V6/3-Channel/makefile -text
+Samples/FR/Softune_V6/Doxyfile -text
 Samples/FR/Softune_V6/makefile -text
 Samples/FR/Softune_V6/makefile.mb91 -text
 Samples/FR/Softune_V6/scmRTOS.wsp -text

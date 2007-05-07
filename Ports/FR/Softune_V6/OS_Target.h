@@ -101,12 +101,12 @@ typedef dword TStatusReg;
 
 //-----------------------------------------------------------------------------
 //
-//     The Critital Section Wrapper
 //
 //
 extern "C" TStatusReg   _cli();
 extern "C" void         _sti(TStatusReg StatusReg);
 
+///     The Critital Section Wrapper
 class TCritSect
 {
 public:
@@ -118,7 +118,7 @@ private:
 };
 //-----------------------------------------------------------------------------
 //
-//     Priority stuff
+//    Priority stuff
 //
 //
 namespace OS
@@ -160,8 +160,8 @@ INLINE inline void DisableContextSwitch()   { }
 
 //-----------------------------------------------------------------------------
 //
-//    ISR prototypes
-//
+///   OS ISR prototypes
+
 extern "C" void ContextSwitcher_ISR(void);
 
 #define  LOCK_SYSTEM_TIMER()
@@ -178,7 +178,7 @@ namespace OS
     {
         DICR = 1;
         //__asm(" int #63 ");
-    } // raise software interrupt
+    } ///< raise software interrupt
     void SystemTimer_ISR(void);
 
 }
@@ -202,6 +202,10 @@ namespace OS
     //      DESCRIPTION:
     //
     //
+    //! OS ISR support
+
+    //! Implements common actions on interrupt enter and exit
+    //! under the OS
     class TISRW
     {
     public:
