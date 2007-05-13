@@ -53,6 +53,7 @@ using namespace OS;
 
 //------------------------------------------------------------------------------
 //
+///  Prepare Process Stack Frame
 TBaseProcess::TBaseProcess(TStackItem* Stack, TPriority pr, void (*exec)())
     : StackPointer(Stack)
     , Priority(pr)
@@ -98,6 +99,7 @@ typedef OS::process<OS::prIDLE, scmRTOS_IDLE_PROCESS_STACK_SIZE> TIdleProc;
 
 TIdleProc IdleProc;
 
+/// scmRTOS IDLE PROCESS
 OS_PROCESS void TIdleProc::Exec()
 {
     for(;;)
@@ -108,6 +110,7 @@ OS_PROCESS void TIdleProc::Exec()
     }
 }
 //------------------------------------------------------------------------------
+/// System Timer ISR
 extern "C" __interrupt void SystemTimer_ISR()
 {
     TISRW ISR;

@@ -57,7 +57,22 @@
 
     .GLOBAL     _OS_ContextSwitchHook
 
+    .EXPORT     __cli
+    .EXPORT     __sti
+ 
     .section    CODE, code, align=4
+
+;//------------------------------------------------------------------------------
+
+__cli:
+        MOV         PS, R4                   ; Save state of PS
+        STILM       #scmRTOS_OS_DI_LEVEL     ; Disable interrupts with OS services
+;        ANDCCR      #0xEF                   ; Disable interrupts
+        RET
+
+__sti:
+        MOV         R4, PS                   ; Restore state of PS
+        RET
 
 
 ;//------------------------------------------------------------------------------
@@ -98,6 +113,10 @@ _ContextSwitcher_ISR:
     ; Store PS and PC in TaskStack and down UserStack
     ST      R1,     @-SP
     ST      R0,     @-SP
+    
+    ; DICR = 0
+    LDI:8   #0,     R13
+    DMOVB   R13,    @_dicr
 
     ;//--------------------------------------------------------------------------
     ;//

@@ -73,7 +73,7 @@
 //
 //
 typedef dword TStackItem;
-//typedef word  TStatusReg;
+typedef dword TStatusReg;
 
 //-----------------------------------------------------------------------------
 //
@@ -101,21 +101,24 @@ typedef dword TStackItem;
 
 //-----------------------------------------------------------------------------
 //
-//     The Critital Section Wrapper
 //
 //
+extern "C" TStatusReg   _cli();
+extern "C" void         _sti(TStatusReg StatusReg);
+
+///     The Critital Section Wrapper
 class TCritSect
 {
 public:
-    TCritSect () { __DI(); }
-    ~TCritSect() { __EI(); }
+    TCritSect () : StatusReg(_cli()) { }
+    ~TCritSect() { _sti(StatusReg); }
 
-//private:
-//    TStatusReg StatusReg;
+private:
+    TStatusReg StatusReg;
 };
 //-----------------------------------------------------------------------------
 //
-//     Priority stuff
+//    Priority stuff
 //
 //
 namespace OS
@@ -150,15 +153,15 @@ namespace OS
 INLINE inline void SetInterruptState()      { }
 
 INLINE inline void EnableInterrupts()       { }
-INLINE inline void DisableInterrupts()      { __DI(); }
+INLINE inline void DisableInterrupts()      { __set_il(scmRTOS_OS_DI_LEVEL); }
 
 INLINE inline void EnableContextSwitch()    { }
 INLINE inline void DisableContextSwitch()   { }
 
 //-----------------------------------------------------------------------------
 //
-//    ISR prototypes
-//
+///   OS ISR prototypes
+
 extern "C" void ContextSwitcher_ISR(void);
 
 #define  LOCK_SYSTEM_TIMER()
@@ -171,7 +174,11 @@ namespace OS
     void IdleProcessUserHook();
 #endif
 
-    inline void RaiseContextSwitch() { asm(" int #63 "); } // raise software interrupt
+    inline void RaiseContextSwitch()
+    {
+        DICR = 1;
+        //__asm(" int #63 ");
+    } ///< raise software interrupt
     void SystemTimer_ISR(void);
 
 }
@@ -195,6 +202,10 @@ namespace OS
     //      DESCRIPTION:
     //
     //
+    //! OS ISR support
+
+    //! Implements common actions on interrupt enter and exit
+    //! under the OS
     class TISRW
     {
     public:

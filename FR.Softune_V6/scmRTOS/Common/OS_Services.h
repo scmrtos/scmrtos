@@ -48,7 +48,7 @@ namespace OS
     //
     //       NAME       :   Mutex
     //
-    //       PURPOSE    :   Binary semaphore for support of mutual exclusion
+    /// Binary semaphore for support of mutual exclusion
     //
     //       DESCRIPTION:
     //
@@ -72,10 +72,10 @@ namespace OS
 
     //--------------------------------------------------------------------------
     //
-    //       NAME       : Event Flag
-    //
-    //       PURPOSE    : Intended for processes synchronization and
-    //                    event notification one (or more) process by another
+    ///  Event Flag
+    ///
+    ///  Intended for processes synchronization and
+    ///  event notification one (or more) process by another
     //
     //       DESCRIPTION:
     //
@@ -102,9 +102,9 @@ namespace OS
 
     //--------------------------------------------------------------------------
     //
-    //       NAME       :  TChannel
-    //
-    //       PURPOSE    :  Byte-wide data channel for transferring "raw" data
+    ///  TChannel
+    ///
+    ///  Byte-wide data channel for transferring "raw" data
     //
     //       DESCRIPTION:
     //
@@ -142,6 +142,9 @@ namespace OS
     //
     //
     template<typename T, word size, class S = byte>
+    ///  channel
+    ///
+    ///  Data channel for transferring data objects of arbitrary type
     class channel
     {
     public:
@@ -185,9 +188,9 @@ namespace OS
 
     //--------------------------------------------------------------------------
     //
-    //       NAME       :  message
-    //
-    //       PURPOSE    :  Template for messages
+    /// message
+    ///
+    /// Template for messages
     //
     //       DESCRIPTION:
     //
@@ -213,7 +216,7 @@ namespace OS
     {
     public:
         message() : TBaseMessage()   { }
-        void operator=(const T& msg) { TCritSect cs; Msg = msg;  }
+        const T& operator=(const T& msg) { TCritSect cs; Msg = msg; return Msg; }
         operator     T() const       { TCritSect cs; return Msg; }
 
     private:

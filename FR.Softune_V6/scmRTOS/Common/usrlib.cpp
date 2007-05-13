@@ -46,7 +46,7 @@ using namespace usr;
 
 //------------------------------------------------------------------------------
 //
-//    Circular buffer function-member description
+///   Circular buffer function-member description
 //
 //
 //
@@ -107,8 +107,9 @@ byte TCbuf::get()
 }
 //------------------------------------------------------------------------------
 //
-//  DESCRIPTON: For internal purposes
-//              Use this function with care - it doesn't perform free size check
+/// \note
+/// For internal purposes.
+/// Use this function with care - it doesn't perform free size check.
 //
 void TCbuf::push(const byte item)
 {
@@ -121,8 +122,9 @@ void TCbuf::push(const byte item)
 }
 //------------------------------------------------------------------------------
 //
-//  DESCRIPTON: For internal purposes
-//              Use this function with care - it doesn't perform count check
+/// \note
+/// For internal purposes.
+/// Use this function with care - it doesn't perform free size check.
 //
 byte TCbuf::pop()
 {
