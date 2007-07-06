@@ -15,7 +15,7 @@
 //*     $Revision$
 //*     $Date$
 //*
-//*     Copyright (c) 2003-2006, Harry E. Zhurov
+//*     Copyright (c) 2003-2007, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person 
 //*     obtaining  a copy of this software and associated documentation 
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     ARM port by Sergey A. Borshch, Copyright (c) 2006
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2007
 
 
 //---------------------------------------------------------------------------
@@ -173,16 +173,16 @@ _C_LIB_DECL
 #pragma location="ICODE"
 
 #define RTOS_TICK_RATE  1000        // Hz
-#define SLCK            32768L          // something about :-(
-#define MAINCLK         1843200LL
-#define PLLMUL          26
+#define SLCK            32768L      // something about :-(
+#define MAINCLK         18432000LL
+#define PLLMUL          25
 #define PLLDIV          5
-#define PLLCLK          ((MAINCLK * PLLMUL) / PLLDIV)
+#define PLLCLK          ((MAINCLK * (PLLMUL + 1)) / PLLDIV)
 #define MCK             (PLLCLK / 2)
 #define PCK             SLCK
 #define TEST_TIMER_RATE 3500        // Hz
 
-#ifndef AT91C_AIC_SRCTYPE_INT_POSITIVE_EDGE     // ioAT91SAM7Sxx.h patch
+#ifndef AT91C_AIC_SRCTYPE_INT_POSITIVE_EDGE     // ioAT91SAM7Sxx.h v4.30A patch 
 #define AT91C_AIC_SRCTYPE_INT_POSITIVE_EDGE AT91C_AIC_SRCTYPE_INT_EDGE_TRIGGERED
 #endif
 
@@ -191,10 +191,15 @@ extern "C" void ContextSwitcher_ISR();
 #endif
 int __low_level_init(void)
 {
+	AT91C_BASE_WDTC->WDTC_WDMR = (1*AT91C_WDTC_WDDIS);                  // disable Watchdog
+	AT91C_BASE_RSTC->RSTC_RMR = AT91C_RSTC_URSTEN | (0xA5UL << 24);     // enable external reset pin
 
     AT91C_BASE_PIOA->PIO_MDDR = ~0;                 // push-pull
     AT91C_BASE_PIOA->PIO_PPUDR = ~0;                // pull-up disable
     AT91C_BASE_PIOA->PIO_OER = (1 << 0);            // pin 0 = output
+
+    // Flash memory: 1 wait state at MCLK frequences above 30 MHz
+    AT91C_BASE_MC->MC_FMR = AT91C_MC_FWS_1FWS;
 
     // Main oscillator
     AT91C_BASE_CKGR->CKGR_MOR = (1 * AT91C_CKGR_MOSCEN) | (0 * AT91C_CKGR_OSCBYPASS) | (0xFF * AT91C_CKGR_OSCOUNT);

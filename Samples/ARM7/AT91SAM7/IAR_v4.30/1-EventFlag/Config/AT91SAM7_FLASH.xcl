@@ -15,7 +15,7 @@
 //*     $Revision$
 //*     $Date$
 //*
-//*     Copyright (c) 2003-2006, Harry E. Zhurov
+//*     Copyright (c) 2003-2007, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person 
 //*     obtaining  a copy of this software and associated documentation 
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     ARM port by Sergey A. Borshch, Copyright (c) 2006
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2007
 
 -cARM
 // place code to flash
@@ -64,10 +64,17 @@
 -Z(DATA)CODE_I=RAMSTART-RAMEND      // __ramfunc code in ram
 -QCODE_I=CODE_ID
 
-// irq stack not used, don't reserve space
--Z(DATA)IRQ_STACK=RAMSTART-RAMEND
+-D_HEAP_SIZE=(0)                    // heap not used in samples
+-Z(DATA)HEAP+_HEAP_SIZE=RAMSTART-RAMEND
 
--DSTACK_SIZE=100
-// CSTACK used instead of IRQ_STACK
-// place interupt stack at the bottom of RAM
--Z(DATA)CSTACK+STACK_SIZE#RAMSTART-RAMEND
+// CSTACK used only before OS start, when IRQ's are disabled
+// So don't allocate space for CSTACK, let it overlaps IRQ stack
+-D_CSTACK_SIZE=(0x0)                // CSTACK not used
+
+-D_IRQ_STACK_SIZE=(0x100)           // 256 bytes for IRQ's
+
+
+// place CSTACK at the bottom of RAM
+-Z(DATA)CSTACK+_CSTACK_SIZE#RAMSTART-RAMEND
+// place IRQ stack just before CSTACK (actualy at same addresses)
+-Z(DATA)IRQ_STACK+_IRQ_STACK_SIZE#RAMSTART-RAMEND
