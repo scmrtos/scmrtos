@@ -16,25 +16,24 @@
 //*     $Date$
 //*
 //*     Copyright (c) 2003-2006, Harry E. Zhurov
-//*     Copyright (c) 2005-2006, Sergey A. Borshch
 //*
-//*     Permission is hereby granted, free of charge, to any person 
-//*     obtaining  a copy of this software and associated documentation 
-//*     files (the "Software"), to deal in the Software without restriction, 
-//*     including without limitation the rights to use, copy, modify, merge, 
-//*     publish, distribute, sublicense, and/or sell copies of the Software, 
-//*     and to permit persons to whom the Software is furnished to do so, 
+//*     Permission is hereby granted, free of charge, to any person
+//*     obtaining  a copy of this software and associated documentation
+//*     files (the "Software"), to deal in the Software without restriction,
+//*     including without limitation the rights to use, copy, modify, merge,
+//*     publish, distribute, sublicense, and/or sell copies of the Software,
+//*     and to permit persons to whom the Software is furnished to do so,
 //*     subject to the following conditions:
 //*
-//*     The above copyright notice and this permission notice shall be included 
+//*     The above copyright notice and this permission notice shall be included
 //*     in all copies or substantial portions of the Software.
 //*
-//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
-//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
-//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
-//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
-//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
-//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
+//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
 //*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //*
 //*     =================================================================
@@ -43,6 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2007
 
 
 //---------------------------------------------------------------------------
@@ -174,14 +174,16 @@ _C_LIB_DECL
 #pragma language=extended
 #pragma location="ICODE"
 
-#define RTOS_TICK_RATE  1000        // Hz
-#define OSC             11059200UL
-#define CCLK            (OSC * 5)
-#define PCLK            (CCLK)
+#define	OSC             11059200UL
+#define	CCLK            (OSC * 4)
+#define	PCLK            (CCLK)
 
-#define TEST_TIMER_RATE 3500        // Hz
+#define	RTOS_TICK_RATE	1000		// Hz
+#define	TEST_TIMER_RATE	3500		// Hz
 
+#if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
 extern "C" void ContextSwitcher_ISR();
+#endif
 int __low_level_init(void)
 {
 // ***************************************************************************
@@ -238,15 +240,18 @@ int __low_level_init(void)
 // ** VIC
 //***************************************************************************
 
+    // Set periodical timer interrupt with highest priority
     VICVectAddr0 = (dword)Timer_ISR;
-    VICVectCntl0 = (1<<5) | VIC_TIMER1;     // Enable vector interrupt for TIMER0
+    VICVectCntl0 = (1<<5) | VIC_TIMER1;
 
-    VICVectAddr15 = (dword)OS::SystemTimer_ISR;
-    VICVectCntl15 = (1<<5) | SYSTEM_TIMER_INT;     // Enable vector interrupt for TIMER0
+    // Set system timer interrupt vector with little bit higher priority than context switcher
+    VICVectAddr14 = (dword)OS::SystemTimer_ISR;
+    VICVectCntl14 = (1<<5) | SYSTEM_TIMER_INT;
 
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
-    VICVectAddr14 = (dword)ContextSwitcher_ISR;
-    VICVectCntl14 = (1<<5) | CONTEXT_SWITCH_INT;
+    // Set context switcher interrupt handler with lowest possible priority
+    VICVectAddr15 = (dword)ContextSwitcher_ISR;
+    VICVectCntl15 = (1<<5) | CONTEXT_SWITCH_INT;
 
     VICIntEnable =  (1UL<<SYSTEM_TIMER_INT) | (1UL<<CONTEXT_SWITCH_INT) | (1UL<<VIC_TIMER1);
 #else

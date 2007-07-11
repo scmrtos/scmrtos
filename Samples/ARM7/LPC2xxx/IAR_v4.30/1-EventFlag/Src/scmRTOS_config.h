@@ -15,7 +15,7 @@
 //*     $Revision$
 //*     $Date$
 //*
-//*     Copyright (c) 2003-2006, Harry E. Zhurov
+//*     Copyright (c) 2003-2007, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person 
 //*     obtaining  a copy of this software and associated documentation 
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     ARM port by Sergey A. Borshch, Copyright (c) 2006
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2007
 
 #ifndef  scmRTOS_CONFIG_H
 #define  scmRTOS_CONFIG_H
@@ -68,28 +68,14 @@ typedef word TTimeout;
 //    globally enabled within System Timer ISR.
 //
 //
-#define  scmRTOS_SYSTIMER_NEST_INTS_ENABLE  1
-
-//-----------------------------------------------------------------------------
-//
-//    ISR Wrapper type used in System Timer ISR
-//    There are two types: TISRW and TISRW_SS.
-//
-//    TISRW : Plain ISR Wrapper, does not switch SP to separate ISR stack.
-//            Suitable for processors that have hardware-switched ISR stack,
-//            or in such ISRs where stack consumption is acceptable
-//
-//    TISRW_SS : ISR Wrapper with separate ISR stack software switching
-//
-
-#define scmRTOS_ISRW_TYPE TISRW_SS
+#define  scmRTOS_SYSTIMER_NEST_INTS_ENABLE      1
 
 //-----------------------------------------------------------------------------
 //
 //    scmRTOS System Timer Tick Counter Enable
 //
 //
-#define  scmRTOS_SYSTEM_TICKS_ENABLE        1
+#define  scmRTOS_SYSTEM_TICKS_ENABLE            1
 
 
 //-----------------------------------------------------------------------------
@@ -97,21 +83,21 @@ typedef word TTimeout;
 //    scmRTOS System Timer Hook
 //
 //
-#define  scmRTOS_SYSTIMER_HOOK_ENABLE       1
+#define  scmRTOS_SYSTIMER_HOOK_ENABLE           1
 
 //-----------------------------------------------------------------------------
 //
 //    scmRTOS Idle Process Hook
 //
 //
-#define  scmRTOS_IDLE_HOOK_ENABLE           1
+#define  scmRTOS_IDLE_HOOK_ENABLE               1
 
 //-----------------------------------------------------------------------------
 //
 //    scmRTOS Idle Process Stack size (in bytes)
 //
 //
-#define scmRTOS_IDLE_PROCESS_STACK_SIZE       0
+#define scmRTOS_IDLE_PROCESS_STACK_SIZE         0
 
 //-----------------------------------------------------------------------------
 //
@@ -123,7 +109,7 @@ typedef word TTimeout;
 //    interrupt. See documentation fo details.
 //
 //
-#define  scmRTOS_CONTEXT_SWITCH_SCHEME       0
+#define  scmRTOS_CONTEXT_SWITCH_SCHEME          1
 //-----------------------------------------------------------------------------
 //
 //    scmRTOS Priority Order
@@ -137,7 +123,7 @@ typedef word TTimeout;
 //    Alternative (corresponding to descending order) value of macro is 1.
 //
 //
-#define  scmRTOS_PRIORITY_ORDER 0
+#define  scmRTOS_PRIORITY_ORDER                 0
 
 //-----------------------------------------------------------------------------
 
