@@ -58,9 +58,6 @@
     }                                                       \
     while (0) // set flag and enable interrupt
 #endif
-// ARM has hardware-switched intrrupt stack, so software-switched
-// irq wrapper not exist and can't be choosen at project level
-#define scmRTOS_ISRW_TYPE   TISRW
 
 #define IRQ_DONE() do { AT91C_BASE_AIC->AIC_EOICR = 0; } while(0)       // Reset AIC logic
 

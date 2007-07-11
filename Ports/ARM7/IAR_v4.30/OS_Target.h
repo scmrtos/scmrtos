@@ -15,25 +15,25 @@
 //*     $Revision$
 //*     $Date$
 //*
-//*     Copyright (c) 2003-2006, Harry E. Zhurov
+//*     Copyright (c) 2003-2007, Harry E. Zhurov
 //*
-//*     Permission is hereby granted, free of charge, to any person 
-//*     obtaining  a copy of this software and associated documentation 
-//*     files (the "Software"), to deal in the Software without restriction, 
-//*     including without limitation the rights to use, copy, modify, merge, 
-//*     publish, distribute, sublicense, and/or sell copies of the Software, 
-//*     and to permit persons to whom the Software is furnished to do so, 
+//*     Permission is hereby granted, free of charge, to any person
+//*     obtaining  a copy of this software and associated documentation
+//*     files (the "Software"), to deal in the Software without restriction,
+//*     including without limitation the rights to use, copy, modify, merge,
+//*     publish, distribute, sublicense, and/or sell copies of the Software,
+//*     and to permit persons to whom the Software is furnished to do so,
 //*     subject to the following conditions:
 //*
-//*     The above copyright notice and this permission notice shall be included 
+//*     The above copyright notice and this permission notice shall be included
 //*     in all copies or substantial portions of the Software.
 //*
-//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
-//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
-//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
-//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
-//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
-//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
+//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
 //*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //*
 //*     =================================================================
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     ARM port by Sergey A. Borshch, Copyright (c) 2006
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2007
 
 #ifndef scmRTOS_ARM_H
 #define scmRTOS_ARM_H
@@ -100,7 +100,10 @@ typedef dword TStatusReg;
 
 //--------------------------------------------------
 //   ARM use hardware stack switching, disable software emulation
-#define SEPARATE_RETURN_STACK 0
+#define SEPARATE_RETURN_STACK   0
+// software interrupt stack switching disabled, so
+// system timer irq wrapper can't be choosen at project level
+#define scmRTOS_ISRW_TYPE       TISRW
 
 #include "scmRTOS_TARGET_CFG.h"
 #include <OS_Target_core.h>
@@ -236,12 +239,10 @@ namespace OS
     private:
     };
 
-    class TISRW_SS : public TISRW                                   // Stack switching implemented in hardware.
-    {
-    public:
-        inline  TISRW_SS();
-        inline  ~TISRW_SS();
-    };
+    // no software interrupt stack switching provided,
+    // TISRW_SS declared to be the same as TISRW for porting compability
+    #define TISRW_SS    TISRW
+
 }   //  namespace OS
 
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
@@ -276,8 +277,6 @@ __arm inline OS::TISRW::~TISRW()
     Kernel.SchedISR();
 }
 #endif
-__arm inline OS::TISRW_SS::TISRW_SS() {}
-__arm inline OS::TISRW_SS::~TISRW_SS() {}
 
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
 #pragma swi_number = 0x00

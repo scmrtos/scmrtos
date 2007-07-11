@@ -15,7 +15,7 @@
 //*     $Revision$
 //*     $Date$
 //*
-//*     Copyright (c) 2003-2006, Harry E. Zhurov
+//*     Copyright (c) 2003-2007, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person 
 //*     obtaining  a copy of this software and associated documentation 
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     ARM port by Sergey A. Borshch, Copyright (c) 2006
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2007
 
 #ifndef TARGET_LPC2XXX_H__
 #define TARGET_LPC2XXX_H__
@@ -55,7 +55,6 @@
     do                                              \
     {                                               \
         VICSoftInt = (1<<CONTEXT_SWITCH_INT);       \
-        VICIntEnable = (1<<CONTEXT_SWITCH_INT);     \
     }                                               \
     while (0) // set flag and enable interrupt
 #endif
