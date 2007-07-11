@@ -1654,23 +1654,26 @@
       <data/>
     </settings>
   </configuration>
+  <group>
+    <name>scmRTOS</name>
+    <file>
+      <name>$PROJ_DIR$\..\scmRTOS\Common\OS_Kernel.cpp</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\scmRTOS\Common\OS_Services.cpp</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\scmRTOS\ARM7\OS_Target_asm.s79</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\scmRTOS\ARM7\OS_Target_cpp.cpp</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\scmRTOS\Common\usrlib.cpp</name>
+    </file>
+  </group>
   <file>
     <name>$PROJ_DIR$\Src\main.cpp</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\..\scmRTOS\Common\OS_Kernel.cpp</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\..\scmRTOS\Common\OS_Services.cpp</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\..\scmRTOS\ARM7\OS_Target_asm.s79</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\..\scmRTOS\ARM7\OS_Target_cpp.cpp</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\..\scmRTOS\Common\usrlib.cpp</name>
   </file>
 </project>
 

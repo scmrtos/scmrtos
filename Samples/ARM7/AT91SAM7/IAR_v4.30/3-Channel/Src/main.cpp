@@ -172,21 +172,22 @@ _C_LIB_DECL
 #pragma language=extended
 #pragma location="ICODE"
 
-#define RTOS_TICK_RATE  1000        // Hz
 #define SLCK            32768L      // something about :-(
 #define MAINCLK         18432000LL
-#define PLLMUL          25
+#define PLLMUL          26
 #define PLLDIV          5
-#define PLLCLK          ((MAINCLK * (PLLMUL + 1)) / PLLDIV)
+#define PLLCLK          ((MAINCLK * PLLMUL) / PLLDIV)
 #define MCK             (PLLCLK / 2)
 #define PCK             SLCK
+
+#define RTOS_TICK_RATE  1000        // Hz
 #define TEST_TIMER_RATE 3500        // Hz
 
 #ifndef AT91C_AIC_SRCTYPE_INT_POSITIVE_EDGE     // ioAT91SAM7Sxx.h v4.30A patch 
 #define AT91C_AIC_SRCTYPE_INT_POSITIVE_EDGE AT91C_AIC_SRCTYPE_INT_EDGE_TRIGGERED
 #endif
 
-#if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
+#if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
 extern "C" void ContextSwitcher_ISR();
 #endif
 int __low_level_init(void)
@@ -198,8 +199,10 @@ int __low_level_init(void)
     AT91C_BASE_PIOA->PIO_PPUDR = ~0;                // pull-up disable
     AT91C_BASE_PIOA->PIO_OER = (1 << 0);            // pin 0 = output
 
+    #if MCK > 30000000LL
     // Flash memory: 1 wait state at MCLK frequences above 30 MHz
     AT91C_BASE_MC->MC_FMR = AT91C_MC_FWS_1FWS;
+    #endif
 
     // Main oscillator
     AT91C_BASE_CKGR->CKGR_MOR = (1 * AT91C_CKGR_MOSCEN) | (0 * AT91C_CKGR_OSCBYPASS) | (0xFF * AT91C_CKGR_OSCOUNT);
@@ -207,7 +210,7 @@ int __low_level_init(void)
 
     // PLL
     AT91C_BASE_CKGR->CKGR_PLLR = (PLLDIV * AT91C_CKGR_DIV / 0xFF) | (0x1FLL * AT91C_CKGR_PLLCOUNT / 0x3F) | (0 * AT91C_CKGR_OUT / 0x03) \
-                                | (PLLMUL * 1LL* AT91C_CKGR_MUL / 0x7FF) | (0 * AT91C_CKGR_USBDIV / 0x03);
+                                | ((PLLMUL - 1LL) * AT91C_CKGR_MUL / 0x7FF) | (0 * AT91C_CKGR_USBDIV / 0x03);
     while( ! AT91C_BASE_PMC->PMC_SR & (1<<AT91C_PMC_LOCK));
 
     // Main clock
@@ -234,18 +237,17 @@ int __low_level_init(void)
     AT91C_BASE_TCB->TCB_TC0.TC_IER = AT91C_TC_CPCS;                     // enable ints on RC compare
     AT91C_BASE_TCB->TCB_TC0.TC_CCR = AT91C_TC_SWTRG | AT91C_TC_CLKEN;   // reset and enable TC0 clock
 
-    // Set RTOS timer handler
-    AT91C_BASE_AIC->AIC_SMR[AT91C_ID_SYS] = AT91C_AIC_SRCTYPE_INT_POSITIVE_EDGE | AT91C_AIC_PRIOR_LOWEST;
+    // Set RTOS timer handler with priority a little bit higher than context switcher but lower than other interrupts
+    AT91C_BASE_AIC->AIC_SMR[AT91C_ID_SYS] = AT91C_AIC_SRCTYPE_INT_POSITIVE_EDGE | AT91C_AIC_PRIOR_LOWEST + 1;
     AT91C_BASE_AIC->AIC_SVR[AT91C_ID_SYS] = (dword)OS::SystemTimer_ISR;
 
-    // Set timer handler
-    AT91C_BASE_AIC->AIC_SMR[AT91C_ID_TC0] = AT91C_AIC_SRCTYPE_INT_POSITIVE_EDGE | AT91C_AIC_PRIOR_LOWEST;
+    // Set timer handler with higher priority than system timer
+    AT91C_BASE_AIC->AIC_SMR[AT91C_ID_TC0] = AT91C_AIC_SRCTYPE_INT_POSITIVE_EDGE | AT91C_AIC_PRIOR_LOWEST + 2;
     AT91C_BASE_AIC->AIC_SVR[AT91C_ID_TC0] = (dword)Timer_ISR;
 
-
-
     #if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
-        AT91C_BASE_AIC->AIC_SMR[CONTEXT_SWITCH_INT] = AT91C_AIC_SRCTYPE_INT_POSITIVE_EDGE | AT91C_AIC_PRIOR_HIGHEST;
+        // set context switcher handler with the lowest possible priority
+        AT91C_BASE_AIC->AIC_SMR[CONTEXT_SWITCH_INT] = AT91C_AIC_SRCTYPE_INT_POSITIVE_EDGE | AT91C_AIC_PRIOR_LOWEST;
         AT91C_BASE_AIC->AIC_SVR[CONTEXT_SWITCH_INT] = (dword)ContextSwitcher_ISR;
 
         AT91C_BASE_AIC->AIC_IECR = (1<<AT91C_ID_SYS)|(1<<CONTEXT_SWITCH_INT)|(1<<AT91C_ID_TC0);
