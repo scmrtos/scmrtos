@@ -206,12 +206,12 @@ int __low_level_init(void)
 
     // Main oscillator
     AT91C_BASE_CKGR->CKGR_MOR = (1 * AT91C_CKGR_MOSCEN) | (0 * AT91C_CKGR_OSCBYPASS) | (0xFF * AT91C_CKGR_OSCOUNT);
-    while( ! AT91C_BASE_PMC->PMC_SR & (1<<AT91C_PMC_MOSCS));
+    while( ! (AT91C_BASE_PMC->PMC_SR & AT91C_PMC_MOSCS) );
 
     // PLL
     AT91C_BASE_CKGR->CKGR_PLLR = (PLLDIV * AT91C_CKGR_DIV / 0xFF) | (0x1FLL * AT91C_CKGR_PLLCOUNT / 0x3F) | (0 * AT91C_CKGR_OUT / 0x03) \
                                 | ((PLLMUL - 1LL) * AT91C_CKGR_MUL / 0x7FF) | (0 * AT91C_CKGR_USBDIV / 0x03);
-    while( ! AT91C_BASE_PMC->PMC_SR & (1<<AT91C_PMC_LOCK));
+    while( ! (AT91C_BASE_PMC->PMC_SR & AT91C_PMC_LOCK) );
 
     // Main clock
     AT91C_BASE_PMC->PMC_MCKR = AT91C_PMC_CSS_PLL_CLK | AT91C_PMC_PRES_CLK_2;
