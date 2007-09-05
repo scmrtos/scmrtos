@@ -3,9 +3,9 @@
 //*     FULLNAME:  Single-Chip Microcontroller Real-Time Operating System
 //*
 //*     NICKNAME:  scmRTOS
-//*               
+//*
 //*     PURPOSE:  OS Services Header. Declarations And Definitions
-//*               
+//*
 //*     Version:  3.00-beta
 //*
 //*     $Revision$
@@ -13,23 +13,23 @@
 //*
 //*     Copyright (c) 2003-2006, Harry E. Zhurov
 //*
-//*     Permission is hereby granted, free of charge, to any person 
-//*     obtaining  a copy of this software and associated documentation 
-//*     files (the "Software"), to deal in the Software without restriction, 
-//*     including without limitation the rights to use, copy, modify, merge, 
-//*     publish, distribute, sublicense, and/or sell copies of the Software, 
-//*     and to permit persons to whom the Software is furnished to do so, 
+//*     Permission is hereby granted, free of charge, to any person
+//*     obtaining  a copy of this software and associated documentation
+//*     files (the "Software"), to deal in the Software without restriction,
+//*     including without limitation the rights to use, copy, modify, merge,
+//*     publish, distribute, sublicense, and/or sell copies of the Software,
+//*     and to permit persons to whom the Software is furnished to do so,
 //*     subject to the following conditions:
 //*
-//*     The above copyright notice and this permission notice shall be included 
+//*     The above copyright notice and this permission notice shall be included
 //*     in all copies or substantial portions of the Software.
 //*
-//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
-//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
-//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
-//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
-//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
-//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
+//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
 //*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //*
 //*     =================================================================
@@ -39,8 +39,8 @@
 //*
 //******************************************************************************
 
-#ifndef SERVICES_H
-#define SERVICES_H
+#ifndef OS_SERVICES_H
+#define OS_SERVICES_H
 
 namespace OS
 {
@@ -316,9 +316,9 @@ bool OS::channel<T, size, S>::pop(T& item, TTimeout timeout)
         Kernel.Scheduler();
 
         if(timeout && p->Timeout == 0)                       // waked up by timer when timeout expired
-        {                                                                     
+        {
             ClrPrioTag(ConsumersProcessMap, PrioTag); // timeout expired, remove current process from wait map
-            return false;                                                     
+            return false;
         }
 
         p->Timeout = 0;
@@ -352,9 +352,9 @@ bool OS::channel<T, size, S>::pop_back(T& item, TTimeout timeout)
         Kernel.Scheduler();
 
         if(timeout && p->Timeout == 0)                       // waked up by timer when timeout expired
-        {                                                                     
+        {
             ClrPrioTag(ConsumersProcessMap, PrioTag); // timeout expired, remove current process from wait map
-            return false;                                                     
+            return false;
         }
 
         p->Timeout = 0;
@@ -428,9 +428,9 @@ bool OS::channel<T, size, S>::read(T* const data, const S count, TTimeout timeou
         Kernel.Scheduler();
 
         if(timeout && p->Timeout == 0)                       // waked up by timer when timeout expired
-        {                                                                     
+        {
             ClrPrioTag(ConsumersProcessMap, PrioTag); // timeout expired, remove current process from wait map
-            return false;                                                     
+            return false;
         }
     }
 
@@ -460,4 +460,4 @@ void OS::TBaseMessage::sendISR()
 //------------------------------------------------------------------------------
 
 
-#endif // SERVICES_H
+#endif // OS_SERVICES_H
