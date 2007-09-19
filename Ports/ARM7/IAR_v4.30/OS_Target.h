@@ -127,11 +127,12 @@ private:
 // Atmel Application Note Rev. 1156A–08/98
 inline __arm TCritSect::TCritSect() : StatusReg( __get_CPSR() )
 {
+    TStatusReg Tmp = StatusReg;
     do
     {
-        __set_CPSR(StatusReg | (1<<7));     // disable IRQ
+        __set_CPSR(Tmp | (1<<7));   // disable IRQ
     }
-    while (!(__get_CPSR() & (1<<7)));
+    while (!((Tmp = __get_CPSR()) & (1<<7)));
 };
 
 inline __arm TCritSect::~TCritSect()
@@ -204,11 +205,12 @@ inline __arm void SetInterruptState(TStatusReg sr) { __set_CPSR(sr);}
 inline __arm void EnableInterrupts() { __set_CPSR(__get_CPSR() & ~(1<<7)); }
 inline __arm void DisableInterrupts()
 {
+    TStatusReg Tmp = __get_CPSR();
     do
     {
-        __set_CPSR(__get_CPSR() | (1<<7));
+        __set_CPSR(Tmp | (1<<7));
     }
-    while (!(__get_CPSR() & (1<<7)));
+    while (!((Tmp = __get_CPSR()) & (1<<7)));
 }
 
 namespace OS
