@@ -118,17 +118,19 @@ Reset()
     __writeMemory8(0x6C, 0xE001C018,"Memory");          // I2C CONCLR
     __readMemory8(0xE001C004,"Memory");                 // I2C STAT
     // Timers
-    __writeMemory8(0x00, 0xE0004004,"Memory");          // Timer0 TCR disable timer
+    __writeMemory8(0x03, 0xE0004004,"Memory");          // Timer0 TCR enable and reset timer
     __writeMemory8(0xFF, 0xE0004000,"Memory");          // Timer0 IR clear pending int flags
-    __writeMemory8(0x00, 0xE0008004,"Memory");          // Timer1 TCR disable timer
+    __writeMemory8(0x00, 0xE0004004,"Memory");          // Timer0 TCR disable timer
+    __writeMemory8(0x03, 0xE0008004,"Memory");          // Timer1 TCR enable and reset timer
     __writeMemory8(0xFF, 0xE0008000,"Memory");          // Timer1 IR clear pending int flags
+    __writeMemory8(0x00, 0xE0008004,"Memory");          // Timer1 TCR disable timer
     // PWM
     __writeMemory32(0x00000000, 0xE0014004,"Memory");   // PWMTCR, disable timer
     __writeMemory32(0x00000000, 0xE0014008,"Memory");   // PWMTR, clear timer
     __writeMemory32(0x0000070F, 0xE0014000,"Memory");   // PWMIR clear pending int flags
-
+*/
     // Reset VIC
-    __writeMemory32(0xFFFFFFFF,0xFFFFF01C,"Memory");    // VICSoftIntClr, clear sof int flags
+    __writeMemory32(0xFFFFFFFF,0xFFFFF01C,"Memory");    // VICSoftIntClr, clear soft int's flags
     __writeMemory32(0x00000000,0xFFFFF00C,"Memory");    // VICIntSelect, all ints are IRQ
     __writeMemory32(0x00000000,0xFFFFF020,"Memory");    // VICProtection, disable protection
 
@@ -141,7 +143,7 @@ Reset()
     }
 
     __writeMemory32(0x00000000,0xFFFFF030,"Memory");    // VICVecAddr, reset controller
-*/
+
 
     if( __driverType("sim"))
     {
