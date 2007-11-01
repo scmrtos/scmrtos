@@ -4,7 +4,7 @@
 //*
 //*     NICKNAME:  scmRTOS
 //*
-//*     PROCESSOR: ARM7
+//*     PROCESSOR: LPC2xxx (NXP)
 //*
 //*     TOOLKIT:   EWARM (IAR Systems)
 //*
@@ -15,7 +15,7 @@
 //*     $Revision$
 //*     $Date$
 //*
-//*     Copyright (c) 2003-2006, Harry E. Zhurov
+//*     Copyright (c) 2003-2007, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person 
 //*     obtaining  a copy of this software and associated documentation 
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     ARM port by Sergey A. Borshch, Copyright (c) 2006
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2007
 
 #ifndef  scmRTOS_TARGET_CFG_H
 #define  scmRTOS_TARGET_CFG_H
