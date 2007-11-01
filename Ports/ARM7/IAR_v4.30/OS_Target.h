@@ -94,7 +94,7 @@ typedef dword TStatusReg;
 //   Uncomment macro value below for SystemTimer() run in critical section
 //
 //   This is useful (and necessary) when target processor has hardware
-//   enabled nested interrups. MSP430 does not have such interrupts.
+//   enabled nested interrups. ARM7 does not have such interrupts.
 //
 #define SYS_TIMER_CRIT_SECT() // TCritSect cs
 

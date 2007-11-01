@@ -61,13 +61,18 @@
 
 #define IRQ_DONE() do { AT91C_BASE_AIC->AIC_EOICR = 0; } while(0)       // Reset AIC logic
 
-#define SYSTEM_TIMER_HANDLER()                                  \
+// SYSTEM_TIMER_HANDLER(): while() used instead of do-while()
+// to allow other interrupt sources on AT91C_ID_SYS.
+// Handle other system interrupts in OS::SystemTimerUserHook()
+#define	SYSTEM_TIMER_HANDLER()                                  \
     do                                                          \
     {                                                           \
         volatile dword Tmp = AT91C_BASE_PITC->PITC_PIVR >> 20;  \
-        do {                                                    \
+        while (Tmp)                                             \
+        {                                                       \
+            --Tmp;                                              \
             SystemTimer_Handler();                              \
-        } while (--Tmp);                                        \
+        }                                                       \
     }                                                           \
     while(0)
 
