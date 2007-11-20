@@ -107,7 +107,7 @@ void OS::TMutex::Lock()
     TCritSect cs;
 
     TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
-    if(ValueTag)
+    while(ValueTag)
     {
         SetPrioTag(ProcessMap, PrioTag);             // mutex already locked by another process, put current process to wait map
         ClrPrioTag(Kernel.ReadyProcessMap, PrioTag); // remove current process from ready map
