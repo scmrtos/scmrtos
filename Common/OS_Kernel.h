@@ -130,10 +130,9 @@ namespace OS
     #endif 
 
     #if scmRTOS_SYSTEM_TICKS_ENABLE == 1
-        dword SysTickCount;
+        volatile dword SysTickCount;
     #endif
-
-
+        
     //-----------------------------------------------------------
     //
     //      Functions
