@@ -17,23 +17,23 @@
 //*
 //*     Copyright (c) 2003-2007, Harry E. Zhurov
 //*
-//*     Permission is hereby granted, free of charge, to any person 
-//*     obtaining  a copy of this software and associated documentation 
-//*     files (the "Software"), to deal in the Software without restriction, 
-//*     including without limitation the rights to use, copy, modify, merge, 
-//*     publish, distribute, sublicense, and/or sell copies of the Software, 
-//*     and to permit persons to whom the Software is furnished to do so, 
+//*     Permission is hereby granted, free of charge, to any person
+//*     obtaining  a copy of this software and associated documentation
+//*     files (the "Software"), to deal in the Software without restriction,
+//*     including without limitation the rights to use, copy, modify, merge,
+//*     publish, distribute, sublicense, and/or sell copies of the Software,
+//*     and to permit persons to whom the Software is furnished to do so,
 //*     subject to the following conditions:
 //*
-//*     The above copyright notice and this permission notice shall be included 
+//*     The above copyright notice and this permission notice shall be included
 //*     in all copies or substantial portions of the Software.
 //*
-//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
-//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
-//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
-//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
-//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
-//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
+//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
 //*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //*
 //*     =================================================================
@@ -47,12 +47,12 @@
 #ifndef TARGET_CORE_H__
 #define TARGET_CORE_H__
 
-#if defined(AT91SAM7) 
-    | defined(AT91SAM7S16) | defined(AT91SAM7S161) 
-    | defined(AT91SAM7S32) | defined(AT91SAM7S321) 
-    | defined(AT91SAM7S64) | defined(AT91SAM7S128) | defined(AT91SAM7S256) | defined(AT91SAM7S512)
-    | defined(AT91SAM7SE32) | defined(AT91SAM7SE128) | defined(AT91SAM7SE256) | defined(AT91SAM7SE512)
-    | defined(AT91SAM7X128) | defined(AT91SAM7X256) | defined(AT91SAM7X512)
+#if defined(AT91SAM7) \
+    | defined(AT91SAM7S16) | defined(AT91SAM7S161) \
+    | defined(AT91SAM7S32) | defined(AT91SAM7S321) \
+    | defined(AT91SAM7S64) | defined(AT91SAM7S128) | defined(AT91SAM7S256) | defined(AT91SAM7S512) \
+    | defined(AT91SAM7SE32) | defined(AT91SAM7SE128) | defined(AT91SAM7SE256) | defined(AT91SAM7SE512) \
+    | defined(AT91SAM7X128) | defined(AT91SAM7X256) | defined(AT91SAM7X512) \
     | defined(AT91SAM7XC128) | defined(AT91SAM7XC256) | defined(AT91SAM7XC512)
     #include    <Target_AT91SAM7.h>
 #elif defined(LPC2119) | defined(LPC2129) | defined(LPC2212) | defined(LPC2214)
