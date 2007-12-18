@@ -11,7 +11,7 @@
 //*     $Revision$
 //*     $Date$
 //*
-//*     Copyright (c) 2003-2006, Harry E. Zhurov
+//*     Copyright (c) 2003-2007, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -39,8 +39,8 @@
 //*
 //******************************************************************************
 
-#ifndef OS_SERVICES_H
-#define OS_SERVICES_H
+#ifndef SERVICES_H
+#define SERVICES_H
 
 namespace OS
 {
@@ -181,7 +181,6 @@ namespace OS
 
     private:
         void CheckWaiters(TProcessMap& pm);
-        bool PopItem(T& item, T (usr::ring_buffer<T, size, S>::*pf)());
     };
 
     //--------------------------------------------------------------------------
@@ -255,20 +254,18 @@ void OS::channel<T, size, S>::push(const T& item)
 {
     TCritSect cs;
 
-    if(pool.get_free_size())
-    {
-        pool.push_back(item);
-        CheckWaiters(ConsumersProcessMap);
-    }
-    else
+    while(!pool.get_free_size())
     {
         TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
         SetPrioTag(ProducersProcessMap, PrioTag);     // channel is full, put current process to wait map
         ClrPrioTag(Kernel.ReadyProcessMap, PrioTag);  // remove current process from ready map
-        Kernel.Scheduler();
-        pool.push_back(item);
-        CheckWaiters(ConsumersProcessMap);
+        Kernel.Scheduler();                           // wait until waked-up by pop(), pop_back() or read()
+        // pool.get_free_size() == 0 at this point means that
+        // process with higher priority has alredy had to push(), push_back() or write() other item
     }
+
+    pool.push_back(item);
+    CheckWaiters(ConsumersProcessMap);
 }
 //------------------------------------------------------------------------------
 template<typename T, word size, class S>
@@ -276,26 +273,23 @@ void OS::channel<T, size, S>::push_front(const T& item)
 {
     TCritSect cs;
 
-    if(pool.get_free_size())
-    {
-        pool.push_front(item);
-        CheckWaiters(ConsumersProcessMap);
-    }
-    else
+    while(!pool.get_free_size())
     {
         TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
         SetPrioTag(ProducersProcessMap, PrioTag);     // channel is full, put current process to wait map
         ClrPrioTag(Kernel.ReadyProcessMap, PrioTag);  // remove current process from ready map
-        Kernel.Scheduler();
-        pool.push_front(item);
-        CheckWaiters(ConsumersProcessMap);
+        Kernel.Scheduler();                           // wait until waked-up by pop(), pop_back() or read()
+        // pool.get_free_size() == 0 at this point means that
+        // process with higher priority has alredy had to push(), push_back() or write() new item
     }
+
+    pool.push_front(item);
+    CheckWaiters(ConsumersProcessMap);
 }
 //------------------------------------------------------------------------------
 template<typename T, word size, class S>
 bool OS::channel<T, size, S>::pop(T& item, TTimeout timeout)
 {
-    //return PopItem(item, &ring_buffer<T, size, S>::pop);
     TCritSect cs;
 
     if(pool.get_count())
@@ -306,25 +300,32 @@ bool OS::channel<T, size, S>::pop(T& item, TTimeout timeout)
     }
     else
     {
-        TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
-        SetPrioTag(ConsumersProcessMap, PrioTag);     // channel is empty, put current process to wait map
-        ClrPrioTag(Kernel.ReadyProcessMap, PrioTag);  // remove current process from ready map
-
         TBaseProcess* p = Kernel.ProcessTable[Kernel.CurProcPriority];
         p->Timeout = timeout;
 
-        Kernel.Scheduler();
-
-        if(timeout && p->Timeout == 0)                       // waked up by timer when timeout expired
+        TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
+        SetPrioTag(ConsumersProcessMap, PrioTag);         // channel is empty, put current process to wait map
+        for(;;)
         {
-            ClrPrioTag(ConsumersProcessMap, PrioTag); // timeout expired, remove current process from wait map
-            return false;
-        }
+            ClrPrioTag(Kernel.ReadyProcessMap, PrioTag);  // remove current process from ready map
+            Kernel.Scheduler();                           // wait until waked-up by push(), push_back(), write() or timeout
 
-        p->Timeout = 0;
-        item = pool.pop();
-        CheckWaiters(ProducersProcessMap);
-        return true;
+            if(pool.get_count())                          // if has data in pool
+            {
+                p->Timeout = 0;
+                item = pool.pop();
+                CheckWaiters(ProducersProcessMap);
+                return true;
+            }
+
+            if(timeout && p->Timeout == 0)                // waked up by timer when timeout expired
+            {
+                ClrPrioTag(ConsumersProcessMap, PrioTag); // timeout expired, remove current process from wait map
+                return false;
+            }
+            // otherwice process with higher priority has alredy had to pop(), pop_back() or read() new item,
+            // wait for next item
+        }
     }
 }
 //------------------------------------------------------------------------------
@@ -342,25 +343,32 @@ bool OS::channel<T, size, S>::pop_back(T& item, TTimeout timeout)
     }
     else
     {
-        TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
-        SetPrioTag(ConsumersProcessMap, PrioTag);     // channel is empty, put current process to wait map
-        ClrPrioTag(Kernel.ReadyProcessMap, PrioTag);  // remove current process from ready map
-
         TBaseProcess* p = Kernel.ProcessTable[Kernel.CurProcPriority];
         p->Timeout = timeout;
 
-        Kernel.Scheduler();
-
-        if(timeout && p->Timeout == 0)                       // waked up by timer when timeout expired
+        TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
+        SetPrioTag(ConsumersProcessMap, PrioTag);         // channel is empty, put current process to wait map
+        for(;;)
         {
-            ClrPrioTag(ConsumersProcessMap, PrioTag); // timeout expired, remove current process from wait map
-            return false;
-        }
+            ClrPrioTag(Kernel.ReadyProcessMap, PrioTag);  // remove current process from ready map
+            Kernel.Scheduler();                           // wait until waked-up by push(), push_back(), write() or timeout
 
-        p->Timeout = 0;
-        item = pool.pop_back();
-        CheckWaiters(ProducersProcessMap);
-        return true;
+            if(pool.get_count())                          // if has data in pool
+            {
+                p->Timeout = 0;
+                item = pool.pop_back();
+                CheckWaiters(ProducersProcessMap);
+                return true;
+            }
+
+            if(timeout && p->Timeout == 0)                // waked up by timer when timeout expired
+            {
+                ClrPrioTag(ConsumersProcessMap, PrioTag); // timeout expired, remove current process from wait map
+                return false;
+            }
+            // otherwice process with higher priority has alredy had to pop(), pop_back() or read() new item,
+            // wait for next item
+        }
     }
 }
 //------------------------------------------------------------------------------
@@ -370,29 +378,6 @@ void OS::channel<T, size, S>::flush()
     TCritSect cs;
     pool.flush();
     CheckWaiters(ProducersProcessMap);
-}
-//------------------------------------------------------------------------------
-template<typename T, word size, class S>
-bool OS::channel<T, size, S>::PopItem(T& item, T (usr::ring_buffer<T, size, S>::*pf)())
-{
-    TCritSect cs;
-
-    if(pool.get_count())
-    {
-        item = (pool.*pf)();
-        CheckWaiters(ProducersProcessMap);
-        return true;
-    }
-    else
-    {
-        TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
-        SetPrioTag(ConsumersProcessMap, PrioTag);     // channel is empty, put current process to wait map
-        ClrPrioTag(Kernel.ReadyProcessMap, PrioTag);  // remove current process from ready map
-        Kernel.Scheduler();
-        item = (pool.*pf)();
-        CheckWaiters(ProducersProcessMap);
-        return false;
-    }
 }
 //------------------------------------------------------------------------------
 template<typename T, word size, class S>
@@ -406,6 +391,9 @@ void OS::channel<T, size, S>::write(const T* data, const S count)
         SetPrioTag(ProducersProcessMap, PrioTag);     // channel has not enough space, put current process to wait map
         ClrPrioTag(Kernel.ReadyProcessMap, PrioTag);  // remove current process from ready map
         Kernel.Scheduler();
+        // pool.get_free_size() < count at this point means that
+        // not enough data removed by pop(), pop_back() or read()
+        // or process with higher priority has alredy had to push(), push_back(), or write() data
     }
 
     pool.write(data, count);
@@ -420,18 +408,21 @@ bool OS::channel<T, size, S>::read(T* const data, const S count, TTimeout timeou
     TBaseProcess* p = Kernel.ProcessTable[Kernel.CurProcPriority];
     p->Timeout = timeout;
 
+    TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
     while(pool.get_count() < count)
     {
-        TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
         SetPrioTag(ConsumersProcessMap, PrioTag);     // channel doesn't contain enough data, put current process to wait map
         ClrPrioTag(Kernel.ReadyProcessMap, PrioTag);  // remove current process from ready map
-        Kernel.Scheduler();
+        Kernel.Scheduler();                           // wait until waked-up by push(), push_back() or write()
 
-        if(timeout && p->Timeout == 0)                       // waked up by timer when timeout expired
+        if(timeout && p->Timeout == 0)                // waked up by timer when timeout expired
         {
             ClrPrioTag(ConsumersProcessMap, PrioTag); // timeout expired, remove current process from wait map
             return false;
         }
+        // pool.get_count() < count at this point means that
+        // not enough data added by push(), push_back() or write()
+        // or process with higher priority has alredy had to pop(), pop_back() or read() data
     }
 
     p->Timeout = 0;
@@ -460,4 +451,4 @@ void OS::TBaseMessage::sendISR()
 //------------------------------------------------------------------------------
 
 
-#endif // OS_SERVICES_H
+#endif // SERVICES_H

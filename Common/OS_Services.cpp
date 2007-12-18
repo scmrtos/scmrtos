@@ -5,31 +5,31 @@
 //*     NICKNAME:  scmRTOS
 //*
 //*     PURPOSE:  OS Services Source
-//*               
+//*
 //*     Version:  3.00-beta
 //*
 //*     $Revision$
 //*     $Date$
 //*
-//*     Copyright (c) 2003-2006, Harry E. Zhurov
+//*     Copyright (c) 2003-2007, Harry E. Zhurov
 //*
-//*     Permission is hereby granted, free of charge, to any person 
-//*     obtaining  a copy of this software and associated documentation 
-//*     files (the "Software"), to deal in the Software without restriction, 
-//*     including without limitation the rights to use, copy, modify, merge, 
-//*     publish, distribute, sublicense, and/or sell copies of the Software, 
-//*     and to permit persons to whom the Software is furnished to do so, 
+//*     Permission is hereby granted, free of charge, to any person
+//*     obtaining  a copy of this software and associated documentation
+//*     files (the "Software"), to deal in the Software without restriction,
+//*     including without limitation the rights to use, copy, modify, merge,
+//*     publish, distribute, sublicense, and/or sell copies of the Software,
+//*     and to permit persons to whom the Software is furnished to do so,
 //*     subject to the following conditions:
 //*
-//*     The above copyright notice and this permission notice shall be included 
+//*     The above copyright notice and this permission notice shall be included
 //*     in all copies or substantial portions of the Software.
 //*
-//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
-//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
-//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
-//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
-//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
-//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
+//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
 //*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //*
 //*     =================================================================
@@ -41,8 +41,8 @@
 
 #include "scmRTOS.h"
 
-using namespace OS;       
-          
+using namespace OS;
+
 //------------------------------------------------------------------------------
 //
 //
@@ -90,7 +90,7 @@ void OS::TEventFlag::Signal()
     TCritSect cs;
 
     Value = efOn;
-    Kernel.ReadyProcessMap |= ProcessMap; // place all waiting processes to ready map
+    Kernel.ReadyProcessMap |= ProcessMap;            // place all waiting processes to ready map
 
     Kernel.Scheduler();
 }
@@ -113,8 +113,10 @@ void OS::TMutex::Lock()
         ClrPrioTag(Kernel.ReadyProcessMap, PrioTag); // remove current process from ready map
 
         Kernel.Scheduler();
+        // ValueTag at this point means that process with higher priority
+        // has alredy had to Lock() this mutex 
     }
-    ValueTag = PrioTag;                                     // mutex has been successfully locked
+    ValueTag = PrioTag;                              // mutex has been successfully locked
 }
 //------------------------------------------------------------------------------
 void OS::TMutex::Unlock()
@@ -122,7 +124,7 @@ void OS::TMutex::Unlock()
     TCritSect cs;
 
     TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
-    if(ValueTag != PrioTag) return;                         // the only process that has locked mutex can unlock the mutex
+    if(ValueTag != PrioTag) return;                  // the only process that has locked mutex can unlock the mutex
     ValueTag = 0;
     if(ProcessMap)
     {
@@ -158,20 +160,18 @@ void OS::TChannel::Push(byte x)
 {
     TCritSect cs;
 
-    if(Cbuf.get_free_size())
-    {
-        Cbuf.put(x);
-        CheckWaiters(ConsumersProcessMap);
-    }
-    else
+    while (!Cbuf.get_free_size())
     {
         TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
         SetPrioTag  (ProducersProcessMap, PrioTag);  // channel is full, put current process to wait map
         ClrPrioTag(Kernel.ReadyProcessMap, PrioTag); // remove current process from ready map
-        Kernel.Scheduler();
-        Cbuf.put(x);
-        CheckWaiters(ConsumersProcessMap);
+        Kernel.Scheduler();                          // wait until waked-up by Pop() or Read()
+        // Cbuf.get_free_size() == 0 at this point means that
+        // process with higher priority has alredy had to Push() or Write() new data
     }
+
+    Cbuf.put(x);
+    CheckWaiters(ConsumersProcessMap);
 }
 //------------------------------------------------------------------------------
 byte OS::TChannel::Pop()
@@ -179,22 +179,18 @@ byte OS::TChannel::Pop()
     TCritSect cs;
     byte x;
 
-    if(Cbuf.get_count())
-    {
-        x = Cbuf.get();
-        CheckWaiters(ProducersProcessMap);
-        return x;
-    }
-    else
+    while(!Cbuf.get_count())
     {
         TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
         SetPrioTag(ConsumersProcessMap, PrioTag);    // channel is empty, put current process to wait map
         ClrPrioTag(Kernel.ReadyProcessMap, PrioTag); // remove current process from ready map
-        Kernel.Scheduler();
-        x = Cbuf.get();
-        CheckWaiters(ProducersProcessMap);
-        return x;
+        Kernel.Scheduler();                          // wait until waked-up by Push() or Write()
+        // Cbuf.get_count() == 0 at this point means that
+        // process with higher priority has alredy had to Pop() or Read() new data
     }
+    x = Cbuf.get();
+    CheckWaiters(ProducersProcessMap);
+    return x;
 }
 //------------------------------------------------------------------------------
 void OS::TChannel::Write(const byte* data, const byte count)
@@ -206,7 +202,10 @@ void OS::TChannel::Write(const byte* data, const byte count)
         TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
         SetPrioTag(ProducersProcessMap, PrioTag);    // channel has not enough space, put current process to wait map
         ClrPrioTag(Kernel.ReadyProcessMap, PrioTag); // remove current process from ready map
-        Kernel.Scheduler();
+        Kernel.Scheduler();                          // wait until waked-up by Read() or Pop()
+        // Cbuf.get_free_size() < count at this point means that
+        // not enough data removed by Read() or Pop()
+        // or process with higher priority has alredy had to Write() or Push() new data
     }
 
     Cbuf.write(data, count);
@@ -222,7 +221,10 @@ void OS::TChannel::Read(byte* const data, const byte count)
         TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
         SetPrioTag(ConsumersProcessMap, PrioTag);    // channel doesn't contain enough data, put current process to wait map
         ClrPrioTag(Kernel.ReadyProcessMap, PrioTag); // remove current process from ready map
-        Kernel.Scheduler();
+        Kernel.Scheduler();                          // wait until waked-up by Write() or Push()
+        // Cbuf.get_count() < count at this point means that
+        // not enough data placed by Write() or Push()
+        // or process with higher priority has alredy had to Read() or Pop() new data
     }
 
     Cbuf.read(data, count);
@@ -242,26 +244,35 @@ bool OS::TBaseMessage::wait(TTimeout timeout)
 {
     TCritSect cs;
 
-    if(NonEmpty)
+    if(NonEmpty)                                                  // message alredy send
     {
         NonEmpty = false;
         return true;
     }
     else
     {
-        TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
-        SetPrioTag(ProcessMap, PrioTag);                      // put current process to wait map
-        ClrPrioTag(Kernel.ReadyProcessMap, PrioTag);          // remove current process from ready map
-
         TBaseProcess* p = Kernel.ProcessTable[Kernel.CurProcPriority];
         p->Timeout = timeout;
-        Kernel.Scheduler();
-        ClrPrioTag(ProcessMap, PrioTag);                      // remove current process from wait list
-        NonEmpty = false;
+        for(;;)
+        {
+            TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
+            SetPrioTag(ProcessMap, PrioTag);                      // put current process to wait map
+            ClrPrioTag(Kernel.ReadyProcessMap, PrioTag);          // remove current process from ready map
 
-        if(timeout && p->Timeout == 0) return false;          // waked up by timer when timeout expired
-        p->Timeout = 0;
-        return true;
+            Kernel.Scheduler();                                   // wait until waked-up
+            ClrPrioTag(ProcessMap, PrioTag);                      // remove current process from wait list
+
+            if( NonEmpty == true )                                // if waked-up by send()
+            {
+                p->Timeout = 0;
+                return true;
+            }
+
+            if(timeout && p->Timeout == 0)                        // waked up by timer when timeout expired
+                return false;
+            // otherwice this message was removed by higher priority process,
+            // wait for next message
+        }
     }
 }
 //------------------------------------------------------------------------------
