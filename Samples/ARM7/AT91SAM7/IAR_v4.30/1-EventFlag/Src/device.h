@@ -50,14 +50,42 @@
 #include <commdefs.h>
 
 //------------------------------------------------------------------------------
-#if defined(AT91SAM7S32)
+#if defined(AT91SAM7S16)
+    #include    <ioAT91SAM7S16.h>
+#elif defined(AT91SAM7S161)
+    #include    <ioAT91SAM7S161.h>
+#elif defined(AT91SAM7S32)
     #include    <ioAT91SAM7S32.h>
+#elif defined(AT91SAM7S321)
+    #include    <ioAT91SAM7S321.h>
 #elif defined(AT91SAM7S64)
     #include    <ioAT91SAM7S64.h>
 #elif defined(AT91SAM7S128)
     #include    <ioAT91SAM7S128.h>
 #elif defined(AT91SAM7S256)
     #include    <ioAT91SAM7S256.h>
+#elif defined(AT91SAM7S512)
+    #include    <ioAT91SAM7S512.h>
+#elif defined(AT91SAM7SE32)
+    #include    <ioAT91SAM7SE32.h>
+#elif defined(AT91SAM7SE128)
+    #include    <ioAT91SAM7SE128.h>
+#elif defined(AT91SAM7SE256)
+    #include    <ioAT91SAM7SE256.h>
+#elif defined(AT91SAM7SE512)
+    #include    <ioAT91SAM7SE512.h>
+#elif defined(AT91SAM7X128)
+    #include    <ioAT91SAM7X128.h>
+#elif defined(AT91SAM7X256)
+    #include    <ioAT91SAM7X256.h>
+#elif defined(AT91SAM7X512)
+    #include    <ioAT91SAM7X512.h>
+#elif defined(AT91SAM7XC128)
+    #include    <ioAT91SAM7XC128.h>
+#elif defined(AT91SAM7XC256)
+    #include    <ioAT91SAM7XC256.h>
+#elif defined(AT91SAM7XC512)
+    #include    <ioAT91SAM7XC512.h>
 #endif
 
 #endif  /* DEVICE_H */

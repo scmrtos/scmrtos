@@ -97,7 +97,7 @@ typedef word TTimeout;
 //    scmRTOS Idle Process Stack size (in bytes)
 //
 //
-#define scmRTOS_IDLE_PROCESS_STACK_SIZE         0
+#define scmRTOS_IDLE_PROCESS_STACK_SIZE         17 * sizeof(TStackItem)
 
 //-----------------------------------------------------------------------------
 //
@@ -110,20 +110,17 @@ typedef word TTimeout;
 //
 //
 #define  scmRTOS_CONTEXT_SWITCH_SCHEME          1
+
 //-----------------------------------------------------------------------------
 //
 //    scmRTOS Priority Order
 //
-//    This macro defines the order of the process's priorities. Default,
-//    the ascending order is used. Alternatively, the descending priority
-//    order can be used. On some platforms the descending order is preferred
-//    because of performance.
-//
-//    Default (corresponding to ascending order) value of macro is 0.
-//    Alternative (corresponding to descending order) value of macro is 1.
+//    This macro defines the order of the process's priorities. 
+//    The ascending order is used, because of a little bit better performance.
+//    Descending order is not implemented in ARM7 port
 //
 //
-#define  scmRTOS_PRIORITY_ORDER                 0
+#define  scmRTOS_PRIORITY_ORDER             0
 
 //-----------------------------------------------------------------------------
 

@@ -164,7 +164,6 @@ namespace OS
     {
         extern TPriority const PriorityTable[64];
 
-        #if scmRTOS_PRIORITY_ORDER == 0
         // http://www.hackersdelight.org/HDcode/ntz.cc
         dword x = pm;
         x = x & -x;                             // Isolate rightmost 1-bit.
@@ -174,21 +173,6 @@ namespace OS
         x = (x << 6) | x;                       // x = x*65.
         x = (x << 16) - x;                      // x = x*65535.
 
-        #else   // scmRTOS_PRIORITY_ORDER == 1
-        // http://www.hackersdelight.org/HDcode/nlz.cc
-        dword x = pm;
-        x = x | (x >> 1);                       // Propagate leftmost
-        x = x | (x >> 2);                       // 1-bit to the right.
-        x = x | (x >> 4);
-        x = x | (x >> 8);
-        x = x | (x >> 16);
-
-                                                // x = x * 0x6EB14F9
-        x = (x << 3) - x;                       // Multiply by 7.
-        x = (x << 8) - x;                       // Multiply by 255.
-        x = (x << 8) - x;                       // Again.
-        x = (x << 8) - x;                       // Again.
-        #endif
         return PriorityTable[x >> 26];
     }
 #endif  // scmRTOS_PROCESS_COUNT < 6

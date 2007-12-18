@@ -71,24 +71,8 @@ TBaseProcess::TBaseProcess(TStackItem* Stack, TPriority pr, void (*exec)())
     //  Prepare Process Stack Frame
     //
     *(--StackPointer) = (dword)exec;        // return from interrupt address
-    // debug: initial register values.
 
-    *(--StackPointer) = 0xcccccccc;         // r12
-    *(--StackPointer) = 0xbbbbbbbb;         // r11
-    *(--StackPointer) = 0xaaaaaaaa;         // r10
-    *(--StackPointer) = 0x99999999;         // r9
-    *(--StackPointer) = 0x88888888;         // r8
-    *(--StackPointer) = 0x77777777;         // r7
-    *(--StackPointer) = 0x66666666;         // r6
-    *(--StackPointer) = 0x55555555;         // r5
-    *(--StackPointer) = 0x44444444;         // r4
-    *(--StackPointer) = 0x33333333;         // r3
-    *(--StackPointer) = 0x22222222;         // r2
-    *(--StackPointer) = 0x11111111;         // r1
-    *(--StackPointer) = 0x00000000;         // r0
-    *(--StackPointer) = 0xdddddddd;         // LR
-
-//  StackPointer -= 14;                     // emulate "push R0-R12, LR"
+    StackPointer -= 14;                     // emulate "push R0-R12, LR"
 #if __CPU_MODE__ == 1
     *(--StackPointer) =   0x003F;           // SR value: system mode, FIQ & IRQ enabled, THUMB
 #else
@@ -100,7 +84,7 @@ TBaseProcess::TBaseProcess(TStackItem* Stack, TPriority pr, void (*exec)())
 //   Idle Process
 //
 //
-typedef process<prIDLE, (16 + 1) * sizeof(TStackItem) + scmRTOS_IDLE_PROCESS_STACK_SIZE> TIdleProcess;
+typedef process<prIDLE, scmRTOS_IDLE_PROCESS_STACK_SIZE> TIdleProcess;
 
 TIdleProcess IdleProcess;
 
@@ -137,7 +121,6 @@ OS_INTERRUPT void OS::SystemTimer_ISR()
 }
 //--------------------------------------------------------------------------
 namespace OS {
-#if scmRTOS_PRIORITY_ORDER == 0
     #if scmRTOS_PROCESS_COUNT == 1
         extern TPriority const PriorityTable[] =
         {
@@ -204,73 +187,5 @@ namespace OS {
             (TPriority)28,      (TPriority)17,      (TPriority)16,      (TPriority)0xFF
         };
     #endif  // scmRTOS_PROCESS_COUNT
-#else   // scmRTOS_PRIORITY_ORDER == 1
-    #if scmRTOS_PROCESS_COUNT == 1
-        extern TPriority const PriorityTable[] =
-        {
-            (TPriority)0xFF,
-            prIDLE,
-            pr0, pr0
-        };
-    #elif scmRTOS_PROCESS_COUNT == 2
-        extern TPriority const PriorityTable[] =
-        {
-            (TPriority)0xFF,
-            prIDLE,
-            pr1, pr1,
-            pr0, pr0, pr0, pr0
-       };
-    #elif scmRTOS_PROCESS_COUNT == 3
-        extern TPriority const PriorityTable[] =
-        {
-            (TPriority)0xFF,
-            prIDLE,
-            pr2, pr2,
-            pr1, pr1, pr1, pr1,
-            pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0
-        };
-    #elif scmRTOS_PROCESS_COUNT == 4
-        extern TPriority const PriorityTable[] =
-        {
-            (TPriority)0xFF,
-            prIDLE,
-            pr3, pr3,
-            pr2, pr2, pr2, pr2,
-            pr1, pr1, pr1, pr1, pr1, pr1, pr1, pr1,
-            pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0
-        };
-    #elif scmRTOS_PROCESS_COUNT == 5
-        extern TPriority const PriorityTable[] =
-        {
-            (TPriority)0xFF,
-            prIDLE,
-            pr4, pr4,
-            pr3, pr3, pr3, pr3,
-            pr2, pr2, pr2, pr2, pr2, pr2, pr2, pr2,
-            pr1, pr1, pr1, pr1, pr1, pr1, pr1, pr1, pr1, pr1, pr1, pr1, pr1, pr1, pr1, pr1,
-            pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0, pr0
-        };
-    #else // scmRTOS_PROCESS_COUNT > 5
-        extern TPriority const PriorityTable[64] =
-        {
-            (TPriority)0xFF,    (TPriority)0,       (TPriority)0xFF,    (TPriority)15,
-            (TPriority)0xFF,    (TPriority)1,       (TPriority)28,      (TPriority)0xFF,
-            (TPriority)16,      (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)0xFF,
-            (TPriority)2,       (TPriority)21,      (TPriority)29,      (TPriority)0xFF,
-            (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)19,      (TPriority)17,
-            (TPriority)10,      (TPriority)0xFF,    (TPriority)12,      (TPriority)0xFF,
-            (TPriority)0xFF,    (TPriority)3,       (TPriority)0xFF,    (TPriority)6,
-            (TPriority)0xFF,    (TPriority)22,      (TPriority)30,      (TPriority)0xFF,
-            (TPriority)14,      (TPriority)0xFF,    (TPriority)27,      (TPriority)0xFF,
-            (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)20,      (TPriority)0xFF,
-            (TPriority)18,      (TPriority)9,       (TPriority)11,      (TPriority)0xFF,
-            (TPriority)5,       (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)13,
-            (TPriority)26,      (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)8,
-            (TPriority)0xFF,    (TPriority)4,       (TPriority)0xFF,    (TPriority)25,
-            (TPriority)0xFF,    (TPriority)7,       (TPriority)24,      (TPriority)0xFF,
-            (TPriority)23,      (TPriority)0xFF,    (TPriority)31,      (TPriority)0xFF
-        };
-    #endif  // scmRTOS_PROCESS_COUNT
-#endif // scmRTOS_PRIORITY_ORDER
 }   //namespace
 //--------------------------------------------------------------------------

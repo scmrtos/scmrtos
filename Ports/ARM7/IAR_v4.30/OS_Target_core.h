@@ -15,7 +15,7 @@
 //*     $Revision$
 //*     $Date$
 //*
-//*     Copyright (c) 2003-2006, Harry E. Zhurov
+//*     Copyright (c) 2003-2007, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person 
 //*     obtaining  a copy of this software and associated documentation 
@@ -42,12 +42,18 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     ARM port by Sergey A. Borshch, Copyright (c) 2006
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2007
 
 #ifndef TARGET_CORE_H__
 #define TARGET_CORE_H__
 
-#if defined(AT91SAM7S32) | defined(AT91SAM7S64) | defined(AT91SAM7S128) | defined(AT91SAM7S256)
+#if defined(AT91SAM7) 
+    | defined(AT91SAM7S16) | defined(AT91SAM7S161) 
+    | defined(AT91SAM7S32) | defined(AT91SAM7S321) 
+    | defined(AT91SAM7S64) | defined(AT91SAM7S128) | defined(AT91SAM7S256) | defined(AT91SAM7S512)
+    | defined(AT91SAM7SE32) | defined(AT91SAM7SE128) | defined(AT91SAM7SE256) | defined(AT91SAM7SE512)
+    | defined(AT91SAM7X128) | defined(AT91SAM7X256) | defined(AT91SAM7X512)
+    | defined(AT91SAM7XC128) | defined(AT91SAM7XC256) | defined(AT91SAM7XC512)
     #include    <Target_AT91SAM7.h>
 #elif defined(LPC2119) | defined(LPC2129) | defined(LPC2212) | defined(LPC2214)
     #include    <Target_LPC2xxx.h>
