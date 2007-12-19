@@ -4,11 +4,11 @@
 //*
 //*     NICKNAME:  scmRTOS
 //*
-//*     PROCESSOR: ARM7
+//*     PROCESSOR: STR71x (ST)
 //*
 //*     TOOLKIT:   EWARM (IAR Systems)
 //*
-//*     PURPOSE:   Target Dependent Stuff Header. Target chip depended file selector
+//*     PURPOSE:   Project Level Target Extensions Config
 //*
 //*     Version:   3.00-beta
 //*
@@ -44,24 +44,54 @@
 //******************************************************************************
 //*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2007
 
-#ifndef TARGET_CORE_H__
-#define TARGET_CORE_H__
+#ifndef  scmRTOS_TARGET_CFG_H
+#define  scmRTOS_TARGET_CFG_H
 
-#if defined(AT91SAM7) \
-    | defined(AT91SAM7S16) | defined(AT91SAM7S161) \
-    | defined(AT91SAM7S32) | defined(AT91SAM7S321) \
-    | defined(AT91SAM7S64) | defined(AT91SAM7S128) | defined(AT91SAM7S256) | defined(AT91SAM7S512) \
-    | defined(AT91SAM7SE32) | defined(AT91SAM7SE128) | defined(AT91SAM7SE256) | defined(AT91SAM7SE512) \
-    | defined(AT91SAM7X128) | defined(AT91SAM7X256) | defined(AT91SAM7X512) \
-    | defined(AT91SAM7XC128) | defined(AT91SAM7XC256) | defined(AT91SAM7XC512)
-    #include    <Target_AT91SAM7.h>
-#elif defined(LPC2119) | defined(LPC2129) | defined(LPC2212) | defined(LPC2214)
-    #include    <Target_LPC2xxx.h>
-#elif defined(ADuC7019) | defined(ADuC7020) | defined(ADuC7021) | defined(ADuC7022) \
-    | defined(ADuC7024) | defined(ADuC7025) | defined(ADuC7026) | defined(ADuC7027)
-    #include    <Target_ADuC70xx.h>
-#elif defined(STR710) | defined(STR711) | defined(STR712) | defined(STR715)
-    #include    <Target_STR71x.h>
+#include "device.h"
+// TIM0 OCMPA int used for context switching.
+// This int flag set because timer used as system timer and runs in PWM mode
+// This flag never to be cleared, enable bit in EIC->IER cleared instead
+// to make this channel always ready to assert int
+// I don't use software interrupts in XTI because
+// 1) context switching int handler must be so fast as possible
+// 2) it's difficult to share one handler between OS core and user application
+//    if required.
+#define CONTEXT_SWITCH_INT      STR71X_IRQ_T0_OCMPA
+
+#ifdef __IAR_SYSTEMS_ICC__
+//------------------------------------------------------------------------------
+//
+//       System Timer stuff
+//
+//
+
+// TIM0 in PWM mode used as system timer
+#define SYSTEM_TIMER_INT        STR71X_IRQ_T0_OCMPB
+
+namespace OS
+{
+    OS_INTERRUPT void SystemTimer_ISR();
+}
+
+//  Timer 0 used as System timer
+#define LOCK_SYSTEM_TIMER()     do { TIM0->CR2 &= ~(1 << STR71X_TIM_OCBIE); } while(0)
+#define UNLOCK_SYSTEM_TIMER()   do { TIM0->CR2 |=  (1 << STR71X_TIM_OCBIE); } while(0)
+
+//------------------------------------------------------------------------------
+//
+//       Context Switch ISR stuff
+//
+//
+namespace OS
+{
+#if scmRTOS_IDLE_HOOK_ENABLE == 1
+    void IdleProcessUserHook();
 #endif
+}
+//-----------------------------------------------------------------------------
+#endif // __IAR_SYSTEMS_ICC__
 
-#endif  // TARGET_CORE_H__
+
+#endif // scmRTOS_TARGET_CFG_H
+//-----------------------------------------------------------------------------
+

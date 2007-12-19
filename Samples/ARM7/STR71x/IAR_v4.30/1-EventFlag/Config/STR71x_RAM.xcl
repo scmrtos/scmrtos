@@ -1,0 +1,78 @@
+//******************************************************************************
+//*
+//*     FULLNAME:  Single-Chip Microcontroller Real-Time Operating System
+//*
+//*     NICKNAME:  scmRTOS
+//*
+//*     PROCESSOR: STR71x (ST)
+//*
+//*     TOOLKIT:   EWARM (IAR Systems)
+//*
+//*     PURPOSE:   Linker control file
+//*
+//*     Version:   3.00-beta
+//*
+//*     $Revision: 27 $
+//*     $Date: 2007-02-08 10:08:16 +0200 (Чт, 08 фев 2007) $
+//*
+//*     Copyright (c) 2003-2007, Harry E. Zhurov
+//*
+//*     Permission is hereby granted, free of charge, to any person 
+//*     obtaining  a copy of this software and associated documentation 
+//*     files (the "Software"), to deal in the Software without restriction, 
+//*     including without limitation the rights to use, copy, modify, merge, 
+//*     publish, distribute, sublicense, and/or sell copies of the Software, 
+//*     and to permit persons to whom the Software is furnished to do so, 
+//*     subject to the following conditions:
+//*
+//*     The above copyright notice and this permission notice shall be included 
+//*     in all copies or substantial portions of the Software.
+//*
+//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
+//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
+//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
+//*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//*
+//*     =================================================================
+//*     See http://scmrtos.sourceforge.net for documentation, latest
+//*     information, license and contact details.
+//*     =================================================================
+//*
+//******************************************************************************
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2007
+
+-carm
+
+// place code to RAM
+-DROMSTART=20000040
+-DROMEND=2000FFFF   // any STR71x has 64K RAM
+
+-DRAMSTART=20000040
+-DRAMEND=2000FFFF   // any STR71x has 64K RAM
+
+// Intvec always linked to 0x00-0x3F
+-Z(CODE)INTVEC=00000000-0000003F
+
+// ROM
+-Z(CODE)ICODE=ROMSTART-ROMEND                   // place ICODE as close as possible to INTVEC
+-Z(CODE)INT_HANDLERS=ROMSTART-(ROMSTART+FFFF)   // place INT_HANDLERS in first 64K
+-Z(CODE)DIFUNCT,SWITAB,CODE=ROMSTART-ROMEND
+-Z(CONST)INITTAB,DATA_ID,DATA_C=ROMSTART-ROMEND
+-Z(CONST)CODE_ID=ROMSTART-ROMEND    // __ramfunc code init data
+
+// RAM
+-Z(DATA)DATA_I,DATA_Z,DATA_N=RAMSTART-RAMEND
+-Z(DATA)CODE_I=RAMSTART-RAMEND      // __ramfunc code in ram
+
+-QCODE_I=CODE_ID
+
+// irq stack not used, don't reserve space
+-Z(DATA)IRQ_STACK=RAMSTART-RAMEND
+
+-DSTACK_SIZE=100
+// CSTACK used instead of IRQ_STACK
+// place interupt stack at the bottom of RAM
+-Z(DATA)CSTACK+STACK_SIZE#RAMSTART-RAMEND

@@ -1,19 +1,19 @@
-//******************************************************************************
+//********************************************************************************
 //*
 //*     FULLNAME:  Single-Chip Microcontroller Real-Time Operating System
 //*
 //*     NICKNAME:  scmRTOS
 //*
-//*     PROCESSOR: ARM7
+//*     PROCESSOR: STR71x (ST)
 //*
 //*     TOOLKIT:   EWARM (IAR Systems)
 //*
-//*     PURPOSE:   Target Dependent Stuff Header. Target chip depended file selector
+//*     PURPOSE:   C-Spy debugger setup macros
 //*
 //*     Version:   3.00-beta
 //*
-//*     $Revision$
-//*     $Date$
+//*     $Revision: 6 $
+//*     $Date: 2006-12-21 16:29:53 +0200 (Чт, 21 дек 2006) $
 //*
 //*     Copyright (c) 2003-2007, Harry E. Zhurov
 //*
@@ -44,24 +44,38 @@
 //******************************************************************************
 //*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2007
 
-#ifndef TARGET_CORE_H__
-#define TARGET_CORE_H__
+execUserReset()
+{
+    Reset();
+    Remap_Flash();
+}
 
-#if defined(AT91SAM7) \
-    | defined(AT91SAM7S16) | defined(AT91SAM7S161) \
-    | defined(AT91SAM7S32) | defined(AT91SAM7S321) \
-    | defined(AT91SAM7S64) | defined(AT91SAM7S128) | defined(AT91SAM7S256) | defined(AT91SAM7S512) \
-    | defined(AT91SAM7SE32) | defined(AT91SAM7SE128) | defined(AT91SAM7SE256) | defined(AT91SAM7SE512) \
-    | defined(AT91SAM7X128) | defined(AT91SAM7X256) | defined(AT91SAM7X512) \
-    | defined(AT91SAM7XC128) | defined(AT91SAM7XC256) | defined(AT91SAM7XC512)
-    #include    <Target_AT91SAM7.h>
-#elif defined(LPC2119) | defined(LPC2129) | defined(LPC2212) | defined(LPC2214)
-    #include    <Target_LPC2xxx.h>
-#elif defined(ADuC7019) | defined(ADuC7020) | defined(ADuC7021) | defined(ADuC7022) \
-    | defined(ADuC7024) | defined(ADuC7025) | defined(ADuC7026) | defined(ADuC7027)
-    #include    <Target_ADuC70xx.h>
-#elif defined(STR710) | defined(STR711) | defined(STR712) | defined(STR715)
-    #include    <Target_STR71x.h>
-#endif
+execUserPreload()
+{
+    Reset();
+    Remap_Flash();
+}
 
-#endif  // TARGET_CORE_H__
+Remap_Flash()
+{
+    // remap throw JTAG
+    __writeMemory16(0x0010,0xA0000050,"Memory");        // PCU_BOOTCR, enable debug in low power, remap to flash
+    __message " remap done ";
+}
+
+Reset()
+{
+    __var Tmp;
+    __writeMemory32(0x00000000,0xFFFFF820,"Memory");    // EIC_IER, disable all ints
+    Tmp = __readMemory32(0xFFFFF808,"Memory");          // EIC_CPIR, get current pending int
+    while (Tmp)                                         // while some int pending
+    {
+        Tmp = __readMemory32(0xFFFFF804,"Memory");      // EIC_CPIC, get current pending int channel
+        __writeMemory32((1<<Tmp),0xFFFFF840,"Memory");  // EIC_IPR, clear pending bit
+        
+        Tmp = __readMemory32(0xFFFFF808,"Memory");      // EIC_CPIR, get current pending int
+    }
+
+    __writeMemory32(0xD3, 0x98, "Register");            // CPSR = SVC mode, ARM, IRQ, FIQ disabled
+    __writeMemory32(0x00000000, 0xB4 ,"Register");      // SET PC
+}

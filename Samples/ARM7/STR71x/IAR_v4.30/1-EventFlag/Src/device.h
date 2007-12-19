@@ -4,11 +4,11 @@
 //*
 //*     NICKNAME:  scmRTOS
 //*
-//*     PROCESSOR: ARM7
+//*     PROCESSOR: STR71x (ST)
 //*
 //*     TOOLKIT:   EWARM (IAR Systems)
 //*
-//*     PURPOSE:   Target Dependent Stuff Header. Target chip depended file selector
+//*     PURPOSE:   Device Definitions
 //*
 //*     Version:   3.00-beta
 //*
@@ -44,24 +44,14 @@
 //******************************************************************************
 //*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2007
 
-#ifndef TARGET_CORE_H__
-#define TARGET_CORE_H__
+#ifndef DEVICE_H
+#define DEVICE_H
 
-#if defined(AT91SAM7) \
-    | defined(AT91SAM7S16) | defined(AT91SAM7S161) \
-    | defined(AT91SAM7S32) | defined(AT91SAM7S321) \
-    | defined(AT91SAM7S64) | defined(AT91SAM7S128) | defined(AT91SAM7S256) | defined(AT91SAM7S512) \
-    | defined(AT91SAM7SE32) | defined(AT91SAM7SE128) | defined(AT91SAM7SE256) | defined(AT91SAM7SE512) \
-    | defined(AT91SAM7X128) | defined(AT91SAM7X256) | defined(AT91SAM7X512) \
-    | defined(AT91SAM7XC128) | defined(AT91SAM7XC256) | defined(AT91SAM7XC512)
-    #include    <Target_AT91SAM7.h>
-#elif defined(LPC2119) | defined(LPC2129) | defined(LPC2212) | defined(LPC2214)
-    #include    <Target_LPC2xxx.h>
-#elif defined(ADuC7019) | defined(ADuC7020) | defined(ADuC7021) | defined(ADuC7022) \
-    | defined(ADuC7024) | defined(ADuC7025) | defined(ADuC7026) | defined(ADuC7027)
-    #include    <Target_ADuC70xx.h>
-#elif defined(STR710) | defined(STR711) | defined(STR712) | defined(STR715)
-    #include    <Target_STR71x.h>
+#include <commdefs.h>
+
+//------------------------------------------------------------------------------
+#if defined(STR710) | defined(STR711) | defined (STR712) | defined(STR715)
+    #include    "ioSTR71x.h"    // sorry, ST Standard Software Library not compatible with C++
 #endif
 
-#endif  // TARGET_CORE_H__
+#endif  /* DEVICE_H */
