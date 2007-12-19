@@ -5,7 +5,7 @@ rem **     scmRTOS ARM7 example checkout & switch file         **
 rem **                                                         **
 rem **   usage: get_samples.bat chip [dir]                     **
 rem **   where:                                                **
-rem **      chip - AT91SAM7 | LPC2xxx | ADuC70xx               **
+rem **      chip - AT91SAM7 | LPC2xxx | ADuC70xx | STR71x      **
 rem **      dir - relative path to destination dir             **
 rem **                                                         **
 rem *************************************************************

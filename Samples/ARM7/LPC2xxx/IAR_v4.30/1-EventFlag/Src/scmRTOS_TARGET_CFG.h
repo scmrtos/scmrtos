@@ -64,13 +64,13 @@ namespace OS
     OS_INTERRUPT void SystemTimer_ISR();
 }
 
-//  Timer 0 used as System timer
+//  TIMER0 used as System timer
 #define LOCK_SYSTEM_TIMER()     do { T0MCR_bit.MR0INT = 0; } while(0)
 #define UNLOCK_SYSTEM_TIMER()   do { T0MCR_bit.MR0INT = 1; } while(0)
 
 //------------------------------------------------------------------------------
 //
-//       Context Switch ISR stuff
+//       Idle process stuff
 //
 //
 namespace OS

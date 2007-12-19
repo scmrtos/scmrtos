@@ -15,8 +15,7 @@
 //*     $Revision$
 //*     $Date$
 //*
-//*     Copyright (c) 2003-2006, Harry E. Zhurov
-//*     Copyright (c) 2005-2006, Sergey A. Borshch
+//*     Copyright (c) 2003-2007, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person 
 //*     obtaining  a copy of this software and associated documentation 
@@ -43,6 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2007
 
 #ifndef  scmRTOS_TARGET_CFG_H
 #define  scmRTOS_TARGET_CFG_H
@@ -70,7 +70,7 @@ namespace OS
 
 //------------------------------------------------------------------------------
 //
-//       Context Switch ISR stuff
+//       Idle process stuff
 //
 //
 namespace OS
@@ -78,8 +78,6 @@ namespace OS
 #if scmRTOS_IDLE_HOOK_ENABLE == 1
     void IdleProcessUserHook();
 #endif
-
-#define ENABLE_NESTED_INTERRUPTS()
 }
 //-----------------------------------------------------------------------------
 #endif // __IAR_SYSTEMS_ASM__
