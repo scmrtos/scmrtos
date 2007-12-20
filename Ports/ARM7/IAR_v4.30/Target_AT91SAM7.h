@@ -49,6 +49,12 @@
 
 #ifdef __IAR_SYSTEMS_ICC__
 
+#if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
+    #define OS_INTERRUPT __arm
+#else
+    #define OS_INTERRUPT __arm __irq
+#endif
+
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
 // #define used instead of inline function to ensure inlining to both ARM and THUMB functions.
 #define RaiseContextSwitch()                                \

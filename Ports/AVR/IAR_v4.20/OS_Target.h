@@ -47,7 +47,6 @@
 #define scmRTOS_AVR_H
 
 #include <commdefs.h>
-#include <scmRTOS_defs.h>
 #include <inavr.h>
 
 //------------------------------------------------------------------------------
@@ -98,7 +97,14 @@ typedef byte TStatusReg;
 #define SEPARATE_RETURN_STACK  1
 
 
+//-----------------------------------------------------------------------------
+//
+//     Include project-level configurations
+//    !!! The order of includes is important !!!
+//
+#include "scmRTOS_config.h"
 #include "scmRTOS_TARGET_CFG.h"
+#include <scmRTOS_defs.h>
 
 //-----------------------------------------------------------------------------
 //

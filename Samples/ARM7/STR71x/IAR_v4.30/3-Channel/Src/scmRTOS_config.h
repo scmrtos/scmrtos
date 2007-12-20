@@ -67,8 +67,10 @@ typedef word TTimeout;
 //    Nested Interrupts Enable macro. Value 1 means that interrupts are
 //    globally enabled within System Timer ISR.
 //
+//    Nested interrupts not supported in ARM port yet, this option has no effect
 //
-#define  scmRTOS_SYSTIMER_NEST_INTS_ENABLE  1
+#define  scmRTOS_SYSTIMER_NEST_INTS_ENABLE  0
+
 
 //-----------------------------------------------------------------------------
 //
@@ -109,17 +111,7 @@ typedef word TTimeout;
 //    interrupt. See documentation fo details.
 //
 //
-#define  scmRTOS_CONTEXT_SWITCH_SCHEME       1
-
-//-----------------------------------------------------------------------------
-//
-//    scmRTOS Priority Order
-//
-//    This macro defines the order of the process's priorities. 
-//    The ascending order is used, because of a little bit better performance.
-//    Descending order is not implemented in ARM7 port
-//
-#define  scmRTOS_PRIORITY_ORDER             0
+#define  scmRTOS_CONTEXT_SWITCH_SCHEME      1
 
 //-----------------------------------------------------------------------------
 

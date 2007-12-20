@@ -48,7 +48,6 @@
 #define scmRTOS_ARM_H
 
 #include <commdefs.h>
-#include <scmRTOS_defs.h>
 #include <inarm.h>
 
 #ifndef __IAR_SYSTEMS_ICC__
@@ -80,15 +79,6 @@ typedef dword TStatusReg;
 //
 //
 
-#define OS_PROCESS
-#if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
-    #define OS_INTERRUPT __arm
-#else
-    #define OS_INTERRUPT __arm __irq
-#endif
-
-#define DUMMY_INSTR() __no_operation()
-
 //--------------------------------------------------
 //
 //   Uncomment macro value below for SystemTimer() run in critical section
@@ -99,16 +89,38 @@ typedef dword TStatusReg;
 #define SYS_TIMER_CRIT_SECT() // TCritSect cs
 
 //--------------------------------------------------
-//   ARM use hardware stack switching, disable software emulation
+// Separate return stack not required
 #define SEPARATE_RETURN_STACK   0
-// software interrupt stack switching disabled, so
-// system timer irq wrapper can't be choosen at project level
+
+//--------------------------------------------------
+// software interrupt stack switching not supported in ARM port
+// because ARM architecture implements hardware stack switching.
+// So, system timer irq wrapper can't be choosen at project level
 #define scmRTOS_ISRW_TYPE       TISRW
 
+//-----------------------------------------------------------------------------
+//
+//    scmRTOS Priority Order
+//
+//    This macro defines the order of the process's priorities.
+//    The ascending order is used, because of a little bit better performance.
+//    Descending order is not implemented in ARM7 port
+//
+#define  scmRTOS_PRIORITY_ORDER 0
+
+//-----------------------------------------------------------------------------
+//
+//     Include project-level configurations
+//    !!! The order of includes is important !!!
+//
+#include "scmRTOS_config.h"
 #include "scmRTOS_TARGET_CFG.h"
 #include <OS_Target_core.h>
+#include <scmRTOS_defs.h>
 
 
+#define OS_PROCESS                          // ordinary function
+#define DUMMY_INSTR() __no_operation()
 
 //-----------------------------------------------------------------------------
 //
@@ -139,15 +151,30 @@ inline __arm TCritSect::~TCritSect()
 {
     __set_CPSR(StatusReg);
 };
-//-----------------------------------------------------------------------------
+
+namespace OS
+{
+//------------------------------------------------------------------------------
+//
+//       Idle process stuff
+//
+//
+#if scmRTOS_IDLE_HOOK_ENABLE == 1
+    void IdleProcessUserHook();
+#endif
+
+//------------------------------------------------------------------------------
+//
+//       Declaring system timer handler
+//
+//
+    OS_INTERRUPT void SystemTimer_ISR();
 
 //-----------------------------------------------------------------------------
 //
 //     Priority stuff
 //
 //
-namespace OS
-{
 
     inline OS::TProcessMap GetPrioTag(const byte pr)
     {

@@ -48,7 +48,6 @@
 #define scmRTOS_MSP430_H
 
 #include <commdefs.h>
-#include <scmRTOS_defs.h>
 
 //------------------------------------------------------------------------------
 //
@@ -97,7 +96,14 @@ typedef word TStatusReg;
 
 #define SEPARATE_RETURN_STACK 0
 
+//-----------------------------------------------------------------------------
+//
+//     Include project-level configurations
+//    !!! The order of includes is important !!!
+//
+#include "scmRTOS_config.h"
 #include "scmRTOS_TARGET_CFG.h"
+#include <scmRTOS_defs.h>
 
 //-----------------------------------------------------------------------------
 //

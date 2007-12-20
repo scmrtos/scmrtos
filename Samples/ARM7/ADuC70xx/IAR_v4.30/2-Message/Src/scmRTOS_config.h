@@ -17,23 +17,23 @@
 //*
 //*     Copyright (c) 2003-2006, Harry E. Zhurov
 //*
-//*     Permission is hereby granted, free of charge, to any person 
-//*     obtaining  a copy of this software and associated documentation 
-//*     files (the "Software"), to deal in the Software without restriction, 
-//*     including without limitation the rights to use, copy, modify, merge, 
-//*     publish, distribute, sublicense, and/or sell copies of the Software, 
-//*     and to permit persons to whom the Software is furnished to do so, 
+//*     Permission is hereby granted, free of charge, to any person
+//*     obtaining  a copy of this software and associated documentation
+//*     files (the "Software"), to deal in the Software without restriction,
+//*     including without limitation the rights to use, copy, modify, merge,
+//*     publish, distribute, sublicense, and/or sell copies of the Software,
+//*     and to permit persons to whom the Software is furnished to do so,
 //*     subject to the following conditions:
 //*
-//*     The above copyright notice and this permission notice shall be included 
+//*     The above copyright notice and this permission notice shall be included
 //*     in all copies or substantial portions of the Software.
 //*
-//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
-//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
-//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
-//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
-//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
-//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
+//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
 //*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //*
 //*     =================================================================
@@ -67,22 +67,9 @@ typedef word TTimeout;
 //    Nested Interrupts Enable macro. Value 1 means that interrupts are
 //    globally enabled within System Timer ISR.
 //
+//    Nested interrupts not supported in ARM port yet, this option has no effect
 //
-#define  scmRTOS_SYSTIMER_NEST_INTS_ENABLE  1
-
-//-----------------------------------------------------------------------------
-//
-//    ISR Wrapper type used in System Timer ISR
-//    There are two types: TISRW and TISRW_SS.
-//
-//    TISRW : Plain ISR Wrapper, does not switch SP to separate ISR stack.
-//            Suitable for processors that have hardware-switched ISR stack,
-//            or in such ISRs where stack consumption is acceptable
-//
-//    TISRW_SS : ISR Wrapper with separate ISR stack software switching
-//
-
-#define scmRTOS_ISRW_TYPE TISRW_SS
+#define  scmRTOS_SYSTIMER_NEST_INTS_ENABLE  0
 
 //-----------------------------------------------------------------------------
 //
@@ -112,28 +99,6 @@ typedef word TTimeout;
 //
 //
 #define scmRTOS_IDLE_PROCESS_STACK_SIZE     17 * sizeof(TStackItem)
-
-//-----------------------------------------------------------------------------
-//
-//    scmRTOS Context Switch Scheme
-//
-//    The macro defines a context switch manner. Value 0 sets direct context
-//    switch in the scheduler and in the OS ISRs. This is the primary method.
-//    Value 1 sets the second way to switch context - by using of software
-//    interrupt. See documentation fo details.
-//
-//
-#define  scmRTOS_CONTEXT_SWITCH_SCHEME      0
-
-//-----------------------------------------------------------------------------
-//
-//    scmRTOS Priority Order
-//
-//    This macro defines the order of the process's priorities. 
-//    The ascending order is used, because of a little bit better performance.
-//    Descending order is not implemented in ARM7 port
-//
-#define  scmRTOS_PRIORITY_ORDER             0
 
 //-----------------------------------------------------------------------------
 

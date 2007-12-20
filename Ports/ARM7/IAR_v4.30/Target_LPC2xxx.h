@@ -17,23 +17,23 @@
 //*
 //*     Copyright (c) 2003-2007, Harry E. Zhurov
 //*
-//*     Permission is hereby granted, free of charge, to any person 
-//*     obtaining  a copy of this software and associated documentation 
-//*     files (the "Software"), to deal in the Software without restriction, 
-//*     including without limitation the rights to use, copy, modify, merge, 
-//*     publish, distribute, sublicense, and/or sell copies of the Software, 
-//*     and to permit persons to whom the Software is furnished to do so, 
+//*     Permission is hereby granted, free of charge, to any person
+//*     obtaining  a copy of this software and associated documentation
+//*     files (the "Software"), to deal in the Software without restriction,
+//*     including without limitation the rights to use, copy, modify, merge,
+//*     publish, distribute, sublicense, and/or sell copies of the Software,
+//*     and to permit persons to whom the Software is furnished to do so,
 //*     subject to the following conditions:
 //*
-//*     The above copyright notice and this permission notice shall be included 
+//*     The above copyright notice and this permission notice shall be included
 //*     in all copies or substantial portions of the Software.
 //*
-//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
-//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
-//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
-//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
-//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
-//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
+//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
 //*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //*
 //*     =================================================================
@@ -48,6 +48,12 @@
 #define TARGET_LPC2XXX_H__
 
 #ifdef __IAR_SYSTEMS_ICC__
+
+#if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
+    #define OS_INTERRUPT __arm
+#else
+    #define OS_INTERRUPT __arm __irq
+#endif
 
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
 // #define used instead of inline function to ensure inlining to both ARM and THUMB functions.
@@ -64,7 +70,7 @@
 #define SYSTEM_TIMER_HANDLER()  \
     do                          \
     {                           \
-        T0IR = T0IR;            \
+        RESET_SYSTIMER_INT();   \
         SystemTimer_Handler();  \
     }                           \
     while(0)

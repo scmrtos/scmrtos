@@ -48,7 +48,12 @@
 #define  scmRTOS_TARGET_CFG_H
 
 #include "device.h"
-// TIM0 OCMPA int used for context switching.
+//------------------------------------------------------------------------------
+//
+//       Context switching interrupt coosing
+//
+//
+// TIM0 OCMPA interrupt used for context switching.
 // This int flag set because timer used as system timer and runs in PWM mode
 // This flag never to be cleared, enable bit in EIC->IER cleared instead
 // to make this channel always ready to assert int
@@ -63,31 +68,14 @@
 //
 //       System Timer stuff
 //
+//      TIM0 in PWM mode used as system timer
 //
-
-// TIM0 in PWM mode used as system timer
 #define SYSTEM_TIMER_INT        STR71X_IRQ_T0_OCMPB
 
-namespace OS
-{
-    OS_INTERRUPT void SystemTimer_ISR();
-}
-
-//  Timer 0 used as System timer
+#define RESET_SYSTIMER_INT()    do { TIM0->SR = ~(1<<STR71X_TIM_OCFB); } while(0)
 #define LOCK_SYSTEM_TIMER()     do { TIM0->CR2 &= ~(1 << STR71X_TIM_OCBIE); } while(0)
 #define UNLOCK_SYSTEM_TIMER()   do { TIM0->CR2 |=  (1 << STR71X_TIM_OCBIE); } while(0)
 
-//------------------------------------------------------------------------------
-//
-//       Context Switch ISR stuff
-//
-//
-namespace OS
-{
-#if scmRTOS_IDLE_HOOK_ENABLE == 1
-    void IdleProcessUserHook();
-#endif
-}
 //-----------------------------------------------------------------------------
 #endif // __IAR_SYSTEMS_ICC__
 

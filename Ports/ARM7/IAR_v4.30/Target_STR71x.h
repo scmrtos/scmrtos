@@ -15,7 +15,7 @@
 //*     $Revision: 27 $
 //*     $Date: 2007-02-08 10:08:16 +0200 (Чт, 08 фев 2007) $
 //*
-//*     Copyright (c) 2003-2006, Harry E. Zhurov
+//*     Copyright (c) 2003-2007, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -77,7 +77,7 @@
 #define	SYSTEM_TIMER_HANDLER()                  \
     do                                          \
     {                                           \
-        TIM0->SR = ~(1<<STR71X_TIM_OCFB);       \
+        RESET_SYSTIMER_INT();                   \
         SystemTimer_Handler();                  \
     }                                           \
     while(0)

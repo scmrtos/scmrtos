@@ -17,23 +17,23 @@
 //*
 //*     Copyright (c) 2003-2006, Harry E. Zhurov
 //*
-//*     Permission is hereby granted, free of charge, to any person 
-//*     obtaining  a copy of this software and associated documentation 
-//*     files (the "Software"), to deal in the Software without restriction, 
-//*     including without limitation the rights to use, copy, modify, merge, 
-//*     publish, distribute, sublicense, and/or sell copies of the Software, 
-//*     and to permit persons to whom the Software is furnished to do so, 
+//*     Permission is hereby granted, free of charge, to any person
+//*     obtaining  a copy of this software and associated documentation
+//*     files (the "Software"), to deal in the Software without restriction,
+//*     including without limitation the rights to use, copy, modify, merge,
+//*     publish, distribute, sublicense, and/or sell copies of the Software,
+//*     and to permit persons to whom the Software is furnished to do so,
 //*     subject to the following conditions:
 //*
-//*     The above copyright notice and this permission notice shall be included 
+//*     The above copyright notice and this permission notice shall be included
 //*     in all copies or substantial portions of the Software.
 //*
-//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
-//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
-//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
-//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
-//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
-//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
+//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
 //*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //*
 //*     =================================================================
@@ -47,9 +47,20 @@
 #ifndef TARGET_ADUC_H__
 #define TARGET_ADUC_H__
 
-#if scmRTOS_CONTEXT_SWITCH_SCHEME != 0
-#error "The only Direct Context Switch Scheme supported for ADuC!"
-#endif
+//-----------------------------------------------------------------------------
+//
+//    scmRTOS Context Switch Scheme
+//
+//    The macro defines a context switch manner. Value 0 sets direct context
+//    switch in the scheduler and in the OS ISRs. This is the primary method.
+//    Value 1 sets the second way to switch context - by using of software
+//    interrupt. See documentation fo details.
+//
+//    The only Direct Context Switch Scheme supported for ADuC!
+//
+#define  scmRTOS_CONTEXT_SWITCH_SCHEME      0
+
+#define OS_INTERRUPT __arm
 
 #ifdef  __IAR_SYSTEMS_ICC__
 
