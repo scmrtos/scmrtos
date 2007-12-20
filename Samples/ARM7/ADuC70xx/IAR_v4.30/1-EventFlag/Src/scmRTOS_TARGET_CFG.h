@@ -54,15 +54,11 @@
 //
 //       System Timer stuff
 //
+//  Timer0 used as System timer
+//
 //
 #define SYSTEM_TIMER_INT        RTOS_TIMER_BIT
 
-namespace OS
-{
-    OS_INTERRUPT void SystemTimer_ISR();
-}
-
-//  Timer0 used as System timer
 #define LOCK_SYSTEM_TIMER()     do { T0CON &= ~T0_ENABLED; } while(0)
 #define UNLOCK_SYSTEM_TIMER()   do { T0CON |= T0_ENABLED; } while(0)
 
