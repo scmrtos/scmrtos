@@ -51,7 +51,7 @@
 
 //------------------------------------------------------------------------------
 //
-//       Context switching interrupt coosing
+//       Context switching interrupt choosing
 //
 //
 #define CONTEXT_SWITCH_INT      AT91C_ID_UDP

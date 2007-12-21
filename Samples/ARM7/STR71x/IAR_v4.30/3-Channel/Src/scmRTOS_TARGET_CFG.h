@@ -50,14 +50,14 @@
 #include "device.h"
 //------------------------------------------------------------------------------
 //
-//       Context switching interrupt coosing
+//       Context switching interrupt choosing
 //
 //
 // TIM0 OCMPA interrupt used for context switching.
 // This int flag set because timer used as system timer and runs in PWM mode
 // This flag never to be cleared, enable bit in EIC->IER cleared instead
 // to make this channel always ready to assert int
-// I don't use software interrupts in XTI because
+// Software interrupts in not used XTI because:
 // 1) context switching int handler must be so fast as possible
 // 2) it's difficult to share one handler between OS core and user application
 //    if required.
