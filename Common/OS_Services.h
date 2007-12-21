@@ -39,8 +39,8 @@
 //*
 //******************************************************************************
 
-#ifndef SERVICES_H
-#define SERVICES_H
+#ifndef OS_SERVICES_H
+#define OS_SERVICES_H
 
 namespace OS
 {
@@ -451,4 +451,4 @@ void OS::TBaseMessage::sendISR()
 //------------------------------------------------------------------------------
 
 
-#endif // SERVICES_H
+#endif // OS_SERVICES_H

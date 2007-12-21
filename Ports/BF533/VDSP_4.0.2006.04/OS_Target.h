@@ -46,7 +46,8 @@
 #ifndef scmRTOS_BLACKFIN_H
 #define scmRTOS_BLACKFIN_H
 
-#include <commdefs.h>
+#include "scmRTOS_config.h"
+#include <scmRTOS_defs.h>
 
 
 #ifndef __ADSPBLACKFIN__
