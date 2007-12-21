@@ -166,7 +166,7 @@ OS_INTERRUPT void Timer_ISR()
 }
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-extern "C" OS_INTERRUPT void IRQ_Switch()
+extern "C" __arm void IRQ_Switch()
 {
     dword irq = IRQSIG;
     irq &= IRQSTA;
