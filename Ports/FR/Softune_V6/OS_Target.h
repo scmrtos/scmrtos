@@ -12,8 +12,8 @@
 //*               
 //*     Version:   3.00-beta
 //*
-//*     $Revision: 1 $
-//*     $Date: 2006-12-15 12:51:04 +0500 (Пт, 15 дек 2006) $
+//*     $Revision$
+//*     $Date$
 //*
 //*     Copyright (c) 2003-2006, Harry E. Zhurov
 //*
