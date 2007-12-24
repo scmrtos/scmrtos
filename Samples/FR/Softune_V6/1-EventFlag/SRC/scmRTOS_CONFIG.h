@@ -52,35 +52,10 @@ typedef dword TTimeout;
 
 //------------------------------------------------------------------------------
 //
-///    Specify scmRTOS Process Count. Must be less then 15
+///    Specify scmRTOS Process Count. Must be less then 31
 //
 //
 #define  scmRTOS_PROCESS_COUNT              3
-
-//-----------------------------------------------------------------------------
-//
-///    scmRTOS System Timer
-//
-///    Nested Interrupts Enable macro. Value 1 means that interrupts are
-///    globally enabled within System Timer ISR.
-//
-//
-#define scmRTOS_SYSTIMER_NEST_INTS_ENABLE   1
-
-//-----------------------------------------------------------------------------
-//
-///    ISR Wrapper type used in System Timer ISR
-///
-///    There are two types: TISRW and TISRW_SS.
-///
-///    TISRW : Plain ISR Wrapper, does not switch SP to separate ISR stack.
-///            Suitable for processors that have hardware-switched ISR stack,
-///            or in such ISRs where stack consumption is acceptable
-///
-///    TISRW_SS : ISR Wrapper with separate ISR stack software switching
-//
-
-#define scmRTOS_ISRW_TYPE                   TISRW
 
 //-----------------------------------------------------------------------------
 //
@@ -110,31 +85,5 @@ typedef dword TTimeout;
 //
 //
 #define scmRTOS_IDLE_PROCESS_STACK_SIZE     96
-
-//-----------------------------------------------------------------------------
-//
-///    scmRTOS Context Switch Scheme
-///
-///    The macro defines a context switch manner. Value 0 sets direct context
-///    switch in the scheduler and in the OS ISRs. This is the primary method.
-///    Value 1 sets the second way to switch context - by using of software
-///    interrupt. See documentation fo details.
-//
-//
-#define scmRTOS_CONTEXT_SWITCH_SCHEME       1
-//-----------------------------------------------------------------------------
-//
-///    scmRTOS Priority Order
-///
-///    This macro defines the order of the process's priorities. Default,
-///    the ascending order is used. Alternatively, the descending priority
-///    order can be used. On some platforms the descending order is preferred
-///    because of performance.
-///
-///    Default (corresponding to ascending order) value of macro is 0.
-///    Alternative (corresponding to descending order) value of macro is 1.
-//
-//
-#define scmRTOS_PRIORITY_ORDER              1
 
 #endif // scmRTOS_CONFIG_H

@@ -57,14 +57,52 @@
 #error "This file should only be compiled with SOFTUNE Workbench Compiler"
 #endif
 
-#if scmRTOS_CONTEXT_SWITCH_SCHEME != 1
-#warning "The only Software Interrupt Context Switch Scheme supported for FR CPU!"
-#define scmRTOS_CONTEXT_SWITCH_SCHEME 1
-#endif
-
 #if scmRTOS_PROCESS_COUNT > 30
 #error "Process count is too much! Currently up 30 processes is supported."
 #endif
+
+
+
+//-----------------------------------------------------------------------------
+//
+///    scmRTOS Context Switch Scheme
+///
+///    The macro defines a context switch manner. Value 0 sets direct context
+///    switch in the scheduler and in the OS ISRs. This is the primary method.
+///    Value 1 sets the second way to switch context - by using of software
+///    interrupt. See documentation fo details.
+///
+///    WARNING
+///    The only Software Interrupt Context Switch Scheme supported for FR CPU!
+//
+//
+#define scmRTOS_CONTEXT_SWITCH_SCHEME       1
+//-----------------------------------------------------------------------------
+//
+///    scmRTOS Priority Order
+///
+///    This macro defines the order of the process's priorities. Default,
+///    the ascending order is used. Alternatively, the descending priority
+///    order can be used. On some platforms the descending order is preferred
+///    because of performance.
+///
+///    WARNING
+///    The only alternative (corresponding to descending order) supported for
+///    FR CPU! Value of macro is 1.
+//
+//
+#define scmRTOS_PRIORITY_ORDER              1
+
+//-----------------------------------------------------------------------------
+//
+///    scmRTOS System Timer
+//
+///    Nested Interrupts Enable macro. Value 1 means that interrupts are
+///    globally enabled within System Timer ISR.
+//
+//
+#define scmRTOS_SYSTIMER_NEST_INTS_ENABLE   1
+
 
 
 //-----------------------------------------------------------------------------
@@ -132,25 +170,11 @@ namespace OS
 {
     INLINE inline TProcessMap GetPrioTag(const byte pr) { return 1<<pr; }
     
-#if scmRTOS_PRIORITY_ORDER == 0
-    inline byte GetHighPriority(TProcessMap pm)
-    {
-        byte pr = 0;
-
-        while( !(pm & 0x0001) )
-        {
-            pr++;
-            pm >>= 1;
-        }
-        return pr;
-    }
-#else
     inline byte GetHighPriority(TProcessMap pm)
     {
         BSD1 = pm;
         return 31 - BSRR;
     }
-#endif // scmRTOS_PRIORITY_ORDER
 }
 //-----------------------------------------------------------------------------
 //
@@ -235,5 +259,5 @@ namespace OS
         //-----------------------------------------------------
     };
 }
-#endif // scmRTOS_BLACKFIN_H
+#endif // scmRTOS_FR_H
 //-----------------------------------------------------------------------------
