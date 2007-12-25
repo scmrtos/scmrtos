@@ -12,8 +12,8 @@
 //*
 //*     Version:   3.00-beta
 //*
-//*     $Revision: 1 $
-//*     $Date: 2006-12-15 12:51:04 +0500 (Пт, 15 дек 2006) $
+//*     $Revision$
+//*     $Date$
 //*
 //*     Copyright (c) 2003-2006, Harry E. Zhurov
 //*
@@ -46,6 +46,8 @@
 //---------------------------------------------------------------------------
 #include <scmRTOS.h>
 #include <hwtools.h>
+
+#include "pins.h"
 
 //---------------------------------------------------------------------------
 //
@@ -90,7 +92,7 @@ OS_PROCESS void TProc1::Exec()
     {
         ef_timer2.Wait();
 
-        PDR5_P55 = 0;   // LED 1 Off
+        off(LED1);
     }
 }
 
@@ -101,22 +103,22 @@ OS_PROCESS void TProc2::Exec()
     {
         ef.Wait();
 
-        PDR5_P56 = 0;   // LED 2 Off
+        off(LED2);
     }
 }
 
 //---------------------------------------------------------------------------
 OS_PROCESS void TProc3::Exec()
 {
-    PDR5_P56 = 1;   // LED 2 ON
+    on(LED2);
     for(;;)
     {
 #if 0
         Sleep(10);
-        PDR5_P56 = 0;   // LED 2 Off
+        off(LED2);
 #endif
         Sleep(3);
-        PDR5_P56 = 1;   // LED 2 ON
+        on(LED2);
 
         ef.Signal();
     }
@@ -137,7 +139,7 @@ extern "C" __interrupt void ih_Timer2(void)
 
     HWDCS_CL = 0x00;    // Reset hardware watchdog
 
-    PDR5_P55 = 1;       // LED 1 ON
+    on(LED1);
 
     ef_timer2.SignalISR();
 }

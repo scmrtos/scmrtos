@@ -12,8 +12,8 @@
 //*
 //*     Version:   3.00-beta
 //*
-//*     $Revision: 1 $
-//*     $Date: 2006-12-15 12:51:04 +0500 (Пт, 15 дек 2006) $
+//*     $Revision$
+//*     $Date$
 //*
 //*     Copyright (c) 2003-2006, Harry E. Zhurov
 //*
@@ -46,6 +46,7 @@
 //---------------------------------------------------------------------------
 #include <scmRTOS.h>
 #include <hwtools.h>
+#include <pins.h>
 
 //---------------------------------------------------------------------------
 //
@@ -109,13 +110,13 @@ OS_PROCESS void TProc1::Exec()
         Mamont = MamontMsg;                                   // read message content to global test object 
         if(Mamont.src == TMamont::PROC_SRC)
         {
-            PDR5_P56 = 0;   // LED 2 OFF
+            off(LED2);
         }
         else
         {
-            PDR5_P56 = 0;   // LED 2 OFF
-            PDR5_P56 = 1;   // LED 2 ON
-            PDR5_P56 = 0;   // LED 2 OFF
+            off(LED2);
+            on(LED2);
+            off(LED2);
         }
     }     
 }
@@ -138,7 +139,7 @@ OS_PROCESS void TProc3::Exec()
         m.src  = TMamont::PROC_SRC;
         m.data = 5;
         MamontMsg = m;       // put the content to the OS::message object
-        PDR5_P56 = 1;   // LED 2 ON
+        on(LED2);
         MamontMsg.send();    // send the message
     }
 }
@@ -168,7 +169,7 @@ extern "C" __interrupt void ih_Timer2(void)
     m.src  = TMamont::ISR_SRC;
     m.data = 10;
     MamontMsg = m;       // put the content to the OS::message object
-    PDR5_P56 = 1;       // LED 1 ON
+    on(LED1);
     MamontMsg.sendISR();    // send the message
 
 }

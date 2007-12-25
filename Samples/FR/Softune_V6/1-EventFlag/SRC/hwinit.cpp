@@ -12,8 +12,8 @@
 //*
 //*     Version:   3.00-beta
 //*
-//*     $Revision: 1 $
-//*     $Date: 2006-12-15 12:51:04 +0500 (Пт, 15 дек 2006) $
+//*     $Revision$
+//*     $Date$
 //*
 //*     Copyright (c) 2003-2006, Harry E. Zhurov
 //*
@@ -50,6 +50,9 @@
 
 #include <scmRTOS_TARGET_CFG.h>
 
+#include "pins.h"
+
+
 extern "C" void InitIrqLevels(void);
 
 //---------------------------------------------------------------------------
@@ -60,8 +63,11 @@ extern "C" void HardwareInit()
     __set_il(20);                               /* allow all levels  */
     __EI();                                     /* enable interrupts */
 
-    DDR5 = 0xff;
-    PDR5 = 0x00;
+    direct(LED1, O);
+    direct(LED2, O);
+
+    off(LED1);
+    off(LED2);
 
     // Setup Timer#2
     TMCSR2=0;

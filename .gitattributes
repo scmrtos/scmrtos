@@ -247,6 +247,7 @@ Samples/FR/Softune_V6/1-EventFlag/Debug/OPT/1-EventFlag.opc -text
 Samples/FR/Softune_V6/1-EventFlag/Debug/OPT/1-EventFlag.opl -text
 Samples/FR/Softune_V6/1-EventFlag/Debug/OPT/1-EventFlag.opv -text
 Samples/FR/Softune_V6/1-EventFlag/SRC/Start91270.asm -text
+Samples/FR/Softune_V6/1-EventFlag/SRC/pins.h -text
 Samples/FR/Softune_V6/1-EventFlag/makefile -text
 Samples/FR/Softune_V6/2-Message/2-Message.dat -text
 Samples/FR/Softune_V6/2-Message/2-Message.prj -text
@@ -256,6 +257,7 @@ Samples/FR/Softune_V6/2-Message/Debug/OPT/2-Message.opc -text
 Samples/FR/Softune_V6/2-Message/Debug/OPT/2-Message.opl -text
 Samples/FR/Softune_V6/2-Message/Debug/OPT/2-Message.opv -text
 Samples/FR/Softune_V6/2-Message/SRC/Start91270.asm -text
+Samples/FR/Softune_V6/2-Message/SRC/pins.h -text
 Samples/FR/Softune_V6/2-Message/makefile -text
 Samples/FR/Softune_V6/3-Channel/3-Channel.dat -text
 Samples/FR/Softune_V6/3-Channel/3-Channel.prj -text
@@ -265,8 +267,10 @@ Samples/FR/Softune_V6/3-Channel/Debug/OPT/3-Channel.opc -text
 Samples/FR/Softune_V6/3-Channel/Debug/OPT/3-Channel.opl -text
 Samples/FR/Softune_V6/3-Channel/Debug/OPT/3-Channel.opv -text
 Samples/FR/Softune_V6/3-Channel/SRC/Start91270.asm -text
+Samples/FR/Softune_V6/3-Channel/SRC/pins.h -text
 Samples/FR/Softune_V6/3-Channel/makefile -text
 Samples/FR/Softune_V6/Doxyfile -text
+Samples/FR/Softune_V6/MB91270/pin_macros.h -text
 Samples/FR/Softune_V6/get_samples.bat -text
 Samples/FR/Softune_V6/makefile -text
 Samples/FR/Softune_V6/makefile.mb91 -text
