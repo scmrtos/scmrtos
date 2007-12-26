@@ -79,6 +79,8 @@ namespace OS
     INLINE inline void SetPrioTag(TProcessMap& pm, const TProcessMap PrioTag) { pm |=  PrioTag; }
     INLINE inline void ClrPrioTag(TProcessMap& pm, const TProcessMap PrioTag) { pm &= ~PrioTag; }
 
+    class TBaseProcess;
+    void Run();
 
     //--------------------------------------------------------------------------
     //

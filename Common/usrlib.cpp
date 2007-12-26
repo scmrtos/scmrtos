@@ -53,9 +53,9 @@ using namespace usr;
 TCbuf::TCbuf(byte* const Address, const byte Size) :
         buf(Address),
         size(Size),
+        count(0),
         first(0),
-        last(0),
-    count(0)
+        last(0)
 {
 }
 //------------------------------------------------------------------------------
