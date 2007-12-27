@@ -46,22 +46,9 @@
 #ifndef scmRTOS_BLACKFIN_H
 #define scmRTOS_BLACKFIN_H
 
-#include "scmRTOS_config.h"
-#include <scmRTOS_defs.h>
-
-
 #ifndef __ADSPBLACKFIN__
 #error "This file should only be compiled with VDSP Blackfin Compiler!"
 #endif
-
-#if scmRTOS_CONTEXT_SWITCH_SCHEME != 1
-#error "The only Software Interrupt Context Switch Scheme supported for Blackfin!"
-#endif
-
-#if scmRTOS_PROCESS_COUNT > 30 
-#error "Process count is too much! Currently up 30 processes is supported."
-#endif
-
 
 //-----------------------------------------------------------------------------
 //
@@ -90,7 +77,8 @@ typedef word  TStatusReg;
 // 
 #define SYS_TIMER_CRIT_SECT() // TCritSect cs
 
-#define SEPARATE_RETURN_STACK 0
+#define SEPARATE_RETURN_STACK         0
+#define scmRTOS_CONTEXT_SWITCH_SCHEME 1
 
 //-----------------------------------------------------------------------------
 //
@@ -100,6 +88,15 @@ typedef word  TStatusReg;
 #include "scmRTOS_config.h"
 #include "scmRTOS_TARGET_CFG.h"
 #include <scmRTOS_defs.h>
+
+//-----------------------------------------------------------------------------
+//
+//    Target-specific checks
+//
+#if scmRTOS_PROCESS_COUNT > 30 
+#error "Process count is too much! Currently up 30 processes is supported."
+#endif
+
 
 //-----------------------------------------------------------------------------
 //
@@ -184,14 +181,6 @@ namespace OS
 
 }
 //-----------------------------------------------------------------------------
-/*
-#pragma segment="CSTACK"
-
-INLINE inline TStackItem* GetStackPointer()    { return (TStackItem*) __get_SP_register(); }
-INLINE inline void        SetISRStackPointer() { __set_SP_register( (word) __segment_end("CSTACK") ); }
-INLINE inline void        SetStackPointer(TStackItem* sp) { __set_SP_register( (word)sp ); }
-*/
-//-----------------------------------------------------------------------------
 ///////////////////////////////////////////////////////////////////////////////
 #include <OS_Kernel.h>
 ///////////////////////////////////////////////////////////////////////////////
@@ -229,34 +218,6 @@ namespace OS
         }
         //-----------------------------------------------------
     };
-  /*
-    class TISRW_SS
-    {
-    public:
-        INLINE  TISRW_SS()  { ISR_Enter(); }
-        INLINE  ~TISRW_SS() { ISR_Exit();  }
-
-    private:
-        //-----------------------------------------------------
-        INLINE void ISR_Enter()
-        {
-            if(Kernel.ISR_NestCount++ == 0)
-            {
-                Kernel.ProcessTable[Kernel.CurProcPriority]->StackPointer = GetStackPointer();
-                SetISRStackPointer();
-            }
-        }
-        //-----------------------------------------------------
-        INLINE void ISR_Exit()
-        {
-            DisableInterrupts();
-            if(--Kernel.ISR_NestCount) return;
-            SetStackPointer(Kernel.ProcessTable[Kernel.CurProcPriority]->StackPointer);
-            Kernel.SchedISR();
-        }
-        //-----------------------------------------------------
-    };
-    */
 }
 #endif // scmRTOS_BLACKFIN_H
 //-----------------------------------------------------------------------------
