@@ -3,33 +3,33 @@
 //*     FULLNAME:  Single-Chip Microcontroller Real-Time Operating System
 //*
 //*     NICKNAME:  scmRTOS
-//*               
+//*
 //*     PURPOSE:  OS Kernel Header. Declarations And Definitions
-//*               
+//*
 //*     Version:  3.00-beta
 //*
 //*     $Revision$
 //*     $Date$
 //*
-//*     Copyright (c) 2003-2006, Harry E. Zhurov
+//*     Copyright (c) 2003-2007, Harry E. Zhurov
 //*
-//*     Permission is hereby granted, free of charge, to any person 
-//*     obtaining  a copy of this software and associated documentation 
-//*     files (the "Software"), to deal in the Software without restriction, 
-//*     including without limitation the rights to use, copy, modify, merge, 
-//*     publish, distribute, sublicense, and/or sell copies of the Software, 
-//*     and to permit persons to whom the Software is furnished to do so, 
+//*     Permission is hereby granted, free of charge, to any person
+//*     obtaining  a copy of this software and associated documentation
+//*     files (the "Software"), to deal in the Software without restriction,
+//*     including without limitation the rights to use, copy, modify, merge,
+//*     publish, distribute, sublicense, and/or sell copies of the Software,
+//*     and to permit persons to whom the Software is furnished to do so,
 //*     subject to the following conditions:
 //*
-//*     The above copyright notice and this permission notice shall be included 
+//*     The above copyright notice and this permission notice shall be included
 //*     in all copies or substantial portions of the Software.
 //*
-//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
-//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
-//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
-//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
-//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
-//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
+//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
 //*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //*
 //*     =================================================================
@@ -55,7 +55,7 @@ extern "C" void OS_Start(TStackItem* sp);
     extern "C" void OS_ContextSwitcher(TStackItem** Curr_SP, TStackItem* Next_SP);
 #else
     extern "C" TStackItem* OS_ContextSwitchHook(TStackItem* sp);
-#endif 
+#endif
 
 //==============================================================================
 
@@ -126,22 +126,22 @@ namespace OS
 
     #if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
         byte SchedProcPriority;
-    #endif 
+    #endif
 
     #if scmRTOS_SYSTEM_TICKS_ENABLE == 1
         volatile dword SysTickCount;
     #endif
-        
+
     //-----------------------------------------------------------
     //
     //      Functions
     //
     public:
-        TKernel() 
-            : CurProcPriority(pr0) 
+        TKernel()
+            : CurProcPriority(pr0)
             , ReadyProcessMap(0)
             , ISR_NestCount(0)
-        { 
+        {
             TProcessMap pm = 0x01;
             for(byte i = 0; i < scmRTOS_PROCESS_COUNT+1; i++)
             {
@@ -160,7 +160,7 @@ namespace OS
         //INLINE inline void WaitForContextSwitch() const volatile;
     #if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
         INLINE inline bool IsContextSwitchDone() const volatile;
-    #endif 
+    #endif
         INLINE void SetProcessReady  (const byte pr) { TProcessMap PrioTag = GetPrioTag(pr); SetPrioTag( ReadyProcessMap, PrioTag); }
         INLINE void SetProcessUnready(const byte pr) { TProcessMap PrioTag = GetPrioTag(pr); ClrPrioTag( ReadyProcessMap, PrioTag); }
 
@@ -168,7 +168,7 @@ namespace OS
         INLINE inline void SystemTimer();
     #if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
         INLINE inline TStackItem* ContextSwitchHook(TStackItem* sp);
-    #endif 
+    #endif
 
     };  // End of TKernel class definition
     //--------------------------------------------------------------------------
@@ -237,9 +237,9 @@ namespace OS
                                       , (void (*)())Exec)
             {
             }
-    
+
             OS_PROCESS static void Exec();
-    
+
         private:
             TStackItem Stack[stack_size/sizeof(TStackItem)];
         };
@@ -254,9 +254,9 @@ namespace OS
                                     , (void (*)())Exec)
             {
             }
-    
+
             OS_PROCESS static void Exec();
-    
+
         private:
             TStackItem Stack [stack_size/sizeof(TStackItem)];
             TStackItem RStack[rstack_size/sizeof(TStackItem)];
@@ -274,22 +274,22 @@ namespace OS
     void WakeUpProcess(TBaseProcess& p);
     void ForceWakeUpProcess(TBaseProcess& p);
 
-    INLINE inline bool IsProcessSleeping(const TBaseProcess& p)  
-    { 
-        TCritSect cs; 
-        if(p.Timeout) 
-            return true; 
-        else 
-            return false; 
+    INLINE inline bool IsProcessSleeping(const TBaseProcess& p)
+    {
+        TCritSect cs;
+        if(p.Timeout)
+            return true;
+        else
+            return false;
     }
 
-    INLINE inline bool IsProcessSuspended(const TBaseProcess& p) 
-    { 
-        TCritSect cs; 
-        if(Kernel.ReadyProcessMap & GetPrioTag(p.Priority)) 
-            return false; 
-        else 
-            return true; 
+    INLINE inline bool IsProcessSuspended(const TBaseProcess& p)
+    {
+        TCritSect cs;
+        if(Kernel.ReadyProcessMap & GetPrioTag(p.Priority))
+            return false;
+        else
+            return true;
     }
     //--------------------------------------------------------------------------
 
@@ -309,7 +309,7 @@ namespace OS
 ///  Register Process
 ///
 ///  Places pointer to process in kernel's process table
-// 
+//
 void OS::TKernel::RegisterProcess(OS::TBaseProcess* const p)
 {
     ProcessTable[p->Priority] = p;
@@ -320,7 +320,7 @@ void OS::TKernel::RegisterProcess(OS::TBaseProcess* const p)
 ///
 /// Performs process's timeouts checking and
 ///               moving processes to ready-to-run state
-// 
+//
 void OS::TKernel::SystemTimer()
 {
     SYS_TIMER_CRIT_SECT();
@@ -340,7 +340,7 @@ void OS::TKernel::SystemTimer()
 
         if(p->Timeout > 0)
         {
-            if(--p->Timeout == 0) 
+            if(--p->Timeout == 0)
             {
                 SetProcessReady(p->Priority);
             }
@@ -394,6 +394,14 @@ TStackItem* OS::TKernel::ContextSwitchHook(TStackItem* sp)
 }
 //------------------------------------------------------------------------------
 #endif // scmRTOS_CONTEXT_SWITCH_SCHEME
+
+//-----------------------------------------------------------------------------
+/// Start Operation
+INLINE inline void OS::Run()
+{
+    TStackItem* sp = Kernel.ProcessTable[pr0]->StackPointer;
+    OS_Start(sp);
+}
 
 #include <OS_Services.h>
 

@@ -11,7 +11,7 @@
 //*     $Revision$
 //*     $Date$
 //*
-//*     Copyright (c) 2003-2006, Harry E. Zhurov
+//*     Copyright (c) 2003-2007, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person 
 //*     obtaining  a copy of this software and associated documentation 
@@ -45,13 +45,6 @@ using namespace OS;
 //------------------------------------------------------------------------------
 OS::TKernel OS::Kernel;
 
-//-----------------------------------------------------------------------------
-/// Start Operation
-void OS::Run()
-{
-    TStackItem* sp = Kernel.ProcessTable[pr0]->StackPointer;
-    OS_Start(sp);
-}
 //------------------------------------------------------------------------------
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
 void TKernel::Sched()
