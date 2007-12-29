@@ -15,25 +15,25 @@
 //*     $Revision$
 //*     $Date$
 //*
-//*     Copyright (c) 2003-2006, Harry E. Zhurov
+//*     Copyright (c) 2003-2007, Harry E. Zhurov
 //*
-//*     Permission is hereby granted, free of charge, to any person 
-//*     obtaining  a copy of this software and associated documentation 
-//*     files (the "Software"), to deal in the Software without restriction, 
-//*     including without limitation the rights to use, copy, modify, merge, 
-//*     publish, distribute, sublicense, and/or sell copies of the Software, 
-//*     and to permit persons to whom the Software is furnished to do so, 
+//*     Permission is hereby granted, free of charge, to any person
+//*     obtaining  a copy of this software and associated documentation
+//*     files (the "Software"), to deal in the Software without restriction,
+//*     including without limitation the rights to use, copy, modify, merge,
+//*     publish, distribute, sublicense, and/or sell copies of the Software,
+//*     and to permit persons to whom the Software is furnished to do so,
 //*     subject to the following conditions:
 //*
-//*     The above copyright notice and this permission notice shall be included 
+//*     The above copyright notice and this permission notice shall be included
 //*     in all copies or substantial portions of the Software.
 //*
-//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
-//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
-//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
-//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
-//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
-//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
+//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
 //*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //*
 //*     =================================================================
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     ARM port by Sergey A. Borshch, Copyright (c) 2006
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006 - 2007
 
 
 #include "scmRTOS_CONFIG.h"
@@ -89,15 +89,9 @@
 
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
         COMMON  INTVEC:CODE:ROOT
-        org     0x00000008
-        LDR     PC, Context_Switcher_Adr    ; Branch to swi_handler
         org     0x00000018
         LDR     PC, IRQ_Wrapper_Adr
-        org     0x00000020
 
-        org     0x00000028
-Context_Switcher_Adr:
-        DC32    Context_Switcher
         org     0x00000038
 IRQ_Wrapper_Adr:
         DC32    IRQ_Wrapper
@@ -122,7 +116,7 @@ IRQ_Wrapper:
 
         MSR     CPSR_c, #(NIRQ | MODE_SYS)  ; switching to System mode, because context has to be restored
                                             ; from user mode stack, enable FIQ
-        MOV     R0, SP
+        MOV     R1, SP
         B       ContextRestore              ; restore saved IRQ context
 
         RSEG    ICODE:CODE
@@ -143,36 +137,32 @@ Set_New_SP:
         BX      LR
 
 ;-------------------------------------------------------------------------------
-//      __swi __arm void OS_ContextSwitcher(TStackItem** Curr_SP, TStackItem* Next_SP);
-Context_Switcher:
-        MSR     CPSR_c, #(NIRQ | MODE_SYS)  ; switching to System mode, because context has to be saved
-                                            ; on top of user mode stack, enable FIQ
-        STMFD   SP!, {R0-R12,LR}            ; store R0_R12, dummy store LR to reserve space in context
+//      __arm void OS_ContextSwitcher(TStackItem** Curr_SP, TStackItem* Next_SP);
+        PUBLIC  OS_ContextSwitcher
+OS_ContextSwitcher:
+        STMFD  SP!, {R0-R12,LR}             ; store R0_R12, dummy store LR to reserve space in context
+        MRS    r2, CPSR                     ; move CPSR of process to register
+        STMFD  SP!, {r2,LR}                 ; store CPSR, LR on top of context and adjust SP
+        LDR    LR, =RestorePoint            ; load context switcher exit address
+        STR    LR, [SP, #4*15]              ; store return address in reserved space (instead of first saved LR)
+        STR    SP, [R0]                     ; store current context address to *Curr_SP
 
-        SUB     R2, SP, #4*2                ; store context pointer in non-banked register (reserve space for CPSR, LR)
-        MSR     CPSR_c, #(NIRQ | MODE_SVC)  ; switching back to supervisor mode
-        STR     LR, [R2, #4*15]             ; store return address in reserved space (instead of saved LR_user)
-        MRS     R3, SPSR                    ; move stored CPSR of process to non-banked register
-        MSR     CPSR_c, #(NIRQ | MODE_SYS)  ; switching back to System mode
-
-        STMFD   SP!, {R3,LR}                ; store CPSR, LR_user on top of context and adjust SP_user
-        STR     SP,[R0]
-        MOV     R0, R1
-ContextRestore
-        LDMFD   R0!, {R1, LR}               ; restoring LR_user, saved CPSR_user
-        ADD     SP, R0, #4*14               ; set process SP
+ContextRestore:                             ; CPU always in System mode here
+        LDMFD   R1!, {R0, LR}               ; restoring LR_user, saved CPSR_user
+        ADD     SP, R1, #4*14               ; set process SP
 
         MSR     CPSR_c, #(NIRQ | MODE_IRQ)  ; switch to IRQ mode to get access to SPSR_irq
-        MSR     SPSR_cxsf, R1               ; store process CPSR to SPSR_irq to restore at return from irq
+        MSR     SPSR_cxsf, R0               ; store process CPSR to SPSR_irq to restore at return from irq
 
-        LDMFD   R0, {R0-R12,PC}^            ; restoring remaining context, CPSR and reti
-
+        LDMFD   R1, {R0-R12,PC}^            ; restoring remaining context, CPSR (and reti if context was stored by IRQ_Wrapper)
+RestorePoint:
+        BX      LR                          ; to restore ARM/THUMB state if context was stored by OS_ContextSwitcher
 #else   //if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
 ;-------------------------------------------------------------------------------
         COMMON  INTVEC:CODE:ROOT
 
         org     0x00000018
-        IRQ_SWITCH                          ; переход по адресу из векторного контроллера
+        IRQ_SWITCH                          ; branch to address provided by interrupt controller
 ;-------------------------------------------------------------------------------
         RSEG    ICODE:CODE
         // TStackItem* OS_ContextSwitchHook(TStackItem* sp);
@@ -211,19 +201,11 @@ Hook_Relay:
 
 
 ;-------------------------------------------------------------------------------
-        RSEG    CSTACK:DATA
-        RSEG    ICODE:CODE
-// Set SP_irq to main() stack, restore context referenced by R0
-
         // void OS_Start(TStackItem* sp);
         PUBLIC  OS_Start
 OS_Start:
-        MSR     CPSR_c, #(NIRQ | NFIQ | MODE_IRQ)   ; switching to IRQ mode, disable FIQ & IRQ
-        LDR     SP, =SFE(CSTACK) & 0xFFFFFFF8       ; End of CSTACK
-        MSR     CPSR_c, #(NIRQ | NFIQ | MODE_SYS)   ; switching back to System mode, disable FIQ & IRQ
-                                                    ; ContextRestore typically called from System mode
-
-        B       ContextRestore                      ; Restore context = run process
+        MOV     R1, R0
+        B       ContextRestore              ; Restore context = run process
 ;-------------------------------------------------------------------------------
         ENDMOD
 

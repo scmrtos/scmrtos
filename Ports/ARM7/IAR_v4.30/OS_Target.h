@@ -278,7 +278,7 @@ __arm inline OS::TISRW::~TISRW()
     Kernel.CurProcPriority = NextProcPriority;
     Set_New_SP(Next_SP);
 }
-#else
+#else   // scmRTOS_CONTEXT_SWITCH_SCHEME == 1
 __arm inline OS::TISRW::TISRW()
 {
     Kernel.ISR_NestCount++;
@@ -289,18 +289,7 @@ __arm inline OS::TISRW::~TISRW()
     if(--Kernel.ISR_NestCount) return;
     Kernel.SchedISR();
 }
-#endif
-
-#if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
-#pragma swi_number = 0x00
-__swi __arm void ContextSwitcher(TStackItem** Curr_SP, TStackItem* Next_SP);
-
-extern "C" inline void OS_ContextSwitcher(TStackItem** Curr_SP, TStackItem* Next_SP)
-{
-    ContextSwitcher(Curr_SP, Next_SP);
-}
-
-#endif
+#endif  // scmRTOS_CONTEXT_SWITCH_SCHEME
 
 //-----------------------------------------------------------------------------
 #endif // scmRTOS_ARM_H
