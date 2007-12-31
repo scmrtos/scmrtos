@@ -157,7 +157,6 @@ namespace OS
         INLINE void Scheduler() { if(ISR_NestCount) return; else  Sched(); }
         INLINE inline void SchedISR();
 
-        //INLINE inline void WaitForContextSwitch() const volatile;
     #if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
         INLINE inline bool IsContextSwitchDone() const volatile;
     #endif
