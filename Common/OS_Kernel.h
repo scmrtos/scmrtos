@@ -348,7 +348,7 @@ void OS::TKernel::SystemTimer()
 }
 //------------------------------------------------------------------------------
 //
-///    ISR optimized sheduler
+///    ISR optimized scheduler
 ///
 ///    !!! IMPORTANT: This function must be call from ISR services only !!!
 //
