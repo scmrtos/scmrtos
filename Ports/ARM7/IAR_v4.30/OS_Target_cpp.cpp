@@ -106,9 +106,6 @@ namespace OS
 inline __arm void OS::SystemTimer_Handler()
 {
     Kernel.SystemTimer();
-#if scmRTOS_SYSTIMER_HOOK_ENABLE == 1
-    SystemTimerUserHook();
-#endif
 }
 
 OS_INTERRUPT void OS::SystemTimer_ISR()
@@ -116,6 +113,10 @@ OS_INTERRUPT void OS::SystemTimer_ISR()
     scmRTOS_ISRW_TYPE ISR;
 
     SYSTEM_TIMER_HANDLER();
+
+    #if scmRTOS_SYSTIMER_HOOK_ENABLE == 1
+    SystemTimerUserHook();
+#endif
 
     IRQ_DONE();
 }
