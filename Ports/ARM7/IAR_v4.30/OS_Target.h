@@ -140,11 +140,12 @@ private:
 inline __arm TCritSect::TCritSect() : StatusReg( __get_CPSR() )
 {
     TStatusReg Tmp = StatusReg;
-    do
+
+    while ((Tmp & (1<<7)) == 0)
     {
         __set_CPSR(Tmp | (1<<7));   // disable IRQ
+        Tmp = __get_CPSR();         // re-read cpsr
     }
-    while (!((Tmp = __get_CPSR()) & (1<<7)));
 };
 
 inline __arm TCritSect::~TCritSect()
@@ -217,11 +218,11 @@ inline __arm void EnableInterrupts() { __set_CPSR(__get_CPSR() & ~(1<<7)); }
 inline __arm void DisableInterrupts()
 {
     TStatusReg Tmp = __get_CPSR();
-    do
+    while ((Tmp & (1<<7)) == 0)
     {
-        __set_CPSR(Tmp | (1<<7));
+        __set_CPSR(Tmp | (1<<7));   // disable IRQ
+        Tmp = __get_CPSR();         // re-read cpsr
     }
-    while (!((Tmp = __get_CPSR()) & (1<<7)));
 }
 
 namespace OS
