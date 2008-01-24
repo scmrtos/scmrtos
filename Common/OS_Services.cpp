@@ -60,28 +60,32 @@ bool OS::TEventFlag::Wait(TTimeout timeout)
     }
     else
     {
-        TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
-        SetPrioTag(ProcessMap, PrioTag);             // put current process to wait map
-        ClrPrioTag(Kernel.ReadyProcessMap, PrioTag); // remove current process from ready map
-
-
         TBaseProcess* p = Kernel.ProcessTable[Kernel.CurProcPriority];
         p->Timeout = timeout;
-        Kernel.Scheduler();
+        TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
+        do
+        {
 
-        ClrPrioTag(ProcessMap, PrioTag);             // remove current process from wait list
-        Value = efOff;
+            SetPrioTag(ProcessMap, PrioTag);             // put current process to wait map
+            ClrPrioTag(Kernel.ReadyProcessMap, PrioTag); // remove current process from ready map
 
+            Kernel.Scheduler();
 
-        word t = p->Timeout; p->Timeout = 0;
+            ClrPrioTag(ProcessMap, PrioTag);             // remove current process from wait list
 
-        if(timeout == 0)
-            return true;
+            if( Value == efOn)                           // if waked-up by signal() or signal_ISR()
+            {
+                p->Timeout = 0;
+                Value = efOff;
+                return true;
+            }
+                                                         // otherwice waked-up by timeout or
+                                                         // by signal() or signal_ISR(), but flag was
+                                                         // read and cleared by hihger-priority process
+        }
+        while(p->Timeout != 0);
 
-        if(t)
-            return true;
-        else
-            return false;
+        return false;
     }
 }
 //------------------------------------------------------------------------------
@@ -114,7 +118,7 @@ void OS::TMutex::Lock()
 
         Kernel.Scheduler();
         // ValueTag at this point means that process with higher priority
-        // has alredy had to Lock() this mutex 
+        // has alredy had to Lock() this mutex
     }
     ValueTag = PrioTag;                              // mutex has been successfully locked
 }

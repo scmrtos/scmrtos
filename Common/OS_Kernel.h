@@ -122,7 +122,7 @@ namespace OS
         byte CurProcPriority;
         TProcessMap ReadyProcessMap;
         TBaseProcess* ProcessTable[scmRTOS_PROCESS_COUNT+1];
-        byte ISR_NestCount;
+        volatile byte ISR_NestCount;
 
     #if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
         byte SchedProcPriority;
