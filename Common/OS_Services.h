@@ -83,7 +83,7 @@ namespace OS
     class TEventFlag
     {
     public:
-        enum TValue { efOn = 1, efOff= 0 }; // prefix 'ef' means: "Event Flag"
+        enum TValue { efOn = (1 << scmRTOS_PROCESS_COUNT) - 1, efOff= 0 }; // prefix 'ef' means: "Event Flag"
 
     public:
         TEventFlag(TValue init_val = efOff) : ProcessMap(0), Value(init_val) { }
@@ -92,11 +92,11 @@ namespace OS
         void Signal();
         INLINE void Clear() { TCritSect cs; Value = efOff; }
         INLINE inline void SignalISR();
-        INLINE bool IsSignaled() { TCritSect cs; if(Value == efOn) return true; else return false; }
+        INLINE bool IsSignaled() { TCritSect cs; return Value & GetPrioTag(Kernel.CurProcPriority);  }
 
     private:
         TProcessMap ProcessMap;
-        TValue Value;
+        TProcessMap Value;
     };
     //--------------------------------------------------------------------------
 

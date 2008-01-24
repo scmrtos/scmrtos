@@ -52,18 +52,18 @@ using namespace OS;
 bool OS::TEventFlag::Wait(TTimeout timeout)
 {
     TCritSect cs;
+    TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
 
-    if(Value == efOn)
+    if(Value & PrioTag)
     {
-        Value = efOff;
+        ClrPrioTag(Value, PrioTag);                      // clear flag for current process
         return true;
     }
     else
     {
         TBaseProcess* p = Kernel.ProcessTable[Kernel.CurProcPriority];
         p->Timeout = timeout;
-        TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
-        do
+        for(;;)
         {
 
             SetPrioTag(ProcessMap, PrioTag);             // put current process to wait map
@@ -73,19 +73,19 @@ bool OS::TEventFlag::Wait(TTimeout timeout)
 
             ClrPrioTag(ProcessMap, PrioTag);             // remove current process from wait list
 
-            if( Value == efOn)                           // if waked-up by signal() or signal_ISR()
+            if( Value & PrioTag )                        // if waked-up by signal() or signal_ISR()
             {
                 p->Timeout = 0;
-                Value = efOff;
+                ClrPrioTag(Value, PrioTag);              // clear flag for current process
                 return true;
             }
                                                          // otherwice waked-up by timeout or
                                                          // by signal() or signal_ISR(), but flag was
-                                                         // read and cleared by hihger-priority process
-        }
-        while(p->Timeout != 0);
+                                                         // cleared by hihger-priority process
 
-        return false;
+            if( (p->Timeout == 0) && timeout )           // if timeout expired
+                return false;
+        }
     }
 }
 //------------------------------------------------------------------------------
