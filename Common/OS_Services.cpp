@@ -52,40 +52,36 @@ using namespace OS;
 bool OS::TEventFlag::Wait(TTimeout timeout)
 {
     TCritSect cs;
-    TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
 
-    if(Value & PrioTag)
+    if(Value == efOn)
     {
-        ClrPrioTag(Value, PrioTag);                      // clear flag for current process
+        Value = efOff;
         return true;
     }
     else
     {
+        TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
+        SetPrioTag(ProcessMap, PrioTag);             // put current process to wait map
+        ClrPrioTag(Kernel.ReadyProcessMap, PrioTag); // remove current process from ready map
+
+
         TBaseProcess* p = Kernel.ProcessTable[Kernel.CurProcPriority];
         p->Timeout = timeout;
-        for(;;)
-        {
+        Kernel.Scheduler();
 
-            SetPrioTag(ProcessMap, PrioTag);             // put current process to wait map
-            ClrPrioTag(Kernel.ReadyProcessMap, PrioTag); // remove current process from ready map
+        ClrPrioTag(ProcessMap, PrioTag);             // remove current process from wait list
+        Value = efOff;
 
-            Kernel.Scheduler();
 
-            ClrPrioTag(ProcessMap, PrioTag);             // remove current process from wait list
+        word t = p->Timeout; p->Timeout = 0;
 
-            if( Value & PrioTag )                        // if waked-up by signal() or signal_ISR()
-            {
-                p->Timeout = 0;
-                ClrPrioTag(Value, PrioTag);              // clear flag for current process
-                return true;
-            }
-                                                         // otherwice waked-up by timeout or
-                                                         // by signal() or signal_ISR(), but flag was
-                                                         // cleared by hihger-priority process
+        if(timeout == 0)
+            return true;
 
-            if( (p->Timeout == 0) && timeout )           // if timeout expired
-                return false;
-        }
+        if(t)
+            return true;
+        else
+            return false;
     }
 }
 //------------------------------------------------------------------------------
@@ -118,7 +114,7 @@ void OS::TMutex::Lock()
 
         Kernel.Scheduler();
         // ValueTag at this point means that process with higher priority
-        // has alredy had to Lock() this mutex
+        // has alredy had to Lock() this mutex 
     }
     ValueTag = PrioTag;                              // mutex has been successfully locked
 }
