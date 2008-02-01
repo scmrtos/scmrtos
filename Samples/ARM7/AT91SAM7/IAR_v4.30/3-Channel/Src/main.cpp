@@ -238,7 +238,7 @@ int __low_level_init(void)
     AT91C_BASE_TCB->TCB_TC0.TC_CCR = AT91C_TC_SWTRG | AT91C_TC_CLKEN;   // reset and enable TC0 clock
 
     // Set RTOS timer handler with priority a little bit higher than context switcher but lower than other interrupts
-    AT91C_BASE_AIC->AIC_SMR[AT91C_ID_SYS] = AT91C_AIC_SRCTYPE_INT_POSITIVE_EDGE | AT91C_AIC_PRIOR_LOWEST + 1;
+    AT91C_BASE_AIC->AIC_SMR[AT91C_ID_SYS] = AT91C_AIC_SRCTYPE_INT_HIGH_LEVEL | AT91C_AIC_PRIOR_LOWEST + 1;
     AT91C_BASE_AIC->AIC_SVR[AT91C_ID_SYS] = (dword)OS::SystemTimer_ISR;
 
     // Set timer handler with higher priority than system timer
