@@ -108,7 +108,6 @@ OS_INTERRUPT void Timer_ISR()
     GPIO1->PD |= (1<<8);                // GPIO1.8 = 1, turn on LED
     Timer_Ovf.SignalISR();
 
-    EIC->IPR = (1 << STR71X_IRQ_T1);    // clear EIC pending bit (TIM1 channel)
 }
 //-----------------------------------------------------------------------------
 

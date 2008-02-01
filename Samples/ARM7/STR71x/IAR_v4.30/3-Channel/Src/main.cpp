@@ -166,7 +166,6 @@ OS_INTERRUPT void Timer_ISR()
 
     Timer_Ovf.SignalISR();
 
-    EIC->IPR = (1 << STR71X_IRQ_T1);    // clear EIC pending bit (TIM1 channel)
 }
 //-----------------------------------------------------------------------------
 

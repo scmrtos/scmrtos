@@ -166,7 +166,6 @@ OS_INTERRUPT void Timer_ISR()
 
     Timer_Ovf.SignalISR();
 
-    VICVectAddr = 0;
 }
 //-----------------------------------------------------------------------------
 

@@ -158,7 +158,6 @@ OS_INTERRUPT void Timer_ISR()
     IO0SET = (1 << 29);
     MamontMsg.sendISR();    // send the message
 
-    VICVectAddr = 0;
 }
 //-----------------------------------------------------------------------------
 

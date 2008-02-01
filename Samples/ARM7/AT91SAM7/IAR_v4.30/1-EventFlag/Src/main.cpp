@@ -111,7 +111,6 @@ OS_INTERRUPT void Timer_ISR()
     AT91C_BASE_PIOA->PIO_SODR = (1 << 0);
     Timer_Ovf.SignalISR();
 
-    AT91C_BASE_AIC->AIC_EOICR = 0;
 }
 //-----------------------------------------------------------------------------
 

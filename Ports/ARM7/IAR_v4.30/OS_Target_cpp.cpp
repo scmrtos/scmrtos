@@ -116,9 +116,8 @@ OS_INTERRUPT void OS::SystemTimer_ISR()
 
     #if scmRTOS_SYSTIMER_HOOK_ENABLE == 1
     SystemTimerUserHook();
-#endif
+    #endif
 
-    IRQ_DONE();
 }
 //--------------------------------------------------------------------------
 namespace OS {

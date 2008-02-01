@@ -289,6 +289,7 @@ __arm inline OS::TISRW::~TISRW()
     DisableInterrupts();
     if(--Kernel.ISR_NestCount) return;
     Kernel.SchedISR();
+    IRQ_DONE();
 }
 #endif  // scmRTOS_CONTEXT_SWITCH_SCHEME
 

@@ -157,7 +157,6 @@ OS_INTERRUPT void Timer_ISR()
     AT91C_BASE_PIOA->PIO_SODR = (1 << 0);
     MamontMsg.sendISR();    // send the message
 
-    AT91C_BASE_AIC->AIC_EOICR = 0;
 }
 //-----------------------------------------------------------------------------
 

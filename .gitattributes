@@ -141,6 +141,7 @@ Samples/ARM7/STR71x/IAR_v4.30/3-Channel/slon.ewd -text
 Samples/ARM7/STR71x/IAR_v4.30/3-Channel/slon.ewp -text
 Samples/ARM7/STR71x/IAR_v4.30/3-Channel/slon.eww -text
 Samples/ARM7/WhatsNew.html -text
+Samples/ARM7/WhatsNew.txt -text
 Samples/ARM7/get_samples.bat -text
 Samples/AVR/IAR_v4.20/1-EventFlag/Config/lnkm32s.xcl -text
 Samples/AVR/IAR_v4.20/1-EventFlag/SConstruct -text
