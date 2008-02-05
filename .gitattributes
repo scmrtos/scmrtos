@@ -55,7 +55,6 @@ Samples/ARM7/ADuC70xx/IAR_v4.30/3-Channel/Src/device.h -text
 Samples/ARM7/ADuC70xx/IAR_v4.30/3-Channel/Src/main.cpp -text
 Samples/ARM7/ADuC70xx/IAR_v4.30/3-Channel/Src/scmRTOS_TARGET_CFG.h -text
 Samples/ARM7/ADuC70xx/IAR_v4.30/3-Channel/Src/scmRTOS_config.h -text
-Samples/ARM7/ADuC70xx/IAR_v4.30/3-Channel/slon.dep -text
 Samples/ARM7/ADuC70xx/IAR_v4.30/3-Channel/slon.ewd -text
 Samples/ARM7/ADuC70xx/IAR_v4.30/3-Channel/slon.ewp -text
 Samples/ARM7/ADuC70xx/IAR_v4.30/3-Channel/slon.eww -text
