@@ -173,7 +173,7 @@ namespace OS {
             (TPriority)2,       (TPriority)6,       (TPriority)0xFF,    (TPriority)13,
             (TPriority)3,       (TPriority)0xFF,    (TPriority)7,       (TPriority)0xFF,
             (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)14,
-            (TPriority)0,       (TPriority)4,       (TPriority)0xFF,    (TPriority)0xFF,
+            (TPriority)10,      (TPriority)4,       (TPriority)0xFF,    (TPriority)0xFF,
             (TPriority)8,       (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)25,
             (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)0xFF,
             (TPriority)0xFF,    (TPriority)21,      (TPriority)27,      (TPriority)15,
