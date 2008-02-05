@@ -15,7 +15,7 @@
 //*     $Revision$
 //*     $Date$
 //*
-//*     Copyright (c) 2003-2007, Harry E. Zhurov
+//*     Copyright (c) 2003-2008, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2007
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2008
 
 #ifndef  scmRTOS_TARGET_CFG_H
 #define  scmRTOS_TARGET_CFG_H
@@ -57,7 +57,7 @@
 // This int flag set because timer used as system timer and runs in PWM mode
 // This flag never to be cleared, enable bit in EIC->IER cleared instead
 // to make this channel always ready to assert int
-// Software interrupts in not used XTI because:
+//     Software interrupts in XTI not used because:
 // 1) context switching int handler must be so fast as possible
 // 2) it's difficult to share one handler between OS core and user application
 //    if required.
