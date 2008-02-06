@@ -78,6 +78,7 @@ Remap_RAM()
 
 Reset()
 {
+    __var i;
     writeMasked32(0x00000000,0xE01FC0C0,0x00000003);    // PCON, disable power-down
     writeMasked32(0x000017BE,0xE01FC0C4,0x000017BE);    // PCONP, all periph. enabled
 
