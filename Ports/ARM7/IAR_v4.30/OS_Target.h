@@ -272,12 +272,14 @@ __arm inline OS::TISRW::TISRW()
 }
 __arm inline OS::TISRW::~TISRW()
 {
-    if(--Kernel.ISR_NestCount) return;
-
-    TPriority NextProcPriority = GetHighPriority(Kernel.ReadyProcessMap);
-    TStackItem*  Next_SP = Kernel.ProcessTable[NextProcPriority]->StackPointer;
-    Kernel.CurProcPriority = NextProcPriority;
-    Set_New_SP(Next_SP);
+    if(--Kernel.ISR_NestCount == 0)
+    {
+        TPriority NextProcPriority = GetHighPriority(Kernel.ReadyProcessMap);
+        TStackItem*  Next_SP = Kernel.ProcessTable[NextProcPriority]->StackPointer;
+        Kernel.CurProcPriority = NextProcPriority;
+        Set_New_SP(Next_SP);
+    }
+    IRQ_DONE();
 }
 #else   // scmRTOS_CONTEXT_SWITCH_SCHEME == 1
 __arm inline OS::TISRW::TISRW()
@@ -287,8 +289,8 @@ __arm inline OS::TISRW::TISRW()
 __arm inline OS::TISRW::~TISRW()
 {
     DisableInterrupts();
-    if(--Kernel.ISR_NestCount) return;
-    Kernel.SchedISR();
+    if(--Kernel.ISR_NestCount == 0)
+        Kernel.SchedISR();
     IRQ_DONE();
 }
 #endif  // scmRTOS_CONTEXT_SWITCH_SCHEME
