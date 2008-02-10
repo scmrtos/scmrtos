@@ -15,7 +15,7 @@
 //*     $Revision$
 //*     $Date$
 //*
-//*     Copyright (c) 2003-2007, Harry E. Zhurov
+//*     Copyright (c) 2003-2008, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2007
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2008
 
 
 //---------------------------------------------------------------------------
@@ -64,7 +64,7 @@ TProc2 Proc2;
 TProc3 Proc3;
 //---------------------------------------------------------------------------
 
-struct TMamont                   //  data type for sanding by message
+struct TMamont                   //  data type for sending by message
 {                                //
     enum TSource
     {

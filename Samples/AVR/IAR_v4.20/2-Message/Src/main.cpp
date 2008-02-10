@@ -15,7 +15,7 @@
 //*     $Revision$
 //*     $Date$
 //*
-//*     Copyright (c) 2003-2006, Harry E. Zhurov
+//*     Copyright (c) 2003-2008, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person 
 //*     obtaining  a copy of this software and associated documentation 
@@ -63,7 +63,7 @@ TProc3 Proc3;
 dword T;                         // global variable for OS::GetTickCount testing
                                  //
 
-struct TMamont                   //  data type for sanding by message
+struct TMamont                   //  data type for sending by message
 {                                //
     enum TSource
     {
