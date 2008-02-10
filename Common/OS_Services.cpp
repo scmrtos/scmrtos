@@ -264,6 +264,7 @@ bool OS::TBaseMessage::wait(TTimeout timeout)
 
             if( NonEmpty == true )                                // if waked-up by send()
             {
+                NonEmpty = false;
                 p->Timeout = 0;
                 return true;
             }
