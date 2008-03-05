@@ -59,6 +59,8 @@
 #define RAMPZ   0x3b
 #define EIND    0x3c
 
+#define A90_PROC_OPTION     ((__TID__ >> 4) & 0x0F)
+
 #if (A90_PROC_OPTION == 0) || (A90_PROC_OPTION == 1)
 #define xcall   rcall
 #define xjmp    rjmp

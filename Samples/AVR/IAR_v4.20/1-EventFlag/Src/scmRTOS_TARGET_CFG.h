@@ -46,13 +46,19 @@
 #ifndef  scmRTOS_TARGET_CFG_H
 #define  scmRTOS_TARGET_CFG_H
 
-
-#define CONTEXT_SWITCH_ISR_VECTOR ANA_COMP_vect
-
 #include <ioavr.h>
 
-#ifndef __IAR_SYSTEMS_ASM__
+#if defined(ANA_COMP_vect)
+    #define CONTEXT_SWITCH_ISR_VECTOR ANA_COMP_vect
+#elif defined(ANALOG_COMP_vect)
+    #define CONTEXT_SWITCH_ISR_VECTOR ANALOG_COMP_vect
+#else
+    #error "Analog Comparator vector not defined"
+#endif
 
+
+#ifndef __IAR_SYSTEMS_ASM__
+     
 
 //------------------------------------------------------------------------------
 //

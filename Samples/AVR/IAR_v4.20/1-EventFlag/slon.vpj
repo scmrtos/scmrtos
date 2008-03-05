@@ -73,6 +73,11 @@
 			<F N="Src/scmRTOS_TARGET_CFG.h"/>
 			<F N="../scmRTOS/Common/usrlib.h"/>
 		</Folder>
+		<Folder
+			Name="Scripts"
+			Filters="">
+			<F N="SConstruct"/>
+		</Folder>
 		<F N="../scmRTOS/AVR/macros.m90"/>
 		<F N="../scmRTOS/AVR/OS_Target_asm.s90"/>
 	</Files>
