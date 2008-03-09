@@ -61,11 +61,10 @@
 //------------------------------------------------------------------------------
 _OS_Start:
     sp   = r0;                              // load highest priority process stack pointer
-                                            //
+    nop; nop; nop;  nop;                    //
+    sp +=  12;                              // restore space for calling function incoming parameters
     p0.l = lo(IMASK);                       //
     p0.h = hi(IMASK);                       //
-    nop;                                    //
-    nop;                                    //
     r1   = [sp++];                          // enable interrupts at CEC level
     [p0] = r1;                              //
                                             //
@@ -131,13 +130,15 @@ _ContextSwitcher_ISR:
     p5.h    = hi(IMASK);                      // (global interrupts enable state)
     r7      = [p5];                           //
     [--sp]  = r7;                             //
+    sp += -12;                                // reserve space for calling function incoming parameters
     r0      = sp;
     
     call    _OS_ContextSwitchHook;                          
 
     sp      = r0;
+    nop; nop;  nop;  nop;
+    sp +=  12;                                // restore space for calling function incoming parameters
 
-    nop; nop; nop; nop;
     r0      = [sp++];                         // load IMASK value 
     [p5]    = r0;                             // (global interrupts enable state)
     

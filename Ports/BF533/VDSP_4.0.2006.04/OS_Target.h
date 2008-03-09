@@ -133,7 +133,7 @@ namespace OS
         }
         return pr;
     }
-#else
+    #else
     inline byte GetHighPriority(TProcessMap pm)
     {
         byte pr;

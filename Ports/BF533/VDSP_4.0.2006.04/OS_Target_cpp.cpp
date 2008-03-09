@@ -67,6 +67,7 @@ TBaseProcess::TBaseProcess(TStackItem* Stack, TPriority pr, void (*exec)())
     *(--StackPointer) = (dword)exec;       // process main function address
     StackPointer -= 43;                    // emulate 43 "push rxx"
     *(--StackPointer) =   0xffe0;          // enable interrupts
+    StackPointer -= 3;                     // reserve space for calling function incoming parameters
 }
 //------------------------------------------------------------------------------
 /*
