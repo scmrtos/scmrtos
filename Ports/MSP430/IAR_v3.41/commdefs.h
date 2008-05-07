@@ -56,6 +56,8 @@ typedef unsigned long  dword;
 typedef volatile byte  sfr_byte;
 typedef volatile word  sfr_word;
 
+#define INLINE _Pragma("inline=forced")
+
 #endif // __IAR_SYSTEMS_ASM__
 
 #endif // COMMONDEFS_H

@@ -27,7 +27,7 @@
     <Windows>
       
       
-    <Wnd0>
+    <Wnd2>
         <Tabs>
           <Tab>
             <Identity>TabID-27182-5533</Identity>
@@ -39,7 +39,7 @@
           </Tab>
         </Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd0><Wnd1>
+      <SelectedTab>0</SelectedTab></Wnd2><Wnd3>
         <Tabs>
           <Tab>
             <Identity>TabID-3343-9050</Identity>
@@ -55,20 +55,20 @@
           </Tab>
         </Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd1></Windows>
+      <SelectedTab>0</SelectedTab></Wnd3></Windows>
     <Editor>
       
       
       
       
-    <Pane><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\MSP430\IAR_v3.41\2-Message\Src\main.cpp</Filename><XPos>0</XPos><YPos>33</YPos><SelStart>1783</SelStart><SelEnd>1783</SelEnd></Tab><ActiveTab>0</ActiveTab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\MSP430\IAR_v3.41\2-Message\Src\main.cpp</Filename><XPos>0</XPos><YPos>33</YPos><SelStart>1783</SelStart><SelEnd>1783</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\scmRTOS.AVR.3.0-beta\trunk\Samples\MSP430\IAR_v3.41\2-Message\Src\main.cpp</Filename><XPos>0</XPos><YPos>54</YPos><SelStart>3209</SelStart><SelEnd>3209</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\scmRTOS.AVR.3.0-beta\trunk\Samples\MSP430\IAR_v3.41\scmRTOS\Common\OS_Services.cpp</Filename><XPos>0</XPos><YPos>210</YPos><SelStart>9565</SelStart><SelEnd>9565</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\scmRTOS.AVR.3.0-beta\trunk\Samples\MSP430\IAR_v3.41\scmRTOS\MSP430\OS_Target_cpp.cpp</Filename><XPos>0</XPos><YPos>63</YPos><SelStart>2597</SelStart><SelEnd>2597</SelEnd></Tab><ActiveTab>3</ActiveTab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
     <Positions>
       
       
       
       
       
-    <Top><Row0><Sizes><Toolbar-0084f520><key>iaridepm1</key></Toolbar-0084f520></Sizes></Row0><Row1><Sizes/></Row1><Row2><Sizes/></Row2><Row3><Sizes/></Row3><Row4><Sizes/></Row4><Row5><Sizes><Toolbar-028d65e8><key>debuggergui1</key></Toolbar-028d65e8></Sizes></Row5><Row6><Sizes><Toolbar-028d6760><key>430fet1</key></Toolbar-028d6760></Sizes></Row6></Top><Left><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>917</Bottom><Right>266</Right><x>-2</x><y>-2</y><xscreen>173</xscreen><yscreen>173</yscreen><sizeHorzCX>108125</sizeHorzCX><sizeHorzCY>152557</sizeHorzCY><sizeVertCX>167500</sizeVertCX><sizeVertCY>810406</sizeVertCY></Rect></Wnd0></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>173</Bottom><Right>1602</Right><x>-2</x><y>-2</y><xscreen>1604</xscreen><yscreen>175</yscreen><sizeHorzCX>1002500</sizeHorzCX><sizeHorzCY>154321</sizeHorzCY><sizeVertCX>109375</sizeVertCX><sizeVertCY>154321</sizeVertCY></Rect></Wnd1></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+    <Top><Row0><Sizes><Toolbar-013c1ba0><key>iaridepm.enu1</key></Toolbar-013c1ba0></Sizes></Row0><Row1><Sizes/></Row1><Row2><Sizes/></Row2><Row3><Sizes/></Row3></Top><Left><Row0><Sizes><Wnd2><Rect><Top>-2</Top><Left>-2</Left><Bottom>909</Bottom><Right>266</Right><x>-2</x><y>-2</y><xscreen>173</xscreen><yscreen>171</yscreen><sizeHorzCX>108125</sizeHorzCX><sizeHorzCY>152135</sizeHorzCY><sizeVertCX>167500</sizeVertCX><sizeVertCY>810498</sizeVertCY></Rect></Wnd2></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd3><Rect><Top>-2</Top><Left>-2</Left><Bottom>171</Bottom><Right>1602</Right><x>-2</x><y>-2</y><xscreen>1604</xscreen><yscreen>173</yscreen><sizeHorzCX>1002500</sizeHorzCX><sizeHorzCY>153915</sizeHorzCY><sizeVertCX>109375</sizeVertCX><sizeVertCY>153915</sizeVertCY></Rect></Wnd3></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
   </Desktop>
 </Workspace>
 

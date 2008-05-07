@@ -1,6 +1,5 @@
 [DisAssemblyWindow]
-NumStates=_ 1
-State 1=_ 1
+NumStates=_ 0
 [State Storage]
 Control Register=1
 [Sequencer]
@@ -32,6 +31,8 @@ ActionState=1
 [TraceHelper]
 Enabled=0
 ShowSource=1
+[Profiling]
+Enabled=0
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -40,11 +41,7 @@ Category=_ 0
 LoggingEnabled=_ 0
 LogFile=_ ""
 [Breakpoints]
-Bp0=_ "Code" "{D:\slon\scmRTOS\!New\Samples\MSP430\IAR_v3.41\scmRTOS\Common\OS_Kernel.cpp}.63.31@1" 0 0 0 0 "" 0 "ClearCAIE()"
-Bp1=_ "Code" "{D:\slon\scmRTOS\!New\Samples\MSP430\IAR_v3.41\scmRTOS\MSP430\OS_Target_cpp.cpp}.69.5@1" 0 0 0 0 "" 0 ""
-Bp2=_ "Code" "Memory:0x1488" 0 0 0 0 "" 0 ""
-Bp3=_ "Conditional" "0x474" 0 "<not used>" 1 0 17 1 0 "" 0 16 "0xFFFF" "0xFFFF" 0 0 0 65531 65535 65535 -1
-Count=4
+Count=0
 [FET]
 Clock mode=14
 Extended Clock mode=61663

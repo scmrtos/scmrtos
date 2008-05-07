@@ -27,11 +27,13 @@ ShowSource=1
 Control Register=771
 [Sequencer]
 Control Register=0
-NextState0=4352
-NextState1=13090
+NextState0=0
+NextState1=0
 [Action Register]
 Break=0
 State Storage=0
+[Profiling]
+Enabled=0
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""

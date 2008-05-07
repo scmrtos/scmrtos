@@ -55,6 +55,8 @@ typedef unsigned long dword;
 
 typedef byte volatile __tiny IO_REG;
 
+#define INLINE _Pragma("inline=forced")
+
 #endif // __IAR_SYSTEMS_ASM__
 
 #endif // COMMDEFS_HEADER

@@ -51,6 +51,8 @@ typedef signed char    sbyte;
 typedef unsigned short word;
 typedef unsigned long  dword;
 
+#define INLINE
+
 #define MMR16(x) ( *((word*)x) )
 #define MMR32(x) ( *((dword*)x) )
 

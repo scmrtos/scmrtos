@@ -12,7 +12,7 @@
       <name>C-SPY</name>
       <archiveVersion>4</archiveVersion>
       <data>
-        <version>20</version>
+        <version>21</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -75,13 +75,17 @@
           <name>ProcMSP430X</name>
           <state>1</state>
         </option>
+        <option>
+          <name>CompilerDataModel</name>
+          <state>1</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>430FET</name>
       <archiveVersion>1</archiveVersion>
       <data>
-        <version>11</version>
+        <version>13</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -90,11 +94,11 @@
         </option>
         <option>
           <name>EMUSuppressLoadP7</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>Erase</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>EMUVerifyDownloadP7</name>
@@ -106,10 +110,6 @@
         </option>
         <option>
           <name>EraseOptionSlaveP7</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>VirtualBreakpointP7</name>
           <state>0</state>
         </option>
         <option>
@@ -131,10 +131,6 @@
         <option>
           <name>ParallelPortP7</name>
           <version>0</version>
-          <state>0</state>
-        </option>
-        <option>
-          <name>ConnectioonP7</name>
           <state>0</state>
         </option>
         <option>
@@ -177,6 +173,27 @@
           <name>NeedLockedFlashAccess</name>
           <state>1</state>
         </option>
+        <option>
+          <name>UsbComPort</name>
+          <state>Automatic</state>
+        </option>
+        <option>
+          <name>FetConnection</name>
+          <version>1</version>
+          <state>1</state>
+        </option>
+        <option>
+          <name>SoftwareBreakpointEnable</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>RadioSoftwareBreakpointType</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>TargetSettlingtime</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -198,28 +215,32 @@
     </settings>
     <debuggerPlugins>
       <plugin>
-        <file>$EW_DIR$\common\plugins\CodeCoverage\CodeCoverage.ewplugin</file>
-        <loadFlag>1</loadFlag>
-      </plugin>
-      <plugin>
-        <file>$EW_DIR$\common\plugins\Orti\Orti.ewplugin</file>
-        <loadFlag>0</loadFlag>
-      </plugin>
-      <plugin>
-        <file>$EW_DIR$\common\plugins\Profiling\Profiling.ewplugin</file>
-        <loadFlag>1</loadFlag>
-      </plugin>
-      <plugin>
-        <file>$EW_DIR$\common\plugins\Stack\Stack.ewplugin</file>
-        <loadFlag>1</loadFlag>
-      </plugin>
-      <plugin>
         <file>$TOOLKIT_DIR$\plugins\Lcd\lcd.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
       <plugin>
         <file>$TOOLKIT_DIR$\plugins\rtos\embOS\embOSPlugin.ewplugin</file>
         <loadFlag>0</loadFlag>
+      </plugin>
+      <plugin>
+        <file>$TOOLKIT_DIR$\plugins\rtos\uCOS-II\uCOS-II-KA-CSpy.ewplugin</file>
+        <loadFlag>0</loadFlag>
+      </plugin>
+      <plugin>
+        <file>$EW_DIR$\common\plugins\CodeCoverage\CodeCoverage.ENU.ewplugin</file>
+        <loadFlag>1</loadFlag>
+      </plugin>
+      <plugin>
+        <file>$EW_DIR$\common\plugins\Orti\Orti.ENU.ewplugin</file>
+        <loadFlag>0</loadFlag>
+      </plugin>
+      <plugin>
+        <file>$EW_DIR$\common\plugins\Profiling\Profiling.ENU.ewplugin</file>
+        <loadFlag>1</loadFlag>
+      </plugin>
+      <plugin>
+        <file>$EW_DIR$\common\plugins\Stack\Stack.ENU.ewplugin</file>
+        <loadFlag>1</loadFlag>
       </plugin>
     </debuggerPlugins>
   </configuration>

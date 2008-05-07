@@ -66,7 +66,6 @@
 #error "This file must be compiled by IAR C/C++ Compiler v3.30 or higher."
 #endif 
 
-#define INLINE _Pragma("inline=forced")
 
 //------------------------------------------------------------------------------
 //

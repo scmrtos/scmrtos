@@ -10,9 +10,9 @@
     <debug>1</debug>
     <settings>
       <name>General</name>
-      <archiveVersion>5</archiveVersion>
+      <archiveVersion>7</archiveVersion>
       <data>
-        <version>22</version>
+        <version>23</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -120,13 +120,21 @@
           <name>GHeapSize2</name>
           <state>80</state>
         </option>
+        <option>
+          <name>RadioDataModelType</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>GHeap20Size</name>
+          <state>80</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>ICC430</name>
       <archiveVersion>4</archiveVersion>
       <data>
-        <version>24</version>
+        <version>25</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -192,15 +200,6 @@
         <option>
           <name>CCRequirePrototypes</name>
           <state>0</state>
-        </option>
-        <option>
-          <name>CCOptSizeSpeed</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CCOptimization</name>
-          <version>2</version>
-          <state>4</state>
         </option>
         <option>
           <name>CCAllowList</name>
@@ -272,15 +271,6 @@
           <state>2</state>
         </option>
         <option>
-          <name>CCOptSizeSpeedSlave</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CCOptimizationSlave</name>
-          <version>2</version>
-          <state>4</state>
-        </option>
-        <option>
           <name>CPIC</name>
           <state>1</state>
         </option>
@@ -290,6 +280,7 @@
         </option>
         <option>
           <name>IExtraOptions</name>
+          <state></state>
         </option>
         <option>
           <name>PreInclude</name>
@@ -342,6 +333,23 @@
         <option>
           <name>Save20bit</name>
           <state>0</state>
+        </option>
+        <option>
+          <name>CompilerDataModel</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CCOptLevel</name>
+          <state>3</state>
+        </option>
+        <option>
+          <name>CCOptStrategy</name>
+          <version>0</version>
+          <state>2</state>
+        </option>
+        <option>
+          <name>CCOptLevelSlave</name>
+          <state>3</state>
         </option>
       </data>
     </settings>
@@ -534,7 +542,7 @@
       <name>XLINK</name>
       <archiveVersion>4</archiveVersion>
       <data>
-        <version>21</version>
+        <version>22</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -552,7 +560,7 @@
         </option>
         <option>
           <name>FormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -747,7 +755,7 @@
         </option>
         <option>
           <name>ExtraFormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -805,6 +813,10 @@
         <option>
           <name>CrcInitialValue</name>
           <state>0x0</state>
+        </option>
+        <option>
+          <name>XLibraryHeap20</name>
+          <state>1</state>
         </option>
       </data>
     </settings>
