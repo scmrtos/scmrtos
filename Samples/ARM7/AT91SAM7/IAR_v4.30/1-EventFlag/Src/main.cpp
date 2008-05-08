@@ -15,7 +15,7 @@
 //*     $Revision$
 //*     $Date$
 //*
-//*     Copyright (c) 2003-2007, Harry E. Zhurov
+//*     Copyright (c) 2003-2008, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2007
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2008
 
 #include <scmRTOS.h>
 
@@ -131,6 +131,10 @@ _C_LIB_DECL
 
 #ifndef AT91C_AIC_SRCTYPE_INT_POSITIVE_EDGE     // ioAT91SAM7Sxx.h v4.30A patch
 #define AT91C_AIC_SRCTYPE_INT_POSITIVE_EDGE AT91C_AIC_SRCTYPE_INT_EDGE_TRIGGERED
+#endif
+
+#ifndef AT91C_AIC_SRCTYPE_INT_HIGH_LEVEL        // ioAT91SAM7Sxx.h v4.30A patch
+#define AT91C_AIC_SRCTYPE_INT_HIGH_LEVEL    AT91C_AIC_SRCTYPE_INT_LEVEL_SENSITIVE
 #endif
 
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
