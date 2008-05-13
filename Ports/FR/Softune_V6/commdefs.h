@@ -52,6 +52,8 @@
 
 #ifndef __FASM__
 
+#define INLINE
+
 typedef unsigned char  byte;
 typedef signed char    sbyte;
 typedef unsigned short word;

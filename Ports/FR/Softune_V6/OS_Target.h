@@ -118,7 +118,6 @@ typedef dword TStatusReg;
 //    Configuration macros
 //
 //
-#define INLINE
 #define REGS 
 #define OS_PROCESS
 #define DUMMY_INSTR()
