@@ -114,11 +114,11 @@ namespace usr
     //
     //
     //
-    template<typename T, word size, class S = byte>
+    template<typename T, word Size, typename S = byte>
     class ring_buffer
     {
     public:
-        ring_buffer() : Size(size), Count(0), First(0), Last(0) { }
+        ring_buffer() : Count(0), First(0), Last(0) { }
 
         //----------------------------------------------------------------
         //
@@ -158,11 +158,10 @@ namespace usr
         //--------------------------------------------------------------
 
     private:
-        S  Size;
         S  Count;
         S  First;
         S  Last;
-        T  Buf[size];
+        T  Buf[Size];
     };
     //------------------------------------------------------------------
 }
@@ -175,8 +174,8 @@ namespace usr
 //
 //
 //
-template<typename T, word size, class S>
-bool usr::ring_buffer<T, size, S>::write(const T* data, const S cnt)
+template<typename T, word Size, typename S>
+bool usr::ring_buffer<T, Size, S>::write(const T* data, const S cnt)
 {
     if( cnt > (Size - Count) )
         return false;
@@ -187,8 +186,8 @@ bool usr::ring_buffer<T, size, S>::write(const T* data, const S cnt)
     return true;
 }
 //------------------------------------------------------------------------------
-template<typename T, word size, class S>
-void usr::ring_buffer<T, size, S>::read(T* data, const S cnt)
+template<typename T, word Size, typename S>
+void usr::ring_buffer<T, Size, S>::read(T* data, const S cnt)
 {
     S nItems = cnt <= Count ? cnt : Count;
 
@@ -196,8 +195,8 @@ void usr::ring_buffer<T, size, S>::read(T* data, const S cnt)
         data[i] = pop_item();
 }
 //------------------------------------------------------------------------------
-template<typename T, word size, class S>
-T& usr::ring_buffer<T, size, S>::operator[](const S index)
+template<typename T, word Size, typename S>
+T& usr::ring_buffer<T, Size, S>::operator[](const S index)
 {
     S x = First + index;
 
@@ -208,8 +207,8 @@ T& usr::ring_buffer<T, size, S>::operator[](const S index)
 }
 
 //------------------------------------------------------------------------------
-template<typename T, word size, class S>
-bool usr::ring_buffer<T, size, S>::push_back(const T item)
+template<typename T, word Size, typename S>
+bool usr::ring_buffer<T, Size, S>::push_back(const T item)
 {
     if(Count == Size)
         return false;
@@ -218,8 +217,8 @@ bool usr::ring_buffer<T, size, S>::push_back(const T item)
     return true;
 }
 //------------------------------------------------------------------------------
-template<typename T, word size, class S>
-bool usr::ring_buffer<T, size, S>::push_front(const T item)
+template<typename T, word Size, typename S>
+bool usr::ring_buffer<T, Size, S>::push_front(const T item)
 {
     if(Count == Size)
         return false;
@@ -228,8 +227,8 @@ bool usr::ring_buffer<T, size, S>::push_front(const T item)
     return true;
 }
 //------------------------------------------------------------------------------
-template<typename T, word size, class S>
-T usr::ring_buffer<T, size, S>::pop_front()
+template<typename T, word Size, typename S>
+T usr::ring_buffer<T, Size, S>::pop_front()
 {
     if(Count)
         return pop_item();
@@ -237,8 +236,8 @@ T usr::ring_buffer<T, size, S>::pop_front()
         return Buf[First];
 }
 //------------------------------------------------------------------------------
-template<typename T, word size, class S>
-T usr::ring_buffer<T, size, S>::pop_back()
+template<typename T, word Size, typename S>
+T usr::ring_buffer<T, Size, S>::pop_back()
 {
     if(Count)
         return pop_item_back();
@@ -246,8 +245,8 @@ T usr::ring_buffer<T, size, S>::pop_back()
         return Buf[First];
 }
 //------------------------------------------------------------------------------
-template<typename T, word size, class S>
-void usr::ring_buffer<T, size, S>::push_item(const T item)
+template<typename T, word Size, typename S>
+void usr::ring_buffer<T, Size, S>::push_item(const T item)
 {
     Buf[Last] = item;
     Last++;
@@ -257,8 +256,8 @@ void usr::ring_buffer<T, size, S>::push_item(const T item)
         Last = 0;
 }
 //------------------------------------------------------------------------------
-template<typename T, word size, class S>
-void usr::ring_buffer<T, size, S>::push_item_front(const T item)
+template<typename T, word Size, typename S>
+void usr::ring_buffer<T, Size, S>::push_item_front(const T item)
 {
     if(First == 0)
         First = Size - 1;
@@ -268,8 +267,8 @@ void usr::ring_buffer<T, size, S>::push_item_front(const T item)
     Count++;
 }
 //------------------------------------------------------------------------------
-template<typename T, word size, class S>
-T usr::ring_buffer<T, size, S>::pop_item()
+template<typename T, word Size, typename S>
+T usr::ring_buffer<T, Size, S>::pop_item()
 {
     T item = Buf[First];
 
@@ -281,8 +280,8 @@ T usr::ring_buffer<T, size, S>::pop_item()
     return item;
 }
 //------------------------------------------------------------------------------
-template<typename T, word size, class S>
-T usr::ring_buffer<T, size, S>::pop_item_back()
+template<typename T, word Size, typename S>
+T usr::ring_buffer<T, Size, S>::pop_item_back()
 {
 
     if(Last == 0)

@@ -141,7 +141,7 @@ namespace OS
     //       DESCRIPTION:
     //
     //
-    template<typename T, word size, class S = byte>
+    template<typename T, word Size, typename S = byte>
     ///  channel
     ///
     ///  Data channel for transferring data objects of arbitrary type
@@ -177,7 +177,7 @@ namespace OS
     private:
         TProcessMap ProducersProcessMap;
         TProcessMap ConsumersProcessMap;
-        usr::ring_buffer<T, size, S> pool;
+        usr::ring_buffer<T, Size, S> pool;
 
     private:
         void CheckWaiters(TProcessMap& pm);
@@ -244,8 +244,8 @@ void OS::TEventFlag::SignalISR()
     }
 }
 //------------------------------------------------------------------------------
-template<typename T, word size, class S>
-void OS::channel<T, size, S>::CheckWaiters(TProcessMap& pm)
+template<typename T, word Size, typename S>
+void OS::channel<T, Size, S>::CheckWaiters(TProcessMap& pm)
 {
     if(pm)
     {
@@ -257,8 +257,8 @@ void OS::channel<T, size, S>::CheckWaiters(TProcessMap& pm)
     }
 }
 //------------------------------------------------------------------------------
-template<typename T, word size, class S>
-void OS::channel<T, size, S>::push(const T& item)
+template<typename T, word Size, typename S>
+void OS::channel<T, Size, S>::push(const T& item)
 {
     TCritSect cs;
 
@@ -274,8 +274,8 @@ void OS::channel<T, size, S>::push(const T& item)
     CheckWaiters(ConsumersProcessMap);
 }
 //------------------------------------------------------------------------------
-template<typename T, word size, class S>
-void OS::channel<T, size, S>::push_front(const T& item)
+template<typename T, word Size, typename S>
+void OS::channel<T, Size, S>::push_front(const T& item)
 {
     TCritSect cs;
 
@@ -291,8 +291,8 @@ void OS::channel<T, size, S>::push_front(const T& item)
     CheckWaiters(ConsumersProcessMap);
 }
 //------------------------------------------------------------------------------
-template<typename T, word size, class S>
-bool OS::channel<T, size, S>::pop(T& item, TTimeout timeout)
+template<typename T, word Size, typename S>
+bool OS::channel<T, Size, S>::pop(T& item, TTimeout timeout)
 {
     TCritSect cs;
 
@@ -333,8 +333,8 @@ bool OS::channel<T, size, S>::pop(T& item, TTimeout timeout)
     }
 }
 //------------------------------------------------------------------------------
-template<typename T, word size, class S>
-bool OS::channel<T, size, S>::pop_back(T& item, TTimeout timeout)
+template<typename T, word Size, typename S>
+bool OS::channel<T, Size, S>::pop_back(T& item, TTimeout timeout)
 {
     TCritSect cs;
 
@@ -375,16 +375,16 @@ bool OS::channel<T, size, S>::pop_back(T& item, TTimeout timeout)
     }
 }
 //------------------------------------------------------------------------------
-template<typename T, word size, class S>
-void OS::channel<T, size, S>::flush()
+template<typename T, word Size, typename S>
+void OS::channel<T, Size, S>::flush()
 {
     TCritSect cs;
     pool.flush();
     CheckWaiters(ProducersProcessMap);
 }
 //------------------------------------------------------------------------------
-template<typename T, word size, class S>
-void OS::channel<T, size, S>::write(const T* data, const S count)
+template<typename T, word Size, typename S>
+void OS::channel<T, Size, S>::write(const T* data, const S count)
 {
     TCritSect cs;
 
@@ -400,8 +400,8 @@ void OS::channel<T, size, S>::write(const T* data, const S count)
     CheckWaiters(ConsumersProcessMap);
 }
 //------------------------------------------------------------------------------
-template<typename T, word size, class S>
-bool OS::channel<T, size, S>::read(T* const data, const S count, TTimeout timeout)
+template<typename T, word Size, typename S>
+bool OS::channel<T, Size, S>::read(T* const data, const S count, TTimeout timeout)
 {
     TCritSect cs;
 
