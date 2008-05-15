@@ -56,7 +56,7 @@ namespace OS
     class TMutex
     {
     public:
-        TMutex() : ProcessMap(0), ValueTag(0) { }
+        INLINE TMutex() : ProcessMap(0), ValueTag(0) { }
         void Lock();
         void Unlock();
 
@@ -86,7 +86,7 @@ namespace OS
         enum TValue { efOn = 1, efOff= 0 };     // prefix 'ef' means: "Event Flag"
 
     public:
-        TEventFlag(TValue init_val = efOff) : ProcessMap(0), Value(init_val) { }
+        INLINE TEventFlag(TValue init_val = efOff) : ProcessMap(0), Value(init_val) { }
 
         bool Wait(TTimeout timeout = 0);
         void Signal();
@@ -112,7 +112,7 @@ namespace OS
     class TChannel
     {
     public:
-        TChannel(byte* buf, byte size) : Cbuf(buf, size) { }
+        INLINE TChannel(byte* buf, byte size) : Cbuf(buf, size) { }
         void Push(byte x);
         byte Pop();
         void Write(const byte* data, const byte count);
@@ -148,7 +148,11 @@ namespace OS
     class channel
     {
     public:
-        channel() : pool() { }
+        INLINE channel() : ProducersProcessMap(0)
+                         , ConsumersProcessMap(0)
+                         , pool() 
+        { 
+        }
 
         //----------------------------------------------------------------
         //
@@ -168,8 +172,8 @@ namespace OS
         //
         //    Service functions
         //
-        S get_count()     const { TCritSect cs; return pool.get_count();     }
-        S get_free_size() const { TCritSect cs; return pool.get_free_size(); }
+        INLINE S get_count()     const { TCritSect cs; return pool.get_count();     }
+        INLINE S get_free_size() const { TCritSect cs; return pool.get_free_size(); }
         void flush();
         //const T& operator[](const S index) { TCritSect cs; return pool[index]; }
 
@@ -197,7 +201,7 @@ namespace OS
     class TBaseMessage
     {
     public:
-        TBaseMessage() : ProcessMap(0), NonEmpty(false) { }
+        INLINE TBaseMessage() : ProcessMap(0), NonEmpty(false) { }
 
         bool wait  (TTimeout timeout = 0);
         void send();
@@ -214,9 +218,9 @@ namespace OS
     class message : public TBaseMessage
     {
     public:
-        message() : TBaseMessage()   { }
-        const T& operator=(const T& msg) { TCritSect cs; Msg = msg; return Msg; }
-        operator     T() const       { TCritSect cs; return Msg; }
+        INLINE message() : TBaseMessage()   { }
+        INLINE const T& operator=(const T& msg) { TCritSect cs; Msg = msg; return Msg; }
+        INLINE operator     T() const       { TCritSect cs; return Msg; }
 
     private:
         T Msg;
