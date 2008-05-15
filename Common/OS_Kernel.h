@@ -137,17 +137,11 @@ namespace OS
     //      Functions
     //
     public:
-        TKernel()
+        INLINE TKernel()
             : CurProcPriority(pr0)
-            , ReadyProcessMap(0)
+            , ReadyProcessMap( (1 << (scmRTOS_PROCESS_COUNT + 1)) - 1)  // set all processes ready
             , ISR_NestCount(0)
         {
-            TProcessMap pm = 0x01;
-            for(byte i = 0; i < scmRTOS_PROCESS_COUNT+1; i++)
-            {
-                ReadyProcessMap |= pm;
-                pm <<= 1;
-            }
         }
 
     private:
@@ -231,7 +225,7 @@ namespace OS
         class process : public TBaseProcess
         {
         public:
-            process() : TBaseProcess(&Stack[stack_size/sizeof(TStackItem)]
+            INLINE process() : TBaseProcess(&Stack[stack_size/sizeof(TStackItem)]
                                       , pr
                                       , (void (*)())Exec)
             {
@@ -247,7 +241,7 @@ namespace OS
         class process : public TBaseProcess
         {
         public:
-            process() : TBaseProcess( &Stack[stack_size/sizeof(TStackItem)]
+            INLINE process() : TBaseProcess( &Stack[stack_size/sizeof(TStackItem)]
                                     , &RStack[rstack_size/sizeof(TStackItem)]
                                     , pr
                                     , (void (*)())Exec)
