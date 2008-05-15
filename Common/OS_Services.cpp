@@ -11,7 +11,7 @@
 //*     $Revision$
 //*     $Date$
 //*
-//*     Copyright (c) 2003-2007, Harry E. Zhurov
+//*     Copyright (c) 2003-2008, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -53,46 +53,50 @@ bool OS::TEventFlag::Wait(TTimeout timeout)
 {
     TCritSect cs;
 
-    if(Value == efOn)
-    {
-        Value = efOff;
+    if(Value)                                           // if flag already signaled 
+    {                                                  
+        Value = efOff;                                  // clear flag
         return true;
     }
     else
     {
-        TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
-        SetPrioTag(ProcessMap, PrioTag);             // put current process to wait map
-        ClrPrioTag(Kernel.ReadyProcessMap, PrioTag); // remove current process from ready map
-
-
         TBaseProcess* p = Kernel.ProcessTable[Kernel.CurProcPriority];
         p->Timeout = timeout;
-        Kernel.Scheduler();
+        TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
 
-        ClrPrioTag(ProcessMap, PrioTag);             // remove current process from wait list
-        Value = efOff;
-
-
-        word t = p->Timeout; p->Timeout = 0;
-
-        if(timeout == 0)
-            return true;
-
-        if(t)
-            return true;
-        else
-            return false;
-    }
+        SetPrioTag(ProcessMap, PrioTag);                // put current process to the wait map
+        ClrPrioTag(Kernel.ReadyProcessMap, PrioTag);    // remove current process from the ready map
+                                                       
+        Kernel.Scheduler();                            
+                                                       
+        p->Timeout = 0;                                
+                                                       
+        if( !(ProcessMap & PrioTag) )                   // if waked up by signal() or signal_ISR()
+            return true;                               
+                                                       
+        ClrPrioTag(ProcessMap, PrioTag);                // otherwise waked up by timeout or by 
+        return false;                                   // OS::ForceWakeUpProcess(), remove process from the wait map
+    }                                                        
 }
 //------------------------------------------------------------------------------
 void OS::TEventFlag::Signal()
 {
     TCritSect cs;
+    if(ProcessMap)                                      // if any process waits for event
+    {
+        TProcessMap Timeouted = Kernel.ReadyProcessMap; // Process has its tag set in ReadyProcessMap if timeout expired
+                                                        // or it was waked up by OS::ForceWakeUpProcess()  
 
-    Value = efOn;
-    Kernel.ReadyProcessMap |= ProcessMap;            // place all waiting processes to ready map
-
-    Kernel.Scheduler();
+        SetPrioTag(Kernel.ReadyProcessMap, ProcessMap); // place all waiting processes to the ready map
+        ClrPrioTag(ProcessMap, ~Timeouted);             // remove all non-timeouted processes from the waiting map.
+                                                        // Used to check that process waked up by signal() or signalISR()
+                                                        // and not by timeout and OS::ForceWakeUpProcess()
+        Kernel.Scheduler();                            
+    }                                                  
+    else                                               
+    {                                                  
+        Value = efOn;                                   
+    }
 }
 //------------------------------------------------------------------------------
 
@@ -109,12 +113,10 @@ void OS::TMutex::Lock()
     TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
     while(ValueTag)
     {
-        SetPrioTag(ProcessMap, PrioTag);             // mutex already locked by another process, put current process to wait map
-        ClrPrioTag(Kernel.ReadyProcessMap, PrioTag); // remove current process from ready map
+        SetPrioTag(ProcessMap, PrioTag);             // mutex already locked by another process, put current process to the wait map
+        ClrPrioTag(Kernel.ReadyProcessMap, PrioTag); // remove current process from the ready map
 
         Kernel.Scheduler();
-        // ValueTag at this point means that process with higher priority
-        // has alredy had to Lock() this mutex 
     }
     ValueTag = PrioTag;                              // mutex has been successfully locked
 }
@@ -124,14 +126,14 @@ void OS::TMutex::Unlock()
     TCritSect cs;
 
     TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
-    if(ValueTag != PrioTag) return;                  // the only process that has locked mutex can unlock the mutex
+    if(ValueTag != PrioTag) return;                  // the only process that had locked mutex can unlock the mutex
     ValueTag = 0;
     if(ProcessMap)
     {
         byte pr = GetHighPriority(ProcessMap);
         TProcessMap PrioTag = GetPrioTag(pr);
-        ClrPrioTag(ProcessMap, PrioTag);             // remove next ready process from wait map
-        SetPrioTag(Kernel.ReadyProcessMap, PrioTag); // place next process to ready map
+        ClrPrioTag(ProcessMap, PrioTag);             // remove next ready process from the wait map
+        SetPrioTag(Kernel.ReadyProcessMap, PrioTag); // place next process to the ready map
         Kernel.Scheduler();
     }
 }
@@ -150,8 +152,8 @@ void OS::TChannel::CheckWaiters(TProcessMap& pm)
     {
         byte pr = GetHighPriority(pm);
         TProcessMap PrioTag = GetPrioTag(pr);
-        ClrPrioTag(pm, PrioTag);                     // remove next ready process from wait map
-        SetPrioTag(Kernel.ReadyProcessMap, PrioTag); // place next process to ready map
+        ClrPrioTag(pm, PrioTag);                     // remove next ready process from the wait map
+        SetPrioTag(Kernel.ReadyProcessMap, PrioTag); // place next process to the ready map
         Kernel.Scheduler();
     }
 }
@@ -163,11 +165,9 @@ void OS::TChannel::Push(byte x)
     while (!Cbuf.get_free_size())
     {
         TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
-        SetPrioTag  (ProducersProcessMap, PrioTag);  // channel is full, put current process to wait map
-        ClrPrioTag(Kernel.ReadyProcessMap, PrioTag); // remove current process from ready map
+        SetPrioTag  (ProducersProcessMap, PrioTag);  // channel is full, put current process to the wait map
+        ClrPrioTag(Kernel.ReadyProcessMap, PrioTag); // remove current process from the ready map
         Kernel.Scheduler();                          // wait until waked-up by Pop() or Read()
-        // Cbuf.get_free_size() == 0 at this point means that
-        // process with higher priority has alredy had to Push() or Write() new data
     }
 
     Cbuf.put(x);
@@ -182,11 +182,9 @@ byte OS::TChannel::Pop()
     while(!Cbuf.get_count())
     {
         TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
-        SetPrioTag(ConsumersProcessMap, PrioTag);    // channel is empty, put current process to wait map
-        ClrPrioTag(Kernel.ReadyProcessMap, PrioTag); // remove current process from ready map
-        Kernel.Scheduler();                          // wait until waked-up by Push() or Write()
-        // Cbuf.get_count() == 0 at this point means that
-        // process with higher priority has alredy had to Pop() or Read() new data
+        SetPrioTag(ConsumersProcessMap, PrioTag);    // channel is empty, put current process to the wait map
+        ClrPrioTag(Kernel.ReadyProcessMap, PrioTag); // remove current process from the ready map
+        Kernel.Scheduler();                          // wait until waked up by Push() or Write()
     }
     x = Cbuf.get();
     CheckWaiters(ProducersProcessMap);
@@ -200,12 +198,9 @@ void OS::TChannel::Write(const byte* data, const byte count)
     while(Cbuf.get_free_size() < count)
     {
         TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
-        SetPrioTag(ProducersProcessMap, PrioTag);    // channel has not enough space, put current process to wait map
-        ClrPrioTag(Kernel.ReadyProcessMap, PrioTag); // remove current process from ready map
-        Kernel.Scheduler();                          // wait until waked-up by Read() or Pop()
-        // Cbuf.get_free_size() < count at this point means that
-        // not enough data removed by Read() or Pop()
-        // or process with higher priority has alredy had to Write() or Push() new data
+        SetPrioTag(ProducersProcessMap, PrioTag);    // channel has not enough space, put current process to the wait map
+        ClrPrioTag(Kernel.ReadyProcessMap, PrioTag); // remove current process from the ready map
+        Kernel.Scheduler();                          // wait until waked up by Read() or Pop()
     }
 
     Cbuf.write(data, count);
@@ -219,12 +214,9 @@ void OS::TChannel::Read(byte* const data, const byte count)
     while(Cbuf.get_count() < count)
     {
         TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
-        SetPrioTag(ConsumersProcessMap, PrioTag);    // channel doesn't contain enough data, put current process to wait map
-        ClrPrioTag(Kernel.ReadyProcessMap, PrioTag); // remove current process from ready map
-        Kernel.Scheduler();                          // wait until waked-up by Write() or Push()
-        // Cbuf.get_count() < count at this point means that
-        // not enough data placed by Write() or Push()
-        // or process with higher priority has alredy had to Read() or Pop() new data
+        SetPrioTag(ConsumersProcessMap, PrioTag);    // channel doesn't contain enough data, put current process to the wait map
+        ClrPrioTag(Kernel.ReadyProcessMap, PrioTag); // remove current process from the ready map
+        Kernel.Scheduler();                          // wait until waked up by Write() or Push()
     }
 
     Cbuf.read(data, count);
@@ -253,38 +245,37 @@ bool OS::TBaseMessage::wait(TTimeout timeout)
     {
         TBaseProcess* p = Kernel.ProcessTable[Kernel.CurProcPriority];
         p->Timeout = timeout;
-        for(;;)
-        {
-            TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
-            SetPrioTag(ProcessMap, PrioTag);                      // put current process to wait map
-            ClrPrioTag(Kernel.ReadyProcessMap, PrioTag);          // remove current process from ready map
+        TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
 
-            Kernel.Scheduler();                                   // wait until waked-up
-            ClrPrioTag(ProcessMap, PrioTag);                      // remove current process from wait list
+        SetPrioTag(ProcessMap, PrioTag);                          // put current process to the wait map
+        ClrPrioTag(Kernel.ReadyProcessMap, PrioTag);              // remove current process from the ready map
+        Kernel.Scheduler();                                       // wait until wake up
 
-            if( NonEmpty == true )                                // if waked-up by send()
-            {
-                NonEmpty = false;
-                p->Timeout = 0;
-                return true;
-            }
-
-            if(timeout && p->Timeout == 0)                        // waked up by timer when timeout expired
-                return false;
-            // otherwice this message was removed by higher priority process,
-            // wait for next message
-        }
-    }
+        p->Timeout = 0;
+        if( !(ProcessMap & PrioTag) )                             // if waked up by send() or sendISR()
+            return true;
+                                                                  
+        ClrPrioTag(ProcessMap, PrioTag);                          // otherwise waked up by timeout or by
+            return false;                                         // OS::ForceWakeUpProcess(), remove process from wait map
+    }                                                                 
 }
 //------------------------------------------------------------------------------
 void OS::TBaseMessage::send()
 {
     TCritSect cs;
 
-    NonEmpty = true;
-    OS::Kernel.ReadyProcessMap |= ProcessMap; // place all waiting processes to ready map
-
-    Kernel.Scheduler();
+    if(ProcessMap)
+    {
+        TProcessMap Timeouted = Kernel.ReadyProcessMap;    // Process has its tag set in ReadyProcessMap if timeout expired,
+                                                           // or it was waked up by OS::ForceWakeUpProcess()
+        SetPrioTag(Kernel.ReadyProcessMap, ProcessMap);    // place all waiting processes to the ready map
+        ClrPrioTag(ProcessMap, ~Timeouted);                // remove all non-timeouted processes from the waiting map.
+        Kernel.Scheduler();
+    }
+    else
+    {
+        NonEmpty = true;
+    }
 }
 //------------------------------------------------------------------------------
 
