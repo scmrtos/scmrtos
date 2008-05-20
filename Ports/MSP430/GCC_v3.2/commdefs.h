@@ -57,7 +57,7 @@ typedef unsigned long  dword;
 typedef volatile byte  sfr_byte;
 typedef volatile word  sfr_word;
 
-#define	INLINE		__attribute__((__always_inline__))
+#define	INLINE	
 #define	NOINLINE	__attribute__((__noinline__))
 #define	NORETURN	__attribute__((__noreturn__))
 
