@@ -119,7 +119,6 @@ Samples/FR/Softune_V6/3-Channel/Debug/ABS/*.*
 Samples/FR/Softune_V6/3-Channel/Debug/LST/*.*
 Samples/FR/Softune_V6/3-Channel/Debug/OBJ/*.*
 Samples/FR/Softune_V6/Doxygen
-Samples/MSP430/GCC_v3.2/*.bat
 Samples/MSP430/GCC_v3.2/1-EventFlag/*.mpj
 Samples/MSP430/GCC_v3.2/1-EventFlag/do.bat
 Samples/MSP430/GCC_v3.2/1-EventFlag/exe/*.*
