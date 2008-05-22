@@ -65,6 +65,8 @@ dword T;                         // global variable for OS::GetTickCount testing
 OS::TEventFlag ef;               //
 OS::TEventFlag Timer_B_Ovf;
 
+void SetSleep(TTimeout x);
+
 //---------------------------------------------------------------------------
 #pragma diag_suppress=Pe951      // suppress return type warning 
 void main()
@@ -125,9 +127,14 @@ OS_PROCESS void TProc3::Exec()
 {
     for(;;)
     {
-        Sleep(1);
+        SetSleep(1);
         ef.Signal();
     }
+}
+//---------------------------------------------------------------------------
+void SetSleep(TTimeout x)
+{
+    OS::Sleep(x);
 }
 //---------------------------------------------------------------------------
 void OS::SystemTimerUserHook() { }

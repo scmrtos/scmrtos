@@ -266,6 +266,7 @@ namespace OS
     INLINE inline void UnlockSystemTimer() { TCritSect cs; UNLOCK_SYSTEM_TIMER(); }
     void WakeUpProcess(TBaseProcess& p);
     void ForceWakeUpProcess(TBaseProcess& p);
+    INLINE inline void Sleep(TTimeout t) { TBaseProcess::Sleep(t); }
 
     INLINE inline bool IsProcessSleeping(const TBaseProcess& p)
     {
