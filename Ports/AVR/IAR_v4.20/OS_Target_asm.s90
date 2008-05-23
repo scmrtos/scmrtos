@@ -68,6 +68,21 @@
 #define xcall   call
 #define xjmp    jmp
 #endif
+
+#if defined(__ATmega103__)   || \
+    defined(__ATmega128__)   || \
+    defined(__ATmega1280__)  || \
+    defined(__ATmega1281__)  || \
+    defined(__ATmega2560__)  || \
+    defined(__ATmega2561__)  || \
+    defined(__AT90CAN128__)  || \
+    defined(__AT90USB1286__) || \
+    defined(__AT90USB1287__) || \
+    defined(__AT90USB1287__)
+
+#define HAS_RAMPZ 1
+
+#endif
 ;-------------------------------------------------------------------------------
   
      module  scmRTOS_Asm
