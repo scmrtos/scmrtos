@@ -16,6 +16,10 @@ Ports/ARM7/IAR_v4.30/Target_AT91SAM7.h -text
 Ports/ARM7/IAR_v4.30/Target_LPC2xxx.h -text
 Ports/ARM7/IAR_v4.30/Target_STR71x.h -text
 Ports/ARM7/IAR_v4.30/commdefs.h -text
+Ports/AVR/GCC/OS_Target.h -text
+Ports/AVR/GCC/OS_Target_asm.S -text
+Ports/AVR/GCC/OS_Target_cpp.cpp -text
+Ports/AVR/GCC/commdefs.h -text
 Ports/AVR/IAR_v4.20/OS_Target.h -text
 Ports/AVR/IAR_v4.20/OS_Target_asm.s90 -text
 Ports/AVR/IAR_v4.20/OS_Target_cpp.cpp -text
