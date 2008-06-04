@@ -157,4 +157,3 @@ __do_global_dtors:
 	jne	.L__dtors_loop
 .L__dtors_end:
 #endif
-

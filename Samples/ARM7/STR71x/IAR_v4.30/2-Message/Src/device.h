@@ -1,1 +1,1 @@
-This file will be replaced by svn switch
+This file will be replaced by svn switc
