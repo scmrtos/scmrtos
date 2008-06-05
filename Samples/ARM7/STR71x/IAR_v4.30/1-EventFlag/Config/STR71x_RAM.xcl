@@ -1,3 +1,16 @@
+//*****************************************************************
+//  Macro file for IAR C-SPY debugger
+//
+//  Performs some necessary actions for debugging with C-SPY
+//  
+//
+//  Copyright (c) 2007-2008, Sergey A. Borshch
+//
+//  $Revision:  $
+//  $Date::  $
+//
+//*****************************************************************
+
 -carm
 
 // place code to RAM

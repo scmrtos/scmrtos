@@ -1,3 +1,16 @@
+//*****************************************************************
+//  Command file for IAR Linker
+//
+//  Generates appropriate mappings for objects in memory
+//  
+//
+//  Copyright (c) 2007-2008, Sergey A. Borshch
+//
+//  $Revision$
+//  $Date::  $
+//
+//*****************************************************************
+
 -cARM
 // place code to ram
 -DROMSTART=00000040                     // reserve space for INTVEC
