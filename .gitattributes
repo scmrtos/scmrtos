@@ -30,6 +30,10 @@ Ports/BF533/VDSP/OS_Target_cpp.cpp -text
 Ports/BF533/VDSP/commdefs.h -text
 Ports/BF533/VDSP/device_def.h -text
 Ports/FR/Softune_V6/OS_Target_asm.asm -text
+Ports/MSP430/GCC/OS_Target.h -text
+Ports/MSP430/GCC/OS_Target_asm.S -text
+Ports/MSP430/GCC/OS_Target_cpp.cpp -text
+Ports/MSP430/GCC/commdefs.h -text
 Ports/MSP430/GCC_v3.2/OS_Target.h -text
 Ports/MSP430/GCC_v3.2/OS_Target_asm.S -text
 Ports/MSP430/GCC_v3.2/OS_Target_cpp.cpp -text
