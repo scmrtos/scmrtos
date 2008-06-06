@@ -34,10 +34,6 @@ Ports/MSP430/GCC/OS_Target.h -text
 Ports/MSP430/GCC/OS_Target_asm.S -text
 Ports/MSP430/GCC/OS_Target_cpp.cpp -text
 Ports/MSP430/GCC/commdefs.h -text
-Ports/MSP430/GCC_v3.2/OS_Target.h -text
-Ports/MSP430/GCC_v3.2/OS_Target_asm.S -text
-Ports/MSP430/GCC_v3.2/OS_Target_cpp.cpp -text
-Ports/MSP430/GCC_v3.2/commdefs.h -text
 Ports/MSP430/IAR/OS_Target.h -text
 Ports/MSP430/IAR/OS_Target_asm.s43 -text
 Ports/MSP430/IAR/OS_Target_cpp.cpp -text
