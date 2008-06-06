@@ -46,12 +46,28 @@
 #ifndef  scmRTOS_TARGET_CFG_H
 #define  scmRTOS_TARGET_CFG_H
 
-
-#define CONTEXT_SWITCH_ISR_VECTOR ANA_COMP_vect
-
 #include <ioavr.h>
 
+#if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
+
+#  if defined(SPM_READY_vect)
+#    define CONTEXT_SWITCH_ISR_VECTOR  SPM_READY_vect
+#  elif defined(SPM_RDY_vect)
+#    define CONTEXT_SWITCH_ISR_VECTOR  SPM_RDY_vect
+#  else
+#    error "SPM ready interrupt vector not defined"
+#  endif
+
+#endif
+
+
 #ifndef __IAR_SYSTEMS_ASM__
+
+#if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
+
+#define SPM_CONTROL_REG SPMCR
+
+#endif
 
 
 //------------------------------------------------------------------------------
@@ -90,26 +106,28 @@ namespace OS
 
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
 
-    INLINE inline void RaiseContextSwitch()
-    {
-        PORTB |= (1 << 3); PORTB &= ~(1 << 3); // set flag
-    }
-    INLINE inline void BlockContextSwitch() { ACSR &= ~(1 << ACIE); } // disable interrupt
+    INLINE inline void RaiseContextSwitch() { SPM_CONTROL_REG |= (1 << SPMIE);  } // enable SPM interrupt
+    INLINE inline void BlockContextSwitch() { SPM_CONTROL_REG &= ~(1 << SPMIE); } // disable SPM interrupt
 
     class TNestedISRW              
     {                              
     public:                        
-        INLINE TNestedISRW() : State(ACSR) { BlockContextSwitch(); __enable_interrupt(); } 
+        INLINE TNestedISRW() : State(SPM_CONTROL_REG) { BlockContextSwitch(); __enable_interrupt(); } 
         INLINE ~TNestedISRW() 
         { 
             __disable_interrupt(); 
-            ACSR = State; 
-            if(State & (1 << ACI)) RaiseContextSwitch(); 
+            SPM_CONTROL_REG = State;
         }
                                                                              
     private:                                                                 
         byte State;                                                          
     };
+
+#if scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE == 1
+
+    INLINE inline void ContextSwitchUserHook() { BlockContextSwitch(); }
+
+#endif
 
     #define ENABLE_NESTED_INTERRUPTS() OS::TNestedISRW NestedISRW
 
@@ -120,6 +138,8 @@ namespace OS
 #endif // scmRTOS_CONTEXT_SWITCH_SCHEME
 }
 //-----------------------------------------------------------------------------
+#else  // __IAR_SYSTEMS_ASM__
+
 #endif // __IAR_SYSTEMS_ASM__
 
 

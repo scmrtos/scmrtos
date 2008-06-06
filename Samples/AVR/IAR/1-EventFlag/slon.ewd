@@ -370,7 +370,7 @@
         </option>
         <option>
           <name>OJTAGICEAVRJtagDebugTimers</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>OJTAGICEAVRJtagDebugEeprom</name>
@@ -478,7 +478,7 @@
         </option>
         <option>
           <name>OJTAGICEMKIIAVRJtagIceConsCheck</name>
-          <state>0</state>
+          <state>2</state>
         </option>
         <option>
           <name>OJTAGICEMKIIAVRJtagIceJtagFreqRadio</name>
@@ -523,7 +523,7 @@
         </option>
         <option>
           <name>OJTAGICEMKIIAVRJtagDebugReset</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OJTAGICEMKIIAVRJtagDebugFuses</name>

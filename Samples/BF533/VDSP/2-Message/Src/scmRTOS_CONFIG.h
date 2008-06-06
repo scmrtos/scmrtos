@@ -136,4 +136,16 @@ typedef dword TTimeout;
 //
 #define  scmRTOS_PRIORITY_ORDER 1
 
+//-----------------------------------------------------------------------------
+//
+//    scmRTOS Context Switch User Hook enable
+// 
+//    The macro enables/disables user defined hook called from system
+//    Context Switch Hook function.
+//
+//
+#define  scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE  0
+
+//-----------------------------------------------------------------------------
+
 #endif // scmRTOS_CONFIG_H

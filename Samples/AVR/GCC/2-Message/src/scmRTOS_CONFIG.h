@@ -80,14 +80,14 @@ typedef word TTimeout;
 //
 //    TISRW_SS : ISR Wrapper with separate ISR stack software switching
 //
-#define scmRTOS_ISRW_TYPE	TISRW //_SS
+#define scmRTOS_ISRW_TYPE   TISRW //_SS
 
 //-----------------------------------------------------------------------------
 //
 //    scmRTOS System Timer Tick Counter Enable
 //
 //
-#define  scmRTOS_SYSTEM_TICKS_ENABLE	1
+#define  scmRTOS_SYSTEM_TICKS_ENABLE    1
 
 
 //-----------------------------------------------------------------------------
@@ -138,6 +138,16 @@ typedef word TTimeout;
 //
 //
 #define  scmRTOS_PRIORITY_ORDER             0
+
+//-----------------------------------------------------------------------------
+//
+//    scmRTOS Context Switch User Hook enable
+// 
+//    The macro enables/disables user defined hook called from system
+//    Context Switch Hook function.
+//
+//
+#define  scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE  0
 
 //-----------------------------------------------------------------------------
 

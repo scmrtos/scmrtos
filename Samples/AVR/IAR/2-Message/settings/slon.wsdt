@@ -28,7 +28,7 @@
     <Windows>
       
       
-    <Wnd2>
+    <Wnd0>
         <Tabs>
           <Tab>
             <Identity>TabID-8395-26107</Identity>
@@ -40,7 +40,7 @@
           </Tab>
         </Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd2><Wnd3>
+      <SelectedTab>0</SelectedTab></Wnd0><Wnd1>
         <Tabs>
           <Tab>
             <Identity>TabID-7872-26117</Identity>
@@ -56,20 +56,20 @@
           </Tab>
         </Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd3></Windows>
+      <SelectedTab>0</SelectedTab></Wnd1></Windows>
     <Editor>
       
       
       
       
-    <Pane><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\AVR\IAR_v4.20\scmRTOS\AVR\OS_Target.h</Filename><XPos>0</XPos><YPos>57</YPos><SelStart>2123</SelStart><SelEnd>2123</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\AVR\IAR_v4.20\scmRTOS\Common\OS_Services.h</Filename><XPos>0</XPos><YPos>396</YPos><SelStart>14208</SelStart><SelEnd>14208</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\AVR\IAR_v4.20\scmRTOS\Common\OS_Kernel.h</Filename><XPos>0</XPos><YPos>108</YPos><SelStart>4150</SelStart><SelEnd>4150</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\AVR\IAR_v4.20\2-Message\Src\scmRTOS_TARGET_CFG.h</Filename><XPos>0</XPos><YPos>40</YPos><SelStart>2044</SelStart><SelEnd>2044</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\AVR\IAR_v4.20\scmRTOS\AVR\OS_Target_cpp.cpp</Filename><XPos>0</XPos><YPos>58</YPos><SelStart>2645</SelStart><SelEnd>2645</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\AVR\IAR_v4.20\2-Message\Src\main.cpp</Filename><XPos>0</XPos><YPos>37</YPos><SelStart>1709</SelStart><SelEnd>1709</SelEnd></Tab><ActiveTab>5</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\AVR\IAR_v4.20\scmRTOS\Common\OS_Kernel.cpp</Filename><XPos>0</XPos><YPos>32</YPos><SelStart>1639</SelStart><SelEnd>1639</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\AVR\IAR_v4.20\scmRTOS\AVR\OS_Target.h</Filename><XPos>0</XPos><YPos>57</YPos><SelStart>2123</SelStart><SelEnd>2123</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\AVR\IAR_v4.20\scmRTOS\Common\OS_Services.h</Filename><XPos>0</XPos><YPos>396</YPos><SelStart>14208</SelStart><SelEnd>14208</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\AVR\IAR_v4.20\scmRTOS\Common\OS_Kernel.h</Filename><XPos>0</XPos><YPos>108</YPos><SelStart>4150</SelStart><SelEnd>4150</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\AVR\IAR_v4.20\2-Message\Src\scmRTOS_TARGET_CFG.h</Filename><XPos>0</XPos><YPos>40</YPos><SelStart>2044</SelStart><SelEnd>2044</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\AVR\IAR_v4.20\scmRTOS\AVR\OS_Target_cpp.cpp</Filename><XPos>0</XPos><YPos>58</YPos><SelStart>2645</SelStart><SelEnd>2645</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\AVR\IAR_v4.20\2-Message\Src\main.cpp</Filename><XPos>0</XPos><YPos>37</YPos><SelStart>1709</SelStart><SelEnd>1709</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\AVR\IAR_v4.20\scmRTOS\Common\OS_Kernel.cpp</Filename><XPos>0</XPos><YPos>32</YPos><SelStart>1639</SelStart><SelEnd>1639</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\scmRTOS.v3.0-beta\trunk\Samples\AVR\IAR\2-Message\Src\main.cpp</Filename><XPos>0</XPos><YPos>55</YPos><SelStart>3145</SelStart><SelEnd>3145</SelEnd></Tab><ActiveTab>7</ActiveTab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
     <Positions>
       
       
       
       
       
-    <Top><Row0><Sizes><Toolbar-0084f570><key>iaridepm1</key></Toolbar-0084f570></Sizes></Row0><Row1><Sizes><Toolbar-0120b5d8><key>debuggergui1</key></Toolbar-0120b5d8></Sizes></Row1></Top><Left><Row0><Sizes><Wnd2><Rect><Top>-2</Top><Left>-2</Left><Bottom>892</Bottom><Right>198</Right><x>-2</x><y>-2</y><xscreen>200</xscreen><yscreen>200</yscreen><sizeHorzCX>125000</sizeHorzCX><sizeHorzCY>176367</sizeHorzCY><sizeVertCX>125000</sizeVertCX><sizeVertCY>788360</sizeVertCY></Rect></Wnd2></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd3><Rect><Top>-2</Top><Left>-2</Left><Bottom>198</Bottom><Right>1602</Right><x>-2</x><y>-2</y><xscreen>1604</xscreen><yscreen>200</yscreen><sizeHorzCX>1002500</sizeHorzCX><sizeHorzCY>176367</sizeHorzCY><sizeVertCX>125000</sizeVertCX><sizeVertCY>176367</sizeVertCY></Rect></Wnd3></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+    <Top><Row0><Sizes><Toolbar-008ee888><key>iaridepm1</key></Toolbar-008ee888></Sizes></Row0><Row1><Sizes/></Row1></Top><Left><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>884</Bottom><Right>198</Right><x>-2</x><y>-2</y><xscreen>200</xscreen><yscreen>198</yscreen><sizeHorzCX>125000</sizeHorzCX><sizeHorzCY>176157</sizeHorzCY><sizeVertCX>125000</sizeVertCX><sizeVertCY>788256</sizeVertCY></Rect></Wnd0></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>196</Bottom><Right>1602</Right><x>-2</x><y>-2</y><xscreen>1604</xscreen><yscreen>198</yscreen><sizeHorzCX>1002500</sizeHorzCX><sizeHorzCY>176157</sizeHorzCY><sizeVertCX>125000</sizeVertCX><sizeVertCY>176157</sizeVertCY></Rect></Wnd1></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
   </Desktop>
 </Workspace>
 

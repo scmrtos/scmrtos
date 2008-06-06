@@ -383,6 +383,10 @@ TStackItem* OS::TKernel::ContextSwitchHook(TStackItem* sp)
     ProcessTable[CurProcPriority]->StackPointer = sp;
     sp = ProcessTable[SchedProcPriority]->StackPointer;
 
+#if scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE == 1
+    ContextSwitchUserHook();
+#endif 
+
     CurProcPriority = SchedProcPriority;
     return sp;
 }

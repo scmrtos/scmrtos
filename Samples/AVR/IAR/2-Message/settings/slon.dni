@@ -16,8 +16,6 @@ Enabled=0
 ShowSource=1
 [BreakpointUsageDialog]
 Placement=_ 582 451 1019 722
-[Breakpoints]
-Count=0
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -25,3 +23,5 @@ Category=_ 0
 [TermIOLog]
 LoggingEnabled=_ 0
 LogFile=_ ""
+[Breakpoints]
+Count=0
