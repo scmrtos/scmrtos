@@ -147,7 +147,7 @@ typedef word TTimeout;
 //    Context Switch Hook function.
 //
 //
-#define  scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE  0
+#define  scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE  1
 
 //-----------------------------------------------------------------------------
 

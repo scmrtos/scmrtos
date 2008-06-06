@@ -216,9 +216,7 @@ CONTEXT_SWITCH_ISR_VECTOR:
 	XCALL OS_ContextSwitchHook
 	out	_SFR_IO_ADDR(SPH), r25	; set next stack pointer
 	out	_SFR_IO_ADDR(SPL), r24	; from return value
-#ifdef	CONTEXT_SWITCH_END
-	CONTEXT_SWITCH_END
-#endif
+
 L_RestoreContext:
 	restore_context
 	reti

@@ -110,7 +110,7 @@
 //  But SPM_READY interrupt must be disabled manually when switching ends, so
 //  we provide CONTEXT_SWITCH_END macro (see below).
 //  CONTEXT_SWITCH_END used inside CONTEXT_SWITCH_ISR_VECTOR handler (see OS_Target_asm.S)
-//   You can change or delete the macro if you are use another vector for context switching.
+//  You can change or delete the macro if you are use another vector for context switching.
 //
 namespace OS
 {
@@ -121,7 +121,6 @@ namespace OS
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
 
     INLINE inline void RaiseContextSwitch() { SPM_CONTROL_REG |= (1 << SPMIE);  } // enable SPM interrupt
-
     INLINE inline void BlockContextSwitch() { SPM_CONTROL_REG &= ~(1 << SPMIE); } // disable SPM interrupt
 
     class TNestedISRW
@@ -139,33 +138,17 @@ namespace OS
 
     #define ENABLE_NESTED_INTERRUPTS() OS::TNestedISRW NestedISRW
 
-#else
+#  if scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE != 1
+#    error "scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE must be 1 for SPM_READY interrupt context switcher"
+#  endif
+    INLINE inline void ContextSwitchUserHook() { BlockContextSwitch(); }
+
+#else // scmRTOS_CONTEXT_SWITCH_SCHEME
 
     #define ENABLE_NESTED_INTERRUPTS() sei()
 
 #endif // scmRTOS_CONTEXT_SWITCH_SCHEME
 }
-
-//-----------------------------------------------------------------------------
-
-#else // __ASSEMBLER__
-
-
-#if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
-
-#  if _SFR_IO_REG_P(SPM_CONTROL_REG)
-#    define CONTEXT_SWITCH_END \
-	in r16, _SFR_IO_ADDR(SPM_CONTROL_REG) $\
-	andi r16, lo8(~(1 << SPMIE)) $\
-	out _SFR_IO_ADDR(SPM_CONTROL_REG), r16
-#  else
-#    define CONTEXT_SWITCH_END \
-	lds r16, _SFR_MEM_ADDR(SPM_CONTROL_REG) $\
-	andi r16, lo8(~(1 << SPMIE)) $\
-	sts _SFR_MEM_ADDR(SPM_CONTROL_REG), r16
-#  endif
-
-#endif // scmRTOS_CONTEXT_SWITCH_SCHEME
 
 #endif // __ASSEMBLER__
 
