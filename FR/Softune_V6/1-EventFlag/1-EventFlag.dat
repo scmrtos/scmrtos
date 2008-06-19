@@ -1,0 +1,91 @@
+$CPUSERIES-911
+$Prj-Debug
+$0
+-g
+-w 1
+-I "..\MB91270"
+-I "SRC"
+-I "..\scmRTOS\FR"
+-I "..\scmRTOS\Common"
+-O 4
+-K SPEED
+-K SHORTADDRESS
+-B
+-K SCHEDULE
+-K A1
+-K SARG
+-Xdof
+-K EOPT
+-K LIB
+-K UNROLL
+$other
+-Ja
+$time
+1175875249
+$end
+$1
+-g
+-w 2
+-I "SRC"
+-I "..\MB91270"
+-O 0
+-linf ON
+-lsrc ON
+-lsec ON
+-lcros OFF
+-linc ON
+-lexp OBJ
+-pl 60
+-pw 100
+-tab 8
+-Xdof
+$other
+$time
+1175875386
+$end
+$2
+-g
+-AL 2
+-ra RAM_AREA=0x0003D800/0x0003FFFF
+-ro ROM_AREA=0x000C0000/0x000FFFFF
+-sc INIT/Data+DATA/Data+SSTACK/Data+USTACK/Data=RAM_AREA
+-sc CODE/Code+@INIT/Const+CONST/Const=ROM_AREA
+-sc INTVECT/Const=0x000FFC00
+-check_rora
+-check_locate
+-m
+-pl 60
+-pw 132
+-Xals
+-Xalr
+-na
+-w 1
+-Xdof
+$other
+-l lib911if.lib
+$time
+1175875590
+$end
+$3
+-dt s,d,r,a
+-pl 60
+-pw 132
+-g
+-Xdof
+$other
+$time
+1175874843
+$end
+$4
+-Xdof
+$other
+$time
+1121077755
+$end
+$5
+$other
+$time
+1121077755
+$end
+$Prjend
+$CPUSERIESEND

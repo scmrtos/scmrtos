@@ -1,0 +1,29 @@
+ARM7 IAR Port changes since v3.0 release:
+
+    * Total idle process stack size defined in scmRTOS_config.h now.
+    scmRTOS_IDLE_PROCESS_STACK_SIZE must be at least 4*17 = 68 bytes.
+    Increase scmRTOS_IDLE_PROCESS_STACK_SIZE by 68 bytes if migrating from v3.0
+
+    * Context switcher of scmRTOS_CONTEXT_SWITCH_SCHEME = 0 improved.
+    SWI not used for context switch anymore.
+    
+    * scmRTOS_PRIORITY_ORDER = 1 support removed. Remove scmRTOS_PRIORITY_ORDER
+    setting from scmRTOS_config.h if migrating from v3.0
+    
+    * IRQ stack pointer initialization removed from OS_Start() because it alredy
+    initialized in in IAR's library cstartup. CSTACK shares ( main() stack ) IRQ
+    stack space until OS starts. CSTACK and IRQ Stack allocation and size define
+    in .xcl swapped. See .xcl in examples folders if migrating from v3.0
+    
+    * Interrupt controller "interrupt serviced" signal 
+      - AT91C_BASE_AIC->AIC_EOICR = 0 in AT91SAM7 port
+      - VICVectAddr = 0 in LPC2xxx port
+      - EIC->IPR = (1 << EIC->CICR) in STR71x port      
+    moved to OS::TISRW destructor to make sources compartible in
+    scmRTOS_CONTEXT_SWITCH_SCHEMEs 0 and 1
+
+    * AT91SAM7 port: System timer handler rewritten and SYS interrupt type changed 
+    to AT91C_AIC_SRCTYPE_INT_HIGH_LEVEL to allow other SYS interrupts (DBGU etc.) to
+    be serviced in OS::SystemTimerUserHook()
+    
+    * Some debug artefacts removed

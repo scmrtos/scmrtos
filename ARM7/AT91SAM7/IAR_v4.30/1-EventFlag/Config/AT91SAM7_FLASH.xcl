@@ -1,0 +1,47 @@
+//*****************************************************************
+//  Command file for IAR Linker
+//
+//  Generates appropriate mappings for objects in memory
+//  
+//
+//  Copyright (c) 2007-2008, Sergey A. Borshch
+//
+//  $Revision$
+//  $Date::  $
+//
+//*****************************************************************
+
+-cARM
+// place code to flash
+-DROMSTART=00000040                     // reserve space for INTVEC
+-DROMEND=00007FFF                       // any AT91SAM7 has at least 32K flash
+-DRAMSTART=00200000
+-DRAMEND=00200FFF                       // any AT91SAM7 has at least 4K RAM
+
+// Intvec always linked to 0x00-0x3F
+-Z(CODE)INTVEC=00-3F
+
+// ROM
+-Z(CODE)ICODE,DIFUNCT,SWITAB,CODE,INITTAB,DATA_ID,DATA_C=ROMSTART-ROMEND
+
+// RAM
+-Z(DATA)DATA_I,DATA_Z,DATA_N=RAMSTART-RAMEND
+
+-Z(CONST)CODE_ID=ROMSTART-ROMEND    // __ramfunc code init data
+-Z(DATA)CODE_I=RAMSTART-RAMEND      // __ramfunc code in ram
+-QCODE_I=CODE_ID
+
+-D_HEAP_SIZE=(0)                    // heap not used in samples
+-Z(DATA)HEAP+_HEAP_SIZE=RAMSTART-RAMEND
+
+// CSTACK used only before OS start, when IRQ's are disabled
+// So don't allocate space for CSTACK, let it overlaps IRQ stack
+-D_CSTACK_SIZE=(0x0)                // CSTACK not used
+
+-D_IRQ_STACK_SIZE=(0x100)           // 256 bytes for IRQ's
+
+
+// place CSTACK at the bottom of RAM
+-Z(DATA)CSTACK+_CSTACK_SIZE#RAMSTART-RAMEND
+// place IRQ stack just before CSTACK (actualy at same addresses)
+-Z(DATA)IRQ_STACK+_IRQ_STACK_SIZE#RAMSTART-RAMEND

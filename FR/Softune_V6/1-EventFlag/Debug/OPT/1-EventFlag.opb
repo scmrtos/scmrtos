@@ -1,0 +1,18 @@
+-dt s,d,r,a
+-pl 60
+-pw 132
+-g
+-cwno
+-cpu MB91F272
+"E:\scmrtos-fr\1-EventFlag\Debug\ABS\1-EventFlag.abs"
+-a "E:\scmrtos-fr\1-EventFlag\Debug\OBJ\hwinit.obj"
+-a "E:\scmrtos-fr\1-EventFlag\Debug\OBJ\main.obj"
+-a "E:\scmrtos-fr\1-EventFlag\Debug\OBJ\vectors.obj"
+-a "E:\scmrtos-fr\1-EventFlag\Debug\OBJ\Start91270.obj"
+-a "E:\scmrtos-fr\1-EventFlag\Debug\OBJ\mb91270.obj"
+-a "E:\scmrtos-fr\1-EventFlag\Debug\OBJ\OS_Kernel.obj"
+-a "E:\scmrtos-fr\1-EventFlag\Debug\OBJ\OS_Services.obj"
+-a "E:\scmrtos-fr\1-EventFlag\Debug\OBJ\usrlib.obj"
+-a "E:\scmrtos-fr\1-EventFlag\Debug\OBJ\OS_Target_cpp.obj"
+-a "E:\scmrtos-fr\1-EventFlag\Debug\OBJ\OS_Target_asm.obj"
+
