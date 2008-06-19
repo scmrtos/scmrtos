@@ -10,12 +10,12 @@
 //*
 //*     PURPOSE:   Target Dependent Stuff Header. Declarations And Definitions
 //*
-//*     Version:   3.00-beta
+//*     Version: 3.05
 //*
 //*     $Revision$
 //*     $Date::             $
 //*
-//*     Copyright (c) 2003-2007, Harry E. Zhurov
+//*     Copyright (c) 2003-2008, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2007
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2008
 
 #ifndef TARGET_LPC2XXX_H__
 #define TARGET_LPC2XXX_H__

@@ -10,12 +10,12 @@
 //*
 //*     PURPOSE:   avr-gcc Port Test File
 //*
-//*     Version:   3.00-beta
+//*     Version: 3.05
 //*
 //*     $Revision$
 //*     $Date::             $
 //*
-//*     Copyright (c) 2003-2006, Harry E. Zhurov
+//*     Copyright (c) 2003-2008, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     avr-gcc port by Oleksandr O. Redchuk, Copyright (c) 2007
+//*     avr-gcc port by Oleksandr O. Redchuk, Copyright (c) 2007-2008
 
 //---------------------------------------------------------------------------
 #include <avr/io.h>

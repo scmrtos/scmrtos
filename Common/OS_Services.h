@@ -6,7 +6,7 @@
 //*
 //*     PURPOSE:  OS Services Header. Declarations And Definitions
 //*
-//*     Version:  3.00-beta
+//*     Version: 3.05
 //*
 //*     $Revision$
 //*     $Date::             $

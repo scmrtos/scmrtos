@@ -10,7 +10,7 @@
 //*
 //*     PURPOSE:   Port Test File
 //*
-//*     Version:   3.00-beta
+//*     Version: 3.05
 //*
 //*     $Revision$
 //*     $Date::             $
