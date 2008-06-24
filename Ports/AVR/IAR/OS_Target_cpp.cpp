@@ -91,11 +91,13 @@ OS::TBaseProcess::TBaseProcess(TStackItem* Stack, TStackItem* RStack, TPriority 
 //    Idle Process
 //
 //
-process<prIDLE, 
+typedef process<prIDLE,
         scmRTOS_IDLE_PROCESS_DATA_STACK_SIZE, 
-        scmRTOS_IDLE_PROCESS_RETURN_STACK_SIZE> IdleProcess;
+        scmRTOS_IDLE_PROCESS_RETURN_STACK_SIZE> TIdleProcess;
 
-OS_PROCESS void process<prIDLE, 70, 10>::Exec()
+TIdleProcess IdleProcess;
+
+OS_PROCESS void TIdleProcess::Exec()
 {
 
     for(;;)
