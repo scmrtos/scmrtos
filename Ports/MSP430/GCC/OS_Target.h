@@ -82,7 +82,7 @@ typedef word TStatusReg;
 //
 //
 #define	OS_PROCESS	NORETURN
-#define OS_INTERRUPT	extern "C" __attribute__((__signal__))
+#define OS_INTERRUPT
 #define	DUMMY_INSTR()	__asm__ __volatile__ ("nop" : : )
 
 //--------------------------------------------------
