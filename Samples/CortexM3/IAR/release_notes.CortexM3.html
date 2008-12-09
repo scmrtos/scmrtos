@@ -545,11 +545,11 @@ is used as OS System Timer, and PendSV interrupt as Software Context
 Switch Interrupt.
 <p>Cortex-M3 port features.
 <ul class="simple">
-<li>Software Interrupt context switch is the only used - PendSV (as native). Direct context switch not implemented.</li>
+<li>Only "Software interrupt program control flow transfer" is used. "Direct program control flow transfer" is not implemented.</li>
 <li>System tick timer is used as the OS SystemTimer.</li>
-<li>scmRTOS inits SystemTimer, save for setup of its clock frequency. It should be done by user. You should setup timer clock frequency and interrupt rate needed in scmRTOS_TARGET_CFG.h.</li>
-<li>Macro ENABLE_NESTED_INTERRUPTS is blank because hardware implementation of nested interrupts. In addition macro DISABLE_NESTED_INTERRUPTS is implemented for global disable nested interrupts.</li>
-<li>Interrupts are used stack defined in *.icf file (CSTACK).</li>
+<li>All settings of the System Timer are done by the OS except timer clock frequency. Timer clock frequency and timer's interrupt rate must be set up by the user (with macros SYSTICKFREQ, SYSTICKINTRATE in scmRTOS_TARGET_CFG.h).</li>
+<li>Macro ENABLE_NESTED_INTERRUPTS is empty because hardware implementation of nested interrupts. In addition macro DISABLE_NESTED_INTERRUPTS is implemented for global disable nested interrupts.</li>
+<li>Interrupts use stack defined in *.icf file (CSTACK).</li>
 <li>The most effective context switch takes place when scmRTOS_PRIORITY_ORDER==1.</li>
 <li>Interrupts utilize Main_stack. Main program (tasks) utilize Process_stack.</li>
 </ul>
