@@ -34,7 +34,6 @@ Ports/CortexM3/IAR/OS_Target_asm.s -text
 Ports/CortexM3/IAR/OS_Target_cpp.cpp -text
 Ports/CortexM3/IAR/commdefs.h -text
 Ports/CortexM3/IAR/device.h -text
-Ports/CortexM3/IAR/Прочти.txt -text
 Ports/FR/Softune_V6/OS_Target_asm.asm -text
 Ports/MSP430/GCC/OS_Target.h -text
 Ports/MSP430/GCC/OS_Target_asm.S -text
@@ -316,6 +315,8 @@ Samples/CortexM3/IAR/3-Channel/Src/stm32f10x_vector.c -text
 Samples/CortexM3/IAR/3-Channel/slon.ewd -text
 Samples/CortexM3/IAR/3-Channel/slon.ewp -text
 Samples/CortexM3/IAR/3-Channel/slon.eww -text
+Samples/CortexM3/IAR/release_notes.CortexM3.html -text
+Samples/CortexM3/IAR/switch.bat -text
 Samples/FR/Softune_V6/1-EventFlag/1-EventFlag.dat -text
 Samples/FR/Softune_V6/1-EventFlag/1-EventFlag.prj -text
 Samples/FR/Softune_V6/1-EventFlag/1-EventFlag.wsp -text
