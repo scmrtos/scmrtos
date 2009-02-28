@@ -11,7 +11,7 @@
 //*     $Revision$
 //*     $Date::             $
 //*
-//*     Copyright (c) 2003-2008, Harry E. Zhurov
+//*     Copyright (c) 2003-2009, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -59,6 +59,7 @@ namespace OS
         INLINE TMutex() : ProcessMap(0), ValueTag(0) { }
         void Lock();
         void Unlock();
+        void UnlockISR();
 
         INLINE bool LockSoftly()     { TCritSect cs; if(ValueTag) return false; else Lock(); return true; }
         INLINE bool IsLocked() const { TCritSect cs; if(ValueTag) return true; else return false; }

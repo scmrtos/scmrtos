@@ -11,7 +11,7 @@
 //*     $Revision$
 //*     $Date::             $
 //*
-//*     Copyright (c) 2003-2008, Harry E. Zhurov
+//*     Copyright (c) 2003-2009, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -135,6 +135,20 @@ void OS::TMutex::Unlock()
         ClrPrioTag(ProcessMap, PrioTag);             // remove next ready process from the wait map
         SetPrioTag(Kernel.ReadyProcessMap, PrioTag); // place next process to the ready map
         Kernel.Scheduler();
+    }
+}
+//------------------------------------------------------------------------------
+void OS::TMutex::UnlockISR()
+{
+    TCritSect cs;
+
+    ValueTag = 0;
+    if(ProcessMap)
+    {
+        byte pr = GetHighPriority(ProcessMap);
+        TProcessMap PrioTag = GetPrioTag(pr);
+        ClrPrioTag(ProcessMap, PrioTag);             // remove next ready process from the wait map
+        SetPrioTag(Kernel.ReadyProcessMap, PrioTag); // place next process to the ready map
     }
 }
 //------------------------------------------------------------------------------
