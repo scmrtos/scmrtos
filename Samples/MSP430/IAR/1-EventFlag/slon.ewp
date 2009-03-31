@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
 <project>
-  <fileVersion>1</fileVersion>
+  <fileVersion>2</fileVersion>
   <configuration>
     <name>Debug</name>
     <toolchain>
@@ -12,7 +12,7 @@
       <name>General</name>
       <archiveVersion>7</archiveVersion>
       <data>
-        <version>23</version>
+        <version>26</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -92,11 +92,6 @@
           <state>0</state>
         </option>
         <option>
-          <name>GeneralMisraRules</name>
-          <version>0</version>
-          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-        </option>
-        <option>
           <name>GeneralEnableMisra</name>
           <state>0</state>
         </option>
@@ -126,7 +121,29 @@
         </option>
         <option>
           <name>GHeap20Size</name>
-          <state>###Uninitialized###</state>
+          <state>80</state>
+        </option>
+        <option>
+          <name>GeneralMisraRules98</name>
+          <version>0</version>
+          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+        </option>
+        <option>
+          <name>RadioHeapSizeType</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>RadioHardwareMultiplierType</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>GeneralMisraVer</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>GeneralMisraRules04</name>
+          <version>0</version>
+          <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
         </option>
       </data>
     </settings>
@@ -134,12 +151,12 @@
       <name>ICC430</name>
       <archiveVersion>4</archiveVersion>
       <data>
-        <version>25</version>
+        <version>28</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
           <name>CCDefines</name>
-          <state>F149</state>
+          <state>F169</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -314,11 +331,6 @@
           <state>$TOOLKIT_DIR$\INC\DLIB\</state>
         </option>
         <option>
-          <name>CompilerMisraRules</name>
-          <version>0</version>
-          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-        </option>
-        <option>
           <name>CompilerMisraOverride</name>
           <state>0</state>
         </option>
@@ -350,6 +362,20 @@
         <option>
           <name>CCOptLevelSlave</name>
           <state>3</state>
+        </option>
+        <option>
+          <name>CInput</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CompilerMisraRules98</name>
+          <version>0</version>
+          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+        </option>
+        <option>
+          <name>CompilerMisraRules04</name>
+          <version>0</version>
+          <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
         </option>
       </data>
     </settings>
@@ -395,7 +421,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state>F149</state>
+          <state>F169</state>
         </option>
         <option>
           <name>AList</name>

@@ -380,6 +380,7 @@ Samples/MSP430/IAR/1-EventFlag/Src/main.cpp -text
 Samples/MSP430/IAR/1-EventFlag/Src/scmRTOS_CONFIG.h -text
 Samples/MSP430/IAR/1-EventFlag/Src/scmRTOS_TARGET_CFG.h -text
 Samples/MSP430/IAR/1-EventFlag/settings/debug.mac -text
+Samples/MSP430/IAR/1-EventFlag/settings/slon.cspy.bat -text
 Samples/MSP430/IAR/1-EventFlag/settings/slon.dbgdt -text
 Samples/MSP430/IAR/1-EventFlag/settings/slon.dni -text
 Samples/MSP430/IAR/1-EventFlag/settings/slon.wsdt -text
@@ -395,6 +396,7 @@ Samples/MSP430/IAR/2-Message/Src/device.h -text
 Samples/MSP430/IAR/2-Message/Src/main.cpp -text
 Samples/MSP430/IAR/2-Message/Src/scmRTOS_CONFIG.h -text
 Samples/MSP430/IAR/2-Message/Src/scmRTOS_TARGET_CFG.h -text
+Samples/MSP430/IAR/2-Message/settings/slon.cspy.bat -text
 Samples/MSP430/IAR/2-Message/settings/slon.dbgdt -text
 Samples/MSP430/IAR/2-Message/settings/slon.dni -text
 Samples/MSP430/IAR/2-Message/settings/slon.wsdt -text
@@ -410,6 +412,7 @@ Samples/MSP430/IAR/3-Channel/Src/device.h -text
 Samples/MSP430/IAR/3-Channel/Src/main.cpp -text
 Samples/MSP430/IAR/3-Channel/Src/scmRTOS_CONFIG.h -text
 Samples/MSP430/IAR/3-Channel/Src/scmRTOS_TARGET_CFG.h -text
+Samples/MSP430/IAR/3-Channel/settings/slon.cspy.bat -text
 Samples/MSP430/IAR/3-Channel/settings/slon.dbgdt -text
 Samples/MSP430/IAR/3-Channel/settings/slon.dni -text
 Samples/MSP430/IAR/3-Channel/settings/slon.wsdt -text

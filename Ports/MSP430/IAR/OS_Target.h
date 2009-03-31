@@ -62,8 +62,8 @@
 #error "This file must be compiled for MSP430 processor only."
 #endif 
 
-#if __VER__ < 330
-#error "This file must be compiled by IAR C/C++ Compiler v3.30 or higher."
+#if __VER__ < 420
+#error "This file must be compiled by IAR C/C++ Compiler v4.20 or higher."
 #endif 
 
 
@@ -112,8 +112,8 @@ typedef word TStatusReg;
 class TCritSect
 {
 public:
-    TCritSect () : StatusReg(__get_interrupt_state()) { __disable_interrupt(); }
-    ~TCritSect() { __set_interrupt_state(StatusReg); }
+    INLINE TCritSect () : StatusReg(__get_interrupt_state()) { __disable_interrupt(); }
+    INLINE ~TCritSect() { __set_interrupt_state(StatusReg); }
 
 private:
     TStatusReg StatusReg;

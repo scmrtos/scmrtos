@@ -37,7 +37,7 @@ SourceDirs   = ['Src',
 #     Options
 #
 Processor    = 'F169'
-Optimization = ' -s9 '
+Optimization = ' -Ohs '
 
 EnableHWMultiplier = True
 
@@ -87,7 +87,7 @@ HexExt  = 'hex'
 #      Toolkit
 #
 IAR = os.environ['IAR']
-TOOLKIT_PATH = IAR + '\\EW430v410'
+TOOLKIT_PATH = IAR + '\\EW430v420'
 
 ASM    = TOOLKIT_PATH + '\\430\\bin\\a430.exe'
 CC     = TOOLKIT_PATH + '\\430\\bin\\icc430.exe'

@@ -49,39 +49,80 @@
      module  scmRTOS_Asm
 
 ;-------------------------------------------------------------------------------
+
+#if __VER__ < 4
+#define ARG2 r14
+#else
+#define ARG2 r13
+#endif // __VER__
+
+#if __CORE__ == __430_CORE__
+
+#define xcall  call
+#define xret   ret
+#define xbr    br
+#define xmov   mov
+#define xpush  push
+#define xpop   pop
+
+;-------------------------------------------------------------------------------
 save_regs   macro
 
-     push     r4
-     push     r5
-     push     r6
-     push     r7
-     push     r8
-     push     r9
-     push     r10
-     push     r11
-     push     r12
-     push     r13
-     push     r14
      push     r15
+     push     r14
+     push     r13
+     push     r12
+     push     r11
+     push     r10
+     push     r9
+     push     r8
+     push     r7
+     push     r6
+     push     r5
+     push     r4
 
      endm
 ;-------------------------------------------------------------------------------
 restore_regs   macro
 
-     pop      r15
-     pop      r14
-     pop      r13
-     pop      r12
-     pop      r11
-     pop      r10
-     pop      r9
-     pop      r8
-     pop      r7
-     pop      r6
-     pop      r5
      pop      r4
+     pop      r5
+     pop      r6
+     pop      r7
+     pop      r8
+     pop      r9
+     pop      r10
+     pop      r11
+     pop      r12
+     pop      r13
+     pop      r14
+     pop      r15
 
      endm
+
+#elif __CORE__ == __430X_CORE__
+
+#define xcall  calla
+#define xret   reta
+#define xbr    bra
+#define xmov   movx
+#define xpush  pushx
+#define xpop   popx
+
+
+save_regs macro
+
+     pushm.a #12,r15
+     endm
+
+restore_regs   macro
+
+     popm.a #12,r15
+     endm
+
+#else
+#error "Error: invalid __CORE__ specification"
+#endif // __CORE__ == 430
 ;-------------------------------------------------------------------------------
    
      public  OS_Start
@@ -95,21 +136,22 @@ restore_regs   macro
 
 ;-------------------------------------------------------------------------------
 OS_Start:
-     mov.w  r12,SP
-     jmp    L_RestoreContext
+     xmov  r12,SP
+     xbr   #L_RestoreContext
 
 ;-------------------------------------------------------------------------------
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
 OS_ContextSwitcher:
-     push SR
+     xpush SR
      save_regs
 
      mov.w   SP,0(r12)
-     mov.w   r14,SP
+     mov.w   ARG2,SP
 
 L_RestoreContext:
      restore_regs
-     reti
+     xpop SR
+     xret
 #endif 
 ;-------------------------------------------------------------------------------
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
@@ -117,17 +159,19 @@ L_RestoreContext:
     extern  OS_ContextSwitchStackData
     extern  OS_ContextSwitchHook
 
+    public ContextSwitcher_ISR
+
     common INTVEC(1)
     org   CONTEXT_SWITCH_ISR_VECTOR
-    DC16  ContextSwitcher_ISR
+    dc16  ContextSwitcher_ISR
 
-    rseg CODE(1)
+    rseg ISR_CODE(1)
 
 ContextSwitcher_ISR:
     save_regs
-    mov   SP,r12
-    call  #OS_ContextSwitchHook
-    mov   r12,SP
+    mov.w   SP,r12
+    xcall  #OS_ContextSwitchHook
+    mov.w   r12,SP
 L_RestoreContext:
     restore_regs
     reti

@@ -70,9 +70,37 @@ TBaseProcess::TBaseProcess(TStackItem* Stack, TPriority pr, void (*exec)())
     //
     //  Prepare Process Stack Frame
     //
+#if __CORE__ == __430X__
+
+#if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
+
+    dword addr = reinterpret_cast<dword>(exec);
+    word addr_l = addr;
+    word addr_h = addr >> 16;
+    *(--StackPointer) = addr_h;                        // return from interrupt address (4 MSBs)
+    *(--StackPointer) = addr_l;                        // return from interrupt address (16 LSBs)
+    *(--StackPointer) =   0x0008;                      // SR value: GIE set; ret from ISR address (4 MSBs)
+    StackPointer -= 12*2;                              // emulate 12 "push rxx"
+
+#else
+
+    dword addr = reinterpret_cast<dword>(exec);
+    word addr_l = addr;
+    word addr_h = addr >> 16;
+    *(--StackPointer) = addr_l;                        // return from interrupt address (16 LSBs)
+    *(--StackPointer) =   0x0008 + (addr_h << 12);     // SR value: GIE set; ret from ISR address (4 MSBs)
+    StackPointer -= 12*2;                              // emulate 12 "push rxx"
+
+#endif // scmRTOS_CONTEXT_SWITCH_SCHEME
+
+#else
+
     *(--StackPointer) = reinterpret_cast<word>(exec);  // return from interrupt address
     *(--StackPointer) =   0x0008;                      // SR value: GIE set
     StackPointer -= 12;                                // emulate 12 "push rxx"
+
+#endif
+
 }
 //------------------------------------------------------------------------------
 //
