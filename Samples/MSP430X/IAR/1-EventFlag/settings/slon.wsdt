@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<Workspace>
+  <ConfigDictionary>
+    
+  <CurrentConfigs><Project>slon/Debug</Project></CurrentConfigs></ConfigDictionary>
+  <Desktop>
+    <Static>
+      <Workspace>
+        <ColumnWidths>
+          
+          
+          
+          
+        <Column0>124</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
+      <PreferedWindows><Position>1</Position><ScreenPosX>0</ScreenPosX><ScreenPosY>0</ScreenPosY><Windows/></PreferedWindows></Workspace>
+      <Build>
+        
+        
+        
+        
+      <ColumnWidth0>20</ColumnWidth0><ColumnWidth1>1158</ColumnWidth1><ColumnWidth2>309</ColumnWidth2><ColumnWidth3>77</ColumnWidth3></Build>
+      <Debug-Log><ColumnWidth0>25</ColumnWidth0><ColumnWidth1>1536</ColumnWidth1></Debug-Log>
+      <TerminalIO/>
+      <Profiling/>
+    <CodeCoveragePlugin/></Static>
+    <Windows>
+      
+      
+    <Wnd0>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-3343-9050</Identity>
+            <TabName>Build</TabName>
+            <Factory>Build</Factory>
+            <Session/>
+          </Tab>
+          <Tab>
+            <Identity>TabID-230-26302</Identity>
+            <TabName>Debug Log</TabName>
+            <Factory>Debug-Log</Factory>
+            <Session/>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd0><Wnd1><Tabs><Tab><Identity>TabID-21187-19150</Identity><TabName>Workspace</TabName><Factory>Workspace</Factory><Session><NodeDict><ExpandedNode>slon</ExpandedNode></NodeDict></Session></Tab></Tabs><SelectedTab>0</SelectedTab></Wnd1></Windows>
+    <Editor>
+      
+      
+      
+      
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\MSP430\IAR_v3.41\scmRTOS\Common\scmRTOS.h</Filename><XPos>0</XPos><YPos>34</YPos><SelStart>887</SelStart><SelEnd>887</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\MSP430\IAR_v3.41\1-EventFlag\Src\scmRTOS_TARGET_CFG.h</Filename><XPos>0</XPos><YPos>36</YPos><SelStart>1519</SelStart><SelEnd>1519</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\MSP430\IAR_v3.41\scmRTOS\Common\OS_Kernel.cpp</Filename><XPos>0</XPos><YPos>47</YPos><SelStart>1708</SelStart><SelEnd>1708</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\MSP430\IAR_v3.41\1-EventFlag\Src\main.cpp</Filename><XPos>0</XPos><YPos>29</YPos><SelStart>2456</SelStart><SelEnd>2456</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\MSP430\IAR_v3.41\scmRTOS\MSP430\OS_Target_cpp.cpp</Filename><XPos>0</XPos><YPos>45</YPos><SelStart>1947</SelStart><SelEnd>1947</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\MSP430\IAR_v3.41\scmRTOS\MSP430\OS_Target.h</Filename><XPos>5</XPos><YPos>58</YPos><SelStart>2170</SelStart><SelEnd>2170</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\MSP430\IAR_v3.41\scmRTOS\Common\OS_Services.h</Filename><XPos>0</XPos><YPos>188</YPos><SelStart>6011</SelStart><SelEnd>6011</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\MSP430\IAR_v3.41\scmRTOS\Common\OS_Services.cpp</Filename><XPos>0</XPos><YPos>38</YPos><SelStart>1653</SelStart><SelEnd>1653</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\-New\Samples\MSP430\IAR_v3.41\scmRTOS\Common\OS_Kernel.h</Filename><XPos>3</XPos><YPos>110</YPos><SelStart>4118</SelStart><SelEnd>4118</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\scmRTOS.v3.05\Samples\MSP430\IAR\1-EventFlag\Src\main.cpp</Filename><XPos>0</XPos><YPos>118</YPos><SelStart>4718</SelStart><SelEnd>4718</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\scmRTOS.v3.05\Samples\MSP430\IAR\scmRTOS\MSP430\OS_Target_asm.s43</Filename><XPos>0</XPos><YPos>112</YPos><SelStart>3931</SelStart><SelEnd>3931</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\scmRTOS.v3.05\Samples\MSP430X\IAR\1-EventFlag\Src\main.cpp</Filename><XPos>0</XPos><YPos>50</YPos><SelStart>2846</SelStart><SelEnd>2846</SelEnd></Tab><ActiveTab>11</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>D:\slon\scmRTOS\scmRTOS.v3.05\Samples\MSP430X\IAR\scmRTOS\MSP430\OS_Target_cpp.cpp</Filename><XPos>0</XPos><YPos>94</YPos><SelStart>4273</SelStart><SelEnd>4273</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Positions>
+      
+      
+      
+      
+      
+    <Top><Row0><Sizes><Toolbar-009f90e8><key>iaridepm.enu1</key></Toolbar-009f90e8></Sizes></Row0><Row1><Sizes/></Row1><Row2><Sizes/></Row2><Row3><Sizes/></Row3><Row4><Sizes/></Row4><Row5><Sizes/></Row5><Row6><Sizes/></Row6><Row7><Sizes/></Row7><Row8><Sizes/></Row8><Row9><Sizes/></Row9><Row10><Sizes/></Row10><Row11><Sizes/></Row11><Row12><Sizes/></Row12><Row13><Sizes/></Row13><Row14><Sizes/></Row14><Row15><Sizes/></Row15><Row16><Sizes/></Row16><Row17><Sizes/></Row17><Row18><Sizes/></Row18><Row19><Sizes/></Row19><Row20><Sizes/></Row20><Row21><Sizes/></Row21></Top><Left><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>945</Bottom><Right>198</Right><x>-2</x><y>-2</y><xscreen>200</xscreen><yscreen>200</yscreen><sizeHorzCX>125000</sizeHorzCX><sizeHorzCY>177936</sizeHorzCY><sizeVertCX>125000</sizeVertCX><sizeVertCY>842527</sizeVertCY></Rect></Wnd1></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>135</Bottom><Right>1602</Right><x>-2</x><y>-2</y><xscreen>1604</xscreen><yscreen>137</yscreen><sizeHorzCX>1002500</sizeHorzCX><sizeHorzCY>121886</sizeHorzCY><sizeVertCX>86250</sizeVertCX><sizeVertCY>121886</sizeVertCY></Rect></Wnd0></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+  </Desktop>
+</Workspace>
+
+
