@@ -131,7 +131,7 @@ void OS::TMutex::Unlock()
     if(ProcessMap)
     {
         byte pr = GetHighPriority(ProcessMap);
-        TProcessMap PrioTag = GetPrioTag(pr);
+        PrioTag = GetPrioTag(pr);
         ClrPrioTag(ProcessMap, PrioTag);             // remove next ready process from the wait map
         SetPrioTag(Kernel.ReadyProcessMap, PrioTag); // place next process to the ready map
         Kernel.Scheduler();
