@@ -163,7 +163,7 @@ INLINE inline void DisableContextSwitch() { cli( ); }
 //
 //    ISR prototypes
 //
-extern "C" void ContextSwitcher_ISR(int, int, int);
+extern "C" void ContextSwitcher_ISR();
 
 #define  LOCK_SYSTEM_TIMER()
 #define  UNLOCK_SYSTEM_TIMER()
@@ -176,7 +176,7 @@ namespace OS
 #endif
 
     inline void RaiseContextSwitch() { asm(" raise 14;"); } // raise software interrupt
-    void SystemTimer_ISR(int, int, int);
+    void SystemTimer_ISR();
 
 }
 //-----------------------------------------------------------------------------
