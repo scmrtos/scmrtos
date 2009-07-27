@@ -124,6 +124,15 @@ private:                                                                        
 #error "Error: scmRTOS_PRIORITY_ORDER must have values 0 or 1 only!"
 #endif
 
+//----------------- User Hooks inlining ------------------------------------
+#ifndef INLINE_SYS_TIMER_HOOK
+#define INLINE_SYS_TIMER_HOOK
+#endif
+
+#ifndef INLINE_CONTEXT_SWITCH_HOOK
+#define INLINE_CONTEXT_SWITCH_HOOK
+#endif
+
 
 //-----------------------------------------------------------------------------
 //

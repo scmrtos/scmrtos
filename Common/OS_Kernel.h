@@ -292,9 +292,13 @@ namespace OS
 #endif
 
 #if scmRTOS_SYSTIMER_HOOK_ENABLE == 1
-    void  SystemTimerUserHook();
+    INLINE_SYS_TIMER_HOOK void  SystemTimerUserHook();
 #endif
 
+#if scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE == 1
+    INLINE_CONTEXT_SWITCH_HOOK void  ContextSwitchUserHook();
+#endif
+    
 }
 //------------------------------------------------------------------------------
 
