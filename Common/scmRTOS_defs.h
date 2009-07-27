@@ -96,6 +96,15 @@ private:                                                                        
 #error "Error: scmRTOS_SYSTIMER_HOOK_ENABLE must have values 0 or 1 only!"
 #endif
 
+//-------------- scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE ----------------------
+#ifndef scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE
+#error "Error: Config macro scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE must be defined!"
+#endif
+
+#if (scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE < 0) || (scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE > 1)
+#error "Error: scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE must have values 0 or 1 only!"
+#endif
+
 //----------------- scmRTOS_IDLE_HOOK_ENABLE ----------------------------------
 #ifndef scmRTOS_IDLE_HOOK_ENABLE
 #error "Error: Config macro scmRTOS_IDLE_HOOK_ENABLE must be defined!"
