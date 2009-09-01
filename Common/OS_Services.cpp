@@ -53,8 +53,8 @@ bool OS::TEventFlag::Wait(TTimeout timeout)
 {
     TCritSect cs;
 
-    if(Value)                                           // if flag already signaled 
-    {                                                  
+    if(Value)                                           // if flag already signaled
+    {
         Value = efOff;                                  // clear flag
         return true;
     }
@@ -66,37 +66,38 @@ bool OS::TEventFlag::Wait(TTimeout timeout)
 
         SetPrioTag(ProcessMap, PrioTag);                // put current process to the wait map
         ClrPrioTag(Kernel.ReadyProcessMap, PrioTag);    // remove current process from the ready map
-                                                       
-        Kernel.Scheduler();                            
-                                                       
-        p->Timeout = 0;                                
-                                                       
+
+        Kernel.Scheduler();
+
+        p->Timeout = 0;
+
         if( !(ProcessMap & PrioTag) )                   // if waked up by signal() or signal_ISR()
-            return true;                               
-                                                       
-        ClrPrioTag(ProcessMap, PrioTag);                // otherwise waked up by timeout or by 
+            return true;
+
+        ClrPrioTag(ProcessMap, PrioTag);                // otherwise waked up by timeout or by
         return false;                                   // OS::ForceWakeUpProcess(), remove process from the wait map
-    }                                                        
+    }
 }
 //------------------------------------------------------------------------------
 void OS::TEventFlag::Signal()
 {
     TCritSect cs;
-    if(ProcessMap)                                      // if any process waits for event
+    if(ProcessMap)                                          // if any process waits for event
     {
-        TProcessMap Timeouted = Kernel.ReadyProcessMap; // Process has its tag set in ReadyProcessMap if timeout expired
-                                                        // or it was waked up by OS::ForceWakeUpProcess()  
+        TProcessMap Timeouted = Kernel.ReadyProcessMap;     // Process has its tag set in ReadyProcessMap if timeout expired
+                                                            // or it was waked up by OS::ForceWakeUpProcess()
 
-        SetPrioTag(Kernel.ReadyProcessMap, ProcessMap); // place all waiting processes to the ready map
-        ClrPrioTag(ProcessMap, ~Timeouted);             // remove all non-timeouted processes from the waiting map.
-                                                        // Used to check that process waked up by signal() or signalISR()
-                                                        // and not by timeout and OS::ForceWakeUpProcess()
-        Kernel.Scheduler();                            
-    }                                                  
-    else                                               
-    {                                                  
-        Value = efOn;                                   
+        if( ProcessMap & ~Timeouted )                       // if any process has to be waked up
+        {
+            SetPrioTag(Kernel.ReadyProcessMap, ProcessMap); // place all waiting processes to the ready map
+            ClrPrioTag(ProcessMap, ~Timeouted);             // remove all non-timeouted processes from the waiting map.
+                                                            // Used to check that process waked up by signal() or signalISR()
+                                                            // and not by timeout or OS::ForceWakeUpProcess()
+            Kernel.Scheduler();
+            return;
+        }
     }
+    Value = efOn;
 }
 //------------------------------------------------------------------------------
 
@@ -268,10 +269,10 @@ bool OS::TBaseMessage::wait(TTimeout timeout)
         p->Timeout = 0;
         if( !(ProcessMap & PrioTag) )                             // if waked up by send() or sendISR()
             return true;
-                                                                  
+
         ClrPrioTag(ProcessMap, PrioTag);                          // otherwise waked up by timeout or by
             return false;                                         // OS::ForceWakeUpProcess(), remove process from wait map
-    }                                                                 
+    }
 }
 //------------------------------------------------------------------------------
 void OS::TBaseMessage::send()
@@ -280,16 +281,18 @@ void OS::TBaseMessage::send()
 
     if(ProcessMap)
     {
-        TProcessMap Timeouted = Kernel.ReadyProcessMap;    // Process has its tag set in ReadyProcessMap if timeout expired,
-                                                           // or it was waked up by OS::ForceWakeUpProcess()
-        SetPrioTag(Kernel.ReadyProcessMap, ProcessMap);    // place all waiting processes to the ready map
-        ClrPrioTag(ProcessMap, ~Timeouted);                // remove all non-timeouted processes from the waiting map.
-        Kernel.Scheduler();
+        TProcessMap Timeouted = Kernel.ReadyProcessMap;         // Process has its tag set in ReadyProcessMap if timeout expired,
+                                                                // or it was waked up by OS::ForceWakeUpProcess()
+        if( ProcessMap & ~Timeouted )                           // if any process has to be waked up
+        {
+            SetPrioTag(Kernel.ReadyProcessMap, ProcessMap);     // place all waiting processes to the ready map
+            ClrPrioTag(ProcessMap, ~Timeouted);                 // remove all non-timeouted processes from the waiting map.
+            Kernel.Scheduler();
+            return;
+        }
     }
-    else
-    {
-        NonEmpty = true;
-    }
+
+    NonEmpty = true;
 }
 //------------------------------------------------------------------------------
 

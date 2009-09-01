@@ -151,8 +151,8 @@ namespace OS
     public:
         INLINE channel() : ProducersProcessMap(0)
                          , ConsumersProcessMap(0)
-                         , pool() 
-        { 
+                         , pool()
+        {
         }
 
         //----------------------------------------------------------------
@@ -236,17 +236,18 @@ namespace OS
 void OS::TEventFlag::SignalISR()
 {
     TCritSect cs;
-    if(ProcessMap)                                      // if any process waits for event
+    if(ProcessMap)                                          // if any process waits for event
     {
-        TProcessMap Timeouted = Kernel.ReadyProcessMap; // Process has its tag set in ReadyProcessMap if timeout
-                                                        // expired, or it was waked up by OS::ForceWakeUpProcess()                   
-        SetPrioTag(Kernel.ReadyProcessMap, ProcessMap); // place all waiting processes to the ready map
-        ClrPrioTag(ProcessMap, ~Timeouted);             // remove all non-timeouted processes from the waiting map.
+        TProcessMap Timeouted = Kernel.ReadyProcessMap;     // Process has its tag set in ReadyProcessMap if timeout
+                                                            // expired, or it was waked up by OS::ForceWakeUpProcess()
+        if( ProcessMap & ~Timeouted )                       // if any process has to be waked up
+        {
+            SetPrioTag(Kernel.ReadyProcessMap, ProcessMap); // place all waiting processes to the ready map
+            ClrPrioTag(ProcessMap, ~Timeouted);             // remove all non-timeouted processes from the waiting map.
+            return;
+        }
     }
-    else
-    {
-        Value = efOn;                                
-    }
+    Value = efOn;
 }
 //------------------------------------------------------------------------------
 template<typename T, word Size, typename S>
@@ -272,7 +273,7 @@ void OS::channel<T, Size, S>::push(const T& item)
         TProcessMap PrioTag = GetPrioTag(Kernel.CurProcPriority);
         SetPrioTag(ProducersProcessMap, PrioTag);     // channel is full, put current process to the wait map
         ClrPrioTag(Kernel.ReadyProcessMap, PrioTag);  // remove current process from the ready map
-        Kernel.Scheduler();                           
+        Kernel.Scheduler();
     }
 
     pool.push_back(item);
@@ -317,9 +318,9 @@ bool OS::channel<T, Size, S>::pop(T& item, TTimeout timeout)
         {
             SetPrioTag(ConsumersProcessMap, PrioTag);     // channel is empty, put current process to the wait map
             ClrPrioTag(Kernel.ReadyProcessMap, PrioTag);  // remove current process from the ready map
-            Kernel.Scheduler();                           
+            Kernel.Scheduler();
 
-            if(pool.get_count())                          
+            if(pool.get_count())
             {
                 p->Timeout = 0;
                 item = pool.pop();
@@ -359,9 +360,9 @@ bool OS::channel<T, Size, S>::pop_back(T& item, TTimeout timeout)
         {
             SetPrioTag(ConsumersProcessMap, PrioTag);     // channel is empty, put current process to the wait map
             ClrPrioTag(Kernel.ReadyProcessMap, PrioTag);  // remove current process from the ready map
-            Kernel.Scheduler();                           
+            Kernel.Scheduler();
 
-            if(pool.get_count())                          
+            if(pool.get_count())
             {
                 p->Timeout = 0;
                 item = pool.pop_back();
@@ -451,15 +452,16 @@ void OS::TBaseMessage::sendISR()
 
     if(ProcessMap)
     {
-        TProcessMap Timeouted = OS::Kernel.ReadyProcessMap; // Process has it's tag set in ReadyProcessMap if timeout 
-                                                            // expired, or it was waked up by  OS::ForceWakeUpProcess()                        
-        SetPrioTag(Kernel.ReadyProcessMap, ProcessMap);     // place all waiting processes to ready map
-        ClrPrioTag(ProcessMap, ~Timeouted);                 // remove all non-timeouted processes from the waiting map.
+        TProcessMap Timeouted = OS::Kernel.ReadyProcessMap;     // Process has it's tag set in ReadyProcessMap if timeout
+                                                                // expired, or it was waked up by  OS::ForceWakeUpProcess()
+        if( ProcessMap & ~Timeouted )                           // if any process has to be waked up
+        {
+            SetPrioTag(Kernel.ReadyProcessMap, ProcessMap);     // place all waiting processes to the ready map
+            ClrPrioTag(ProcessMap, ~Timeouted);                 // remove all non-timeouted processes from the waiting map.
+            return;
+        }
     }
-    else
-    {
-        NonEmpty = true;
-    }
+    NonEmpty = true;
 }
 //------------------------------------------------------------------------------
 #endif // OS_SERVICES_H
