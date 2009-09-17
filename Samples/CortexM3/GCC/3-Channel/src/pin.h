@@ -1,5 +1,5 @@
 /**
-*  GPIO pin_no manipulation class template for STM32.
+*  GPIO pin manipulation class template for STM32.
 *
 *  Copyright (c) 2009 Anton Gusev aka AHTOXA (HTTP://AHTOXA.NET)
 *
@@ -8,30 +8,30 @@
 *
 * USAGE:
 *
-*   I. Declare pin_no object:
+*   I. Declare pin object:
 * Pin<'A', 5, 'H'> PA5;    // PA5, active level = high
 * Pin<'A', 6> PA6;         // PA6, active level = high ('H' is default parameter)
 * Pin<'B', 12, 'L'> PB12;  // PB12, active level = low
 *
-*   II. Set pin_no mode:
+*   II. Set pin mode:
 * PA5.Mode(OUTPUT);        // configure PA5 as output (push-pull, 50MHz)
 * PA5.Direct(OUTPUT);      // the same.
 * PA6.Mode(INPUT);         // configure PA6 as input floating
 * PB12.Mode(OUTPUT);       // configure PB12 as output
 * TX.Mode(ALT_OUTPUT);     // configure TX as alternate output push-pull
-*  (see "direction" enum for list of all pin_no modes)
+*  (see "direction" enum for list of all pin modes)
 *
-*   III. Manipulate pin_no:
+*   III. Manipulate pin:
 * PA5.On();                // switch PA5 to active state (H)
 * PB12.On();               // switch PB12 to active state (L)
 * PA5.Off();               // switch PA5 to inactive state (L)
 * PB12.Cpl();              // invert PB12 output
 *
-*   IV. Check pin_no state:
-* if (PA6.Signalled())     // returns non-zero if pin_no input = active state (H for PA6)
-* if (PB12.Latched())      // returns non-zero if pin_no output = active state (L for PB12)
+*   IV. Check pin state:
+* if (PA6.Signalled())     // returns non-zero if pin input = active state (H for PA6)
+* if (PB12.Latched())      // returns non-zero if pin output = active state (L for PB12)
 *
-*   V. Use pin_no registers uniformly:
+*   V. Use pin registers uniformly:
 * locked = PA5.GPIOx->LCKR & PA5.mask; // read PA5 lock state.
 *
 *
