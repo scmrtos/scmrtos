@@ -44,6 +44,7 @@ Ports/MSP430/GCC/OS_Target.h -text
 Ports/MSP430/GCC/OS_Target_asm.S -text
 Ports/MSP430/GCC/OS_Target_cpp.cpp -text
 Ports/MSP430/GCC/commdefs.h -text
+Ports/MSP430/GCC/device.h -text
 Ports/MSP430/IAR/OS_Target.h -text
 Ports/MSP430/IAR/OS_Target_asm.s43 -text
 Ports/MSP430/IAR/OS_Target_cpp.cpp -text
@@ -397,17 +398,14 @@ Samples/FR/Softune_V6/makefile.mb91 -text
 Samples/FR/Softune_V6/scmRTOS.wsp -text
 Samples/FR/Softune_V6/switch.bat -text
 Samples/MSP430/GCC/1-EventFlag/makefile -text
-Samples/MSP430/GCC/1-EventFlag/src/device.h -text
 Samples/MSP430/GCC/1-EventFlag/src/main.cpp -text
 Samples/MSP430/GCC/1-EventFlag/src/scmRTOS_CONFIG.h -text
 Samples/MSP430/GCC/1-EventFlag/src/scmRTOS_TARGET_CFG.h -text
 Samples/MSP430/GCC/2-Message/makefile -text
-Samples/MSP430/GCC/2-Message/src/device.h -text
 Samples/MSP430/GCC/2-Message/src/main.cpp -text
 Samples/MSP430/GCC/2-Message/src/scmRTOS_CONFIG.h -text
 Samples/MSP430/GCC/2-Message/src/scmRTOS_TARGET_CFG.h -text
 Samples/MSP430/GCC/3-Channel/makefile -text
-Samples/MSP430/GCC/3-Channel/src/device.h -text
 Samples/MSP430/GCC/3-Channel/src/main.cpp -text
 Samples/MSP430/GCC/3-Channel/src/scmRTOS_CONFIG.h -text
 Samples/MSP430/GCC/3-Channel/src/scmRTOS_TARGET_CFG.h -text

@@ -83,15 +83,20 @@ typedef process<prIDLE, scmRTOS_IDLE_PROCESS_STACK_SIZE> TIdleProcess;
 
 TIdleProcess IdleProcess;
 
-OS_PROCESS void TIdleProcess::Exec()
+namespace OS
 {
-    for(;;)
+    template<>
+    OS_PROCESS void TIdleProcess::Exec()
     {
-        #if scmRTOS_IDLE_HOOK_ENABLE == 1
-        IdleProcessUserHook();
-        #endif
+        for(;;)
+        {
+            #if scmRTOS_IDLE_HOOK_ENABLE == 1
+            IdleProcessUserHook();
+            #endif
+        }
     }
 }
+
 //------------------------------------------------------------------------------
 interrupt(SYSTEM_TIMER_VECTOR) OS::SystemTimer_ISR()
 {

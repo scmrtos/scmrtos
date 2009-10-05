@@ -82,7 +82,7 @@ typedef word TTimeout;
 //    TISRW_SS : ISR Wrapper with separate ISR stack software switching
 //
 
-#define scmRTOS_ISRW_TYPE TISRW_SS
+#define scmRTOS_ISRW_TYPE TISRW
 
 //-----------------------------------------------------------------------------
 //

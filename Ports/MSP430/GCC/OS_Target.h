@@ -206,11 +206,17 @@ INLINE inline void DisableInterrupts() { __disable_interrupt(); }
 
 INLINE inline TStackItem* GetStackPointer()    { return reinterpret_cast<TStackItem*>(GetSP()); }
 
+#ifndef TISRW_SS_STACK_PAD
+	#define TISRW_SS_STACK_PAD (4)
+#endif
+
 static INLINE inline word GetInitialStack()
 {
     // symbol from gcrt1.S, initial stack value, set to RAMEND by default
     extern uint8_t __stack;
-    return reinterpret_cast<word>(&__stack);
+    // Step down a while from ramend. This allows to avoid crashes when compiler
+    // reserves some space on stack before TISRW_SS constructor call.
+    return reinterpret_cast<word>(&__stack) - TISRW_SS_STACK_PAD;
 }
 
 INLINE inline void SetISRStackPointer()
