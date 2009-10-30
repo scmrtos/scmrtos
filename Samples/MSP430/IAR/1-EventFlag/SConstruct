@@ -87,7 +87,7 @@ HexExt  = 'hex'
 #      Toolkit
 #
 IAR = os.environ['IAR']
-TOOLKIT_PATH = IAR + '\\EW430v420'
+TOOLKIT_PATH = IAR + '\\EW430v421'
 
 ASM    = TOOLKIT_PATH + '\\430\\bin\\a430.exe'
 CC     = TOOLKIT_PATH + '\\430\\bin\\icc430.exe'
