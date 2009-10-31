@@ -139,6 +139,7 @@ INLINE inline void __set_interrupt_state(TStatusReg status)
     __asm__ __volatile__ (
         "MSR PRIMASK, %0\n"
         : : "r"(status)
+        :"memory"
     );
 }
 
