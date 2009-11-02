@@ -239,9 +239,9 @@ namespace OS
         };
 
         template<TPriority pr, word stack_size>
-        OS::process<pr, stack_size>::process() : TBaseProcess(&Stack[stack_size/sizeof(TStackItem)]
-                                                             , pr
-                                                             , (void (*)())Exec)
+        OS::process<pr, stack_size>::process() : TBaseProcess( &Stack[stack_size/sizeof(TStackItem)]
+                                                              , pr
+                                                              , reinterpret_cast<void (*)()>(Exec) )
         {
         }
 
