@@ -1,31 +1,33 @@
 #*******************************************************************************
-# -*- coding: cp1251 -*-
 #*
 #*              ADSP-BF Load Program Script
 #*          (client for VisualDSP++ 4.0 COM server)
 #*
 #*                    Version 1.0
 #*
-#*          Copyright (c) 2006, Harry E. Zhurov
+#*          Copyright (c) 2006-2007, Harry E. Zhurov
 #*
 #*
-#*    DESCRIPTION:    
-#*                   
+#*    DESCRIPTION:
 #*
-#*    FUNCTIONALITY: 
-#*                       
 #*
+#*    FUNCTIONALITY:
+#*
+#*
+#* coding: CP1251
 #*******************************************************************************
 
 import win32com.client
 import vdsp_tl
-from vdsp_tl import constants as VDSP 
+from vdsp_tl import constants as VDSP
 
 import  sys
 import  getopt
 import  os
 import  re
-import winsound
+import  winsound
+import  string
+import  struct
 
 #-------------------------------------------------------------------------------
 #
@@ -41,7 +43,7 @@ class TProcessor:
 
 #-------------------------------------------------------------------------------
 #
-#   Usage 
+#   Usage
 #
 def UsageInfo():
     print '*'*(101-12)
@@ -64,16 +66,16 @@ def ProcessOptions(olst):
         return Options
 
     for i in optlist:
-        if i[0] == '-i': 
+        if i[0] == '-i':
             Options['InitializerFileName'] = i[1]
 
-        elif i[0] == '-e': 
+        elif i[0] == '-e':
             Options['ExecutableFileName']  = i[1]
 
-        elif i[0] == '-p': 
+        elif i[0] == '-p':
             Options['ProcessorName']       = i[1]
 
-        elif i[0] == '-s': 
+        elif i[0] == '-s':
             Options['SessionName']         = i[1]
 
 
@@ -112,7 +114,7 @@ def ProcessOptions(olst):
 
 #-------------------------------------------------------------------------------
 #
-#   Check session for validity: session must be an Emulator Session and 
+#   Check session for validity: session must be an Emulator Session and
 #   must correspond to specified processor
 #
 def CheckSession(s, p, SessionName):
@@ -127,8 +129,8 @@ def CheckSession(s, p, SessionName):
     if search_object:                                                        # is emulator
         if s.ProcessorList.Count != 1:                                       # check if only one processor
             Message = 'Currently only one processor for session supported.'  # in session (JTAG chain)
-            return ('Miss', Message)                                         
-                                                                             
+            return ('Miss', Message)
+
         if TargetProc == p.upper():                                          # check if Debug Target Processor
             return ('Success', 'Success')                                    # is the same as specified in command
         else:                                                                # line options
@@ -136,62 +138,80 @@ def CheckSession(s, p, SessionName):
             return ('Miss', Message)                                         # valid Debug Session is found
     else:
         Message = 'This Session is not Emulator Session'
-        return ('Miss', Message)                                                 
+        return ('Miss', Message)
+
+
+
 #-------------------------------------------------------------------------------
 #
-#   Main code
+#
+#
+def process_symbols(p):
+    SymbStrList = p.Memory.SymbolList.ArrayOfSymbols
+    Symbols = []
+    for i in SymbStrList:
+        l = string.split(i, ',')
+        addr = int(l[2], 16)
+        a = struct.pack('I', addr)
+        b = struct.unpack('i', a)
+        Symbols.append( [str(l[0]), b[0]] )
+
+    return Symbols
+
+#-------------------------------------------------------------------------------
+#
+#   Run to main: goes to main and stopped
 #
 def RunToMain(ADSP):
     #-----------------------------------------------------
     #
     #   Process symbols
     #
-    SymbList = ADSP.Memory.SymbolList
+    SymbList = process_symbols(ADSP)
     for i in SymbList:
-        if i.Name == 'main':
-            ADSP.Symbols['main'] = i.Address
+        if i[0] == 'main':
+            ADSP.Symbols['main'] = i[1]
 
     #-----------------------------------------------------
     #
-    #   Manage Breakpoints and set 
+    #   Manage Breakpoints and set
     #   processor to waiting for jobs
     #
     BPList = ADSP.p.BreakpointList
-    BPCount = BPList.Count
-    if BPCount:
-        for i in xrange(BPCount):
-            BPList.RemoveBreakpointByIndex(i)
+   # BPCount = BPList.Count
+   # if BPCount:
+   #     for i in xrange(BPCount):
+   #         BPList.RemoveBreakpointByIndex(i)
     #                                                                         Skip  Expr   Temp   Enabled  Reserved
     BPList.SetBreakpointAtAddress( VDSP.breakpointPublic, ADSP.Symbols['main'], 0,   '',   True,  True,     0 )
     ADSP.p.Run(True)
 
 #-------------------------------------------------------------------------------
 #
-#   Main code
 #
-def main():
-    #-----------------------------------------------------
-    #
-    #   Process options
-    #
-    Options = ProcessOptions(sys.argv[1:])
-    if Options['Result'] == False:
-        winsound.PlaySound('Utopia Critical Stop.WAV', winsound.SND_FILENAME)
-        sys.exit(1)
+#
+def set_breakpoints(ADSP, bpl):
+    BPList = ADSP.p.BreakpointList
+    for i in bpl:
+        if i[0]:
+            #                                                                          Skip Expr   Temp   Enabled  Reserved
+            BPList.SetBreakpointAtLine( VDSP.breakpointPublic, i[0], i[1], 0,   '',   False,  True,     0 )
 
-    curdir = os.getcwd()
-    InitializerFileName = curdir + '\\' + Options['InitializerFileName']
-    ExecutableFileName  = curdir + '\\' + Options['ExecutableFileName']
-    ProcessorName       = Options['ProcessorName']
-    SessionName         = Options['SessionName']
+#-------------------------------------------------------------------------------
+#
+#   Loader
+#
+def loader(InitializerFileName, ExecutableFileName, ProcessorName, SessionName):
     #-----------------------------------------------------
     #
     #   Conect to server
     #
+    print ''
     print 'Info  > Connecting to VisualDSP++... ',
     vdsp = win32com.client.Dispatch("VisualDSP.ADspApplication")
     print 'Success'
-    print 'Info  > Current Session: \"' + vdsp.ActiveSession.SessionName + '\"', 
+    vdsp.CurrentDirectory = os.getcwd()
+    print 'Info  > Current Session: \"' + vdsp.ActiveSession.SessionName + '\"',
 
     res = CheckSession(vdsp.ActiveSession, ProcessorName, SessionName)
     if res[0] == 'Success':
@@ -234,6 +254,11 @@ def main():
     #
     vdsp.PrintText(VDSP.tabConsole, '')
     vdsp.PrintText(VDSP.tabConsole, 'Begin loading')
+    bpl = ADSP.p.BreakpointList
+    PrevBPL = []
+    for i in bpl:
+        PrevBPL.append( (i.FileName, i.LineNumber) )
+
     print 'Info  > Loading Hardware Initializer... ',
     if ADSP.p.State != VDSP.stateHalted:
         ADSP.p.Halt(True)
@@ -242,6 +267,7 @@ def main():
     ADSP.p.Restart(True)
 
     print 'Done'
+
     vdsp.PrintText(VDSP.tabConsole, 'Load Hardware Initializer')
     RunToMain(ADSP)
     vdsp.PrintText(VDSP.tabConsole, 'Initialize Hardware')
@@ -260,12 +286,38 @@ def main():
     print 'Done'
     vdsp.PrintText(VDSP.tabConsole, 'Load Program Executable')
     RunToMain(ADSP)
+    set_breakpoints(ADSP, PrevBPL)
+   # for i in BPList:
+   #     print hex(i.Address + 0x100000000)
+
    # ADSP.p.StepAsm(True)
    # ADSP.Memory.GetMemory()
     winsound.PlaySound('chimes.wav', winsound.SND_FILENAME)
 
+
 #-------------------------------------------------------------------------------
-if __name__ == '__main__': 
+#
+#   Main code
+#
+def main():
+    #-----------------------------------------------------
+    #
+    #   Process options
+    #
+    Options = ProcessOptions(sys.argv[1:])
+    if Options['Result'] == False:
+        winsound.PlaySound('Utopia Critical Stop.WAV', winsound.SND_FILENAME)
+        sys.exit(1)
+
+    curdir = os.getcwd()
+    InitializerFileName = curdir + '\\' + Options['InitializerFileName']
+    ExecutableFileName  = curdir + '\\' + Options['ExecutableFileName']
+    ProcessorName       = Options['ProcessorName']
+    SessionName         = Options['SessionName']
+    loader(InitializerFileName, ExecutableFileName, ProcessorName, SessionName)
+
+#-------------------------------------------------------------------------------
+if __name__ == '__main__':
     main()
 #-------------------------------------------------------------------------------
 

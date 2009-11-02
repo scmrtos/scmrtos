@@ -45,7 +45,7 @@ SourceDirs   = ['Src',
 #     Options
 #
 Processor    = 'BF533'
-DeviceRev    = '0.3'
+DeviceRev    = '0.5'
 
 Optimization = ' -Ov 80 '
 
@@ -95,7 +95,7 @@ HexExt  = 'hex'
 #      Toolkit
 #
 AD = os.environ['AD']
-TOOLKIT_PATH = AD + '\\VisualDSP4'
+TOOLKIT_PATH = AD + '\\VisualDSP5.0'
 
 ASM      = TOOLKIT_PATH + '\\easmBLKFN.exe'
 CC       = TOOLKIT_PATH + '\\ccblkfn.exe'

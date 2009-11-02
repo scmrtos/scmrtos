@@ -238,6 +238,7 @@ Samples/BF533/VDSP/1-EventFlag/Config/bf532_init.ldf -text
 Samples/BF533/VDSP/1-EventFlag/Config/bf533cpp.ldf -text
 Samples/BF533/VDSP/1-EventFlag/Config/get_info.py -text
 Samples/BF533/VDSP/1-EventFlag/Config/ldprg.py -text
+Samples/BF533/VDSP/1-EventFlag/Config/scmIC.py -text
 Samples/BF533/VDSP/1-EventFlag/Config/utils.py -text
 Samples/BF533/VDSP/1-EventFlag/Config/vdsp_lst.py -text
 Samples/BF533/VDSP/1-EventFlag/SConstruct -text

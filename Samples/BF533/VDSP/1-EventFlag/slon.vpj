@@ -75,5 +75,6 @@
 			<F N="../scmRTOS/Common/usrlib.h"/>
 		</Folder>
 		<F N="../scmRTOS/BF533/OS_Target_asm.sbf"/>
+		<F N="SConstruct"/>
 	</Files>
 </Project>
