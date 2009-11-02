@@ -88,7 +88,7 @@ int main()
     OS::Run();
 }
 //---------------------------------------------------------------------------
-OS_PROCESS void TProc1::Exec()
+template<> void TProc1::Exec()
 {
     for(;;)
     {
@@ -97,7 +97,7 @@ OS_PROCESS void TProc1::Exec()
     }
 }
 //---------------------------------------------------------------------------
-OS_PROCESS void TProc2::Exec()
+template<> void TProc2::Exec()
 {
     for(;;)
     {
@@ -108,7 +108,7 @@ OS_PROCESS void TProc2::Exec()
     }
 }
 //---------------------------------------------------------------------------
-OS_PROCESS void TProc3::Exec()
+template<> void TProc3::Exec()
 {
     for(;;)
     {

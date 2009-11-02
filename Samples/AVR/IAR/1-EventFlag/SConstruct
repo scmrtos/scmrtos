@@ -85,11 +85,11 @@ HexExt  = 'hex'
 #      Toolkit
 #
 IAR = os.environ['IAR']
-TOOLKIT_PATH = IAR + '\\EWAVRv420'
+TOOLKIT_PATH = IAR + '\\EWAVRv530'
 
 ASM    = TOOLKIT_PATH + '\\AVR\\bin\\aavr.exe'
 CC     = TOOLKIT_PATH + '\\AVR\\bin\\iccavr.exe'
-Linker = TOOLKIT_PATH + '\\Common\\bin\\xlink.exe'
+Linker = TOOLKIT_PATH + '\\AVR\\bin\\xlink.exe'
 
 ToolkitIncPath = [TOOLKIT_PATH + '\\AVR\\inc',  
                   TOOLKIT_PATH + '\\AVR\\inc\\dlib'] 
@@ -198,11 +198,17 @@ def BuildTarget(target, source, env):
     for i in xrange(len(source)):
         src_list += ' ' + str(source[i])
     cmd = env['LINKER'] + env['LFLAGS'] + ' -r' + ' -o ' + str(target[0]) + src_list
-    p = subprocess.Popen(cmd)
-    rcode = p.wait()
+    p = subprocess.Popen( cmd, universal_newlines = True,
+                         stdin  = subprocess.PIPE,
+                         stdout = subprocess.PIPE,
+                         stderr = subprocess.PIPE)
 
-    print '*'*60
-    return rcode
+    out, err = p.communicate()
+    if out: print out
+    if err: print err
+
+    return p.returncode
+
 
 #-------------------------------------------------------------------------------
 #

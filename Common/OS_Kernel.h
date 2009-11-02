@@ -251,12 +251,7 @@ namespace OS
         class process : public TBaseProcess
         {
         public:
-            INLINE process() : TBaseProcess( &Stack[stack_size/sizeof(TStackItem)]
-                                    , &RStack[rstack_size/sizeof(TStackItem)]
-                                    , pr
-                                    , (void (*)())Exec)
-            {
-            }
+            process();
 
             OS_PROCESS static void Exec();
 
@@ -264,6 +259,14 @@ namespace OS
             TStackItem Stack [stack_size/sizeof(TStackItem)];
             TStackItem RStack[rstack_size/sizeof(TStackItem)];
         };
+
+        template<TPriority pr, word stack_size, word rstack_size>
+        process<pr, stack_size, rstack_size>::process() : TBaseProcess( &Stack[stack_size/sizeof(TStackItem)]
+                                                                      , &RStack[rstack_size/sizeof(TStackItem)]
+                                                                      , pr
+                                                                      , reinterpret_cast<void (*)()>(Exec))
+        {
+        }
 
     #endif
     //--------------------------------------------------------------------------

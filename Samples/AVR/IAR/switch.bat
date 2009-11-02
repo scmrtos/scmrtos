@@ -1,6 +1,6 @@
 @echo off
 
-SET REP=https://scmrtos.svn.sourceforge.net/svnroot/scmrtos/trunk
+SET REP=https://scmrtos.svn.sourceforge.net/svnroot/scmrtos/branches/pre-v310
 
 SET TARGET=AVR
 SET TOOL=IAR
