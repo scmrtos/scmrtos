@@ -97,7 +97,7 @@ typedef process<prIDLE,
 
 TIdleProcess IdleProcess;
 
-OS_PROCESS void TIdleProcess::Exec()
+template<> void TIdleProcess::Exec()
 {
 
     for(;;)
