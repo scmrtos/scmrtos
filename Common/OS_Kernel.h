@@ -230,7 +230,7 @@ namespace OS
         class process : public TBaseProcess
         {
         public:
-            process();
+            INLINE_PROCESS_CTOR process();
 
             OS_PROCESS static void Exec();
 
@@ -251,7 +251,7 @@ namespace OS
         class process : public TBaseProcess
         {
         public:
-            process();
+            INLINE_PROCESS_CTOR process();
 
             OS_PROCESS static void Exec();
 
