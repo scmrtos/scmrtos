@@ -114,7 +114,7 @@ void main()
     OS::Run();
 }
 //---------------------------------------------------------------------------
-template<>  void TProc1::Exec()
+template<> void TProc1::Exec()
 {
     for(;;)
     {
