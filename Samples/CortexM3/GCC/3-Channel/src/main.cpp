@@ -172,7 +172,6 @@ namespace OS
 
 void OS::SystemTimerUserHook()
 {
-	OS::TISRW ISRW;
 	PB1.Cpl();
 	TimerEvent.SignalISR();
 }
