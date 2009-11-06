@@ -84,6 +84,7 @@ typedef dword TStatusReg;
 #define OS_INTERRUPT
 
 #define DUMMY_INSTR() __asm__ __volatile__ ("nop")
+#define	INLINE_PROCESS_CTOR INLINE inline
 
 //-----------------------------------------------------------------------------
 //

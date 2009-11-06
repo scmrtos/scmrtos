@@ -102,34 +102,43 @@ int main()
     IE1    |= 0x01;
     OS::Run();
 }
-//---------------------------------------------------------------------------
-OS_PROCESS void TProc1::Exec()
+
+namespace OS
 {
-    for(;;)
+
+    template <> 
+    OS_PROCESS void TProc1::Exec()
     {
-        ef.Wait();
-        P1OUT &= ~(1 << 3);
+        for(;;)
+        {
+            ef.Wait();
+            P1OUT &= ~(1 << 3);
+        }
     }
-}
-//---------------------------------------------------------------------------
-OS_PROCESS void TProc2::Exec()
-{
-    for(;;)
+
+    template <> 
+    OS_PROCESS void TProc2::Exec()
     {
-        Timer_B_Ovf.Wait();
-        P1OUT &= ~(1 << 4);
+        for(;;)
+        {
+            Timer_B_Ovf.Wait();
+            P1OUT &= ~(1 << 4);
+        }
     }
-}
-//---------------------------------------------------------------------------
-OS_PROCESS void TProc3::Exec()
-{
-    for(;;)
+
+    template <> 
+    OS_PROCESS void TProc3::Exec()
     {
-        Sleep(1);
-	    P1OUT |= (1 << 3);
-        ef.Signal();
+        for(;;)
+        {
+            Sleep(1);
+    	    P1OUT |= (1 << 3);
+            ef.Signal();
+        }
     }
-}
+
+} // namespace OS
+
 //---------------------------------------------------------------------------
 void OS::SystemTimerUserHook() { }
 //---------------------------------------------------------------------------

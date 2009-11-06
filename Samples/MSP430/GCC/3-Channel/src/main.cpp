@@ -148,42 +148,52 @@ int main()
     OS::Run();
 }
 //---------------------------------------------------------------------------
-OS_PROCESS void TProc1::Exec()
+
+namespace OS
 {
-    for(;;)
+
+    template <> 
+    OS_PROCESS void TProc1::Exec()
     {
-        Timer_B_Ovf.Wait();
-        SlonQueue.push(&African);
-    }     
-}
-//---------------------------------------------------------------------------
-OS_PROCESS void TProc2::Exec()
-{
-    for(;;)
+        for(;;)
+        {
+            Timer_B_Ovf.Wait();
+            SlonQueue.push(&African);
+        }     
+	}
+
+    template <> 
+    OS_PROCESS void TProc2::Exec()
     {
-        T += OS::GetTickCount();
+        for(;;)
+        {
+            T += OS::GetTickCount();
              
-        Sleep(1);
-        SlonQueue.push(&Indian);
+            Sleep(1);
+            SlonQueue.push(&Indian);
+        }
     }
-}
-//---------------------------------------------------------------------------
-OS_PROCESS void TProc3::Exec()
-{
-    for(;;)
+
+    template <> 
+    OS_PROCESS void TProc3::Exec()
     {
-        //--------------------------------------------------
-        //
-        //            Channel test
-        //
-        //
-        //     Get data through channel
-        //
-        TSlon *p;
-        SlonQueue.pop(p);     // get pointer from queue
-        p->eat();             // feed the appropriate Slon
+        for(;;)
+        {
+            //--------------------------------------------------
+            //
+            //            Channel test
+            //
+            //
+            //     Get data through channel
+            //
+            TSlon *p;
+            SlonQueue.pop(p);     // get pointer from queue
+            p->eat();             // feed the appropriate Slon
+        }
     }
-}
+
+} // namespace OS
+
 //---------------------------------------------------------------------------
 void OS::SystemTimerUserHook() { }
 //---------------------------------------------------------------------------

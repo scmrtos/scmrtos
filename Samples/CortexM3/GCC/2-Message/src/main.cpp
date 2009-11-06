@@ -147,7 +147,6 @@ namespace OS
 
 void OS::SystemTimerUserHook()
 {
-	OS::TISRW ISRW;
 	TMamont m;								// create message content
 	m.src  = TMamont::ISR_SRC;
 	m.data = 10;
