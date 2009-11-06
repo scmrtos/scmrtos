@@ -361,5 +361,14 @@ namespace OS
 #endif //scmRTOS_PRIORITY_ORDER
 }
 //-----------------------------------------------------------------------------
+//
+//     Process's constructor inlining control: default behaviour
+//
+#ifndef INLINE_PROCESS_CTOR
+#define INLINE_PROCESS_CTOR
+#endif
+
+
+//-----------------------------------------------------------------------------
 
 #endif // scmRTOS_DEFS_H
