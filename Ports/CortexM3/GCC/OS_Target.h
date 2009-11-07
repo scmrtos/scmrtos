@@ -213,17 +213,6 @@ namespace OS
     INLINE inline void DisableContextSwitch() { DisableInterrupts(); }
 }
 
-
-//-----------------------------------------------------------------------------
-//
-//   GCC requires functions and clsses be declared before declaring as friends
-//
-namespace OS
-{
-    void Run();
-    class TBaseProcess;
-}
-
 #include <OS_Kernel.h>
 
 namespace OS
