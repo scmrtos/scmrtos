@@ -113,8 +113,7 @@ PendSVC_ISR
     MRS     R0, PSP           // PSP is process stack pointer
     CBZ     R0, nosave        // Skip register save the first time    
 
-    SUBS    R0, R0, #0x20     // Save remaining regs r4-11 on process stack
-    STM     R0, {R4-R11}
+    STMDB R0!, {R4-R11}       // Save remaining regs r4-11 on process stack
     // At this point, entire context of process has been saved                                                            
 
     PUSH    {R14}                        // Save LR exc_return value
@@ -124,8 +123,7 @@ PendSVC_ISR
     
 ContextRestore
     // R0 is new process SP;
-    LDM     R0, {R4-R11}      // Restore r4-11 from new process stack
-    ADDS    R0, R0, #0x20
+    LDMIA R0!, {R4-R11}         // Restore r4-11 from new process stack
     MSR     PSP, R0           // Load PSP with new process SP
     ORR     LR, LR, #0x04     // Ensure exception return uses process stack
     CPSIE   I

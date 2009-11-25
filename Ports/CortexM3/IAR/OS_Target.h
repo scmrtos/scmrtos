@@ -83,6 +83,7 @@ typedef dword TStatusReg;
 #define OS_PROCESS   
 #define OS_INTERRUPT 
 #define DUMMY_INSTR() __no_operation()
+#define INLINE_PROCESS_CTOR
 
 //-----------------------------------------------------------------------------
 //

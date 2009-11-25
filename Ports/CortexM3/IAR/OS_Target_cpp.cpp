@@ -103,7 +103,7 @@ typedef process<prIDLE, scmRTOS_IDLE_PROCESS_STACK_SIZE> TIdleProcess;
 
 TIdleProcess IdleProcess;
 
-OS_PROCESS void TIdleProcess::Exec()
+template<> OS_PROCESS void TIdleProcess::Exec()
 {
     for(;;)
     {
