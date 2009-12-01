@@ -61,7 +61,7 @@
 //
 namespace OS
 {
-extern "C" void SystemTimer_ISR();
+extern "C" void SysTick_Handler();
 }
 
 #define  LOCK_SYSTEM_TIMER()    ( *CPU_SYSTICKCSR &= ~CPU_SYSTICKCSR_EINT )

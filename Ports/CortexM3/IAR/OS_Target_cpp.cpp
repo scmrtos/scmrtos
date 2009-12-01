@@ -113,7 +113,7 @@ template<> OS_PROCESS void TIdleProcess::Exec()
     }
 }
 //------------------------------------------------------------------------------
-OS_INTERRUPT void OS::SystemTimer_ISR()
+OS_INTERRUPT void OS::SysTick_Handler()
 {
     scmRTOS_ISRW_TYPE ISR;
 
