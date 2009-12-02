@@ -58,8 +58,8 @@ const intvec_elem __vector_table[] =
   SVCHandler,
   DebugMonitor,
   0,                      /* Reserved */
-  PendSVC_ISR,
-  SystemTimer_ISR,
+  PendSV_Handler,
+  SysTick_Handler,
   WWDG_IRQHandler,
   PVD_IRQHandler,
   TAMPER_IRQHandler,
