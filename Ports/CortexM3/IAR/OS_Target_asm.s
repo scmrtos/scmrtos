@@ -52,7 +52,7 @@
     EXTERN  OS_ContextSwitchHook
 
     PUBLIC  OS_Start
-    PUBLIC  PendSVC_ISR
+    PUBLIC  PendSV_Handler
 
 //-----------------------------------------------------------------------------
 //  EQUATES
@@ -80,7 +80,7 @@ NVIC_ST_CTRL_ENABLE  EQU    0x00000001   // Counter mode.
 
 //-----------------------------------------------------------------------------
 //      HANDLE PendSV EXCEPTION
-//      void PendSVC_ISR(void)
+//      void PendSV_Handler(void)
 //
 // Note(s) : 1) PendSV is used to cause a context switch.  This is a recommended method for performing
 //              context switches with Cortex-M3.  This is because the Cortex-M3 auto-saves half of the
@@ -108,7 +108,7 @@ NVIC_ST_CTRL_ENABLE  EQU    0x00000001   // Counter mode.
 //              know that it will only be run when no other exception or interrupt is active, and
 //              therefore safe to assume that context being switched out was using the process stack (PSP).
 //
-PendSVC_ISR
+PendSV_Handler
     CPSID   I                 // Prevent interruption during context switch
     MRS     R0, PSP           // PSP is process stack pointer
     CBZ     R0, nosave        // Skip register save the first time    
