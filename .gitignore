@@ -1,3 +1,7 @@
+Samples/ARM7/ADuC70xx/GCC4.x/.metadata
+Samples/ARM7/ADuC70xx/GCC4.x/1-EventFlag/release
+Samples/ARM7/ADuC70xx/GCC4.x/2-Message/release
+Samples/ARM7/ADuC70xx/GCC4.x/3-Channel/release
 Samples/ARM7/ADuC70xx/IAR_v4.30/1-EventFlag/Exe/*.*
 Samples/ARM7/ADuC70xx/IAR_v4.30/1-EventFlag/List/*.*
 Samples/ARM7/ADuC70xx/IAR_v4.30/1-EventFlag/Obj/*.*
@@ -13,6 +17,10 @@ Samples/ARM7/ADuC70xx/IAR_v4.30/3-Channel/List/*.*
 Samples/ARM7/ADuC70xx/IAR_v4.30/3-Channel/Obj/*.*
 Samples/ARM7/ADuC70xx/IAR_v4.30/3-Channel/settings/*.*
 Samples/ARM7/ADuC70xx/IAR_v4.30/3-Channel/slon.dep
+Samples/ARM7/AT91SAM7/GCC4.x/.metadata
+Samples/ARM7/AT91SAM7/GCC4.x/1-EventFlag/release
+Samples/ARM7/AT91SAM7/GCC4.x/2-Message/release
+Samples/ARM7/AT91SAM7/GCC4.x/3-Channel/release
 Samples/ARM7/AT91SAM7/IAR_v4.30/1-EventFlag/Exe/*.*
 Samples/ARM7/AT91SAM7/IAR_v4.30/1-EventFlag/List/*.*
 Samples/ARM7/AT91SAM7/IAR_v4.30/1-EventFlag/Obj/*.*
