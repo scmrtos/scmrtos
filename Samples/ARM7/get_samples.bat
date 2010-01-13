@@ -3,7 +3,7 @@ rem *************************************************************
 rem **                                                         **
 rem **     scmRTOS ARM7 example checkout & switch file         **
 rem **                                                         **
-rem **   usage: get_samples.bat toolset chip [dir]             **
+rem **   usage: get_samples.bat chip toolset [dir]             **
 rem **   where:                                                **
 rem **      chip - AT91SAM7 | LPC2xxx | ADuC70xx | STR71x      **
 rem **      toolset - IAR_v4.30 | GCC4.x                       **
@@ -35,7 +35,7 @@ svn switch %REP%/Samples/%TARGET%/%CHIP_FAMILY%/%TOOL%/1-EventFlag/Src/device.h 
 svn switch %REP%/Samples/%TARGET%/%CHIP_FAMILY%/%TOOL%/1-EventFlag/Src/device.h %DST_DIR%/3-Channel/Src/device.h
 
 IF %TOOL% == GCC4.x (
-    IF %CHIP% == AT91SAM7 (
+    IF %CHIP_FAMILY% == AT91SAM7 (
         svn switch %REP%/Samples/%TARGET%/%CHIP_FAMILY%/%TOOL%/1-EventFlag/Src/AT91SAM7S64.h %DST_DIR%/2-Message/Src/AT91SAM7S64.h
         svn switch %REP%/Samples/%TARGET%/%CHIP_FAMILY%/%TOOL%/1-EventFlag/Src/AT91SAM7S64.h %DST_DIR%/3-Channel/Src/AT91SAM7S64.h
     )
