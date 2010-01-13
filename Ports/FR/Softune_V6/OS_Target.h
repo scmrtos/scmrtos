@@ -121,6 +121,7 @@ typedef dword TStatusReg;
 #define REGS 
 #define OS_PROCESS
 #define DUMMY_INSTR()
+#define INLINE_PROCESS_CTOR
 //__wait_nop()
 
 //--------------------------------------------------
