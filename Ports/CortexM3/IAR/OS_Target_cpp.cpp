@@ -103,7 +103,7 @@ typedef process<prIDLE, scmRTOS_IDLE_PROCESS_STACK_SIZE> TIdleProcess;
 
 TIdleProcess IdleProcess;
 
-OS_PROCESS void TIdleProcess::Exec()
+template<> OS_PROCESS void TIdleProcess::Exec()
 {
     for(;;)
     {
@@ -113,7 +113,7 @@ OS_PROCESS void TIdleProcess::Exec()
     }
 }
 //------------------------------------------------------------------------------
-OS_INTERRUPT void OS::SystemTimer_ISR()
+OS_INTERRUPT void OS::SysTick_Handler()
 {
     scmRTOS_ISRW_TYPE ISR;
 

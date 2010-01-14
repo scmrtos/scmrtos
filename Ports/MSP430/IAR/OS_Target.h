@@ -83,6 +83,7 @@ typedef word TStatusReg;
 #define OS_PROCESS   __task
 #define OS_INTERRUPT __interrupt
 #define DUMMY_INSTR() __no_operation()
+#define INLINE_PROCESS_CTOR
 
 //--------------------------------------------------
 //

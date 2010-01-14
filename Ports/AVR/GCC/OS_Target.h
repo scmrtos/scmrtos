@@ -100,6 +100,8 @@ typedef byte TStatusReg;
 
 #define	DUMMY_INSTR()	__asm__ __volatile__ ("nop" : : )
 
+#define	INLINE_PROCESS_CTOR INLINE inline
+
 //--------------------------------------------------
 //
 //   Uncomment macro value below for SystemTimer() run in critical section
@@ -121,18 +123,7 @@ typedef byte TStatusReg;
 #include <scmRTOS_defs.h>
 
 //-----------------------------------------------------------------------------
-//
-//  correct GCC 4.x bug (?) - forvard declarations needed for
-//	TBaseProcess()	in OS_Kernel.h for class TKernel definition
-//	OS::Run() 	in main() function of user project
-//  in addition, OS::Run() never returns to main() so some optimisation allowed
-namespace OS
-{
-    class TBaseProcess;
-    NORETURN void Run();
-}
-
-// prevent "OS_Kernel.cpp:54: warning: 'noreturn' function does return" for OS::Run(); and allow some optimization
+//      allow some optimization
 extern "C" NORETURN void OS_Start(TStackItem* sp);
 
 

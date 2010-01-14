@@ -76,6 +76,8 @@ extern "C" void OS_Start(TStackItem* sp);
 //
 namespace OS
 {
+    class TBaseProcess;
+
     INLINE inline void SetPrioTag(TProcessMap& pm, const TProcessMap PrioTag) { pm |=  PrioTag; }
     INLINE inline void ClrPrioTag(TProcessMap& pm, const TProcessMap PrioTag) { pm &= ~PrioTag; }
 
@@ -96,6 +98,8 @@ namespace OS
         //
         //     Declarations
         //
+        
+
         friend class TISRW;
         friend class TISRW_SS;
         friend class TBaseProcess;
@@ -221,32 +225,33 @@ namespace OS
     //
     //
     #if SEPARATE_RETURN_STACK == 0
+
         template<TPriority pr, word stack_size>
         class process : public TBaseProcess
         {
         public:
-            INLINE process() : TBaseProcess(&Stack[stack_size/sizeof(TStackItem)]
-                                      , pr
-                                      , (void (*)())Exec)
-            {
-            }
+            INLINE_PROCESS_CTOR process();
 
             OS_PROCESS static void Exec();
 
         private:
             TStackItem Stack[stack_size/sizeof(TStackItem)];
         };
+
+        template<TPriority pr, word stack_size>
+        OS::process<pr, stack_size>::process() : TBaseProcess( &Stack[stack_size/sizeof(TStackItem)]
+                                                              , pr
+                                                              , reinterpret_cast<void (*)()>(Exec) )
+        {
+        }
+
     #else
+
         template<TPriority pr, word stack_size, word rstack_size>
         class process : public TBaseProcess
         {
         public:
-            INLINE process() : TBaseProcess( &Stack[stack_size/sizeof(TStackItem)]
-                                    , &RStack[rstack_size/sizeof(TStackItem)]
-                                    , pr
-                                    , (void (*)())Exec)
-            {
-            }
+            INLINE_PROCESS_CTOR process();
 
             OS_PROCESS static void Exec();
 
@@ -254,6 +259,15 @@ namespace OS
             TStackItem Stack [stack_size/sizeof(TStackItem)];
             TStackItem RStack[rstack_size/sizeof(TStackItem)];
         };
+
+        template<TPriority pr, word stack_size, word rstack_size>
+        process<pr, stack_size, rstack_size>::process() : TBaseProcess( &Stack[stack_size/sizeof(TStackItem)]
+                                                                      , &RStack[rstack_size/sizeof(TStackItem)]
+                                                                      , pr
+                                                                      , reinterpret_cast<void (*)()>(Exec))
+        {
+        }
+
     #endif
     //--------------------------------------------------------------------------
 
@@ -262,6 +276,7 @@ namespace OS
     //       Miscellaneous
     //
     //
+    INLINE inline void Run();
     INLINE inline void LockSystemTimer()   { TCritSect cs; LOCK_SYSTEM_TIMER();   }
     INLINE inline void UnlockSystemTimer() { TCritSect cs; UNLOCK_SYSTEM_TIMER(); }
     void WakeUpProcess(TBaseProcess& p);

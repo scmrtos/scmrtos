@@ -84,6 +84,7 @@ typedef dword TStatusReg;
 #define OS_INTERRUPT
 
 #define DUMMY_INSTR() __asm__ __volatile__ ("nop")
+#define	INLINE_PROCESS_CTOR INLINE inline
 
 //-----------------------------------------------------------------------------
 //
@@ -210,17 +211,6 @@ namespace OS
 {
     INLINE inline void EnableContextSwitch()  { EnableInterrupts(); }
     INLINE inline void DisableContextSwitch() { DisableInterrupts(); }
-}
-
-
-//-----------------------------------------------------------------------------
-//
-//   GCC requires functions and clsses be declared before declaring as friends
-//
-namespace OS
-{
-    void Run();
-    class TBaseProcess;
 }
 
 #include <OS_Kernel.h>

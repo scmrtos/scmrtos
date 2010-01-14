@@ -28,7 +28,7 @@ ifndef AVREAL_ADAPTER
 AVREAL_ADAPTER = b
 endif
 
-AVREAL := avreal32.exe -a$(AVREAL_ADAPTER) -p$(AVREAL_PORT) +$(MCU)
+AVREAL := avreal32.exe "-a$(AVREAL_ADAPTER)" "-p$(AVREAL_PORT)" +$(MCU)
 
 ifdef F_CPU
 AVREAL_FREQ  := -o$(F_CPU)hz

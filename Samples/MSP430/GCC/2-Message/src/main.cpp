@@ -116,55 +116,63 @@ int main()
 
     OS::Run();
 }
-//---------------------------------------------------------------------------
-OS_PROCESS void TProc1::Exec()
-{
-    for(;;)
-    {
-        //--------------------------------------------------
-        //
-        //            Message test
-        //
-        //
-        //     Receive data as message
-        //
-        MamontMsg.wait();                                     // wait for message
-        Mamont = MamontMsg;                                   // read message content to global test object 
-        if(Mamont.src == TMamont::PROC_SRC)
-        {
-            P1OUT &= ~(1 << 4);
-        }
-        else
-        {
-            P1OUT &= ~(1 << 4);
-            P1OUT |= (1 << 4);
-            P1OUT &= ~(1 << 4);
-        }
-    }     
-}
-//---------------------------------------------------------------------------
-OS_PROCESS void TProc2::Exec()
-{
-    for(;;)
-    {
-        Sleep(20);
-    }
-}
-//---------------------------------------------------------------------------
-OS_PROCESS void TProc3::Exec()
-{
-    for(;;)
-    {
-        Sleep(1);
-        TMamont m;           // create message content
 
-        m.src  = TMamont::PROC_SRC;
-        m.data = 5;
-        MamontMsg = m;       // put the content to the OS::message object
-        P1OUT |= (1 << 4);
-        MamontMsg.send();    // send the message
+namespace OS
+{
+
+    template <> 
+    OS_PROCESS void TProc1::Exec()
+    {
+        for(;;)
+        {
+            //--------------------------------------------------
+            //
+            //            Message test
+            //
+            //
+            //     Receive data as message
+            //
+            MamontMsg.wait();                       // wait for message
+            Mamont = MamontMsg;                     // read message content to global test object 
+            if(Mamont.src == TMamont::PROC_SRC)
+            {
+                P1OUT &= ~(1 << 4);
+            }
+            else
+            {
+                P1OUT &= ~(1 << 4);
+                P1OUT |= (1 << 4);
+                P1OUT &= ~(1 << 4);
+            }
+        }     
     }
-}
+
+    template <> 
+    OS_PROCESS void TProc2::Exec()
+    {
+        for(;;)
+        {
+            Sleep(20);
+        }
+    }
+
+    template <> 
+    OS_PROCESS void TProc3::Exec()
+    {
+        for(;;)
+        {
+            Sleep(1);
+            TMamont m;           // create message content
+
+            m.src  = TMamont::PROC_SRC;
+            m.data = 5;
+            MamontMsg = m;       // put the content to the OS::message object
+            P1OUT |= (1 << 4);
+            MamontMsg.send();    // send the message
+        }
+    }
+
+} // namespace OS
 //---------------------------------------------------------------------------
 void OS::SystemTimerUserHook() { }
 //---------------------------------------------------------------------------

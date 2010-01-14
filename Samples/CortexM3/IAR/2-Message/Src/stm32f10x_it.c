@@ -130,7 +130,7 @@ void SVCHandler(void)
 * Output         : None
 * Return         : None
 *******************************************************************************/
-//void PendSVC_ISR(void)
+//void PendSV_Handler(void)
 //{
 //}
 
@@ -141,7 +141,7 @@ void SVCHandler(void)
 * Output         : None
 * Return         : None
 *******************************************************************************/
-//void SystemTimer_ISR(void)
+//void SysTick_Handler(void)
 //{
 //}
 
