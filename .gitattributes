@@ -262,6 +262,7 @@ Samples/AVR/GCC/get_common.bat -text
 Samples/AVR/GCC/release_notes.avr-gcc.html -text
 Samples/AVR/GCC/switch.bat -text
 Samples/AVR/IAR/1-EventFlag/Config/lnkm32s.xcl -text
+Samples/AVR/IAR/1-EventFlag/Config/scmIC.py -text
 Samples/AVR/IAR/1-EventFlag/SConstruct -text
 Samples/AVR/IAR/1-EventFlag/Src/main.cpp -text
 Samples/AVR/IAR/1-EventFlag/Src/scmRTOS_CONFIG.h -text
@@ -276,6 +277,7 @@ Samples/AVR/IAR/1-EventFlag/slon.ewp -text
 Samples/AVR/IAR/1-EventFlag/slon.eww -text
 Samples/AVR/IAR/1-EventFlag/slon.vpj -text
 Samples/AVR/IAR/2-Message/Config/lnkm32s.xcl -text
+Samples/AVR/IAR/2-Message/Config/scmIC.py -text
 Samples/AVR/IAR/2-Message/SConstruct -text
 Samples/AVR/IAR/2-Message/Src/main.cpp -text
 Samples/AVR/IAR/2-Message/Src/scmRTOS_CONFIG.h -text
@@ -290,6 +292,7 @@ Samples/AVR/IAR/2-Message/slon.ewp -text
 Samples/AVR/IAR/2-Message/slon.eww -text
 Samples/AVR/IAR/2-Message/slon.vpj -text
 Samples/AVR/IAR/3-Channel/Config/lnkm32s.xcl -text
+Samples/AVR/IAR/3-Channel/Config/scmIC.py -text
 Samples/AVR/IAR/3-Channel/SConstruct -text
 Samples/AVR/IAR/3-Channel/Src/main.cpp -text
 Samples/AVR/IAR/3-Channel/Src/scmRTOS_CONFIG.h -text
@@ -328,6 +331,7 @@ Samples/BF533/VDSP/2-Message/Config/bf532_init.ldf -text
 Samples/BF533/VDSP/2-Message/Config/bf533cpp.ldf -text
 Samples/BF533/VDSP/2-Message/Config/get_info.py -text
 Samples/BF533/VDSP/2-Message/Config/ldprg.py -text
+Samples/BF533/VDSP/2-Message/Config/scmIC.py -text
 Samples/BF533/VDSP/2-Message/Config/utils.py -text
 Samples/BF533/VDSP/2-Message/Config/vdsp_lst.py -text
 Samples/BF533/VDSP/2-Message/SConstruct -text
@@ -345,6 +349,7 @@ Samples/BF533/VDSP/3-Channel/Config/bf532_init.ldf -text
 Samples/BF533/VDSP/3-Channel/Config/bf533cpp.ldf -text
 Samples/BF533/VDSP/3-Channel/Config/get_info.py -text
 Samples/BF533/VDSP/3-Channel/Config/ldprg.py -text
+Samples/BF533/VDSP/3-Channel/Config/scmIC.py -text
 Samples/BF533/VDSP/3-Channel/Config/utils.py -text
 Samples/BF533/VDSP/3-Channel/Config/vdsp_lst.py -text
 Samples/BF533/VDSP/3-Channel/SConstruct -text
@@ -486,6 +491,7 @@ Samples/MSP430/GCC/get_common.bat -text
 Samples/MSP430/GCC/switch.bat -text
 Samples/MSP430/IAR/1-EventFlag/Config/lnk430F149.xcl -text
 Samples/MSP430/IAR/1-EventFlag/Config/lnk430F169.xcl -text
+Samples/MSP430/IAR/1-EventFlag/Config/scmIC.py -text
 Samples/MSP430/IAR/1-EventFlag/SConstruct -text
 Samples/MSP430/IAR/1-EventFlag/Src/device.h -text
 Samples/MSP430/IAR/1-EventFlag/Src/main.cpp -text
@@ -503,6 +509,7 @@ Samples/MSP430/IAR/1-EventFlag/slon.eww -text
 Samples/MSP430/IAR/1-EventFlag/slon.vpj -text
 Samples/MSP430/IAR/2-Message/Config/lnk430F149.xcl -text
 Samples/MSP430/IAR/2-Message/Config/lnk430F169.xcl -text
+Samples/MSP430/IAR/2-Message/Config/scmIC.py -text
 Samples/MSP430/IAR/2-Message/SConstruct -text
 Samples/MSP430/IAR/2-Message/Src/device.h -text
 Samples/MSP430/IAR/2-Message/Src/main.cpp -text
@@ -519,6 +526,7 @@ Samples/MSP430/IAR/2-Message/slon.eww -text
 Samples/MSP430/IAR/2-Message/slon.vpj -text
 Samples/MSP430/IAR/3-Channel/Config/lnk430F149.xcl -text
 Samples/MSP430/IAR/3-Channel/Config/lnk430F169.xcl -text
+Samples/MSP430/IAR/3-Channel/Config/scmIC.py -text
 Samples/MSP430/IAR/3-Channel/SConstruct -text
 Samples/MSP430/IAR/3-Channel/Src/device.h -text
 Samples/MSP430/IAR/3-Channel/Src/main.cpp -text
@@ -538,6 +546,7 @@ Samples/MSP430/IAR/WhatsNew.html -text
 Samples/MSP430/IAR/release_notes.msp430.html -text
 Samples/MSP430/IAR/switch.bat -text
 Samples/MSP430X/IAR/1-EventFlag/Config/lnk430F2617.xcl -text
+Samples/MSP430X/IAR/1-EventFlag/Config/scmIC.py -text
 Samples/MSP430X/IAR/1-EventFlag/SConstruct -text
 Samples/MSP430X/IAR/1-EventFlag/Src/main.cpp -text
 Samples/MSP430X/IAR/1-EventFlag/Src/scmRTOS_CONFIG.h -text
@@ -554,6 +563,7 @@ Samples/MSP430X/IAR/1-EventFlag/slon.ewp -text
 Samples/MSP430X/IAR/1-EventFlag/slon.eww -text
 Samples/MSP430X/IAR/1-EventFlag/slon.vpj -text
 Samples/MSP430X/IAR/2-Message/Config/lnk430F2617.xcl -text
+Samples/MSP430X/IAR/2-Message/Config/scmIC.py -text
 Samples/MSP430X/IAR/2-Message/SConstruct -text
 Samples/MSP430X/IAR/2-Message/Src/main.cpp -text
 Samples/MSP430X/IAR/2-Message/Src/scmRTOS_CONFIG.h -text
@@ -569,6 +579,7 @@ Samples/MSP430X/IAR/2-Message/slon.ewp -text
 Samples/MSP430X/IAR/2-Message/slon.eww -text
 Samples/MSP430X/IAR/2-Message/slon.vpj -text
 Samples/MSP430X/IAR/3-Channel/Config/lnk430F2617.xcl -text
+Samples/MSP430X/IAR/3-Channel/Config/scmIC.py -text
 Samples/MSP430X/IAR/3-Channel/SConstruct -text
 Samples/MSP430X/IAR/3-Channel/Src/main.cpp -text
 Samples/MSP430X/IAR/3-Channel/Src/scmRTOS_CONFIG.h -text

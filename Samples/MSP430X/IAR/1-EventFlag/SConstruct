@@ -14,9 +14,14 @@
 #     $Rev$
 #
 #-------------------------------------------------------------------------------
+import sys
 import os
 import glob
 import subprocess
+
+sys.path.append(os.getcwd() + '\\Config')
+
+import scmIC
 
 #===============================================================================
 #
@@ -87,7 +92,7 @@ HexExt  = 'hex'
 #      Toolkit
 #
 IAR = os.environ['IAR']
-TOOLKIT_PATH = IAR + '\\EW430v420'
+TOOLKIT_PATH = IAR + '\\EW430v421'
 
 ASM    = TOOLKIT_PATH + '\\430\\bin\\a430.exe'
 CC     = TOOLKIT_PATH + '\\430\\bin\\icc430.exe'
@@ -197,6 +202,7 @@ def BuildTarget(target, source, env):
         print '*'*60
         print 'Sources are up to date'
 
+    check_scmRTOS_cfg(target, source, env)
     print '*'*60
     print 'Link: ' + str(target[0])
 
@@ -250,6 +256,7 @@ env['LINKER'     ] = Linker
 env['AFLAGS'     ] = AFLAGS
 env['CFLAGS'     ] = CFLAGS
 env['LFLAGS'     ] = LFLAGS
+env['SRC_PATH'   ] = SourceDirs[0]
 env['CPPPATH'    ] = SourceDirs + ToolkitIncPath
 env['FIRST_ENTRY'] = FirstEntry
 
@@ -319,6 +326,16 @@ def clean(target, source, env):
     remove_files(ListDir, 'i')
     remove_files(ListDir, 'lst')
     remove_files(ListDir, 'map')
+
+#-------------------------------------------------------------------------------
+def check_scmRTOS_cfg(target, source, env):
+    print '*'*60
+    print 'Run integrity checker...',
+    rcode = scmIC.checker([env['SRC_PATH']])
+    if rcode != 0:
+        print '\n scmRTOS configuration is invalid.'
+
+    print '*'*60
 
 #-------------------------------------------------------------------------------
 build_main = env.Alias(ProjectName, ExeDir +'\\' + ProjectName + '.' + DbgExt)

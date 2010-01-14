@@ -131,7 +131,7 @@ void main()
     OS::Run();
 }
 //---------------------------------------------------------------------------
-OS_PROCESS void TProc1::Exec()
+template<> void TProc1::Exec()
 {
     for(;;)
     {
@@ -157,7 +157,7 @@ OS_PROCESS void TProc1::Exec()
     }     
 }
 //---------------------------------------------------------------------------
-OS_PROCESS void TProc2::Exec()
+template<> void TProc2::Exec()
 {
     for(;;)
     {
@@ -165,7 +165,7 @@ OS_PROCESS void TProc2::Exec()
     }
 }
 //---------------------------------------------------------------------------
-OS_PROCESS void TProc3::Exec()
+template<> void TProc3::Exec()
 {
     for(;;)
     {
@@ -202,7 +202,6 @@ EX_INTERRUPT_HANDLER(Timer0_ISR)
     MamontMsg = m;       // put the content to the OS::message object
     MMR16(FIO_FLAG_S) = (1 << 9);
     MamontMsg.sendISR();    // send the message
-
 }
 //---------------------------------------------------------------------------
 

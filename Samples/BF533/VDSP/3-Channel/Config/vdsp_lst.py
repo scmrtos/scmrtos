@@ -24,6 +24,9 @@ import  os
 import  time
 import  re
 
+
+ref_file_name = ''
+
 #-------------------------------------------------------------------------------
 #
 #   Function opens and reads the file. Returns the list of strings 
@@ -55,15 +58,24 @@ def IsLabel(s):
 #   or None
 #
 def IsReference(s):
-    search_object = re.search('^//[ |\t]+"(.+)" line ([0-9]+) col ([0-9]+)', s)
+    global ref_file_name
+    
+    search_object = re.search('^//[ |\t]+line[ |\t]+"(.+)":([0-9]+)', s)
     if search_object: 
-        src_file = search_object.group(1)
-        line     = search_object.group(2)
-        col      = search_object.group(3)
-        ref      = src_file, line, col
+        src_file      = search_object.group(1)
+        line          = search_object.group(2)
+        ref           = src_file, line
+        ref_file_name = src_file
         return ref
     else:
-        return None
+        search_object = re.search('^//[ |\t]+line[ |\t]+([0-9]+)', s)
+        if search_object:
+            src_file      = ref_file_name
+            line          = search_object.group(1)
+            ref           = src_file, line
+            return ref
+        else:
+            return None
 #-------------------------------------------------------------------------------
 #
 #   Function checks the string and returns the code string or None
@@ -193,7 +205,7 @@ def create_lst(InFileName):
         out_str += src_file[i] + '\r\n'
         for j in records:
             if not j[0]: continue
-            rec_src_file, rec_line, rec_col = j[0]  # unpack reference
+            rec_src_file, rec_line = j[0]  # unpack reference
             if rec_src_file != src_filename: continue
             if i == int(rec_line) - 1:
                 for k in j[2]:          # print labels
@@ -213,16 +225,16 @@ def create_lst(InFileName):
     for i in idata:
         ref = IsReference(i)
         if ref:
-            src_file, line, col = ref
+            src_file, line = ref
             if not src_files.has_key(src_file):
                 f = ReadSrcFile(src_file)
                 src_files[src_file] = f
 
-            if col == '1':
-                line_num = int(line) - 1
-            else:
-                line_num = int(line)
-
+#           if col == '1':
+#               line_num = int(line) - 1
+#           else:
+#               line_num = int(line)
+            line_num = int(line)
             src_line = src_files[src_file][line_num-1]
             out_line = src_line + ' ' + i + '\r\n'
             out_str += out_line
@@ -237,14 +249,15 @@ def create_lst(InFileName):
 #    Main function: get options and arguments, run tasks
 #
 def main():
-    #print os.listdir(os.getcwd())
     #-----------------------------------------------------
     #
     #   Process options
     #
     optlist, infiles = getopt.gnu_getopt(sys.argv[1:], '')
 
-    if not infiles:  return
+    if not infiles:  
+        print 'No input file.'
+        return
     InFileName = infiles[0]
     create_lst(InFileName)
 #-------------------------------------------------------------------------------

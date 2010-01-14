@@ -88,5 +88,6 @@
 			</Folder>
 		</Folder>
 		<F N="../scmRTOS/MSP430/OS_Target_asm.s43"/>
+		<F N="SConstruct"/>
 	</Files>
 </Project>

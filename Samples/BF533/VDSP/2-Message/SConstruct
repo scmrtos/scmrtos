@@ -25,6 +25,7 @@ sys.path.append(os.getcwd() + '\\Config')
 import utils
 import get_info
 import vdsp_lst
+import scmIC
 
 #===============================================================================
 #
@@ -45,7 +46,7 @@ SourceDirs   = ['Src',
 #     Options
 #
 Processor    = 'BF533'
-DeviceRev    = '0.3'
+DeviceRev    = '0.5'
 
 Optimization = ' -Ov 80 '
 
@@ -95,7 +96,7 @@ HexExt  = 'hex'
 #      Toolkit
 #
 AD = os.environ['AD']
-TOOLKIT_PATH = AD + '\\VisualDSP4'
+TOOLKIT_PATH = AD + '\\VisualDSP5.0'
 
 ASM      = TOOLKIT_PATH + '\\easmBLKFN.exe'
 CC       = TOOLKIT_PATH + '\\ccblkfn.exe'
@@ -223,6 +224,8 @@ def BuildTarget(target, source, env):
         print '*'*60
         print 'Sources are up to date'
 
+    check_scmRTOS_cfg(target, source, env)
+
     print '*'*60
     print 'Link: ' + str(target[0])
 
@@ -322,6 +325,7 @@ env['LOADER'     ] = LOADER
 env['AFLAGS'     ] = AFLAGS
 env['CFLAGS'     ] = CFLAGS
 env['LFLAGS'     ] = LFLAGS
+env['SRC_PATH'   ] = SourceDirs[0]
 env['CPPPATH'    ] = SourceDirs + ToolkitIncPath
 env['FIRST_ENTRY'] = FirstEntry
 
@@ -393,11 +397,29 @@ def clean(target, source, env):
     remove_files(ListDir, 'map')
 
 #-------------------------------------------------------------------------------
+#
+#
+#
+def check_scmRTOS_cfg(target, source, env):
+    print '*'*60
+    print 'Run integrity checker...',
+    rcode = scmIC.checker([env['SRC_PATH']])
+    if rcode != 0:
+        print '\n scmRTOS configuration is invalid.'
+
+    print '*'*60
+
+#-------------------------------------------------------------------------------
+
 build_main = env.Alias(ProjectName, ExeDir +'\\' + ProjectName + '.' + DbgExt)
 clean_all  = env.Alias('cln', action = clean)
+ic         = env.Alias('ic',  action = check_scmRTOS_cfg)
 
-env.AlwaysBuild('cln')
+
+env.Alias('all', [build_main, ic])
 env.Alias('rebuild', [clean_all, build_main])
+
+env.AlwaysBuild('all', 'cln', 'ic')
 
 #-------------------------------------------------------------------------------
 #print env.Dump()

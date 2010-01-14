@@ -88,6 +88,7 @@ def get_info(fn):
     print '        |  bsz_data_a | ' + StrBDA  + ' bytes'
     print '        |  bsz_data_b | ' + StrBDB  + ' bytes'
     print '----------------------------' + '-'*maxlen + '--'
+    print ''
 #-------------------------------------------------------------------------------
 def main():
     
