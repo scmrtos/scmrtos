@@ -1,6 +1,11 @@
 @echo off
 
-SET REP=https://scmrtos.svn.sourceforge.net/svnroot/scmrtos/trunk
+IF "%1" == "" ( 
+    SET REP=https://scmrtos.svn.sourceforge.net/svnroot/scmrtos/trunk
+) ELSE ( 
+    SET REP=%1/trunk
+)
+
 SET TARGET=FR
 SET TOOL=Softune_V6
 SET DST_DIR=.
