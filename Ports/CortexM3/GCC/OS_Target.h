@@ -10,12 +10,12 @@
 //*
 //*     PURPOSE:   Target Dependent Stuff Header. Declarations And Definitions
 //*
-//*     Version: 3.05
+//*     Version: 3.10
 //*
 //*     $Revision: 195 $
 //*     $Date:: 2008-06-19 #$
 //*
-//*     Copyright (c) 2003-2008, Harry E. Zhurov
+//*     Copyright (c) 2003-2010, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     Ported by Andrey Chuikin, Copyright (c) 2008
+//*     Ported by Andrey Chuikin, Copyright (c) 2008-2010
 
 #ifndef scmRTOS_CORTEXM3_H
 #define scmRTOS_CORTEXM3_H

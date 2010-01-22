@@ -10,12 +10,12 @@
 //*
 //*     PURPOSE:   Project Level Target Extensions Config
 //*
-//*     Version: 3.05
+//*     Version: 3.10
 //*
 //*     $Revision$
 //*     $Date::             $
 //*
-//*     Copyright (c) 2003-2008, Harry E. Zhurov
+//*     Copyright (c) 2003-2010, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     mspgcc port by Anton B. Gusev aka AHTOXA, Copyright (c) 2008
+//*     mspgcc port by Anton B. Gusev aka AHTOXA, Copyright (c) 2008-2010
 
 #ifndef  scmRTOS_TARGET_CFG_H
 #define  scmRTOS_TARGET_CFG_H

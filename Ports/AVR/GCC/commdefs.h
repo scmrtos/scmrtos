@@ -10,12 +10,12 @@
 //*
 //*     PURPOSE:   Common Type Definitions
 //*
-//*     Version: 3.05
+//*     Version: 3.10
 //*
 //*     $Revision$
 //*     $Date::             $
 //*
-//*     Copyright (c) 2003-2008, Harry E. Zhurov
+//*     Copyright (c) 2003-2010, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     avr-gcc port by Oleksandr O. Redchuk, Copyright (c) 2007-2008
+//*     avr-gcc port by Oleksandr O. Redchuk, Copyright (c) 2007-2010
 
 #ifndef COMMDEFS_H
 #define COMMDEFS_H

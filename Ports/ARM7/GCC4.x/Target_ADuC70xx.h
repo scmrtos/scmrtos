@@ -10,12 +10,12 @@
 //*
 //*     PURPOSE:   Target Dependent Stuff Header. Declarations And Definitions
 //*
-//*     Version:   3.05
+//*     Version: 3.10
 //*
 //*     $Revision$
 //*     $Date$
 //*
-//*     Copyright (c) 2003-2008, Harry E. Zhurov
+//*     Copyright (c) 2003-2010, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2008
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2010
 
 #ifndef TARGET_ADUC_H__
 #define TARGET_ADUC_H__
