@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.4: http://docutils.sourceforge.net/" />
+<title>scmRTOS What's New</title>
+<meta name="author" content="Harry E.Zhurov" />
+<meta name="date" content="$Date $" />
+<style type="text/css">
+
+body {
+	background-color: #E5EDFF;
+	color: #000;
+	font-family: Verdana, Tahoma, Geneva, Arial, Helvetica, sans-serif;
+	margin: 0px;
+}
+
+br {
+	background-color: Aqua;
+}
+/*
+from docutils
+.borderless, table.borderless td, table.borderless th {
+  border: 0 }
+*/
+.borderless, table.borderless td, table.borderless th 
+{
+  border: 0 
+}
+  
+
+div.hint, div.important, div.note, div.tip, div.warning {
+  margin: 2em ;
+  border: medium outset ;
+  padding: 7px; 
+  width: 33%;
+  background-color: #E9E9E9;
+/*  font: "Times New Roman", Times, serif;
+  font-size: 20%;
+  */
+  }
+
+
+a {
+	text-decoration: none;
+	color: #4169E1;
+}
+
+table.a {
+	text-decoration: none;
+	color: #4169E1;
+}
+
+a:hover {
+	text-decoration: underline;
+/*	color: #25B026;*/
+/*	background-color: #DEB887; */
+}
+
+a:visited {
+	color: #8B008B; /* #4169E1;	*/
+}
+
+table {
+   clear: both;
+	background-color: #E5EDFF;
+	color: #000;
+	font-family: "Trebuchet MS", Georgia, System, Verdana, Tahoma, Geneva, Arial, Helvetica, sans-serif;
+/*	font-weight: bold; */
+}
+
+table.filelist {
+   clear: both;
+	background-color: #FFFEF6;
+	color: #000;
+	font-family: "Trebuchet MS", Georgia, System, Verdana, Tahoma, Geneva, Arial, Helvetica, sans-serif;
+	width: 70%;
+}
+
+table.targetlist {
+   clear: both;
+	color: #000;
+	font-family: "Trebuchet MS", Georgia, System, Verdana, Tahoma, Geneva, Arial, Helvetica, sans-serif;
+	width: 50%;
+}
+
+table.marklist {
+   clear: both;
+	color: #000;
+	font-family: "Trebuchet MS", Georgia, System, Verdana, Tahoma, Geneva, Arial, Helvetica, sans-serif;
+	width: 35%;
+}
+
+.marklist {
+   clear: both;
+	color: #000;
+	font-family: "Trebuchet MS", Georgia, System, Verdana, Tahoma, Geneva, Arial, Helvetica, sans-serif;
+	width: 60%;
+}
+
+
+li {
+	font-family: Garamond, sans-serif;
+	font-size: small;
+	font-weight: normal;
+	color: Black;
+}
+
+ul.plain li {
+	font-family: Arial, Garamond, sans-serif;
+	font-size: 100%;
+	font-weight: normal;
+	color: Black;
+	list-style: disc;
+	width: 70%;
+	line-height: 120%;
+	text-decoration: none;
+	text-align: justify;
+	padding-bottom: 6px;
+}
+
+ul.plain2 li {
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 90%;
+	font-weight: normal;
+	color: Black;
+	list-style: square;
+	width: 70%;
+	line-height: 120%;
+	text-decoration: none;
+	text-align: justify;
+	padding-top: 3px;
+/*	padding-bottom: 6px; */
+}
+
+ul.plain3 li {
+	font-family: Arial, Garamond, sans-serif;
+	font-size: 100%;
+	font-weight: normal;
+	color: Black;
+	list-style: square;
+	width: 50%;
+	line-height: 120%;
+	text-decoration: none;
+	text-align: justify;
+	padding-bottom: 6px;
+}
+
+
+ul.numeric li {
+	font-family: Arial, Garamond, sans-serif;
+	font-size: 100%;
+	font-weight: normal;
+	color: Black;
+	list-style: decimal;
+	width: 70%;
+	line-height: 120%;
+	text-decoration: none;
+	text-align: justify;
+	border: solid;
+	border-style: none;
+	padding-bottom: 6px;
+}
+
+h3 {
+	color: #8A2256;
+	font-size: 120%;	
+}
+h4 {
+	color: #8A2256;
+	font-size: 100%;	
+}
+h5 {
+	color: #8A2256;
+	font-size: 90%;	
+}
+h6 {
+	color: #8A2256;
+	font-size: 80%;
+	font-style: italic;
+}
+
+#banner td {
+	background-color: #0A275A;
+/*	color: #F5DEB3;*/
+   color: #F0E68C;
+	font-family: Tahoma, "Trebuchet MS", sans-serif;
+	padding: 4px;
+}
+#banner h1 {
+	color: #F0E68C;
+	display: inline;
+	font-family: Tahoma, "Trebuchet MS", sans-serif;
+	font-size: 14pt;
+	/*font-weight: bold;*/
+}
+
+#banner h11 {
+	color: #F0E68C;
+	display: inline;
+	font-family: Tahoma, "Trebuchet MS", sans-serif;
+	font-size: 14pt;
+	font-weight: bold;
+}
+
+
+#subtitle {
+	text-indent: 10ex;
+	font-size: 19pt;
+	/*font-style: italic;*/
+	font-weight: bold;
+}
+#menu td {
+	background-color: #228B22;
+	color: #E0FFFF;	
+	font-size: 80%;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+#menu td.topmenu {
+	background-color: #E0FFFF;
+/*	background-color: #DEB887;*/
+	color: #0000CD;
+	border: 1px solid #228B22;
+	font-style: italic;
+}
+a.amenu {
+	background-color: #6495ED;
+	color: #E0FFFF;
+}
+a.amenu:hover {
+/*	background-color: #228B22; */
+	background-color: #191970;
+	color: #fff;
+	text-decoration: underline;
+}
+a.amenu:visited {
+	color: #708090;	
+}
+#footer {
+	background-color: #0A275A;
+	color: #F0E68C;
+	font-size: 80%;	
+}
+#breadcrumbs {
+	font: sans-serif;
+	font-size: 80%;
+	font-weight: bold;
+	padding: 1ex;
+	margin-bottom: 1ex;
+	margin-top: 2px;
+	border-bottom: 1px solid #A9A9A9;
+}
+#breadcrumbs a {
+	color: #00008B;	
+}
+#main {
+	border-left: 1px solid #A9A9A9;
+}
+#text {
+	font-size: 95%;
+	padding-left: 8px;
+	padding-bottom: 1em;
+	padding-right: 1em;
+}
+#text p {
+	text-align: justify;
+/* disabled for compatibility with Makehtml.py v.1.3
+	text-indent: 2em; */
+}
+
+/* 2004-09-10 bialix */
+#text div.document p {
+	text-indent: 0;
+}
+th.field-name {
+	text-align: left;
+	padding-left: 6px;
+	padding-right: 1em;
+}
+/* end 2004-09-10 bialix */
+
+div.attention
+{
+/*  color: red ;*/
+  font-weight: bold ;
+  font-family: sans-serif;
+
+  margin: 2em ;
+  border: medium outset ;
+  padding: 1em }
+
+blockquote.epigraph {
+  font-style: italic;
+  font-size: 85%;
+  font-family: sans-serif;
+
+  margin-right: 2em;
+  border: medium outset;
+  padding: 1em;
+  width: 30%;
+  float: right;
+}
+
+/* 2005-05-02 bialix */
+div.menu {
+	margin: 5px; 
+   width: 10ex;
+}
+
+div.menu p {
+	display: block; 
+   border: 1px solid #228B22; 
+	padding: 4px 8px;
+	margin: 0;
+	font-size: 80%;
+	font-style: italic;
+	color: #228B22;
+}
+
+div.menu ul {
+	display: block; 
+   margin: 0; 
+   padding: 0;
+}
+
+div.menu li {
+	display: block; 
+   border: 1px solid #A9A9A9;
+	padding: 3px 8px;
+	margin-top: 5px;
+	font-size: 80%;
+	background-color: #228B22;
+	color: #A9A9A9;
+}
+
+/* 2005-07-12 for compatibility with IE6 must be a.reference */
+div.menu a.reference {
+	background-color: #228B22;
+	color: #A9A9A9;
+}
+
+/* end  2005-05-02 bialix */
+
+/* 2005-07-14 bialix */
+td.menu2 {
+	width: 13%;
+}
+.gridmenu td {
+	background-color: #495C61; /* #7A8D96 */
+	color: #FAFAD2;	
+/*	font-family:  Tahoma, Geneva, Arial, Helvetica, sans-serif; */
+	font-weight: bold;
+	font-size: 80%;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+.gridmenu th {
+	border: 1px solid #DCDCDC;
+	color: #00008B;
+	font-family:  Tahoma, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 90%;
+	padding-left: 8px;
+	padding-right: 8px;
+	text-align: left;
+}
+
+.gridmenu a.reference {
+	background-color: #495C61;
+	color: #87CEEB; /* #00FF02 */
+	font-family:  Tahoma, Geneva, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.gridmenu a.reference:hover {
+	background-color: #495C61; /* #BBB8E2 */
+	color: #DAA520;
+	text-decoration: underline;
+}
+.gridmenu a.reference:visited {
+	background-color: #495C61;
+	color: #DBA083;	
+}
+
+/* end 2005-07-14 bialix */
+
+
+
+/**********************************************************/
+
+pre {
+	background-color: #D4D8DE;
+}
+
+li {
+	font-family: sans-serif;
+	font-size: small;
+	font-weight: normal;
+	color: Black;
+}
+
+
+
+tr {
+	text-align: left;
+}
+
+
+h1.title {
+   text-align: center;
+   background-color: #123676;
+	color: #D2C01A;
+	font-family: Tahoma, sans-serif;
+	font-weight: bold;
+	font-size: 24px;
+  }
+
+
+h1 {
+	background-color: #AEC8F6;
+	border: none;
+	font-family: Verdana, Tahoma, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 20px;
+}
+
+h11 {
+/*	background-color: #AEC8F6; */
+	border: none;
+	font-family: Verdana, Tahoma, Geneva, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	font-size: 20px; 
+}
+	
+	
+h2 {
+	font-family: Verdana, Tahoma, sans-serif;
+	font-size: 16px;
+	padding-top: 12px;
+}
+
+a {
+	color: #232791;
+}
+
+A:visited {
+	color: #8B008B; /* #4169E1;	*/
+}
+
+p {
+	font-family: Garamond, System, Verdana, Tahoma, sans-serif;
+	font-size: 130%;
+	font-weight: normal;
+	color: Black;
+}
+
+.contents {
+	font-family: Arial, sans-serif;
+	font-weight: bolder;
+	font-size: medium;
+}
+
+
+
+
+
+
+</style>
+</head>
+<body>
+<div class="document" id="scmrtos-what-s-new">
+<h1 class="title">scmRTOS What's New</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr><th class="docinfo-name">Author:</th>
+<td>Harry E.Zhurov</td></tr>
+<tr><th class="docinfo-name">Date:</th>
+<td>$Date $</td></tr>
+<tr><th class="docinfo-name">Revision:</th>
+<td>$Rev $</td></tr>
+<tr class="field"><th class="docinfo-name">Info:</th><td class="field-body">Changes and new features highlight</td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<div class="section">
+<h1><a id="version-3-00-since-v2-xx" name="version-3-00-since-v2-xx">Version 3.00 (since v2.xx)</a></h1>
+<ul class="plain borderless simple">
+<li>The source code significant rearranged. As result:<ul class="plain2">
+<li>Definitions of kernel and services are placed on separate files.</li>
+<li>User support library has been removed from Port part and now the
+library is resided in Common part of the RTOS.</li>
+<li>Portable part is much more &quot;decoupled&quot; from Common part that gives
+more freedom for Port functionality realization.</li>
+</ul>
+</li>
+<li>The RTOS is positioned as explicitly separated on three parts:<ul class="plain2">
+<li>Common part.</li>
+<li>Target-dependent part (port).</li>
+<li>Project-dependent part that allows user to tune the RTOS according
+to his project requirements. Project-dependent part includes two
+header files:<ul class="plain2">
+<li><tt class="docutils literal"><span class="pre">scmRTOS_CONFIG.h</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">scmRTOS_TARGET_CFG.h</span></tt>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Any available hardware timer in processor can be used as System Timer.</li>
+<li>System Timer and Context Switch Software interrupts are fully definable
+at user's project level.</li>
+<li>Context Switch mechanisms are significant redesigned:<ul class="plain2">
+<li>when Direct Program Control Flow transfer scheme is used
+no special requirements to place context saving code immediately
+at begining of interrupt service routine (ISR). This eliminates the
+most frequent cause of program (that using the RTOS) failure, which
+has taken place in versions (v1.xx and v2.xx) of the RTOS.</li>
+<li>when Software Interrupt Program Control Flow transfer scheme is used
+the only one rescheduling is performed inside interrupt service routine -
+on ISR exit, no in every service function that is called. This improves
+performance.</li>
+</ul>
+</li>
+<li>Priority names order do not depend on Context Switch Scheme (in contrast to v2.xx).
+<tt class="docutils literal"><span class="pre">pr0</span></tt> - is always the highest priority, <tt class="docutils literal"><span class="pre">prN</span></tt> - is always the lowest priority,
+where  <tt class="docutils literal"><span class="pre">N</span></tt> - is integer number in range <tt class="docutils literal"><span class="pre">[1..32]</span></tt> and defined as
+<tt class="docutils literal"><span class="pre">scmRTOS_PROCESS_COUNT</span> <span class="pre">+</span> <span class="pre">1</span></tt>. As usual, <tt class="docutils literal"><span class="pre">prN</span></tt> is priority of the System's
+<tt class="docutils literal"><span class="pre">IdleProcess</span></tt>.</li>
+<li>Software switch on ISR stack support. Currently, this feature is suitable
+for MSP430 and AVR only. The feature is optional. See MSP430 Port or AVR Port
+pages or [and] Ports descriptions for more details.</li>
+<li>Type of the System timeouts is defined at project level now. See project
+RTOS configuration file <tt class="docutils literal"><span class="pre">scmRTOS_CONFIG.h</span></tt>. The type of the System timeouts
+can be <tt class="docutils literal"><span class="pre">byte</span></tt>, <tt class="docutils literal"><span class="pre">word</span></tt> or <tt class="docutils literal"><span class="pre">dword</span></tt>. The user can choose the most
+suitable variant for his current project.</li>
+<li><tt class="docutils literal"><span class="pre">IdleProcess</span></tt> stack[s] size specified at user's project level now (see below).</li>
+<li>Some configuration options have been added:<ul class="plain2">
+<li><tt class="docutils literal"><span class="pre">scmRTOS_ISRW_TYPE</span></tt>. The macro defines type of ISR Wrapper object in
+System Timer interrupt. The macro can have values <tt class="docutils literal"><span class="pre">TISRW</span></tt> or
+<tt class="docutils literal"><span class="pre">TISRW_SS</span></tt>. Now this is applicable for MSP430 and AVR ports only.</li>
+<li><tt class="docutils literal"><span class="pre">scmRTOS_IDLE_PROCESS_STACK_SIZE</span></tt>. Specifies <tt class="docutils literal"><span class="pre">IdleProcess</span></tt> stack size.
+AVR Port has two same macros to define stacks sizes (because of two stacks
+used with EWAVR):<ul>
+<li><tt class="docutils literal"><span class="pre">scmRTOS_IDLE_PROCESS_DATA_STACK_SIZE</span></tt> - stack size for process's data.</li>
+<li><tt class="docutils literal"><span class="pre">scmRTOS_IDLE_PROCESS_RETURN_STACK_SIZE</span></tt> - stack size for return addresses
+storage.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Several ARM7 Ports added:<ul class="plain2">
+<li>LPC2xxx (NXP).</li>
+<li>AT91SAM7 (Atmel).</li>
+<li>ADuC7xxx (ADI).</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</body>
+</html>

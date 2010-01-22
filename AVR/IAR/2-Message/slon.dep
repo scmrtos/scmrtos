@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>2</fileVersion>
+  <configuration>
+    <name>Debug</name>
+    <outputs>
+      <file>$PROJ_DIR$\Obj\OS_Target_asm.r90</file>
+      <file>$PROJ_DIR$\List\usrlib.lst</file>
+      <file>$PROJ_DIR$\..\scmRTOS\AVR\OS_Target.h</file>
+      <file>$TOOLKIT_DIR$\inc\dlib\DLib_Defaults.h</file>
+      <file>$PROJ_DIR$\..\scmRTOS\AVR\commdefs.h</file>
+      <file>$PROJ_DIR$\List\OS_Target_cpp.lst</file>
+      <file>$PROJ_DIR$\..\scmRTOS\Common\OS_Kernel.h</file>
+      <file>$TOOLKIT_DIR$\inc\dlib\xencoding_limits.h</file>
+      <file>$PROJ_DIR$\Obj\OS_Kernel.pbi</file>
+      <file>$PROJ_DIR$\Obj\OS_Target_cpp.pbi</file>
+      <file>$PROJ_DIR$\Obj\OS_Services.pbi</file>
+      <file>$PROJ_DIR$\..\scmRTOS\Common\usrlib.cpp</file>
+      <file>$PROJ_DIR$\..\scmRTOS\AVR\OS_Target_cpp.cpp</file>
+      <file>$PROJ_DIR$\..\scmRTOS\AVR\OS_Target_asm.s90</file>
+      <file>$PROJ_DIR$\..\scmRTOS\Common\OS_Kernel.cpp</file>
+      <file>$PROJ_DIR$\..\scmRTOS\Common\OS_Services.cpp</file>
+      <file>$PROJ_DIR$\Exe\slon.d90</file>
+      <file>$PROJ_DIR$\Obj\OS_Kernel.r90</file>
+      <file>$TOOLKIT_DIR$\inc\inavr.h</file>
+      <file>$TOOLKIT_DIR$\lib\dlib\dlAVR-3s-ec_mul-sf-n.r90</file>
+      <file>$TOOLKIT_DIR$\inc\dlib\DLib_Product.h</file>
+      <file>$PROJ_DIR$\Obj\usrlib.r90</file>
+      <file>$PROJ_DIR$\List\OS_Services.lst</file>
+      <file>$PROJ_DIR$\..\scmRTOS\Common\scmRTOS.h</file>
+      <file>$PROJ_DIR$\Src\main.cpp</file>
+      <file>$TOOLKIT_DIR$\inc\iom32.h</file>
+      <file>$TOOLKIT_DIR$\src\template\cfg3soim.xcl</file>
+      <file>$PROJ_DIR$\Obj\OS_Target_cpp.r90</file>
+      <file>$PROJ_DIR$\Obj\usrlib.pbi</file>
+      <file>$PROJ_DIR$\List\main.lst</file>
+      <file>$TOOLKIT_DIR$\inc\dlib\ysizet.h</file>
+      <file>$PROJ_DIR$\Obj\OS_Services.r90</file>
+      <file>$TOOLKIT_DIR$\inc\intrinsics.h</file>
+      <file>$PROJ_DIR$\List\OS_Target_asm.lst</file>
+      <file>$TOOLKIT_DIR$\inc\dlib\yvals.h</file>
+      <file>$TOOLKIT_DIR$\inc\dlib\stddef.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\..\-New\Samples\AVR\IAR_v4.20\2-Message\Src\main.cpp</file>
+      <file>$PROJ_DIR$\List\OS_Kernel.lst</file>
+      <file>$PROJ_DIR$\List\slon.map</file>
+      <file>$TOOLKIT_DIR$\lib\dlib\dlAVR-3s-ec_mul-sf-n.h</file>
+      <file>$TOOLKIT_DIR$\inc\dlib\DLib_Threads.h</file>
+      <file>$PROJ_DIR$\Src\scmRTOS_config.h</file>
+      <file>$TOOLKIT_DIR$\inc\ioavr.h</file>
+      <file>$PROJ_DIR$\Obj\main.r90</file>
+      <file>$TOOLKIT_DIR$\src\template\cfgm32.xcl</file>
+      <file>$PROJ_DIR$\Src\scmRTOS_TARGET_CFG.h</file>
+      <file>$PROJ_DIR$\..\scmRTOS\Common\usrlib.h</file>
+      <file>$TOOLKIT_DIR$\inc\iomacro.h</file>
+      <file>$PROJ_DIR$\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Obj\slon.pbd</file>
+      <file>$PROJ_DIR$\..\scmRTOS\Common\scmRTOS_defs.h</file>
+      <file>$PROJ_DIR$\..\scmRTOS\Common\OS_Services.h</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 38 16</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\scmRTOS\Common\usrlib.cpp</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 21 1</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 28</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 46 4</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 46 4</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\scmRTOS\AVR\OS_Target_cpp.cpp</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 27 5</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 9</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 23 35 34 3 39 20 7 40 30 4 46 50 41 2 18 32 45 42 25 47 6 51</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 23 35 34 3 20 7 40 30 4 46 2 18 32 41 45 42 25 47 50 6 51</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\scmRTOS\AVR\OS_Target_asm.s90</name>
+      <outputs>
+        <tool>
+          <name>AAVR</name>
+          <file> 0 33</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>AAVR</name>
+          <file> 41 45 42 25 47</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\scmRTOS\Common\OS_Kernel.cpp</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 17 37</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 8</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 23 35 34 3 39 20 7 40 30 4 46 50 41 2 18 32 45 42 25 47 6 51</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 23 35 34 3 20 7 40 30 4 46 2 18 32 41 45 42 25 47 50 6 51</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\scmRTOS\Common\OS_Services.cpp</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 31 22</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 10</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 23 35 34 3 39 20 7 40 30 4 46 50 41 2 18 32 45 42 25 47 6 51</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 23 35 34 3 20 7 40 30 4 46 2 18 32 41 45 42 25 47 50 6 51</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Exe\slon.d90</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 38</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 44 26 17 31 0 27 43 21 19</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Src\main.cpp</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 43 29</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 48</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 23 35 34 3 39 20 7 40 30 4 46 50 41 2 18 32 45 42 25 47 6 51</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 23 35 34 3 20 7 40 30 4 46 2 18 32 41 45 42 25 47 50 6 51</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Obj\slon.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 8 10 9 48 28</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>Release</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+</project>
+
+

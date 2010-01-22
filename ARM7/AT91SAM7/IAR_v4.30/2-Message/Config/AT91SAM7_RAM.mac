@@ -1,0 +1,72 @@
+//*****************************************************************
+//  Macro file for IAR C-SPY debugger
+//
+//  Performs some necessary actions for debugging with C-SPY
+//  
+//
+//  Copyright (c) 2007-2008, Sergey A. Borshch
+//
+//  $Revision$
+//  $Date::             $
+//
+//*****************************************************************
+
+execUserPreload()
+{
+    Reset();
+    Remap_RAM();
+    __writeMemory32(0xD3,0x98,"Register");                          // CPSR = SVC mode, ARM, IRQ, FIQ disabled
+}
+
+execUserReset()
+{
+    Reset();
+
+    Remap_RAM();
+
+    __writeMemory32(0xD3,0x98,"Register");                          // CPSR = SVC mode, ARM, IRQ, FIQ disabled
+    __writeMemory32(0x00000000,0xB4,"Register");
+}
+
+__var tmp;
+Remap_RAM()
+{
+    tmp = __readMemory32(0x00200000, "Memory");                     // read from RAM area
+    __writeMemory32(~tmp, 0x00200000, "Memory");                    // alter RAM area
+    if( ~tmp != __readMemory32(0x00000000, "Memory") )              // check if altering mirrored to remap area
+    {
+        __writeMemory32(0x00000001, 0xFFFFFF00,"Memory");
+    }
+    __writeMemory32(tmp, 0x00200000 ,"Memory");                     // restore RAM data
+    __message " remap " ;
+}
+
+
+Reset()
+{
+    __writeMemory32(0xA5000004, 0xFFFFFD00, "Memory");              // reset the peripherals
+    if( __driverType("jlink") )
+    {
+        __sleep(1000000);                                           // wait
+        __emulatorSpeed(32000);                                     // set JTAG speed ~ slow clock
+    }
+    __writeMemory32(0x00000001, 0xFFFFFC20,"Memory");               // OSC enable, no timeout
+
+    while (! (__readMemory32(0xFFFFFC68, "Memory") & (1 << 0)) );   // wait until MOSCS
+
+                                                                    // Assuming 18.432 MHz osc
+    __writeMemory32(0x00190605, 0xFFFFFC2C,"Memory");               // *26/5 set LOCK after 6 SCLK
+
+    __writeMemory32(0x00000004, 0xFFFFFC30,"Memory");               // PRES = 2
+    while (! (__readMemory32(0xFFFFFC68, "Memory") & (1 << 3)) );   // wait untli MCKRDY
+
+    __writeMemory32(0x00000007, 0xFFFFFC30,"Memory");               // MCK = PLLCK / 2
+    while (! (__readMemory32(0xFFFFFC68, "Memory") & (1 << 3)) );   // wait untli MCKRDY
+
+    if( __driverType("jlink") )
+    {
+        __emulatorSpeed(0);                                         // auto-detect new JTAG speed
+        __sleep(1000000);                                           // wait
+    }
+    __message " MCK ready " ;
+}

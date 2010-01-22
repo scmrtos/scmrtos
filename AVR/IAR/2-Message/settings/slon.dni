@@ -1,0 +1,27 @@
+[DisAssemblyWindow]
+NumStates=_ 1
+State 1=_ 1
+[StackPlugin]
+Enabled=1
+OverflowWarningsEnabled=1
+WarningThreshold=90
+SpWarningsEnabled=1
+WarnHow=0
+UseTrigger=1
+TriggerName=main
+LimitSize=0
+ByteLimit=50
+[TraceHelper]
+Enabled=0
+ShowSource=1
+[BreakpointUsageDialog]
+Placement=_ 582 451 1019 722
+[Log file]
+LoggingEnabled=_ 0
+LogFile=_ ""
+Category=_ 0
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""
+[Breakpoints]
+Count=0
