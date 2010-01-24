@@ -5,12 +5,12 @@
 #
 
 # can change WinAVR version by setting AVRGCC variable here (override environment)
-#AVRGCC :=c:/kgp-avr/20071102
-#AVRGCC :=c:/kgp-avr/20070928
-#AVRGCC :=d:/mingw/local
-AVRGCC :=c:/WinAVR-20071221
-#AVRGCC :=c:/WinAVR-20070525
 #AVRGCC :=c:/WinAVR-20060421
+#AVRGCC :=c:/WinAVR-20071221
+AVRGCC :=c:/WinAVR-20090313
+#AVRGCC :=c:/WinAVR-20100110
+#AVRGCC :=c:/kgp-avr-gcc/20090323
+#AVRGCC :=c:/kgp-avr-gcc/20091202
 
 # Y/N - !!! N for gcc < 4.x
 MAKE_SMALLEST_HEX = Y
