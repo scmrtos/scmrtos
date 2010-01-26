@@ -13,7 +13,7 @@
 //*     Version: 3.10
 //*
 //*     $Revision$
-//*     $Date$
+//*     $Date::             $
 //*
 //*     Copyright (c) 2003-2010, Harry E. Zhurov
 //*
@@ -194,8 +194,8 @@ extern "C" void ContextSwitcher_ISR();
 #endif
 extern "C" int __low_level_init(void)
 {
-	AT91C_BASE_WDTC->WDTC_WDMR = (1*AT91C_WDTC_WDDIS);                  // disable Watchdog
-	AT91C_BASE_RSTC->RSTC_RMR = AT91C_RSTC_URSTEN | (0xA5UL << 24);     // enable external reset pin
+    AT91C_BASE_WDTC->WDTC_WDMR = (1*AT91C_WDTC_WDDIS);                  // disable Watchdog
+    AT91C_BASE_RSTC->RSTC_RMR = AT91C_RSTC_URSTEN | (0xA5UL << 24);     // enable external reset pin
 
     AT91C_BASE_PIOA->PIO_MDDR = ~0;                 // push-pull
     AT91C_BASE_PIOA->PIO_PPUDR = ~0;                // pull-up disable

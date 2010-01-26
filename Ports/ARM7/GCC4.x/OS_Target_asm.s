@@ -13,7 +13,7 @@
 //*     Version: 3.10
 //*
 //*     $Revision$
-//*     $Date$
+//*     $Date::             $
 //*
 //*     Copyright (c) 2003-2010, Harry E. Zhurov
 //*
@@ -73,7 +73,7 @@
 
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
         .section .text,"ax"
-   		.code 32
+        .code 32
 
         .global IRQHandler
         .global ContextRestore
@@ -95,7 +95,7 @@ IRQHandler:
         MSR     CPSR_c, #(NIRQ | MODE_SYS)  // switching to System mode, because context has to be restored
                                             // from user mode stack, enable FIQ
         MOV     R0, SP
-ContextRestore:		// OS_Start() passes New_SP in R0
+ContextRestore:     // OS_Start() passes New_SP in R0
         LDMFD   R0!, {R1, LR}               // restoring LR_user, saved CPSR_user
         ADD     SP, R0, #4*14               // set process SP
 
@@ -108,13 +108,13 @@ ContextRestore:		// OS_Start() passes New_SP in R0
 //-------------------------------------------------------------------------------
 #ifdef  GCC_IRQ_PATCH_REQUIRED
         .section .text,"ax"
-   		.code 32
+        .code 32
         .global IRQHandler
 IRQHandler:
         STMDB   SP!, {R0-R3, R12, LR}       /* Save scratch registers, lr */
         IRQ_SWITCH 
         LDMIA   SP!, {R0-R3, R12, LR}       /* Restore scratch registers, lr */
-        SUBS    PC, LR, #4              	/* Adjust LRand return from IRQ */  	
+        SUBS    PC, LR, #4                  /* Adjust LRand return from IRQ */      
 #endif
         // TStackItem* OS_ContextSwitchHook(TStackItem* sp)//
         .extern OS_ContextSwitchHook
@@ -122,7 +122,7 @@ IRQHandler:
         .global ContextRestore
 ContextSwitcher_ISR:
 #ifdef  GCC_IRQ_PATCH_REQUIRED
-        LDMIA   SP!, {R0-R3, R12, LR}		// restore saved on entry registers
+        LDMIA   SP!, {R0-R3, R12, LR}       // restore saved on entry registers
 #endif
 
         MSR     CPSR_c, #(NIRQ | MODE_SYS)  // switching to System mode, because context has to be saved
@@ -139,7 +139,7 @@ ContextSwitcher_ISR:
         STMFD   SP!, {R1,LR}                // store CPSR, LR_user on top of context and adjust SP_user
                                             // to use process stack in OS_ContextSwitchHook
         LDR     R1, =OS_ContextSwitchHook   // call Thumb mode routine
-		MOV		LR, PC
+        MOV     LR, PC
         BX      R1
         IRQ_DONE                            // reset interrupt controller
 ContextRestore:

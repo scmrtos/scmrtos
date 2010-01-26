@@ -13,7 +13,7 @@
 //*     Version: 3.10
 //*
 //*     $Revision$
-//*     $Date$
+//*     $Date::             $
 //*
 //*     Copyright (c) 2003-2010, Harry E. Zhurov
 //*

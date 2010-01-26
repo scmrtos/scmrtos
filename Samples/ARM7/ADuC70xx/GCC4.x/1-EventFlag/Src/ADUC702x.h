@@ -9,7 +9,7 @@
 //*     Version: 3.10
 //*
 //*     $Revision: 99 $
-//*     $Date: 2007-12-31 17:13:51 +0200 (Пн, 31 дек 2007) $
+//*     $Date::             $
 //*
 //*     Copyright (c) 2008-2010, Sergey A. Borshch
 //*
@@ -267,14 +267,14 @@ enum
 #define POWKEY2     (*(volatile uint16_t *)         0xFFFF040C)
 
 // Power supply monitor
-#define PSMCON 	    (*(volatile uint16_t *)         0xFFFF0440)
-#define CMPCON 	    (*(volatile uint16_t *)         0xFFFF0444)
+#define PSMCON      (*(volatile uint16_t *)         0xFFFF0440)
+#define CMPCON      (*(volatile uint16_t *)         0xFFFF0444)
 
 // Reference
-#define REFCON 	    (*(volatile uint8_t *)          0xFFFF048C)
+#define REFCON      (*(volatile uint8_t *)          0xFFFF048C)
 
 // ADC
-#define ADCCON 	    (*(volatile uint16_t *)         0xFFFF0500)
+#define ADCCON      (*(volatile uint16_t *)         0xFFFF0500)
 #define ADCCP       (*(volatile uint8_t *)          0xFFFF0504)
 #define ADCCN       (*(volatile uint8_t *)          0xFFFF0508)
 #define ADCSTA      (*(volatile uint8_t const *)    0xFFFF050C)

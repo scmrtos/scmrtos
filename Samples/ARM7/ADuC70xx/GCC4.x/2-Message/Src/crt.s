@@ -13,7 +13,7 @@
 //*     Version: 3.10
 //*
 //*     $Revision$
-//*     $Date$
+//*     $Date::             $
 //*
 //*     Copyright (c) 2003-2010, Harry E. Zhurov
 //*
@@ -56,7 +56,7 @@
 #define NFIQ            (1<<6)
 #define THUMB           (1<<5)
 
-#include	<scmRTOS_CONFIG.h>
+#include    <scmRTOS_CONFIG.h>
 
 #include "scmRTOS_TARGET_CFG.h"
 #include "OS_Target_core.h"
@@ -65,16 +65,16 @@
 /****************************************************************************/
 /*               Vector table and reset entry                               */
 /****************************************************************************/
-	.section .vectors,"ax"
-	.global	_start
+    .section .vectors,"ax"
+    .global _start
 _start:
-   	    LDR     PC, ResetAddr       /* Reset                 */
-   	    LDR     PC, UndefAddr       /* Undefined instruction */
-   	    LDR     PC, SWIAddr         /* Software interrupt    */
-   	    LDR     PC, PAbortAddr      /* Prefetch abort        */
-   	    LDR     PC, DAbortAddr      /* Data abort            */
-   	    NOP                         /* Reserved              */
-   	    LDR     PC, IRQAddr         /* IRQ interrupt         */
+        LDR     PC, ResetAddr       /* Reset                 */
+        LDR     PC, UndefAddr       /* Undefined instruction */
+        LDR     PC, SWIAddr         /* Software interrupt    */
+        LDR     PC, PAbortAddr      /* Prefetch abort        */
+        LDR     PC, DAbortAddr      /* Data abort            */
+        NOP                         /* Reserved              */
+        LDR     PC, IRQAddr         /* IRQ interrupt         */
         LDR     PC, FIQAddr         /* FIQ interrupt         */
 ResetAddr:
         .word ResetHandler
@@ -147,7 +147,7 @@ ctor_loop:
         LDR     R2, [R0], #4
         STMFD   SP!, {R0,R1}
         MOV     LR, PC
-        BX      R2						// some constructors can be in THUMB mode
+        BX      R2                      // some constructors can be in THUMB mode
         LDMFD   SP!, {R0,R1}
         B       ctor_loop
 ctor_end:
