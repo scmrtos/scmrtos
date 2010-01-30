@@ -106,12 +106,15 @@
 // or even never used in application section. So, this interrupt is ideal solution for
 // software interrupt emulation.
 //   By default SPM_READY interrupt perform the context switching, enabling the interrupt
-//  will force context switching.
-//  But SPM_READY interrupt must be disabled manually when switching ends, so
-//  we provide CONTEXT_SWITCH_END macro (see below).
-//  CONTEXT_SWITCH_END used inside CONTEXT_SWITCH_ISR_VECTOR handler (see OS_Target_asm.S)
-//  You can change or delete the macro if you are use another vector for context switching.
+// will force context switching. But SPM_READY interrupt must be disabled manually when 
+// switching ends, so we provide ContextSwitchUserHook() (see below).
+//   ContextSwitchUserHook() called from OS::TKernel::ContextSwitchHook(TStackItem* sp)
+//  (see OS_Kernel.h)
+//   You can change or delete the hook if you are use another vector for context switching.
+// Do not forget to set scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE to 0 in scmRTOS_CONFIG.h when
+// the hook not defined.
 //
+
 namespace OS
 {
 #if scmRTOS_IDLE_HOOK_ENABLE == 1
@@ -120,8 +123,11 @@ namespace OS
 
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
 
-    INLINE inline void RaiseContextSwitch() { SPM_CONTROL_REG |= (1 << SPMIE);  } // enable SPM interrupt
-    INLINE inline void BlockContextSwitch() { SPM_CONTROL_REG &= ~(1 << SPMIE); } // disable SPM interrupt
+    // enable and raise SPM interrupt
+    INLINE inline void RaiseContextSwitch() { SPM_CONTROL_REG |= (1 << SPMIE);  }
+    
+    // disable SPM interrupt
+    INLINE inline void BlockContextSwitch() { SPM_CONTROL_REG &= ~(1 << SPMIE); }
 
     class TNestedISRW
     {
