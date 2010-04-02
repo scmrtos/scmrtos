@@ -118,7 +118,6 @@ Samples/ARM7/ADuC70xx/IAR_v4.30/3-Channel/Src/scmRTOS_config.h -text
 Samples/ARM7/ADuC70xx/IAR_v4.30/3-Channel/slon.ewd -text
 Samples/ARM7/ADuC70xx/IAR_v4.30/3-Channel/slon.ewp -text
 Samples/ARM7/ADuC70xx/IAR_v4.30/3-Channel/slon.eww -text
-Samples/ARM7/ADuC70xx/IAR_v4.30/release_notes.arm7_aduc70xx.html -text
 Samples/ARM7/ADuC70xx/IAR_v4.30/switch.bat -text
 Samples/ARM7/AT91SAM7/GCC4.x/1-EventFlag/.cproject -text
 Samples/ARM7/AT91SAM7/GCC4.x/1-EventFlag/.project -text
@@ -176,7 +175,6 @@ Samples/ARM7/AT91SAM7/IAR_v4.30/3-Channel/Src/scmRTOS_config.h -text
 Samples/ARM7/AT91SAM7/IAR_v4.30/3-Channel/slon.ewd -text
 Samples/ARM7/AT91SAM7/IAR_v4.30/3-Channel/slon.ewp -text
 Samples/ARM7/AT91SAM7/IAR_v4.30/3-Channel/slon.eww -text
-Samples/ARM7/AT91SAM7/IAR_v4.30/release_notes.arm7_at91sam7.html -text
 Samples/ARM7/AT91SAM7/IAR_v4.30/switch.bat -text
 Samples/ARM7/LPC2xxx/IAR_v4.30/1-EventFlag/Config/LPC2xxx_FLASH.mac -text
 Samples/ARM7/LPC2xxx/IAR_v4.30/1-EventFlag/Config/LPC2xxx_FLASH.xcl -text
@@ -203,7 +201,6 @@ Samples/ARM7/LPC2xxx/IAR_v4.30/3-Channel/Src/scmRTOS_config.h -text
 Samples/ARM7/LPC2xxx/IAR_v4.30/3-Channel/slon.ewd -text
 Samples/ARM7/LPC2xxx/IAR_v4.30/3-Channel/slon.ewp -text
 Samples/ARM7/LPC2xxx/IAR_v4.30/3-Channel/slon.eww -text
-Samples/ARM7/LPC2xxx/IAR_v4.30/release_notes.arm7_lpc2xxx.html -text
 Samples/ARM7/LPC2xxx/IAR_v4.30/switch.bat -text
 Samples/ARM7/STR71x/IAR_v4.30/1-EventFlag/Config/STR71x_FLASH.mac -text
 Samples/ARM7/STR71x/IAR_v4.30/1-EventFlag/Config/STR71x_FLASH.xcl -text
@@ -234,8 +231,6 @@ Samples/ARM7/STR71x/IAR_v4.30/3-Channel/slon.ewd -text
 Samples/ARM7/STR71x/IAR_v4.30/3-Channel/slon.ewp -text
 Samples/ARM7/STR71x/IAR_v4.30/3-Channel/slon.eww -text
 Samples/ARM7/STR71x/IAR_v4.30/switch.bat -text
-Samples/ARM7/WhatsNew.html -text
-Samples/ARM7/WhatsNew.txt -text
 Samples/ARM7/get_samples.bat -text
 Samples/AVR/GCC/1-EventFlag/makefile -text
 Samples/AVR/GCC/1-EventFlag/makefiles/avreal.mak -text
@@ -259,7 +254,6 @@ Samples/AVR/GCC/3-Channel/src/pin_macros.h -text
 Samples/AVR/GCC/3-Channel/src/scmRTOS_CONFIG.h -text
 Samples/AVR/GCC/3-Channel/src/scmRTOS_TARGET_CFG.h -text
 Samples/AVR/GCC/get_common.bat -text
-Samples/AVR/GCC/release_notes.avr-gcc.html -text
 Samples/AVR/GCC/switch.bat -text
 Samples/AVR/IAR/1-EventFlag/Config/lnkm32s.xcl -text
 Samples/AVR/IAR/1-EventFlag/Config/scmIC.py -text
@@ -306,8 +300,6 @@ Samples/AVR/IAR/3-Channel/slon.ewd -text
 Samples/AVR/IAR/3-Channel/slon.ewp -text
 Samples/AVR/IAR/3-Channel/slon.eww -text
 Samples/AVR/IAR/3-Channel/slon.vpj -text
-Samples/AVR/IAR/WhatsNew.html -text
-Samples/AVR/IAR/release_notes.avr.html -text
 Samples/AVR/IAR/switch.bat -text
 Samples/BF533/VDSP/1-EventFlag/Config/bf532_init.ldf -text
 Samples/BF533/VDSP/1-EventFlag/Config/bf533cpp.ldf -text
@@ -363,8 +355,6 @@ Samples/BF533/VDSP/3-Channel/Src/scmRTOS_TARGET_CFG.h -text
 Samples/BF533/VDSP/3-Channel/Src/startup.sbf -text
 Samples/BF533/VDSP/3-Channel/slon.Blackfin.vpw -text
 Samples/BF533/VDSP/3-Channel/slon.vpj -text
-Samples/BF533/VDSP/WhatsNew.html -text
-Samples/BF533/VDSP/release_notes.bf533.html -text
 Samples/BF533/VDSP/switch.bat -text
 Samples/CortexM3/GCC/1-EventFlag/makefile -text
 Samples/CortexM3/GCC/1-EventFlag/prj/stm32f10x_flash_md.ld -text
@@ -435,7 +425,6 @@ Samples/CortexM3/IAR/3-Channel/Src/stm32f10x_vector.c -text
 Samples/CortexM3/IAR/3-Channel/slon.ewd -text
 Samples/CortexM3/IAR/3-Channel/slon.ewp -text
 Samples/CortexM3/IAR/3-Channel/slon.eww -text
-Samples/CortexM3/IAR/release_notes.CortexM3.html -text
 Samples/CortexM3/IAR/switch.bat -text
 Samples/CortexM3/IAR_LPC17xx/1-EventFlag/Src/LPC1766_Flash.icf -text
 Samples/CortexM3/IAR_LPC17xx/1-EventFlag/Src/cstartup_M.s -text
@@ -472,7 +461,6 @@ Samples/CortexM3/IAR_LPC17xx/3-Channel/slon.dep -text
 Samples/CortexM3/IAR_LPC17xx/3-Channel/slon.ewd -text
 Samples/CortexM3/IAR_LPC17xx/3-Channel/slon.ewp -text
 Samples/CortexM3/IAR_LPC17xx/3-Channel/slon.eww -text
-Samples/CortexM3/IAR_LPC17xx/release_notes.CortexM3.html -text
 Samples/CortexM3/IAR_LPC17xx/switch.bat -text
 Samples/FR/Softune_V6/1-EventFlag/1-EventFlag.dat -text
 Samples/FR/Softune_V6/1-EventFlag/1-EventFlag.prj -text
@@ -579,8 +567,6 @@ Samples/MSP430/IAR/3-Channel/slon.ewd -text
 Samples/MSP430/IAR/3-Channel/slon.ewp -text
 Samples/MSP430/IAR/3-Channel/slon.eww -text
 Samples/MSP430/IAR/3-Channel/slon.vpj -text
-Samples/MSP430/IAR/WhatsNew.html -text
-Samples/MSP430/IAR/release_notes.msp430.html -text
 Samples/MSP430/IAR/switch.bat -text
 Samples/MSP430X/IAR/1-EventFlag/Config/lnk430F2617.xcl -text
 Samples/MSP430X/IAR/1-EventFlag/Config/scmIC.py -text
@@ -631,6 +617,5 @@ Samples/MSP430X/IAR/3-Channel/slon.ewd -text
 Samples/MSP430X/IAR/3-Channel/slon.ewp -text
 Samples/MSP430X/IAR/3-Channel/slon.eww -text
 Samples/MSP430X/IAR/3-Channel/slon.vpj -text
-Samples/MSP430X/IAR/WhatsNew.html -text
 Samples/MSP430X/IAR/release_notes.msp430X.html -text
 Samples/MSP430X/IAR/switch.bat -text
