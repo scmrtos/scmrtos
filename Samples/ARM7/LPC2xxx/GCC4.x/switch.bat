@@ -16,9 +16,3 @@ svn switch  %REP%/Ports/%TARGET%/%TOOL%/    %DST_DIR%/scmRTOS/%TARGET%
 
 svn switch %REP%/Samples/%TARGET%/%CHIP_FAMILY%/%TOOL%/1-EventFlag/prj %DST_DIR%/2-Message/prj
 svn switch %REP%/Samples/%TARGET%/%CHIP_FAMILY%/%TOOL%/1-EventFlag/prj %DST_DIR%/3-Channel/prj
-
-svn switch %REP%/Samples/%TARGET%/%CHIP_FAMILY%/%TOOL%/1-EventFlag/src/device.h %DST_DIR%/2-Message/src/device.h
-svn switch %REP%/Samples/%TARGET%/%CHIP_FAMILY%/%TOOL%/1-EventFlag/src/device.h %DST_DIR%/3-Channel/src/device.h
-
-svn switch %REP%/Samples/%TARGET%/%CHIP_FAMILY%/%TOOL%/1-EventFlag/src/LPC214x.h %DST_DIR%/2-Message/src/LPC214x.h
-svn switch %REP%/Samples/%TARGET%/%CHIP_FAMILY%/%TOOL%/1-EventFlag/src/LPC214x.h %DST_DIR%/3-Channel/src/LPC214x.h
