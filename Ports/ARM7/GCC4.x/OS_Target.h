@@ -140,7 +140,7 @@ private:
 INLINE inline TStatusReg __get_CPSR()
 {
     TStatusReg cpsr;
-    asm volatile 
+    asm volatile
     (
     " MRS  %0,CPSR    \r\n"
     :"=r"(cpsr)
@@ -150,7 +150,7 @@ INLINE inline TStatusReg __get_CPSR()
 }
 INLINE inline void __set_CPSR_c(TStatusReg cpsr)
 {
-    asm volatile 
+    asm volatile
     (
     " MSR  CPSR_c, %0    \r\n"
     :
@@ -166,12 +166,12 @@ inline TCritSect::TCritSect() : StatusReg( __get_CPSR() )
         __set_CPSR_c(Tmp | (1<<7));   // disable IRQ
         Tmp = __get_CPSR();
     }
-};
+}
 
 inline TCritSect::~TCritSect()
 {
     __set_CPSR_c(StatusReg);
-};
+}
 
 namespace OS
 {
@@ -288,7 +288,7 @@ extern "C" INLINE inline void OS_ContextSwitcher(TStackItem** Curr_SP, TStackIte
 }
 #endif
 extern "C" __attribute__((__noreturn__)) void ContextRestore(TStackItem* sp);
-extern "C" __attribute__((__noreturn__)) 
+extern "C" __attribute__((__noreturn__))
 INLINE inline void OS_Start(TStackItem* sp)
 {
     ContextRestore(sp);

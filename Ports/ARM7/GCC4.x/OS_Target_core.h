@@ -74,10 +74,11 @@
     | defined(AT91SAM7X128) | defined(AT91SAM7X256) | defined(AT91SAM7X512) \
     | defined(AT91SAM7XC128) | defined(AT91SAM7XC256) | defined(AT91SAM7XC512)
     #include    <Target_AT91SAM7.h>
-#elif defined(LPC2119) | defined(LPC2129) | defined(LPC2212) | defined(LPC2214)
+#elif defined(LPC2119) | defined(LPC2129) | defined(LPC2212) | defined(LPC2214) | defined(LPC2148)
     #include    <Target_LPC2xxx.h>
 #elif defined(ADUC7019) | defined(ADUC7020) | defined(ADUC7021) | defined(ADUC7022) \
-    | defined(ADUC7024) | defined(ADUC7025) | defined(ADUC7026) | defined(ADUC7027)
+    | defined(ADUC7024) | defined(ADUC7025) | defined(ADUC7026) | defined(ADUC7027) \
+	| defined(ADUC7060) | defined(ADUC7061)
     #include    <Target_ADuC70xx.h>
 #elif defined(STR710) | defined(STR711) | defined(STR712) | defined(STR715)
     #include    <Target_STR71x.h>
