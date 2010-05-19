@@ -388,8 +388,9 @@ Samples/BF533/VDSP/3-Channel/slon.Blackfin.vpw -text
 Samples/BF533/VDSP/3-Channel/slon.vpj -text
 Samples/BF533/VDSP/switch.bat -text
 Samples/CortexM3/GCC/1-EventFlag/makefile -text
-Samples/CortexM3/GCC/1-EventFlag/prj/stm32f10x_flash_md.ld -text
-Samples/CortexM3/GCC/1-EventFlag/prj/stm32f10x_flash_md_kgp.ld -text
+Samples/CortexM3/GCC/1-EventFlag/prj/STM32F10X_CL.ld -text
+Samples/CortexM3/GCC/1-EventFlag/prj/STM32F10X_HD.ld -text
+Samples/CortexM3/GCC/1-EventFlag/prj/STM32F10X_MD.ld -text
 Samples/CortexM3/GCC/1-EventFlag/src/core_cm3.h -text
 Samples/CortexM3/GCC/1-EventFlag/src/main.cpp -text
 Samples/CortexM3/GCC/1-EventFlag/src/pin.h -text
@@ -399,8 +400,6 @@ Samples/CortexM3/GCC/1-EventFlag/src/startup.c -text
 Samples/CortexM3/GCC/1-EventFlag/src/stm32f10x.h -text
 Samples/CortexM3/GCC/1-EventFlag/src/sysinit.cpp -text
 Samples/CortexM3/GCC/2-Message/makefile -text
-Samples/CortexM3/GCC/2-Message/prj/stm32f10x_flash_md.ld -text
-Samples/CortexM3/GCC/2-Message/prj/stm32f10x_flash_md_kgp.ld -text
 Samples/CortexM3/GCC/2-Message/src/core_cm3.h -text
 Samples/CortexM3/GCC/2-Message/src/main.cpp -text
 Samples/CortexM3/GCC/2-Message/src/pin.h -text
@@ -410,8 +409,6 @@ Samples/CortexM3/GCC/2-Message/src/startup.c -text
 Samples/CortexM3/GCC/2-Message/src/stm32f10x.h -text
 Samples/CortexM3/GCC/2-Message/src/sysinit.cpp -text
 Samples/CortexM3/GCC/3-Channel/makefile -text
-Samples/CortexM3/GCC/3-Channel/prj/stm32f10x_flash_md.ld -text
-Samples/CortexM3/GCC/3-Channel/prj/stm32f10x_flash_md_kgp.ld -text
 Samples/CortexM3/GCC/3-Channel/src/core_cm3.h -text
 Samples/CortexM3/GCC/3-Channel/src/main.cpp -text
 Samples/CortexM3/GCC/3-Channel/src/pin.h -text
@@ -421,7 +418,6 @@ Samples/CortexM3/GCC/3-Channel/src/startup.c -text
 Samples/CortexM3/GCC/3-Channel/src/stm32f10x.h -text
 Samples/CortexM3/GCC/3-Channel/src/sys.c -text
 Samples/CortexM3/GCC/3-Channel/src/sysinit.cpp -text
-Samples/CortexM3/GCC/get_common.bat -text
 Samples/CortexM3/GCC/switch.bat -text
 Samples/CortexM3/IAR/1-EventFlag/Src/main.cpp -text
 Samples/CortexM3/IAR/1-EventFlag/Src/scmRTOS_CONFIG.h -text

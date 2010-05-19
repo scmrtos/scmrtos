@@ -1,6 +1,6 @@
 #+---------------------------------------------------------------------------
 #
-#  Copyright (c) 2009 Anton Gusev aka AHTOXA (HTTP://AHTOXA.NET)
+#  Copyright (c) 2010 Anton Gusev aka AHTOXA (HTTP://AHTOXA.NET)
 #
 #  File:       makefile
 #
@@ -11,12 +11,18 @@
 #############  program name
 	TARGET	= 2-Message
 
-############# toolset
 	TOOL	= arm-none-eabi-
-#	TOOL	= arm-kgp-elf-
+#	TOOL	= arm-kgp-eabi-
 
 	MCU			= cortex-m3
 	OPTIMIZE	= -O2
+
+# Select family 
+# STM32F10X_LD: STM32 Low density devices
+# STM32F10X_MD: STM32 Medium density devices
+# STM32F10X_HD: STM32 High density devices
+# STM32F10X_CL: STM32 Connectivity line devices
+	CHIP		= STM32F10X_MD
 
 ###########################################################
 #  common part for all my cortex-m3 projects
@@ -31,6 +37,7 @@
 	OBJDUMP		= $(TOOL)objdump
 	SIZE		= $(TOOL)size -d
 	FLASHER		= openocd
+	RAR			= Rar.exe
 	RM			= rm -f
 	CP			= cp
 	MD			= mkdir
@@ -42,7 +49,7 @@
 	EXEDIR		= $(BASE)/exe
 	LSTDIR		= $(BASE)/lst
 	PRJDIR		= $(BASE)/prj
-	SCMDIR		= ../scmRTOS
+	BAKDIR		= $(BASE)/bak
 
 #files
 	HEX		= $(EXEDIR)/$(TARGET).hex
@@ -51,28 +58,47 @@
 	LSS		= $(LSTDIR)/$(TARGET).lss
 	OK		= $(EXEDIR)/$(TARGET).ok
 
-# linker script
-ifeq ($(TOOL), arm-kgp-elf-)
-	LD_SCRIPT	= $(PRJDIR)/stm32f10x_flash_md_kgp.ld
-else
-	LD_SCRIPT	= $(PRJDIR)/stm32f10x_flash_md.ld 
-endif
+# linker script (chip dependent)
+	LD_SCRIPT	= $(PRJDIR)/$(CHIP).ld
 
-# files
-	DIRS	:= $(SRCDIR) $(SCMDIR)/Common $(SCMDIR)/CortexM3
+# scmRTOS dir
+	SCMDIR		= ../scmRTOS
+
+# source directories (all *.c, *.cpp and *.S files included)
+	DIRS	:= $(SRCDIR)
+	DIRS	+= $(SCMDIR)/Common $(SCMDIR)/CortexM3
+# includes
 	INCS	:= $(patsubst %, -I "%", $(DIRS))
-	SRCS	:= $(wildcard $(addsuffix /*.cpp, $(DIRS))) $(wildcard $(addsuffix /*.c, $(DIRS))) $(wildcard $(addsuffix /*.S, $(DIRS)))
-	OBJS	:= $(notdir $(SRCS) )
+
+# individual source files
+	SRCS	:= 
+
+#calc obj files list
+	OBJS	:= $(SRCS)
+	OBJS	+= $(wildcard $(addsuffix /*.cpp, $(DIRS)))
+	OBJS	+= $(wildcard $(addsuffix /*.c, $(DIRS)))
+	OBJS	+= $(wildcard $(addsuffix /*.S, $(DIRS)))
+	OBJS	:= $(notdir $(OBJS))
 	OBJS	:= $(OBJS:.cpp=.o)
 	OBJS	:= $(OBJS:.c=.o)
 	OBJS	:= $(OBJS:.S=.o)
 	OBJS	:= $(patsubst %, $(OBJDIR)/%, $(OBJS))
+
+	RARS	= \
+		$(addsuffix /*.s, $(DIRS)) \
+		$(addsuffix /*.c, $(DIRS)) \
+		$(addsuffix /*.cpp, $(DIRS)) \
+		$(addsuffix /*.h, $(DIRS)) \
+		$(PRJDIR)/*.* \
+		$(BASE)/makefile \
+		$(BASE)/*.mpj
 
 # flags
 	FLAGS	= -mcpu=$(MCU) -mthumb
 	FLAGS	+= -Wa,-gdwarf-2
 	FLAGS	+= $(INCS)
 	FLAGS	+= -MD 
+	FLAGS	+= -D$(CHIP)
 
 	AFLAGS	= $(FLAGS)
 	AFLAGS	+= -Wa,-adhlns=$(addprefix $(LSTDIR)/, $(notdir $(addsuffix .lst, $(basename $<))))
@@ -97,7 +123,6 @@ endif
 	CXXFLAGS	+= -funsigned-bitfields -fshort-enums
 	CXXFLAGS	+= -Wall -Wextra
 	CXXFLAGS	+= -Winline -finline-limit=40
-#	CXXFLAGS	+= -Weffc++ -Wctor-dtor-privacy
 	CXXFLAGS	+= -Wimplicit -Wcast-align -Wpointer-arith -Wredundant-decls
 	CXXFLAGS	+= -Wshadow -Wcast-qual -Wcast-align -pedantic
 	CXXFLAGS	+= -Wa,-adhlns=$(addprefix $(LSTDIR)/, $(notdir $(addsuffix .lst, $(basename $<))))
@@ -117,13 +142,17 @@ endif
 	oocd_params		= -d0
 # interface and board/target settings (using the OOCD target-library here)
 #	oocd_params		+= -c "fast enable"
-	oocd_params		+= -f interface/arm-usb-ocd.cfg -f board/stm32f10x_128k_eval.cfg
-	oocd_params		+= -c init -c targets
+	oocd_params		+= -f interface/arm-usb-ocd.cfg 
+	oocd_params		+= -f board/stm32f10x_128k_eval.cfg
+	oocd_params		+= -c init 
+	oocd_params		+= -c targets
+
 	oocd_params_program	= $(oocd_params)
 # commands to prepare flash-write
 	oocd_params_program	+= -c "halt"
 # flash-write and -verify
-	oocd_params_program	+= -c "flash write_image erase $(ELF)" -c "verify_image $(ELF)"
+	oocd_params_program	+= -c "flash write_image erase $(ELF)" 
+	oocd_params_program	+= -c "verify_image $(ELF)"
 # reset target
 	oocd_params_program	+= -c "reset run"
 # terminate OOCD after programming
@@ -157,9 +186,21 @@ $(ELF):	$(OBJS) makefile
 	@echo --- linking...
 	$(LD) $(OBJS) $(LD_FLAGS) -o "$(ELF)"
 
+$(HEX): $(ELF)
+	@echo --- make hex...
+	@$(OBJCOPY) -O ihex $(ELF) $(HEX)
+
 program: $(ELF)
 	@echo "Programming with OPENOCD"
 	$(FLASHER) $(oocd_params_program)
+
+flash: $(HEX)
+	@echo "Programming with Rlink"
+	@Cortex_pgm TSTM32F103VET6 E P$(HEX) S
+
+oocd: $(ELF)
+	@echo "starting openocd"
+	START $(FLASHER) $(oocd_params)
 
 reset:
 	@echo Resetting device
@@ -175,11 +216,12 @@ $(OBJDIR)/%.o: %.c
 	@echo --- compiling $(*F).c
 	$(CC) -c $(CFLAGS) -o $@ $<
 
+
 $(OBJDIR)/%.o: %.S
 	@echo --- assembling $(*F).s
 	$(AS) -c $(AFLAGS) -o $@ $<
 
-dirs: $(OBJDIR) $(EXEDIR) $(LSTDIR)
+dirs: $(OBJDIR) $(EXEDIR) $(LSTDIR) $(BAKDIR)
 
 $(OBJDIR):
 	-@$(MD) $(OBJDIR)
@@ -190,6 +232,9 @@ $(EXEDIR):
 $(LSTDIR):
 	-@$(MD) $(LSTDIR)
 
+$(BAKDIR):
+	-@$(MD) $(BAKDIR)
+
 clean:
 	-@$(RM) $(OBJDIR)/*.d 2>nul
 	-@$(RM) $(OBJDIR)/*.o 2>nul
@@ -199,6 +244,11 @@ clean:
 	-@$(RM) $(LSTDIR)/*.lst 2>nul
 	-@$(RM) $(LSTDIR)/*.lss 2>nul
 	-@$(RM) $(LSTDIR)/*.map 2>nul
+
+archive:
+	@echo --- archiving...
+	@cmd /WAIT /C 'start $(RAR) a -r -agyy-mm-dd,hh-nn-ss $(BAKDIR)/$(TARGET)_.rar $(RARS)'
+	@echo --- done!
 
 # dependencies
 include $(wildcard $(OBJDIR)/*.d) 

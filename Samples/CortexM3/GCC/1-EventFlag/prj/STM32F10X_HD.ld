@@ -1,49 +1,39 @@
 /*************************************************
-* linker script for ST32F103Vx  microcontroller
-*
+* linker script for STM32F103RET6 microcontroller
 ************************************************/ 
 
 _Minimum_Stack_Size = 0x100 ;
 
 MEMORY
 {
-	RAM (xrw)	: ORIGIN = 0x20000000, LENGTH =  20K
-	FLASH (rx)	: ORIGIN = 0x08000000, LENGTH = 128K
+	RAM (xrw)	: ORIGIN = 0x20000000, LENGTH =  64K
+	FLASH (rx)	: ORIGIN = 0x08000000, LENGTH = 512K
 }
 
 /* higher address of the user mode stack */
-_estack = 0x20005000;
+PROVIDE ( _estack = ALIGN(ORIGIN(RAM) + LENGTH(RAM) - 8 ,8) );
 
 SECTIONS
 {
 	.isr_vector :
 	{
 		. = ALIGN(4);
-		KEEP(*(.isr_vector))            /* Startup code */
+		KEEP(*(.isr_vector))
 		. = ALIGN(4);
-	} >FLASH
+	} > FLASH
 
-/*
- * the program code is stored in the .text section, which goes to Flash
- */
 	.text :
 	{
-        __ctors_start__ = .;
-        KEEP(SORT(*)(.ctors))
-        __ctors_end__ = .;
-        __dtors_start__ = .;
-        /* *(.dtors) */
-        __dtors_end__ = .;
-        /*
-        KEEP(SORT(*)(.dtors))
-        */
-        /*
-        KEEP(SORT(*)(.init_array))
-        */
+		__ctors_start__ = .;
+		KEEP(SORT(*)(.init_array))  /* eabi uses .init_array for static constructor lists */
+		__ctors_end__ = .;
+
+		__dtors_start__ = .;
+		__dtors_end__ = .;
         
 		. = ALIGN(4);
 		*(.text)                   /* remaining code */
-		*(.text.*)                   /* remaining code */
+		*(.text.*)
 		*(.rodata)                 /* read-only data (constants) */
 		*(.rodata*)
 
@@ -57,54 +47,46 @@ SECTIONS
 		*(.glue_7)
 		*(.glue_7t)
 		. = ALIGN(4);
-	} >FLASH
+	} > FLASH
 
-  /* .ARM.exidx is sorted, so has to go in its own output section.  */
+	/* .ARM.exidx is sorted, so has to go in its own output section.  */
 	__exidx_start = .;
 	.ARM.exidx :
 	{
 		*(.ARM.exidx* .gnu.linkonce.armexidx.*)
-	} >FLASH
+	} > FLASH
 	__exidx_end = .;
+
 	.text.align :
 	{
 		. = ALIGN(8);
 		_etext = .;
-		_sidata = _etext; /* Uused by the startup in order to initialize the .data secion */
-	} >FLASH
+		_sidata = _etext;		/* start of initialized data label */
+	} > FLASH
 
-/*
- * This is the initialized data section. It is stored in RAM but the initial values
- * are held in flash and copied to RAM by the startup code
- */
-	.data  : AT ( _sidata )  /* AT makes the LMA follow on in the binary image */
+	.data : AT ( _sidata )		/* AT makes the LMA follow on in the binary image */
 	{
 		. = ALIGN(4);
-		_sdata = . ; /* Used by the startup in order to initialize the .data section */
+		_sdata = .;				/* start of .data label */
 		KEEP( *(.data) )
 		KEEP( *(.data.*) )
 		. = ALIGN(4);
-		_edata = . ; /* Used by the startup in order to initialize the .data section */
-	} >RAM
+		_edata = .;				/* end of .data label */
+	} > RAM
 
-
-
-/*
- * This is the uninitialized data section. Date here is stored in RAM and will be
- * set to zero by the startup code.
- */
+	/* .bss section - uninitialized data */
 	.bss :
 	{
 		. = ALIGN(4);
-		_sbss = .; /* Used by the startup in order to initialize the .bss section */
+		_sbss = .;				/* start of .bss label (for startup) */
 		 *(.bss)
 		 *(.bss.*)
 		 *(COMMON)
 		. = ALIGN(4);
-		_ebss = . ; /* Used by the startup in order to initialize the .bss section */
-		_end = .;
-		__end = .;
-	} >RAM
+		_ebss = .;				/* end of .bss label (for startup) */
+		_end = .;				/* end of used ram (start of free memory, for malloc) */
+		__end = .;				/* the same */
+	} > RAM
 
 /*
  * This is the user stack section
@@ -173,4 +155,3 @@ DISCARD :
     .debug_typenames 0 : { *(.debug_typenames) }
     .debug_varnames  0 : { *(.debug_varnames) }
 }
-

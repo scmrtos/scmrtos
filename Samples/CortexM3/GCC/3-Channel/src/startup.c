@@ -46,8 +46,13 @@ void WEAK DMA1_Channel5_IRQHandler(void);
 void WEAK DMA1_Channel6_IRQHandler(void);
 void WEAK DMA1_Channel7_IRQHandler(void);
 void WEAK ADC1_2_IRQHandler(void);
-void WEAK USB_HP_CAN1_TX_IRQHandler(void);
-void WEAK USB_LP_CAN1_RX0_IRQHandler(void);
+#ifndef STM32F10X_CL
+	void WEAK USB_HP_CAN1_TX_IRQHandler(void);
+	void WEAK USB_LP_CAN1_RX0_IRQHandler(void);
+#else
+	void WEAK CAN1_TX_IRQHandler(void);
+	void WEAK CAN1_RX0_IRQHandler(void);
+#endif
 void WEAK CAN1_RX1_IRQHandler(void);
 void WEAK CAN1_SCE_IRQHandler(void);
 void WEAK EXTI9_5_IRQHandler(void);
@@ -70,6 +75,24 @@ void WEAK USART3_IRQHandler(void);
 void WEAK EXTI15_10_IRQHandler(void);
 void WEAK RTCAlarm_IRQHandler(void);
 void WEAK USBWakeUp_IRQHandler(void);
+void WEAK TIM8_BRK_IRQHandler(void);
+void WEAK TIM8_UP_IRQHandler(void);
+void WEAK TIM8_TRG_COM_IRQHandler(void);
+void WEAK TIM8_CC_IRQHandler(void);
+void WEAK ADC3_IRQHandler(void);
+void WEAK FSMC_IRQHandler(void);
+void WEAK SDIO_IRQHandler(void);
+void WEAK TIM5_IRQHandler(void);
+void WEAK SPI3_IRQHandler(void);
+void WEAK UART4_IRQHandler(void);
+void WEAK UART5_IRQHandler(void);
+void WEAK TIM6_IRQHandler(void);
+void WEAK TIM7_IRQHandler(void);
+void WEAK DMA2_Channel1_IRQHandler(void);
+void WEAK DMA2_Channel2_IRQHandler(void);
+void WEAK DMA2_Channel3_IRQHandler(void);
+void WEAK DMA2_Channel4_5_IRQHandler(void);
+void WEAK SystemInit_ExtMemCtl(void); 
 
 /******************************************************************************
 *
@@ -120,8 +143,13 @@ void (* const g_pfnVectors[])(void) =
 	DMA1_Channel6_IRQHandler,
 	DMA1_Channel7_IRQHandler,
 	ADC1_2_IRQHandler,
+#ifndef STM32F10X_CL
 	USB_HP_CAN1_TX_IRQHandler,
 	USB_LP_CAN1_RX0_IRQHandler,
+#else
+	CAN1_TX_IRQHandler,
+	CAN1_RX0_IRQHandler,
+#endif
 	CAN1_RX1_IRQHandler,
 	CAN1_SCE_IRQHandler,
 	EXTI9_5_IRQHandler,
@@ -131,7 +159,24 @@ void (* const g_pfnVectors[])(void) =
 	TIM1_CC_IRQHandler,
 	TIM2_IRQHandler,
 	TIM3_IRQHandler,
-	TIM4_IRQHandler,
+#ifdef STM32F10X_LD
+    0,
+    I2C1_EV_IRQHandler,
+    I2C1_ER_IRQHandler,
+    0,
+    0,
+    SPI1_IRQHandler,
+    0,
+    USART1_IRQHandler,
+    USART2_IRQHandler,
+    0,
+    EXTI15_10_IRQHandler,
+    RTCAlarm_IRQHandler,
+    USBWakeUp_IRQHandler,
+    0,0,0,0,0,0,0,
+    (void *)0xF108F85F   /* @0x108. This is for boot in RAM mode for */
+#else
+    TIM4_IRQHandler,
 	I2C1_EV_IRQHandler,
 	I2C1_ER_IRQHandler,
 	I2C2_EV_IRQHandler,
@@ -144,9 +189,34 @@ void (* const g_pfnVectors[])(void) =
 	EXTI15_10_IRQHandler,
 	RTCAlarm_IRQHandler,
 	USBWakeUp_IRQHandler,
+#ifdef STM32F10X_HD
+    TIM8_BRK_IRQHandler,
+    TIM8_UP_IRQHandler,
+    TIM8_TRG_COM_IRQHandler,
+    TIM8_CC_IRQHandler,
+    ADC3_IRQHandler,
+    FSMC_IRQHandler,
+    SDIO_IRQHandler,
+    TIM5_IRQHandler,
+    SPI3_IRQHandler,
+    UART4_IRQHandler,
+    UART5_IRQHandler,
+    TIM6_IRQHandler,
+    TIM7_IRQHandler,
+    DMA2_Channel1_IRQHandler,
+    DMA2_Channel2_IRQHandler,
+    DMA2_Channel3_IRQHandler,
+    DMA2_Channel4_5_IRQHandler,
+    0,0,0,0,0,0,0,0,            /* @0x130 */ 
+    0,0,0,0,0,0,0,0,            /* @0x150 */
+    0,0,0,0,0,0,0,0,            /* @0x170 */
+    0,0,0,0,0,0,0,0,            /* @0x190 */
+    0,0,0,0,0,
+#endif
 	0,0,0,0,0,0,0,
 	(intfunc)0xF108F85F          /* @0x108. This is for boot in RAM mode for
                                STM32F10x Medium Density devices. */
+#endif //#ifdef STM32F10X_LD
 };
 
 void Reset_Handler(void)
@@ -237,9 +307,30 @@ void __Init_Data(void)
 #pragma weak EXTI15_10_IRQHandler = Default_Handler
 #pragma weak RTCAlarm_IRQHandler = Default_Handler
 #pragma weak USBWakeUp_IRQHandler = Default_Handler
+#pragma weak TIM8_BRK_IRQHandler = Default_Handler
+#pragma weak TIM8_UP_IRQHandler = Default_Handler
+#pragma weak TIM8_TRG_COM_IRQHandler = Default_Handler
+#pragma weak TIM8_CC_IRQHandler = Default_Handler
+#pragma weak ADC3_IRQHandler = Default_Handler
+#pragma weak FSMC_IRQHandler = Default_Handler
+#pragma weak SDIO_IRQHandler = Default_Handler
+#pragma weak TIM5_IRQHandler = Default_Handler
+#pragma weak SPI3_IRQHandler = Default_Handler
+#pragma weak UART4_IRQHandler = Default_Handler
+#pragma weak UART5_IRQHandler = Default_Handler
+#pragma weak TIM6_IRQHandler = Default_Handler
+#pragma weak TIM7_IRQHandler = Default_Handler
+#pragma weak DMA2_Channel1_IRQHandler = Default_Handler
+#pragma weak DMA2_Channel2_IRQHandler = Default_Handler
+#pragma weak DMA2_Channel3_IRQHandler = Default_Handler
+#pragma weak DMA2_Channel4_5_IRQHandler = Default_Handler
+#pragma weak SystemInit_ExtMemCtl = SystemInit_ExtMemCtl_Dummy
 
 void Default_Handler(void)
 {
 	for (;;);
 }
 
+void SystemInit_ExtMemCtl_Dummy(void) 
+{
+}
