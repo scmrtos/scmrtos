@@ -134,7 +134,7 @@ struct TPrioMaskTable
     TPrioMaskTable()
     {
         TProcessMap pm = 0x01;
-        for(byte i = 0; i < sizeof(Table); i++)
+        for(byte i = 0; i < sizeof(Table)/sizeof(Table[0]); i++)
         {
             Table[i] = pm;
             pm <<= 1;
