@@ -60,7 +60,7 @@ using namespace OS;
 //
 //
 TBaseProcess::TBaseProcess(TStackItem* Stack, TPriority pr, void (*exec)())
-    : StackPointer(Stack)
+    : StackPointer((TStackItem*)((unsigned int)Stack & 0xFFFFFFF8))
     , Timeout(0)
     , Priority(pr)
 {
@@ -73,27 +73,6 @@ TBaseProcess::TBaseProcess(TStackItem* Stack, TPriority pr, void (*exec)())
     *(--StackPointer)  = 0x01000000L;             // xPSR
     *(--StackPointer)  = reinterpret_cast<dword>(exec); // Entry Point
     StackPointer -= 14;                           // emulate "push R14,R12,R3,R2,R1,R0,R11-R4"
-
-    // The code below can be used for debug purpose. In this case comment
-    // line above and uncomment block below.
-/*
-    *(--StackPointer)  = 0xFFFFFFFEL;             // R14 (LR) (init value will cause fault if ever used)
-    *(--StackPointer)  = 0x12121212L;             // R12
-    *(--StackPointer)  = 0x03030303L;             // R3
-    *(--StackPointer)  = 0x02020202L;             // R2
-    *(--StackPointer)  = 0x01010101L;             // R1
-    *(--StackPointer)  = 0x00000000L;             // R0
-
-                                                  // Remaining registers saved on process stack
-    *(--StackPointer)  = 0x11111111L;             // R11
-    *(--StackPointer)  = 0x10101010L;             // R10
-    *(--StackPointer)  = 0x09090909L;             // R9
-    *(--StackPointer)  = 0x08080808L;             // R8
-    *(--StackPointer)  = 0x07070707L;             // R7
-    *(--StackPointer)  = 0x06060606L;             // R6
-    *(--StackPointer)  = 0x05050505L;             // R5
-    *(--StackPointer)  = 0x04040404L;             // R4
-*/
 }
 //------------------------------------------------------------------------------
 //
