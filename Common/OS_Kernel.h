@@ -143,7 +143,7 @@ namespace OS
     public:
         INLINE TKernel()
             : CurProcPriority(pr0)
-            , ReadyProcessMap( (1 << (scmRTOS_PROCESS_COUNT + 1)) - 1)  // set all processes ready
+            , ReadyProcessMap( (1ul << (scmRTOS_PROCESS_COUNT + 1)) - 1)  // set all processes ready
             , ISR_NestCount(0)
         {
         }
@@ -231,6 +231,7 @@ namespace OS
         {
         public:
             INLINE_PROCESS_CTOR process();
+
 
             OS_PROCESS static void Exec();
 
