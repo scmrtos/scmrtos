@@ -67,7 +67,7 @@ void main(void)
 #define OFF(x)                      PM_CLR(x)
 
 #define PM_PINL(port,bit,dummy)     (!(GP##port##DAT & (1 << (bit))))
-#define PM_PINH(port,bit,dummy)     (!PM_PINH(port,bit,dummy))
+#define PM_PINH(port,bit,dummy)     (!PM_PINL(port,bit,dummy))
 #define PM_PIN(port,bit,val)        PM_PIN##val(port,bit,dummy)
 #define ACTIVE(x)                   PM_PIN(x)
 #define PIN_H(x)                    PM_PINH(x)

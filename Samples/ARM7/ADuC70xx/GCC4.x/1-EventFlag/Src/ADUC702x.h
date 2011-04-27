@@ -94,8 +94,8 @@ enum
     T0_DIV_16       = (1UL << 2),
     T0_DIV_256      = (2UL << 2),
     
-    T0_PERIODIC     = (0UL << 6),
-    T0_FREE_RUNNING = (1UL << 6),
+    T0_FREE_RUNNING = (0UL << 6),
+    T0_PERIODIC     = (1UL << 6),
 
     T0_DISABLED     = (0UL << 7),
     T0_ENABLED      = (1UL << 7),
@@ -117,8 +117,8 @@ enum
     T1_24_HOURS             = (2UL << 4),
     T1_255_HOURS            = (3UL << 4),
 
-    T1_PERIODIC             = (0UL << 6),
-    T1_FREE_RUNNING         = (1UL << 6),
+    T1_FREE_RUNNING         = (0UL << 6),
+    T1_PERIODIC             = (1UL << 6),
 
     T1_DISABLED             = (0UL << 7),
     T1_ENABLED              = (1UL << 7),
@@ -175,8 +175,8 @@ enum
     T2_24_HOURS             = (2UL << 4),
     T2_255_HOURS            = (3UL << 4),
 
-    T2_PERIODIC             = (0UL << 6),
-    T2_FREE_RUNNING         = (1UL << 6),
+    T2_FREE_RUNNING         = (0UL << 6),
+    T2_PERIODIC             = (1UL << 6),
 
     T2_DISABLED             = (0UL << 7),
     T2_ENABLED              = (1UL << 7),
@@ -204,8 +204,8 @@ enum
 
     T3_WDT_MODE     = (1UL << 5),
 
-    T3_PERIODIC     = (0UL << 6),
-    T3_FREE_RUNNING = (1UL << 6),
+    T3_FREE_RUNNING = (0UL << 6),
+    T3_PERIODIC     = (1UL << 6),
 
     T3_DISABLED     = (0UL << 7),
     T3_ENABLED      = (1UL << 7),
