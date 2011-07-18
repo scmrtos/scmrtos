@@ -45,6 +45,13 @@
 
 //---------------------------------------------------------------------------
 #include <scmRTOS.h>
+
+//---------------------------------------------------------------------------
+//      Sample target
+//  The sample is intended for following AVR microcontrollers:
+//      atmega32(V,A)
+//  Some changes in register names may be needed for other AVRs.
+
 //---------------------------------------------------------------------------
 //
 //      Process types
@@ -80,10 +87,6 @@ int main()
 
     TCCR0 = 0x03;             // Start System Timer
     TIMSK |=  (1 << TOIE0);   //
-
-    ACSR |= (1 << ACBG) | (1 << ACIE); /* Ref ON, IE ON */  
-    DDRB |= (1 << 3);                  /* AIN1*/
-
 
     OS::Run();
 }

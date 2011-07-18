@@ -25,3 +25,6 @@ LoggingEnabled=_ 0
 LogFile=_ ""
 [Breakpoints]
 Count=0
+[Aliases]
+Count=0
+SuppressDialog=0
