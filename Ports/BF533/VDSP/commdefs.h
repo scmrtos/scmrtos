@@ -53,8 +53,8 @@ typedef unsigned long  dword;
 
 #define INLINE
 
-#define MMR16(x) ( *((word*)x) )
-#define MMR32(x) ( *((dword*)x) )
+//#define MMR16(x) ( *((word*)x) )
+//#define MMR32(x) ( *((dword*)x) )
 
 
 #endif // COMMONDEFS_H
