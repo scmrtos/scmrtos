@@ -44,6 +44,7 @@
 //******************************************************************************
 //*     Ported by Andrey Chuikin, Copyright (c) 2008-2010
 //*     Ported to GCC Ivan A-R <ivan@tuxotronic.org> (l) 2008
+//*     gcc port by Anton B. Gusev aka AHTOXA, Copyright (c) 2009-2011
 
 #include "scmRTOS_TARGET_CFG.h"
 
@@ -87,7 +88,6 @@
 
     .global PendSVC_ISR
     .global OS_Start
-    .global ContextRestore
 
 //-----------------------------------------------------------------------------
 //      HANDLE PendSV EXCEPTION
@@ -101,13 +101,11 @@
 //              a thread or occurs due to an interrupt or exception.
 //
 //           2) Pseudo-code is:
-//              a) Get the process SP, if 0 then skip (goto f) the saving part (first context switch);
+//              a) Get the process SP
 //              b) Save remaining regs r4-r11 on process stack;
 //              c) Call OS_ContextSwitchHook for save current task SP and get new task SP;
 //              d) Restore R4-R11 from new process stack;
 //              e) Perform exception return which will restore remaining context.
-//              f) Get SP for the first context switch (R2 hold it);
-//                 run SysTick; goto d);
 //
 //           3) On entry into PendSV handler:
 //              a) The following have been saved on the process stack (by processor):
@@ -124,31 +122,18 @@
 PendSVC_ISR:
     CPSID   I                 // Prevent interruption during context switch
     MRS     R0, PSP           // PSP is process stack pointer
-    CBZ     R0, nosave        // Skip register save the first time    
-
-    STMDB R0!, {R4-R11}       // Save remaining regs r4-11 on process stack
+    STMDB   R0!, {R4-R11}     // Save remaining regs r4-11 on process stack
     // At this point, entire context of process has been saved                                                            
 
-    PUSH    {R14}                        // Save LR exc_return value
+    PUSH    {LR}              // Save LR exc_return value
     LDR     R1, =OS_ContextSwitchHook    // OS_ContextSwitchHook();
     BLX     R1
-    POP     {R14}
     
-ContextRestore:
     // R0 is new process SP;
-    LDMIA R0!, {R4-R11}       // Restore r4-11 from new process stack
+    LDMIA   R0!, {R4-R11}     // Restore r4-11 from new process stack
     MSR     PSP, R0           // Load PSP with new process SP
-    ORR     LR, LR, #0x04     // Ensure exception return uses process stack
     CPSIE   I
-    BX      LR                // Exception return will restore remaining context
-nosave:
-    MOV R0, R2                // R2 hold the first task SP
-    
-    LDR     R1, =NVIC_ST_CTRL // Enable and run SysTick
-    LDR     R2, =(NVIC_ST_CTRL_CLK_SRC | NVIC_ST_CTRL_INTEN | NVIC_ST_CTRL_ENABLE)
-    STR     R2, [R1]
-    
-    B   ContextRestore
+    POP     {PC}              // Return to saved exc_return. Exception return will restore remaining context
 
    
 //-----------------------------------------------------------------------------
@@ -159,6 +144,7 @@ nosave:
 //              a) Setup PendSV and SysTick exception priority to lowest;
 //              b) Setup SysTick (reload value);
 //              c) Enable interrupts (tasks will run with interrupts enabled).
+//              d) Jump to exec() function of the highest priority process.
 //
 .thumb_func
 OS_Start:
@@ -172,19 +158,20 @@ OS_Start:
     LDR     R1, =NVIC_ST_RELOAD     // Setup SysTick
     LDR     R2, =(SYSTICKFREQ/SYSTICKINTRATE-1)  
     STR     R2, [R1]
+    LDR     R1, =NVIC_ST_CTRL       // Enable and run SysTick
+    LDR     R2, =(NVIC_ST_CTRL_CLK_SRC | NVIC_ST_CTRL_INTEN | NVIC_ST_CTRL_ENABLE)
+    STR     R2, [R1]
 
-    MOV     R2, R0                  // Save the first task stack
-    MOVS    R0, #0                  // Set the PSP to 0 for initial context switch call
-    MSR     PSP, R0
-
-    LDR     R0, =NVIC_INT_CTRL      // Trigger the PendSV exception (causes context switch)
-    LDR     R1, =NVIC_PENDSVSET
-    STR     R1, [R0]
+    LDR     R3, [R0, #(4 * 14)]		// Load process entry point into R3
+    ADD     R0, #(4 * 16)           // emulate context restore
+    MSR     PSP, R0                 // store process SP to PSP
+    MOV     R0, #2                  // Switch thread mode stack to PSP
+    MSR     CONTROL, R0
+    ISB                             // Insert a barrier
 
     CPSIE   I                       // Enable interrupts at processor level
-loop:
-    B       loop                    // Should never get here
 
+    BX      R3                      // Jump to process exec() function
 
     .end
 
