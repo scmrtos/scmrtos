@@ -58,7 +58,7 @@ typedef unsigned long  dword;
 typedef volatile byte  sfr_byte;
 typedef volatile word  sfr_word;
 
-#if __CPU_MODE__ == 0   // ARM
+#if __CPU_MODE__ == 2   // ARM
     #define INLINE  _Pragma("inline=forced")
 #else                   // THUMB
     // unable to inline some thumb functions from Common sources to ARM-mode interrupt handlers
