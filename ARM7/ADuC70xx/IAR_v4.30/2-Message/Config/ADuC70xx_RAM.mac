@@ -1,0 +1,56 @@
+//*****************************************************************
+//  Macro file for IAR C-SPY debugger
+//
+//  Performs some necessary actions for debugging with C-SPY
+//  
+//
+//  Copyright (c) 2007-2008, Sergey A. Borshch
+//
+//  $Revision$
+//  $Date::             $
+//
+//*****************************************************************
+
+execUserPreload()
+{
+//    Reset();
+    Remap_RAM();
+
+    __writeMemory32(0xD3, 0x98, "Register");                        // CPSR = SVC mode, ARM, IRQ, FIQ disabled
+}
+
+execUserReset()
+{
+    Reset();
+    Remap_RAM();
+
+    __writeMemory32(0xD3, 0x98, "Register");                        // CPSR = SVC mode, ARM, IRQ, FIQ disabled
+    __writeMemory32(0x00000000, 0xB4, "Register");                  // set PC to reset vector
+}
+
+Remap_RAM()
+{
+    __writeMemory8(0x00, 0xFFFF0224, "Memory");                     // Silicon bug? write-once 0 to remap area 0x000-0xFFF
+    __writeMemory8(0x01, 0xFFFF0220, "Memory");
+    __message " remap " ;
+}
+
+
+Reset()
+{
+    __writeMemory32(0x00000000,0xFFFF0010,"Memory");    // SWICFG: clear unmaskable ints
+    __writeMemory32(0xFFFFFFFF,0xFFFF000C,"Memory");    // IRQCLR: disable all maskable IRQ
+    __writeMemory32(0xFFFFFFFF,0xFFFF010C,"Memory");    // FIQCLR: disable all maskable FIQ
+
+    __writeMemory8(0x06,0xFFFF0234,"Memory");           // RSTCLR: clear reset source bits, emulate power-on reset
+
+    __writeMemory16(0x0088,0xFFFF0308,"Memory");        // T0CON: enable timer
+    __writeMemory8(0x00,0xFFFF030C,"Memory");           // T0CLRI: clear int flag
+    __writeMemory16(0x0000,0xFFFF0308,"Memory");        // T0CON: disable timer
+    __writeMemory16(0x0000,0xFFFF0300,"Memory");        // T0LD: clear
+
+    __writeMemory16(0x0088,0xFFFF0308,"Memory");        // T0CON: enable timer
+    __writeMemory8(0x00,0xFFFF030C,"Memory");           // T0CLRI: clear int flag
+    __writeMemory16(0x0000,0xFFFF0308,"Memory");        // T0CON: disable timer
+    __writeMemory16(0x0000,0xFFFF0300,"Memory");        // T0LD: clear
+}
