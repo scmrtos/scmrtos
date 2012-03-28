@@ -10,12 +10,12 @@
 //*
 //*     PURPOSE:   Port Test File
 //*
-//*     Version: 3.10
+//*     Version: 3.11
 //*
 //*     $Revision: 196 $
 //*     $Date:: 2008-06-19 #$
 //*
-//*     Copyright (c) 2003-2010, Harry E. Zhurov
+//*     Copyright (c) 2003-2012, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person 
 //*     obtaining  a copy of this software and associated documentation 
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     Ported by Andrey Chuikin, Copyright (c) 2008-2010
+//*     Ported by Andrey Chuikin, Copyright (c) 2008-2012
 
 #include <scmRTOS.h>
                   

@@ -1,7 +1,7 @@
 /**
 *  GPIO pin manipulation class template for STM32.
 *
-*  Copyright (c) 2009-2010Anton Gusev aka AHTOXA (HTTP://AHTOXA.NET)
+*  Copyright (c) 2009-2012Anton Gusev aka AHTOXA (HTTP://AHTOXA.NET)
 *
 *  Inspired by AVR macros from Askold Volkov
 *

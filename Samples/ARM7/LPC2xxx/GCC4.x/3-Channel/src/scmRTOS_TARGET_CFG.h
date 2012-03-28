@@ -10,12 +10,12 @@
 //*
 //*     PURPOSE:   Project Level Target Extensions Config
 //*
-//*     Version: 3.10
+//*     Version: 3.11
 //*
 //*     $Revision: 256 $
 //*     $Date:: 2010-01-22 #$
 //*
-//*     Copyright (c) 2003-2010, Harry E. Zhurov
+//*     Copyright (c) 2003-2012, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,8 +42,8 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2010
-//*     lpc2xxx GCC parts by Anton B. Gusev aka AHTOXA, Copyright (c) 2010
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2012
+//*     lpc2xxx GCC parts by Anton B. Gusev aka AHTOXA, Copyright (c) 2010-2012
 
 #ifndef  scmRTOS_TARGET_CFG_H
 #define  scmRTOS_TARGET_CFG_H

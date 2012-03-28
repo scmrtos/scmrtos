@@ -10,12 +10,12 @@
 //*
 //*     PURPOSE:   Common Type Definitions
 //*
-//*     Version: 3.10
+//*     Version: 3.11
 //*
 //*     $Revision$
 //*     $Date::             $
 //*
-//*     Copyright (c) 2003-2010, Harry E. Zhurov
+//*     Copyright (c) 2003-2012, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person 
 //*     obtaining  a copy of this software and associated documentation 
@@ -43,7 +43,7 @@
 //*
 //********************************************************************************
 //*
-//*     FR port by Sergey Pinigin, Copyright (c) 2007-2010
+//*     FR port by Sergey Pinigin, Copyright (c) 2007-2012
 //*
 //********************************************************************************
 
