@@ -1,0 +1,15 @@
+[DisAssemblyWindow]
+NumStates=_ 1
+State 1=_ 1
+[Log file]
+LoggingEnabled=_ 0
+LogFile=_ ""
+Category=_ 0
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""
+[Breakpoints]
+Count=0
+[Aliases]
+Count=0
+SuppressDialog=0

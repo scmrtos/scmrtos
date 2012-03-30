@@ -1,0 +1,183 @@
+//******************************************************************************
+//*
+//*     FULLNAME:  Single-Chip Microcontroller Real-Time Operating System
+//*
+//*     NICKNAME:  scmRTOS
+//*
+//*     PROCESSOR: MSP430 (Texas Instruments)
+//*
+//*     TOOLKIT:   EW430 (IAR Systems)
+//*               
+//*     PURPOSE:   Target Dependent Low-Level Stuff
+//*               
+//*     Version: 3.10
+//*
+//*     $Revision$
+//*     $Date::             $
+//*
+//*     Copyright (c) 2003-2010, Harry E. Zhurov
+//*
+//*     Permission is hereby granted, free of charge, to any person 
+//*     obtaining  a copy of this software and associated documentation 
+//*     files (the "Software"), to deal in the Software without restriction, 
+//*     including without limitation the rights to use, copy, modify, merge, 
+//*     publish, distribute, sublicense, and/or sell copies of the Software, 
+//*     and to permit persons to whom the Software is furnished to do so, 
+//*     subject to the following conditions:
+//*
+//*     The above copyright notice and this permission notice shall be included 
+//*     in all copies or substantial portions of the Software.
+//*
+//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
+//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
+//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
+//*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//*
+//*     =================================================================
+//*     See http://scmrtos.sourceforge.net for documentation, latest
+//*     information, license and contact details.
+//*     =================================================================
+//*
+//******************************************************************************
+
+#include "scmRTOS_CONFIG.h"
+#include "scmRTOS_TARGET_CFG.h"
+
+     module  scmRTOS_Asm
+
+;-------------------------------------------------------------------------------
+
+#if __VER__ < 4
+#define ARG2 r14
+#else
+#define ARG2 r13
+#endif // __VER__
+
+#if __CORE__ == __430_CORE__
+
+#define xcall  call
+#define xret   ret
+#define xbr    br
+#define xmov   mov
+#define xpush  push
+#define xpop   pop
+
+;-------------------------------------------------------------------------------
+save_regs   macro
+
+     push     r15
+     push     r14
+     push     r13
+     push     r12
+     push     r11
+     push     r10
+     push     r9
+     push     r8
+     push     r7
+     push     r6
+     push     r5
+     push     r4
+
+     endm
+;-------------------------------------------------------------------------------
+restore_regs   macro
+
+     pop      r4
+     pop      r5
+     pop      r6
+     pop      r7
+     pop      r8
+     pop      r9
+     pop      r10
+     pop      r11
+     pop      r12
+     pop      r13
+     pop      r14
+     pop      r15
+
+     endm
+
+#elif __CORE__ == __430X_CORE__
+
+#define xcall  calla
+#define xret   reta
+#define xbr    bra
+#define xmov   movx
+#define xpush  pushx
+#define xpop   popx
+
+
+save_regs macro
+
+     pushm.a #12,r15
+     endm
+
+restore_regs   macro
+
+     popm.a #12,r15
+     endm
+
+#else
+#error "Error: invalid __CORE__ specification"
+#endif // __CORE__ == 430
+;-------------------------------------------------------------------------------
+   
+     public  os_start
+
+#if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
+    public  os_context_switcher
+#endif 
+
+     rseg  DATA16_Z(1)
+     rseg  CODE(1)
+
+;-------------------------------------------------------------------------------
+os_start:
+     xmov  r12,SP
+     xbr   #l_restore_context
+
+;-------------------------------------------------------------------------------
+#if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
+os_context_switcher:
+     xpush SR
+     save_regs
+
+     mov.w   SP,0(r12)
+     mov.w   ARG2,SP
+
+l_restore_context:
+     restore_regs
+     xpop SR
+     xret
+#endif 
+;-------------------------------------------------------------------------------
+#if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
+
+  //  extern  OS_ContextSwitchStackData
+    extern  os_context_switch_hook
+
+    public context_switcher_isr
+
+    common INTVEC(1)
+    org   CONTEXT_SWITCH_ISR_VECTOR
+    dc16  context_switcher_isr
+
+    rseg ISR_CODE(1)
+
+context_switcher_isr:
+    save_regs
+    mov.w   SP,r12
+    xcall  #os_context_switch_hook
+    mov.w   r12,SP
+l_restore_context:
+    restore_regs
+    reti
+
+#endif // scmRTOS_CONTEXT_SWITCH_SCHEME
+;-------------------------------------------------------------------------------
+
+     end
+;*******************************************************************************

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<Workspace>
+  <ConfigDictionary>
+    
+  <CurrentConfigs><Project>1-EventFlag/Debug</Project></CurrentConfigs></ConfigDictionary>
+  <Desktop>
+    <Static>
+      <Workspace>
+        <ColumnWidths>
+          
+          
+          
+          
+        <Column0>228</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
+      </Workspace>
+      <Build>
+        
+        
+        
+        
+      <ColumnWidth0>20</ColumnWidth0><ColumnWidth1>534</ColumnWidth1><ColumnWidth2>352</ColumnWidth2><ColumnWidth3>77</ColumnWidth3></Build>
+      <TerminalIO/>
+      <CodeCoveragePlugin/>
+      <Profiling/>
+    <Debug-Log/><Disassembly><MixedMode>1</MixedMode><CodeCovEnabled>0</CodeCovEnabled><CodeCovShow>0</CodeCovShow></Disassembly></Static>
+    <Windows>
+      
+      
+    <Wnd1>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-14145-30930</Identity>
+            <TabName>Workspace</TabName>
+            <Factory>Workspace</Factory>
+            <Session>
+              
+            <NodeDict><ExpandedNode>1-EventFlag</ExpandedNode><ExpandedNode>1-EventFlag/OS_Services.cpp</ExpandedNode><ExpandedNode>1-EventFlag/Output</ExpandedNode></NodeDict></Session>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd1><Wnd3>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-9879-1107</Identity>
+            <TabName>Build</TabName>
+            <Factory>Build</Factory>
+            <Session/>
+          </Tab>
+        <Tab><Identity>TabID-1618-28155</Identity><TabName>Debug Log</TabName><Factory>Debug-Log</Factory><Session/></Tab></Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd3></Windows>
+    <Editor>
+      
+      
+      
+      
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\1-EVENTFLAG\SRC\scmRTOS_TARGET_CFG.h</Filename><XPos>0</XPos><YPos>41</YPos><SelStart>2996</SelStart><SelEnd>2996</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\SCMRTOS\COMMON\OS_Kernel.h</Filename><XPos>0</XPos><YPos>381</YPos><SelStart>14700</SelStart><SelEnd>14700</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\SCMRTOS\AVR\OS_Target.h</Filename><XPos>0</XPos><YPos>58</YPos><SelStart>3112</SelStart><SelEnd>3112</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\SCMRTOS\COMMON\OS_Kernel.cpp</Filename><XPos>0</XPos><YPos>224</YPos><SelStart>8386</SelStart><SelEnd>8386</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\SCMRTOS\AVR\OS_Target_cpp.cpp</Filename><XPos>0</XPos><YPos>26</YPos><SelStart>4505</SelStart><SelEnd>4505</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\1-EVENTFLAG\SRC\scmRTOS_CONFIG.h</Filename><XPos>0</XPos><YPos>46</YPos><SelStart>3367</SelStart><SelEnd>3367</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\1-EVENTFLAG\SRC\main.cpp</Filename><XPos>0</XPos><YPos>91</YPos><SelStart>5260</SelStart><SelEnd>5260</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\1-EVENTFLAG\LIST\1-EventFlag.map</Filename><XPos>0</XPos><YPos>1054</YPos><SelStart>54611</SelStart><SelEnd>54611</SelEnd></Tab><ActiveTab>7</ActiveTab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Positions>
+      
+      
+      
+      
+      
+    <Top><Row0><Sizes><Toolbar-00ae9880><key>iaridepm.enu1</key></Toolbar-00ae9880></Sizes></Row0></Top><Left><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>805</Bottom><Right>302</Right><x>-2</x><y>-2</y><xscreen>160</xscreen><yscreen>94</yscreen><sizeHorzCX>134116</sizeHorzCX><sizeHorzCY>84305</sizeHorzCY><sizeVertCX>254820</sizeVertCX><sizeVertCY>723767</sizeVertCY></Rect></Wnd1></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd3><Rect><Top>-2</Top><Left>-2</Left><Bottom>266</Bottom><Right>1195</Right><x>-2</x><y>-2</y><xscreen>1197</xscreen><yscreen>268</yscreen><sizeHorzCX>1003353</sizeHorzCX><sizeHorzCY>240359</sizeHorzCY><sizeVertCX>134116</sizeVertCX><sizeVertCY>84305</sizeVertCY></Rect></Wnd3></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+  </Desktop>
+</Workspace>
+
+
