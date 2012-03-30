@@ -4,7 +4,7 @@ rem default place is current_access_scheme_and_root_url/trunk
 rem switch http://bla-bla-bla or switch ^/branches/pre-v400 for specifc place
 
 IF "%1" == "" ( 
-    SET REP=^/trunk
+    SET REP="^/trunk"
 ) ELSE ( 
     SET REP=%1
 )

@@ -1,7 +1,7 @@
 @echo off
 
 IF "%1" == "" ( 
-    SET REP=^/trunk
+    SET REP="^/trunk"
 ) ELSE ( 
     SET REP=%1
 )
