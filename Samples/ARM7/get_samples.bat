@@ -12,8 +12,8 @@ rem **                                                         **
 rem *************************************************************
 
 
-::SET REP=http://scmrtos.svn.sourceforge.net/svnroot/scmrtos/trunk
-SET REP=http://scmrtos.svn.sourceforge.net/svnroot/scmrtos/branches/pre-v400
+SET REP=http://scmrtos.svn.sourceforge.net/svnroot/scmrtos/trunk
+::SET REP=http://scmrtos.svn.sourceforge.net/svnroot/scmrtos/branches/pre-v400
 
 SET TARGET=ARM7
 SET CHIP_FAMILY=%1
