@@ -3,7 +3,7 @@
 #*****************************************************************
 
 #select preffered toolset or leave commented to use default
-TOOLSET = $(ARM_GCC)/yagarto/20110328
+TOOLSET = $(ARM_GCC)/yagarto/20111119
 
 TARGET = arm-none-eabi-
 CC   = $(TARGET)gcc
