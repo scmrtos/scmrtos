@@ -17,6 +17,7 @@ Samples/ARM7/GCC/AT91SAM7/.metadata
 Samples/ARM7/GCC/AT91SAM7/1-EventFlag/release
 Samples/ARM7/GCC/AT91SAM7/2-Message/release
 Samples/ARM7/GCC/AT91SAM7/3-Channel/release
+Samples/ARM7/GCC/AT91SAM7/4-Profiler/release
 Samples/ARM7/GCC/LPC2xxx/1-EventFlag/bak
 Samples/ARM7/GCC/LPC2xxx/1-EventFlag/exe
 Samples/ARM7/GCC/LPC2xxx/1-EventFlag/lst
