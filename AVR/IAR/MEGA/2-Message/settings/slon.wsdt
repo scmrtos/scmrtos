@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<Workspace>
+  <ConfigDictionary>
+    
+  <CurrentConfigs><Project>slon/Debug</Project></CurrentConfigs></ConfigDictionary>
+  <Desktop>
+    <Static>
+      <Workspace>
+        <ColumnWidths>
+          
+          
+          
+          
+        <Column0>177</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
+      </Workspace>
+      <Build>
+        
+        
+        
+        
+      <ColumnWidth0>20</ColumnWidth0><ColumnWidth1>1158</ColumnWidth1><ColumnWidth2>309</ColumnWidth2><ColumnWidth3>77</ColumnWidth3></Build>
+      <TerminalIO/>
+      <CodeCoveragePlugin/>
+      <Profiling/>
+      <Debug-Log/>
+    </Static>
+    <Windows>
+      
+      
+    <Wnd2>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-8395-26107</Identity>
+            <TabName>Workspace</TabName>
+            <Factory>Workspace</Factory>
+            <Session>
+              
+            <NodeDict><ExpandedNode>slon</ExpandedNode><ExpandedNode>slon/Output</ExpandedNode><ExpandedNode>slon/main.cpp</ExpandedNode><ExpandedNode>slon/main.cpp/Output</ExpandedNode></NodeDict></Session>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd2><Wnd3>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-7872-26117</Identity>
+            <TabName>Build</TabName>
+            <Factory>Build</Factory>
+            <Session/>
+          </Tab>
+          <Tab>
+            <Identity>TabID-9504-26496</Identity>
+            <TabName>Debug Log</TabName>
+            <Factory>Debug-Log</Factory>
+            <Session/>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd3></Windows>
+    <Editor>
+      
+      
+      
+      
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\2-MESSAGE\SRC\scmRTOS_CONFIG.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>5645</SelStart><SelEnd>5645</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\SCMRTOS\COMMON\scmRTOS.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\2-MESSAGE\SRC\main.cpp</Filename><XPos>0</XPos><YPos>155</YPos><SelStart>6035</SelStart><SelEnd>6035</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\2-MESSAGE\LIST\slon.map</Filename><XPos>0</XPos><YPos>1022</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><ActiveTab>3</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\SCMRTOS\AVR\OS_Target.h</Filename><XPos>0</XPos><YPos>41</YPos><SelStart>2781</SelStart><SelEnd>2781</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Positions>
+      
+      
+      
+      
+      
+    <Top><Row0><Sizes><Toolbar-00ae9880><key>iaridepm.enu1</key></Toolbar-00ae9880></Sizes></Row0></Top><Left><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>729</Bottom><Right>267</Right><x>-2</x><y>-2</y><xscreen>149</xscreen><yscreen>196</yscreen><sizeHorzCX>124895</sizeHorzCX><sizeHorzCY>175785</sizeHorzCY><sizeVertCX>225482</sizeVertCX><sizeVertCY>655605</sizeVertCY></Rect></Wnd0></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>342</Bottom><Right>1195</Right><x>-2</x><y>-2</y><xscreen>1197</xscreen><yscreen>344</yscreen><sizeHorzCX>1003353</sizeHorzCX><sizeHorzCY>308520</sizeHorzCY><sizeVertCX>124895</sizeVertCX><sizeVertCY>175785</sizeVertCY></Rect></Wnd1></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+  </Desktop>
+</Workspace>
+
+

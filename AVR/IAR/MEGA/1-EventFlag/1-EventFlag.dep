@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>2</fileVersion>
+  <fileChecksum>2180437617</fileChecksum>
+  <configuration>
+    <name>Debug</name>
+    <outputs>
+      <file>$PROJ_DIR$\List\main.lst</file>
+      <file>$TOOLKIT_DIR$\src\template\cfgm168.xcl</file>
+      <file>$PROJ_DIR$\List\OS_Kernel.lst</file>
+      <file>$PROJ_DIR$\Exe\1-EventFlag.a90</file>
+      <file>$TOOLKIT_DIR$\lib\dlib\dlAVR-3s-ec_mul-sf-n.h</file>
+      <file>$PROJ_DIR$\Obj\OS_Services.r90</file>
+      <file>$TOOLKIT_DIR$\inc\ioavr.h</file>
+      <file>$TOOLKIT_DIR$\inc\dlib\DLib_Threads.h</file>
+      <file>$PROJ_DIR$\Obj\usrlib.r90</file>
+      <file>$TOOLKIT_DIR$\inc\dlib\stdint.h</file>
+      <file>$TOOLKIT_DIR$\inc\dlib\DLib_Defaults.h</file>
+      <file>$PROJ_DIR$\Obj\1-EventFlag.pbd</file>
+      <file>$PROJ_DIR$\..\scmRTOS\Common\usrlib.h</file>
+      <file>$PROJ_DIR$\..\scmRTOS\AVR\OS_Target.h</file>
+      <file>$PROJ_DIR$\Obj\OS_Kernel.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\dlib\yvals.h</file>
+      <file>$PROJ_DIR$\Obj\main.r90</file>
+      <file>$TOOLKIT_DIR$\inc\dlib\xencoding_limits.h</file>
+      <file>$TOOLKIT_DIR$\lib\dlib\dlAVR-3s-ec_mul-sf-n.r90</file>
+      <file>$PROJ_DIR$\List\1-EventFlag.map</file>
+      <file>$TOOLKIT_DIR$\inc\intrinsics.h</file>
+      <file>$PROJ_DIR$\Obj\usrlib.pbi</file>
+      <file>$PROJ_DIR$\Obj\OS_Target_asm.r90</file>
+      <file>$PROJ_DIR$\Src\scmRTOS_extensions.h</file>
+      <file>$PROJ_DIR$\..\SamplesCommon\pin_macros.h</file>
+      <file>$PROJ_DIR$\..\scmRTOS\Common\OS_Kernel.h</file>
+      <file>$TOOLKIT_DIR$\inc\dlib\ycheck.h</file>
+      <file>$PROJ_DIR$\List\usrlib.lst</file>
+      <file>$PROJ_DIR$\List\OS_Services.lst</file>
+      <file>$PROJ_DIR$\Exe\1-EventFlag.d90</file>
+      <file>$TOOLKIT_DIR$\inc\iom168.h</file>
+      <file>$PROJ_DIR$\..\scmRTOS\Common\scmRTOS_defs.h</file>
+      <file>$TOOLKIT_DIR$\inc\bitdefinitions\iom168.inc</file>
+      <file>$PROJ_DIR$\Obj\OS_Target_cpp.pbi</file>
+      <file>$PROJ_DIR$\List\OS_Target_cpp.lst</file>
+      <file>$TOOLKIT_DIR$\src\template\cfg3soim.xcl</file>
+      <file>$PROJ_DIR$\Obj\OS_Kernel.r90</file>
+      <file>$TOOLKIT_DIR$\inc\inavr.h</file>
+      <file>$TOOLKIT_DIR$\inc\dlib\DLib_Product.h</file>
+      <file>$PROJ_DIR$\List\OS_Target_asm.lst</file>
+      <file>$PROJ_DIR$\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Obj\OS_Services.pbi</file>
+      <file>$PROJ_DIR$\..\scmRTOS\Common\OS_Services.h</file>
+      <file>$PROJ_DIR$\..\scmRTOS\Common\scmRTOS.h</file>
+      <file>$TOOLKIT_DIR$\inc\dlib\stddef.h</file>
+      <file>$TOOLKIT_DIR$\inc\iomacro.h</file>
+      <file>$TOOLKIT_DIR$\inc\dlib\ysizet.h</file>
+      <file>$PROJ_DIR$\Src\scmRTOS_CONFIG.h</file>
+      <file>$PROJ_DIR$\..\scmRTOS\Common\OS_Services.cpp</file>
+      <file>$PROJ_DIR$\Src\main.cpp</file>
+      <file>$PROJ_DIR$\..\scmRTOS\Common\OS_Kernel.cpp</file>
+      <file>$PROJ_DIR$\Src\scmRTOS_TARGET_CFG.h</file>
+      <file>$PROJ_DIR$\..\scmRTOS\AVR\OS_Target_asm.s90</file>
+      <file>$PROJ_DIR$\..\scmRTOS\Common\usrlib.cpp</file>
+      <file>$PROJ_DIR$\..\scmRTOS\AVR\OS_Target_cpp.cpp</file>
+      <file>$PROJ_DIR$\Obj\OS_Target_cpp.r90</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 29 19 3</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Obj\1-EventFlag.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 14 41 33 40 21</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Exe\1-EventFlag.d90</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 19 3</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 1 35 36 5 22 55 16 8 18</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\scmRTOS\Common\OS_Services.cpp</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 28 5</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 41</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 43 44 26 15 10 4 38 17 7 46 9 12 13 37 20 47 51 6 30 45 32 31 25 23 42</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 43 44 26 15 10 38 17 7 46 9 12 13 37 20 47 51 6 30 45 32 31 25 23 42</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Src\main.cpp</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 0 16</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 40</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 24 43 44 26 15 10 4 38 17 7 46 9 12 13 37 20 47 51 6 30 45 32 31 25 23 42</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 24 43 44 26 15 10 38 17 7 46 9 12 13 37 20 47 51 6 30 45 32 31 25 23 42</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\scmRTOS\Common\OS_Kernel.cpp</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 2 36</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 14</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 43 44 26 15 10 4 38 17 7 46 9 12 13 37 20 47 51 6 30 45 32 31 25 23 42</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 43 44 26 15 10 38 17 7 46 9 12 13 37 20 47 51 6 30 45 32 31 25 23 42</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\scmRTOS\AVR\OS_Target_asm.s90</name>
+      <outputs>
+        <tool>
+          <name>AAVR</name>
+          <file> 22 39</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>AAVR</name>
+          <file> 47 51 6 30 45 32</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\scmRTOS\Common\usrlib.cpp</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 27 8</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 21</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 12 9 26 15 10 4 38 17 7</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 12 9 26 15 10 38 17 7</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\scmRTOS\AVR\OS_Target_cpp.cpp</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 34 55</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 33</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 43 44 26 15 10 4 38 17 7 46 9 12 13 37 20 47 51 6 30 45 32 31 25 23 42</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 43 44 26 15 10 38 17 7 46 9 12 13 37 20 47 51 6 30 45 32 31 25 23 42</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>Release</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+    <forcedrebuild>
+      <name>[REBUILD_ALL]</name>
+    </forcedrebuild>
+  </configuration>
+</project>
+
+

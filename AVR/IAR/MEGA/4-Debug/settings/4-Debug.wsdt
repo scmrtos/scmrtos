@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<Workspace>
+  <ConfigDictionary>
+    
+  <CurrentConfigs><Project>4-Debug/Debug</Project></CurrentConfigs></ConfigDictionary>
+  <Desktop>
+    <Static>
+      <Workspace>
+        <ColumnWidths>
+          
+          
+          
+          
+        <Column0>282</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
+      </Workspace>
+      <Build>
+        
+        
+        
+        
+      <ColumnWidth0>20</ColumnWidth0><ColumnWidth1>759</ColumnWidth1><ColumnWidth2>225</ColumnWidth2><ColumnWidth3>56</ColumnWidth3></Build>
+    </Static>
+    <Windows>
+      
+      
+    <Wnd2>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-26477-8302</Identity>
+            <TabName>Workspace</TabName>
+            <Factory>Workspace</Factory>
+            <Session>
+              
+            <NodeDict><ExpandedNode>4-Debug</ExpandedNode><ExpandedNode>4-Debug/Output</ExpandedNode><ExpandedNode>4-Debug/Output/4-Debug.d90</ExpandedNode><ExpandedNode>4-Debug/Output/4-Debug.d90/Output</ExpandedNode></NodeDict></Session>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd2><Wnd3>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-23529-9585</Identity>
+            <TabName>Build</TabName>
+            <Factory>Build</Factory>
+            <Session/>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd3></Windows>
+    <Editor>
+      
+      
+      
+      
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\SCMRTOS\AVR\OS_Target.h</Filename><XPos>0</XPos><YPos>57</YPos><SelStart>2781</SelStart><SelEnd>2781</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\4-DEBUG\SRC\debug.cpp</Filename><XPos>0</XPos><YPos>147</YPos><SelStart>4323</SelStart><SelEnd>4323</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\4-DEBUG\SRC\main.cpp</Filename><XPos>0</XPos><YPos>199</YPos><SelStart>6007</SelStart><SelEnd>6007</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\4-DEBUG\SRC\scmRTOS_CONFIG.h</Filename><XPos>0</XPos><YPos>100</YPos><SelStart>4543</SelStart><SelEnd>4543</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\4-DEBUG\SRC\prio_names.cpp</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>518</SelStart><SelEnd>518</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\4-DEBUG\SRC\prio_names.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>243</SelStart><SelEnd>243</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\4-DEBUG\SRC\debug.h</Filename><XPos>0</XPos><YPos>32</YPos><SelStart>2285</SelStart><SelEnd>2285</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\4-DEBUG\LIST\4-Debug.map</Filename><XPos>0</XPos><YPos>2103</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><ActiveTab>7</ActiveTab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Positions>
+      
+      
+      
+      
+      
+    <Top><Row0><Sizes><Toolbar-00ae9880><key>iaridepm.enu1</key></Toolbar-00ae9880></Sizes></Row0></Top><Left><Row0><Sizes><Wnd2><Rect><Top>-2</Top><Left>-2</Left><Bottom>682</Bottom><Right>356</Right><x>-2</x><y>-2</y><xscreen>176</xscreen><yscreen>200</yscreen><sizeHorzCX>147527</sizeHorzCX><sizeHorzCY>179372</sizeHorzCY><sizeVertCX>300084</sizeVertCX><sizeVertCY>613453</sizeVertCY></Rect></Wnd2></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd3><Rect><Top>-2</Top><Left>-2</Left><Bottom>389</Bottom><Right>1195</Right><x>-2</x><y>-2</y><xscreen>1197</xscreen><yscreen>391</yscreen><sizeHorzCX>1003353</sizeHorzCX><sizeHorzCY>350673</sizeHorzCY><sizeVertCX>147527</sizeVertCX><sizeVertCY>179372</sizeVertCY></Rect></Wnd3></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+  </Desktop>
+</Workspace>
+
+

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<Project>
+  <Desktop>
+    <Static>
+      <Workspace>
+        <ColumnWidths>
+          
+          
+          
+          
+        <Column0>0</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
+      </Workspace>
+      <Disassembly>
+        
+        
+        
+      <CodeCovEnabled>0</CodeCovEnabled><MixedMode>1</MixedMode><CodeCovShow>0</CodeCovShow><InstrProfShow>0</InstrProfShow></Disassembly>
+      <Debug-Log><ColumnWidth0>19</ColumnWidth0><ColumnWidth1>941</ColumnWidth1></Debug-Log>
+      <Build>
+        
+        
+        
+        
+      <PreferedWindows><Position>3</Position><ScreenPosX>0</ScreenPosX><ScreenPosY>0</ScreenPosY><Windows><Window><Factory>Debug-Log</Factory></Window></Windows></PreferedWindows><ColumnWidth0>20</ColumnWidth0><ColumnWidth1>1158</ColumnWidth1><ColumnWidth2>309</ColumnWidth2><ColumnWidth3>77</ColumnWidth3></Build>
+      <Register/>
+    <Stack><PreferedWindows><Position>3</Position><ScreenPosX>0</ScreenPosX><ScreenPosY>0</ScreenPosY><Windows/></PreferedWindows><StackPointerName>SP</StackPointerName><StackPointerAddress>1</StackPointerAddress><StackPointerZone>2</StackPointerZone><StackZoneName>Memory</StackZoneName><StackZoneOverride>0</StackZoneOverride><StackWidth>16</StackWidth><StackDepth>16</StackDepth><StackFormat>1</StackFormat><StackMarkerAddress>0</StackMarkerAddress><StackMarkerEnable>0</StackMarkerEnable><StackLittleEndian>1</StackLittleEndian><IncreasingStack>0</IncreasingStack><ShowAddress>0</ShowAddress><ShowNumber>0</ShowNumber><ShowVariables>0</ShowVariables><ShowType>0</ShowType><BitmapColWidth>22</BitmapColWidth><StackColWidth>95</StackColWidth></Stack><CallStack><PreferedWindows><Position>1</Position><ScreenPosX>0</ScreenPosX><ScreenPosY>0</ScreenPosY><Windows/></PreferedWindows><ViewArgs>1</ViewArgs></CallStack><Memory><PreferedWindows><Position>3</Position><ScreenPosX>0</ScreenPosX><ScreenPosY>0</ScreenPosY><Windows/></PreferedWindows><FindDirection>1</FindDirection><FindAsHex>0</FindAsHex></Memory><Breakpoints/><STACK2><PreferedWindows><Position>1</Position><ScreenPosX>0</ScreenPosX><ScreenPosY>0</ScreenPosY><Windows/></PreferedWindows></STACK2><InterruptLog><PreferedWindows><Position>3</Position><ScreenPosX>0</ScreenPosX><ScreenPosY>0</ScreenPosY><Windows/></PreferedWindows><Column0>100</Column0><Column1>100</Column1><Column2>266</Column2><Column3>80</Column3><Column4>150</Column4></InterruptLog><Watch><Format><struct_types/><watch_formats/></Format><Column0>100</Column0><Column1>100</Column1><Column2>100</Column2><Column3>100</Column3></Watch><StateStorage><PreferedWindows><Position>2</Position><ScreenPosX>0</ScreenPosX><ScreenPosY>0</ScreenPosY><Windows/></PreferedWindows><NumberOfColumns>6</NumberOfColumns><ColumnWith0>80</ColumnWith0><ColumnWith1>90</ColumnWith1><ColumnWith2>130</ColumnWith2><ColumnWith3>75</ColumnWith3><ColumnWith4>100</ColumnWith4><ColumnWith5>200</ColumnWith5><AutomaticUpdate>0</AutomaticUpdate><AutomaticRestart>0</AutomaticRestart></StateStorage><Locals><Column0>100</Column0><Column1>100</Column1><Column2>100</Column2><Column3>100</Column3></Locals></Static>
+    <Windows>
+      
+      
+      
+      
+    <Wnd0>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-6925-14901</Identity>
+            <TabName>Workspace</TabName>
+            <Factory>Workspace</Factory>
+            <Session>
+              
+            <NodeDict><ExpandedNode>slon</ExpandedNode></NodeDict></Session>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd0><Wnd1>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-17674-14904</Identity>
+            <TabName>Disassembly</TabName>
+            <Factory>Disassembly</Factory>
+            <Session/>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd1><Wnd2>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-28422-14908</Identity>
+            <TabName>Debug Log</TabName>
+            <Factory>Debug-Log</Factory>
+            <Session/>
+          </Tab>
+          
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd2><Wnd3>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-8556-15280</Identity>
+            <TabName>Register</TabName>
+            <Factory>Register</Factory>
+            <Session>
+              
+              
+              
+              
+            <REG1>0</REG1><REG2>0</REG2><Group>0</Group><States>1</States><State0>SR</State0></Session>
+          </Tab>
+        <Tab><Identity>TabID-25656-20408</Identity><TabName>Register</TabName><Factory>Register</Factory><Session><REG1>0</REG1><REG2>0</REG2><Group>4</Group><States>1</States><State0>CACTL1</State0></Session></Tab></Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd3><Wnd4><Tabs><Tab><Identity>TabID-29588-2604</Identity><TabName>Watch</TabName><Factory>Watch</Factory><Session><Expressions><Expression><Expression>Kernel</Expression></Expression><Expression><Expression>StackSlacks</Expression></Expression><Expression><Expression>Proc1</Expression></Expression></Expressions><TabId>0</TabId><Column0>100</Column0><Column1>100</Column1><Column2>100</Column2><Column3>100</Column3></Session></Tab><Tab><Identity>TabID-10275-27540</Identity><TabName>Locals</TabName><Factory>Locals</Factory><Session><Column0>100</Column0><Column1>100</Column1><Column2>100</Column2><Column3>100</Column3></Session></Tab></Tabs><SelectedTab>0</SelectedTab></Wnd4><Wnd5><Tabs><Tab><Identity>TabID-11900-8583</Identity><TabName>Breakpoints</TabName><Factory>Breakpoints</Factory><Session/></Tab></Tabs><SelectedTab>0</SelectedTab></Wnd5></Windows>
+    <Editor>
+      
+      
+      
+      
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>D:\Slon\scmRTOS\all\branches\pre-v400\Samples\MSP430X\IAR\scmRTOS\MSP430\OS_Target.h</Filename><XPos>0</XPos><YPos>195</YPos><SelStart>6588</SelStart><SelEnd>6588</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\Slon\scmRTOS\all\branches\pre-v400\Samples\MSP430X\IAR\scmRTOS\MSP430\OS_Target_cpp.cpp</Filename><XPos>0</XPos><YPos>106</YPos><SelStart>4874</SelStart><SelEnd>4874</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\Slon\scmRTOS\all\branches\pre-v400\Samples\MSP430X\IAR\scmRTOS\Common\OS_Kernel.h</Filename><XPos>3</XPos><YPos>228</YPos><SelStart>8396</SelStart><SelEnd>8396</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\Slon\scmRTOS\all\branches\pre-v400\Samples\MSP430X\IAR\scmRTOS\Common\OS_Services.h</Filename><XPos>0</XPos><YPos>166</YPos><SelStart>8065</SelStart><SelEnd>8065</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\Slon\scmRTOS\all\branches\pre-v400\Samples\MSP430X\IAR\scmRTOS\Common\OS_Services.cpp</Filename><XPos>0</XPos><YPos>71</YPos><SelStart>4331</SelStart><SelEnd>4331</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\Slon\scmRTOS\all\branches\pre-v400\Samples\MSP430X\IAR\scmRTOS\Common\OS_Kernel.cpp</Filename><XPos>0</XPos><YPos>40</YPos><SelStart>2564</SelStart><SelEnd>2564</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\Slon\scmRTOS\all\branches\pre-v400\Samples\MSP430X\IAR\1-EventFlag\Src\scmRTOS_TARGET_CFG.h</Filename><XPos>0</XPos><YPos>60</YPos><SelStart>2986</SelStart><SelEnd>2986</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\Slon\scmRTOS\all\branches\pre-v400\Samples\MSP430X\IAR\1-EventFlag\Src\main.cpp</Filename><XPos>0</XPos><YPos>129</YPos><SelStart>4972</SelStart><SelEnd>4972</SelEnd></Tab><ActiveTab>7</ActiveTab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Positions>
+      
+      
+      
+      
+      
+    <Top><Row0><Sizes><Toolbar-04ecc7b8><key>430fet1</key></Toolbar-04ecc7b8><Toolbar-00aa98c8><key>iaridepm.enu1</key></Toolbar-00aa98c8><Toolbar-04ecc878><key>debuggergui.enu1</key></Toolbar-04ecc878></Sizes></Row0></Top><Left><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>835</Bottom><Right>38</Right><x>-2</x><y>-2</y><xscreen>211</xscreen><yscreen>179</yscreen><sizeHorzCX>109896</sizeHorzCX><sizeHorzCY>155113</sizeHorzCY><sizeVertCX>20833</sizeVertCX><sizeVertCY>725303</sizeVertCY></Rect></Wnd0></Sizes></Row0></Left><Right><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>835</Bottom><Right>561</Right><x>-2</x><y>-2</y><xscreen>211</xscreen><yscreen>179</yscreen><sizeHorzCX>109896</sizeHorzCX><sizeHorzCY>155113</sizeHorzCY><sizeVertCX>293229</sizeVertCX><sizeVertCY>725303</sizeVertCY></Rect></Wnd1></Sizes></Row0><Row1><Sizes><Wnd3><Rect><Top>-2</Top><Left>559</Left><Bottom>835</Bottom><Right>776</Right><x>559</x><y>-2</y><xscreen>214</xscreen><yscreen>181</yscreen><sizeHorzCX>111458</sizeHorzCX><sizeHorzCY>156846</sizeHorzCY><sizeVertCX>113021</sizeVertCX><sizeVertCY>725303</sizeVertCY></Rect></Wnd3></Sizes></Row1><Row2><Sizes><Wnd4><Rect><Top>-2</Top><Left>774</Left><Bottom>835</Bottom><Right>1157</Right><x>774</x><y>-2</y><xscreen>240</xscreen><yscreen>203</yscreen><sizeHorzCX>125000</sizeHorzCX><sizeHorzCY>175910</sizeHorzCY><sizeVertCX>199479</sizeVertCX><sizeVertCY>725303</sizeVertCY></Rect></Wnd4></Sizes></Row2></Right><Bottom><Row0><Sizes><Wnd5><Rect><Top>-2</Top><Left>-2</Left><Bottom>275</Bottom><Right>721</Right><x>-2</x><y>-2</y><xscreen>723</xscreen><yscreen>277</yscreen><sizeHorzCX>376563</sizeHorzCX><sizeHorzCY>240035</sizeHorzCY><sizeVertCX>125000</sizeVertCX><sizeVertCY>175910</sizeVertCY></Rect></Wnd5><Wnd2><Rect><Top>0</Top><Left>0</Left><Bottom>0</Bottom><Right>0</Right><x>719</x><y>-2</y><xscreen>1203</xscreen><yscreen>277</yscreen><sizeHorzCX>626563</sizeHorzCX><sizeHorzCY>240035</sizeHorzCY><sizeVertCX>109896</sizeVertCX><sizeVertCY>155113</sizeVertCY></Rect></Wnd2></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+  </Desktop>
+</Project>
+
+

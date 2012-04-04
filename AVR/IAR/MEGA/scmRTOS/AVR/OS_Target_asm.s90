@@ -1,0 +1,311 @@
+//******************************************************************************
+//*
+//*     FULLNAME:  Single-Chip Microcontroller Real-Time Operating System
+//*
+//*     NICKNAME:  scmRTOS
+//*
+//*     PROCESSOR: AVR (Atmel)
+//*
+//*     TOOLKIT:   EWAVR (IAR Systems)
+//*               
+//*     PURPOSE:   Target Dependent Low-Level Stuff
+//*               
+//*     Version: 4.00
+//*
+//*     $Revision$
+//*     $Date::             $
+//*
+//*     Copyright (c) 2003-2012, Harry E. Zhurov
+//*
+//*     Permission is hereby granted, free of charge, to any person 
+//*     obtaining  a copy of this software and associated documentation 
+//*     files (the "Software"), to deal in the Software without restriction, 
+//*     including without limitation the rights to use, copy, modify, merge, 
+//*     publish, distribute, sublicense, and/or sell copies of the Software, 
+//*     and to permit persons to whom the Software is furnished to do so, 
+//*     subject to the following conditions:
+//*
+//*     The above copyright notice and this permission notice shall be included 
+//*     in all copies or substantial portions of the Software.
+//*
+//*     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
+//*     EXPRESS  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+//*     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+//*     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
+//*     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+//*     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
+//*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//*
+//*     =================================================================
+//*     See http://scmrtos.sourceforge.net for documentation, latest
+//*     information, license and contact details.
+//*     =================================================================
+//*
+//******************************************************************************
+
+#include "scmRTOS_CONFIG.h"
+#include "scmRTOS_TARGET_CFG.h"
+
+;-------------------------------------------------------------------------------
+;
+;    Local definitions
+;
+;
+#define SREG    0x3F
+#define SPH     0x3E
+#define SPL     0x3D
+#define RAMPX   0x39
+#define RAMPY   0x3a
+#define RAMPZ   0x3b
+#define EIND    0x3c
+
+#define A90_PROC_OPTION     ((__TID__ >> 4) & 0x0F)
+
+#if (A90_PROC_OPTION == 0) || (A90_PROC_OPTION == 1)
+#define xcall   rcall
+#define xjmp    rjmp
+#else
+#define xcall   call
+#define xjmp    jmp
+#endif
+
+#if defined(__ATmega103__)   || \
+    defined(__ATmega128__)   || \
+    defined(__ATmega128A__)   || \
+    defined(__ATmega1280__)  || \
+    defined(__ATmega1281__)  || \
+    defined(__ATmega1284__)  || \
+    defined(__ATmega1284P__)  || \
+    defined(__ATmega128RFA1__)  || \
+    defined(__ATmega2560__)  || \
+    defined(__ATmega2561__)  || \
+    defined(__AT90CAN128__)  || \
+    defined(__AT90USB1286__) || \
+    defined(__AT90USB1287__)
+
+#define HAS_RAMPZ 1
+
+#endif
+
+#if defined(__ATmega2560__)  || \
+    defined(__ATmega2561__)
+
+#define HAS_EIND 1
+
+#endif
+
+;-------------------------------------------------------------------------------
+  
+     module  scmRTOS_Asm
+
+;-------------------------------------------------------------------------------
+save_regs   macro
+
+        st  -Y,r30
+        st  -Y,r27
+        st  -Y,r26
+        st  -Y,r25
+        st  -Y,r24
+        st  -Y,r23
+        st  -Y,r22
+        st  -Y,r21
+        st  -Y,r20
+        st  -Y,r19
+        st  -Y,r18
+        st  -Y,r17
+        st  -Y,r16
+        st  -Y,r15
+        st  -Y,r14
+        st  -Y,r13
+        st  -Y,r12
+        st  -Y,r11
+        st  -Y,r10
+        st  -Y,r9
+        st  -Y,r8
+        st  -Y,r7
+        st  -Y,r6
+        st  -Y,r5
+        st  -Y,r4
+        st  -Y,r3
+        st  -Y,r2
+        st  -Y,r1
+        st  -Y,r0
+
+     endm
+;-------------------------------------------------------------------------------
+restore_regs  macro
+
+        ld  r0,Y+
+        ld  r1,Y+
+        ld  r2,Y+
+        ld  r3,Y+
+        ld  r4,Y+
+        ld  r5,Y+
+        ld  r6,Y+
+        ld  r7,Y+
+        ld  r8,Y+
+        ld  r9,Y+
+        ld  r10,Y+
+        ld  r11,Y+
+        ld  r12,Y+
+        ld  r13,Y+
+        ld  r14,Y+
+        ld  r15,Y+
+        ld  r16,Y+
+        ld  r17,Y+
+        ld  r18,Y+
+        ld  r19,Y+
+        ld  r20,Y+
+        ld  r21,Y+
+        ld  r22,Y+
+        ld  r23,Y+
+        ld  r24,Y+
+        ld  r25,Y+
+        ld  r26,Y+
+        ld  r27,Y+
+        ld  r30,Y+
+
+     endm
+;-------------------------------------------------------------------------------
+save_SP      macro                               ; Save stack pointer
+
+        in  r31,SPH
+        st  -Y,r31
+        in  r31,SPL
+        st  -Y,r31
+
+     endm
+;-------------------------------------------------------------------------------
+restore_SP   macro                               ; Restore stack pointer
+
+        ld  r31,Y+
+        out SPL,r31
+        ld  r31,Y+
+        out SPH,r31
+
+      endm
+;-------------------------------------------------------------------------------
+save_SREG    macro
+
+        st  -Y,r31         ; save r31 value
+        in  r31,SREG       ;
+        st  -Y,r31         ; save SREG
+
+     endm
+;-------------------------------------------------------------------------------
+restore_SREG macro
+
+        ld  r31,Y+         ;
+        out SREG,r31       ; restore SREG
+        ld  r31,Y+         ; restore r31 value
+
+     endm
+;-------------------------------------------------------------------------------
+save_SFRS    macro
+
+  #if HAS_RAMPZ == 1
+     in  r31,RAMPZ
+     st  -Y,r31
+  #endif
+
+  #if HAS_EIND == 1
+     in  r31,EIND
+     st  -Y,r31
+  #endif
+
+     endm
+;-------------------------------------------------------------------------------
+restore_SFRS macro
+
+  #if HAS_EIND == 1
+     ld   r31,Y+
+     out  EIND,r31
+  #endif
+
+  #if HAS_RAMPZ == 1
+     ld   r31,Y+
+     out  RAMPZ,r31
+  #endif
+
+     endm
+;-------------------------------------------------------------------------------
+
+
+     public  os_start
+
+#if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
+     public  os_context_switcher
+#else
+     extern  os_context_switch_hook
+#endif 
+
+     rseg    CODE(1)
+
+;-------------------------------------------------------------------------------
+os_start:
+     mov  r28,r16         ; load next process Stack Pointer
+     mov  r29,r17         ;
+
+     rjmp L_RestoreContext
+;-------------------------------------------------------------------------------
+#if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
+
+os_context_switcher:
+
+     save_SREG
+     save_SP
+     save_regs
+     save_SFRS
+
+     mov  r30,r16     ; Curr_SP_addr
+     mov  r31,r17     ;
+     std  Z+0,r28     ; save process's Stack Pointer
+     std  Z+1,r29     ;
+
+     mov  r28,r18     ; load next process Stack Pointer
+     mov  r29,r19     ;
+       
+L_RestoreContext:
+
+     restore_SFRS
+     restore_regs
+     restore_SP
+     restore_SREG
+
+     ret
+;-------------------------------------------------------------------------------
+#else 
+
+     common INTVEC(1)
+
+     org CONTEXT_SWITCH_ISR_VECTOR
+     xjmp ContextSwitcher_ISR
+
+     rseg CODE(1)
+
+ContextSwitcher_ISR:
+     save_SREG
+     save_SP
+     save_regs
+     save_SFRS
+
+     mov   r16,r28                         ; load current stack pointer
+     mov   r17,r29                         ; as argument
+     xcall os_context_switch_hook          ;
+     mov   r28,r16                         ; set next stack pointer
+     mov   r29,r17                         ; from return value
+
+L_RestoreContext:
+
+     restore_SFRS
+     restore_regs
+     restore_SP
+     restore_SREG
+
+     reti
+
+#endif // scmRTOS_CONTEXT_SWITCH_SCHEME
+;-------------------------------------------------------------------------------
+
+      end
+;*******************************************************************************
