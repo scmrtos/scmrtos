@@ -3,7 +3,7 @@
 *  UART registers and pins selection templates
 *
 *  Created on: 09.11.2010
-*  Copyright (c) 2009 by Anton Gusev aka AHTOXA
+*  Copyright (c) 2009-2012by Anton Gusev aka AHTOXA
 **/
 
 #ifndef UART_REGS_H_INCLUDED

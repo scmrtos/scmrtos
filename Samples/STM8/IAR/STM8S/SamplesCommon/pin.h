@@ -1,7 +1,7 @@
 /**
 *  GPIO pin manipulation class template for STM8.
 *
-*  Copyright (c) 2011 Oleksandr Rechuk aka ReAl (http://real.kiev.ua)
+*  Copyright (c) 2011-2012Oleksandr Rechuk aka ReAl (http://real.kiev.ua)
 *
 *  Based on GPIO pin class tempalte for STM32 by Anton Gusev aka AHTOXA (HTTP://AHTOXA.NET)
 *

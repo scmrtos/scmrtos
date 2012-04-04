@@ -11,12 +11,12 @@
 //*     PURPOSE:   Port Test File
 //*                LPC17xx samples, common microcontroller initialisation
 //*
-//*     Version: 4.00a
+//*     Version: 4.00
 //*
 //*     $Revision: 445 $
 //*     $Date:: 2011-09-29 #$
 //*
-//*     Copyright (c) 2003-2010, Harry E. Zhurov
+//*     Copyright (c) 2003-2012, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person 
 //*     obtaining  a copy of this software and associated documentation 
@@ -43,7 +43,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     gcc port by Anton B. Gusev aka AHTOXA, Copyright (c) 2009-2011
+//*     gcc port by Anton B. Gusev aka AHTOXA, Copyright (c) 2009-2012
 //*     LPC17xx samples by Oleksandr O. Redchuk aka ReAl, Copyright (c) 2012
 
 

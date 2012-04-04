@@ -4,7 +4,7 @@
 //
 //      Version 2.04a-beta
 //
-//      Copyright (c) 2002-2010, Harry E. Zhurov
+//      Copyright (c) 2002-2012, Harry E. Zhurov
 //
 //      $Revision$
 //      $Date::             $

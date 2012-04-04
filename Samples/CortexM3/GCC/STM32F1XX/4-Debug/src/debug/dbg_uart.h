@@ -2,7 +2,7 @@
 *  @file dbg_uart.h
 *
 *  Created on: 18.01.2011
-*  Copyright (c) 2011 by Anton Gusev aka AHTOXA
+*  Copyright (c) 2011-2012by Anton Gusev aka AHTOXA
 **/
 
 #ifndef DBG_UART_H_INCLUDED

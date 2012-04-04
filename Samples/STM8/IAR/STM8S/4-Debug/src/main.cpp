@@ -16,7 +16,7 @@
 //*     $Revision$
 //*     $Date::             $
 //*
-//*     Copyright (c) 2003-2010, Harry E. Zhurov
+//*     Copyright (c) 2003-2012, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -43,7 +43,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     STM8/IAR port by Oleksandr O. Redchuk, Copyright (c) 2011
+//*     STM8/IAR port by Oleksandr O. Redchuk, Copyright (c) 2011-2012
 
 //---------------------------------------------------------------------------
 

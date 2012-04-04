@@ -2,7 +2,7 @@
 *  @file ftoa.h
 *
 *  Created on: 18.02.2009
-*  Copyright (c) 2009 by Anton Gusev aka AHTOXA
+*  Copyright (c) 2009-2012by Anton Gusev aka AHTOXA
 **/
 #ifndef FTOA_H_INCLUDED
 #define FTOA_H_INCLUDED

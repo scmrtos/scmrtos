@@ -6,12 +6,12 @@
 //*
 //*		TOOLKIT:   C/C++
 //*
-//*		Version: 3.10
+//*		Version: 4.00
 //*
 //*		$Revision$
 //*		$Date::				$
 //*
-//*		Copyright (c) 2010, Anton B. Gusev
+//*		Copyright (c) 2010-2012, Anton B. Gusev
 //*
 //*		Permission is hereby granted, free of charge, to any person
 //*		obtaining  a copy of this software and associated documentation

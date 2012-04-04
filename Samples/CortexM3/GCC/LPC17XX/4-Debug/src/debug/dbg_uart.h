@@ -2,7 +2,7 @@
 *  @file dbg_uart.h
 *
 *  Created on: 18.01.2011
-*  Copyright (c) 2011 by Anton Gusev aka AHTOXA
+*  Copyright (c) 2011-2012by Anton Gusev aka AHTOXA
 *
 *  Changes for LPC17xx:
 *  Copyright (c) 2012 by Oleksandr Redchuk aka ReAl

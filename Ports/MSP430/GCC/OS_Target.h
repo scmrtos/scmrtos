@@ -10,12 +10,12 @@
 //*
 //*     PURPOSE:   Target Dependent Stuff Header. Declarations And Definitions
 //*
-//*     Version: 4.00a
+//*     Version: 4.00
 //*
 //*     $Revision$
 //*     $Date::             $
 //*
-//*     Copyright (c) 2003-2010, Harry E. Zhurov
+//*     Copyright (c) 2003-2012, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     mspgcc port by Anton B. Gusev aka AHTOXA, Copyright (c) 2008-2011
+//*     mspgcc port by Anton B. Gusev aka AHTOXA, Copyright (c) 2008-2012
 
 #ifndef scmRTOS_MSP430_H
 #define scmRTOS_MSP430_H

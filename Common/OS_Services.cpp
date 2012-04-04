@@ -6,12 +6,12 @@
 //*
 //*     PURPOSE:  OS Services Source
 //*
-//*     Version: 4.00a
+//*     Version: 4.00
 //*
 //*     $Revision$
 //*     $Date::             $
 //*
-//*     Copyright (c) 2003-2011, Harry E. Zhurov
+//*     Copyright (c) 2003-2012, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation

@@ -10,12 +10,12 @@
 //*
 //*     PURPOSE:   Port Test File
 //*
-//*     Version: 4.00a
+//*     Version: 4.00
 //*
 //*     $Revision$
 //*     $Date::             $
 //*
-//*     Copyright (c) 2003-2010, Harry E. Zhurov
+//*     Copyright (c) 2003-2012, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     lpc2xxx GCC parts by Anton B. Gusev aka AHTOXA, Copyright (c) 2010-2011
+//*     lpc2xxx GCC parts by Anton B. Gusev aka AHTOXA, Copyright (c) 2010-2012
 
 #include <scmRTOS.h>
 

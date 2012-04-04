@@ -6,7 +6,7 @@
 //*
 //*      Version 1.0
 //*
-//*      Copyright (c) 2009, Harry E. Zhurov
+//*      Copyright (c) 2009-2012, Harry E. Zhurov
 //*
 //*      $Revision$
 //*      $Date::             $

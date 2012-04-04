@@ -11,12 +11,12 @@
 //*     PURPOSE:   avr-gcc Port Test File
 //*                Sample '4-Debug' debug process module
 //*
-//*     Version: 3.10
+//*     Version: 4.00
 //*
 //*     $Revision: 404 $
 //*     $Date:: 2011-05-08 #$
 //*
-//*     Copyright (c) 2003-2010, Harry E. Zhurov
+//*     Copyright (c) 2003-2012, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation

@@ -10,12 +10,12 @@
 //*
 //*     PURPOSE:   Startup file.
 //*
-//*     Version: 4.00a
+//*     Version: 4.00
 //*
 //*     $Revision: 260 $
 //*     $Date:: 2010-01-26 #$
 //*
-//*     Copyright (c) 2003-2011, Harry E. Zhurov
+//*     Copyright (c) 2003-2012, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     ARM port by Sergey A. Borshch, Copyright (c) 2007-2011
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2007-2012
 
 #define MODE_USER       0x10
 #define MODE_FIQ        0x11

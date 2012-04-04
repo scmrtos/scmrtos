@@ -1,7 +1,7 @@
 /**
 *  GPIO pin manipulation class template for ADuc70xx.
 *
-*  Copyright (c) 2010 Anton Gusev aka AHTOXA (HTTP://AHTOXA.NET)
+*  Copyright (c) 2010-2012Anton Gusev aka AHTOXA (HTTP://AHTOXA.NET)
 *
 *  Inspired by AVR macros from Askold Volkov
 *

@@ -15,7 +15,7 @@
 //*     $Revision: 401 $
 //*     $Date:: 2011-05-02 #$
 //*
-//*     Copyright (c) 2003-2010, Harry E. Zhurov
+//*     Copyright (c) 2003-2012, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person 
 //*     obtaining  a copy of this software and associated documentation 
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     STM8/IAR port by Oleksandr O. Redchuk, Copyright (c) 2011
+//*     STM8/IAR port by Oleksandr O. Redchuk, Copyright (c) 2011-2012
 
 #ifndef STM8_TARGET_H
 #define STM8_TARGET_H

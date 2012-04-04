@@ -2,7 +2,7 @@
 *  @file debug.cpp
 *
 *  Created on: 11.04.2011
-*  Copyright (c) 2010 by Anton Gusev aka AHTOXA
+*  Copyright (c) 2010-2012by Anton Gusev aka AHTOXA
 *
 *  Changes from STM32F1XX to LPC17XX:
 *  Copyright (c) 2012 by Oleksandr Redchuk aka ReAl

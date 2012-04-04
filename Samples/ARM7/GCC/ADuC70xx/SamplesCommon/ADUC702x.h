@@ -6,12 +6,12 @@
 //*
 //*     TOOLKIT:   C/C++
 //*
-//*     Version: 3.10
+//*     Version: 4.00
 //*
 //*     $Revision$
 //*     $Date::             $
 //*
-//*     Copyright (c) 2008-2010, Sergey A. Borshch
+//*     Copyright (c) 2008-2012, Sergey A. Borshch
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
