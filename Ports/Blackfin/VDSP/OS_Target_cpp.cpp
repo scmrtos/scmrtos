@@ -88,11 +88,13 @@ void TBaseProcess::init_stack_frame( stack_item_t * Stack
 EX_INTERRUPT_HANDLER(OS::system_timer_isr)
 {
     TISRW ISR;
-    Kernel.system_timer();
 
 #if scmRTOS_SYSTIMER_HOOK_ENABLE == 1
     system_timer_user_hook();
 #endif
+
+    Kernel.system_timer();
+
 }
 //------------------------------------------------------------------------------
 

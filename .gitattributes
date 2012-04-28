@@ -413,6 +413,11 @@ Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/Src/stm32f10x_flash.icf -text
 Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/Src/stm32f10x_it.c -text
 Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/Src/stm32f10x_it.h -text
 Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/Src/stm32f10x_vector.c -text
+Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/settings/slon.cspy.bat -text
+Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/settings/slon.dbgdt -text
+Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/settings/slon.dni -text
+Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/settings/slon.wsdt -text
+Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/slon.dep -text
 Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/slon.ewd -text
 Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/slon.ewp -text
 Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/slon.eww -text

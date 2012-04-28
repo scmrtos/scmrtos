@@ -1,93 +1,93 @@
 <!DOCTYPE Project SYSTEM "http://www.slickedit.com/dtd/vse/10.0/vpj.dtd">
 <Project
-	Version="10.0"
-	VendorName="SlickEdit"
-	WorkingDir="."
-	VCSProject="Subversion:">
-	<Config
-		Name="Release"
-		OutputFile=""
-		CompilerConfigName="Latest Version">
-		<Menu>
-			<Target
-				Name="Compile"
-				MenuCaption="&amp;Compile"
-				SaveOption="SaveAll"
-				RunFromDir="%rw"
-				CaptureOutputWith="ProcessBuffer"
-				ClearProcessBuffer="1">
-				<Exec CmdLine="Scons -Q -s Obj\%n.r43"/>
-			</Target>
-			<Target
-				Name="Build"
-				MenuCaption="&amp;Build"
-				CaptureOutputWith="ProcessBuffer"
-				SaveOption="SaveAll"
-				RunFromDir="%rw"
-				ClearProcessBuffer="1">
-				<Exec CmdLine="scons -Q -s"/>
-			</Target>
-			<Target
-				Name="Rebuild"
-				MenuCaption="&amp;Rebuild"
-				CaptureOutputWith="ProcessBuffer"
-				SaveOption="SaveAll"
-				RunFromDir="%rw"
-				ClearProcessBuffer="1">
-				<Exec CmdLine="scons -Q -s rebuild"/>
-			</Target>
-			<Target
-				Name="Debug"
-				MenuCaption="&amp;Debug"
-				SaveOption="SaveNone"
-				RunFromDir="%rw">
-				<Exec/>
-			</Target>
-			<Target
-				Name="Execute"
-				MenuCaption="E&amp;xecute"
-				SaveOption="SaveNone"
-				RunFromDir="%rw">
-				<Exec CmdLine='"slon.exe"'/>
-			</Target>
-		</Menu>
-	</Config>
-	<Files>
-		<Folder
-			Name="Source Files"
-			Filters="*.c;*.C;*.cc;*.cpp;*.cp;*.cxx;*.prg;*.pas;*.dpr;*.asm;*.s;*.bas;*.java;*.cs;*.sc;*.e;*.cob;*.html;*.rc;*.tcl;*.py;*.pl">
-			<F N="Src/main.cpp"/>
-		</Folder>
-		<Folder
-			Name="Header Files"
-			Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.inc;*.sh;*.cpy;*.if">
-			<F N="Src/scmRTOS_CONFIG.h"/>
-			<F N="Src/scmRTOS_TARGET_CFG.h"/>
-		</Folder>
-		<Folder
-			Name="scmRTOS"
-			Filters="">
-			<Folder
-				Name="Source"
-				Filters="">
-				<F N="../scmRTOS/Common/OS_Kernel.cpp"/>
-				<F N="../scmRTOS/Common/OS_Services.cpp"/>
-				<F N="../scmRTOS/MSP430/OS_Target_cpp.cpp"/>
-				<F N="../scmRTOS/Common/usrlib.cpp"/>
-			</Folder>
-			<Folder
-				Name="Header"
-				Filters="">
-				<F N="../scmRTOS/MSP430/commdefs.h"/>
-				<F N="Src/device.h"/>
-				<F N="../scmRTOS/Common/OS_Kernel.h"/>
-				<F N="../scmRTOS/Common/OS_Services.h"/>
-				<F N="../scmRTOS/MSP430/OS_Target.h"/>
-				<F N="../scmRTOS/Common/scmRTOS.h"/>
-				<F N="../scmRTOS/Common/scmRTOS_defs.h"/>
-				<F N="../scmRTOS/Common/usrlib.h"/>
-			</Folder>
-		</Folder>
-		<F N="../scmRTOS/MSP430/OS_Target_asm.s43"/>
-	</Files>
+    Version="10.0"
+    VendorName="SlickEdit"
+    WorkingDir="."
+    VCSProject="Subversion:">
+    <Config
+        Name="Release"
+        OutputFile=""
+        CompilerConfigName="Latest Version">
+        <Menu>
+            <Target
+                Name="Compile"
+                MenuCaption="&amp;Compile"
+                SaveOption="SaveAll"
+                RunFromDir="%rw"
+                CaptureOutputWith="ProcessBuffer"
+                ClearProcessBuffer="1">
+                <Exec CmdLine="Scons -Q -s Obj\%n.r43"/>
+            </Target>
+            <Target
+                Name="Build"
+                MenuCaption="&amp;Build"
+                CaptureOutputWith="ProcessBuffer"
+                SaveOption="SaveAll"
+                RunFromDir="%rw"
+                ClearProcessBuffer="1">
+                <Exec CmdLine="scons -Q -s"/>
+            </Target>
+            <Target
+                Name="Rebuild"
+                MenuCaption="&amp;Rebuild"
+                CaptureOutputWith="ProcessBuffer"
+                SaveOption="SaveAll"
+                RunFromDir="%rw"
+                ClearProcessBuffer="1">
+                <Exec CmdLine="scons -Q -s rebuild"/>
+            </Target>
+            <Target
+                Name="Debug"
+                MenuCaption="&amp;Debug"
+                SaveOption="SaveNone"
+                RunFromDir="%rw">
+                <Exec/>
+            </Target>
+            <Target
+                Name="Execute"
+                MenuCaption="E&amp;xecute"
+                SaveOption="SaveNone"
+                RunFromDir="%rw">
+                <Exec CmdLine='"slon.exe"'/>
+            </Target>
+        </Menu>
+    </Config>
+    <Files>
+        <Folder
+            Name="Source Files"
+            Filters="*.c;*.C;*.cc;*.cpp;*.cp;*.cxx;*.prg;*.pas;*.dpr;*.asm;*.s;*.bas;*.java;*.cs;*.sc;*.e;*.cob;*.html;*.rc;*.tcl;*.py;*.pl">
+            <F N="Src/main.cpp"/>
+        </Folder>
+        <Folder
+            Name="Header Files"
+            Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.inc;*.sh;*.cpy;*.if">
+            <F N="Src/scmRTOS_CONFIG.h"/>
+            <F N="Src/scmRTOS_TARGET_CFG.h"/>
+        </Folder>
+        <Folder
+            Name="scmRTOS"
+            Filters="">
+            <Folder
+                Name="Source"
+                Filters="">
+                <F N="../../scmRTOS/Common/OS_Kernel.cpp"/>
+                <F N="../../scmRTOS/Common/OS_Services.cpp"/>
+                <F N="../../scmRTOS/MSP430/OS_Target_cpp.cpp"/>
+                <F N="../../scmRTOS/Common/usrlib.cpp"/>
+            </Folder>
+            <Folder
+                Name="Header"
+                Filters="">
+                <F N="../../scmRTOS/MSP430/commdefs.h"/>
+                <F N="Src/device.h"/>
+                <F N="../../scmRTOS/Common/OS_Kernel.h"/>
+                <F N="../../scmRTOS/Common/OS_Services.h"/>
+                <F N="../../scmRTOS/MSP430/OS_Target.h"/>
+                <F N="../../scmRTOS/Common/scmRTOS.h"/>
+                <F N="../../scmRTOS/Common/scmRTOS_defs.h"/>
+                <F N="../../scmRTOS/Common/usrlib.h"/>
+            </Folder>
+        </Folder>
+        <F N="../../scmRTOS/MSP430/OS_Target_asm.s43"/>
+    </Files>
 </Project>

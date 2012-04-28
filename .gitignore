@@ -144,6 +144,10 @@ Samples/CortexM3/GCC/STM32F1XX/4-Debug/bak
 Samples/CortexM3/GCC/STM32F1XX/4-Debug/exe
 Samples/CortexM3/GCC/STM32F1XX/4-Debug/lst
 Samples/CortexM3/GCC/STM32F1XX/4-Debug/obj
+Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/Debug/Exe/*.out
+Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/Debug/List/*.lst
+Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/Debug/List/*.map
+Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/Debug/Obj/*.pbd
 Samples/MSP430/GCC/430/1-EventFlag/*.mpj
 Samples/MSP430/GCC/430/1-EventFlag/do.bat
 Samples/MSP430/GCC/430/2-Message/*.mpj
