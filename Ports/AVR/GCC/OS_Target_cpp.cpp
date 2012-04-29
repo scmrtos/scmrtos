@@ -118,14 +118,16 @@ void TBaseProcess::init_stack_frame( stack_item_t * Stack
 OS_INTERRUPT void SYSTEM_TIMER_VECTOR(void)
 {
     scmRTOS_ISRW_TYPE ISR;
-    Kernel.system_timer();
 
 #if scmRTOS_SYSTIMER_HOOK_ENABLE == 1
-  #if scmRTOS_SYSTIMER_NEST_INTS_ENABLE == 1
-    ENABLE_NESTED_INTERRUPTS();
-  #endif
     system_timer_user_hook();
 #endif
+    Kernel.system_timer();
+
+#if scmRTOS_SYSTIMER_NEST_INTS_ENABLE == 1
+    ENABLE_NESTED_INTERRUPTS();
+#endif
+
 }
 //------------------------------------------------------------------------------
 

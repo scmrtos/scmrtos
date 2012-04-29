@@ -133,7 +133,7 @@ void TBaseProcess::init_stack_frame( stack_item_t * Stack
 #error "SYSTEM_TIMER_FLAG_CLEAR() macro must be defined"
 #endif
 
-INTERRUPT_HANDLER( OS_SystemTimer_ISR, SYSTEM_TIMER_VECTOR)
+INTERRUPT_HANDLER(OS_SystemTimer_ISR, SYSTEM_TIMER_VECTOR)
 {
 #if scmRTOS_SYSTIMER_NEST_INTS_ENABLE == 0
     // Disable all priority levels (including higher than this handler)
@@ -143,6 +143,10 @@ INTERRUPT_HANDLER( OS_SystemTimer_ISR, SYSTEM_TIMER_VECTOR)
     SYSTEM_TIMER_FLAG_CLEAR();
     scmRTOS_ISRW_TYPE ISR;
 
+#if scmRTOS_SYSTIMER_HOOK_ENABLE == 1
+    system_timer_user_hook();
+#endif
+
     Kernel.system_timer();
 
 #if scmRTOS_SYSTIMER_NEST_INTS_ENABLE == 1
@@ -150,8 +154,5 @@ INTERRUPT_HANDLER( OS_SystemTimer_ISR, SYSTEM_TIMER_VECTOR)
     ENABLE_NESTED_INTERRUPTS();
 #endif
 
-#if scmRTOS_SYSTIMER_HOOK_ENABLE == 1
-    system_timer_user_hook();
-#endif
 }
 
