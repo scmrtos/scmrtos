@@ -96,15 +96,6 @@ typedef uint32_t status_reg_t;
 #define INLINE_PROCESS_CTOR 
 
 //-----------------------------------------------------------------------------
-//
-//   Uncomment macro value below for SystemTimer() run in critical section
-// 
-//   This is useful (and necessary) when target processor has hardware 
-//   enabled nested interrups. Cortex-M3 have such interrupts.
-// 
-#define SYS_TIMER_CRIT_SECT()  TCritSect cs
-
-//-----------------------------------------------------------------------------
 // Separate return stack not required
 #define SEPARATE_RETURN_STACK   0
 
@@ -164,6 +155,24 @@ private:
     status_reg_t StatusReg;
 };
 #endif // scmRTOS_USER_DEFINED_CRITSECT_ENABLE
+
+//   Uncomment macro value below for system_timer() and
+//   context_switch_hook() run in critical section.
+// 
+//   This is useful (and necessary) when target processor has hardware 
+//   enabled nested interrups.
+//   User can define own macros using user-defined TCritSect capabilities.
+//
+//   Cortex-M3 have nested interrupts but interrupts are disabled
+//   during context switch ISR. So, critical section is needed
+//   for system timer routine and not needed for context switcher.
+// 
+#ifndef SYS_TIMER_CRIT_SECT
+#define SYS_TIMER_CRIT_SECT() TCritSect cs
+#endif
+#ifndef CONTEXT_SWITCH_HOOK_CRIT_SECT
+#define CONTEXT_SWITCH_HOOK_CRIT_SECT() // TCritSect cs
+#endif
 
 //-----------------------------------------------------------------------------
 //

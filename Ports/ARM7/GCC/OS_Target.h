@@ -101,15 +101,6 @@ typedef uint32_t status_reg_t;
 //
 
 //--------------------------------------------------
-//
-//   Uncomment macro value below for SystemTimer() run in critical section
-//
-//   This is useful (and necessary) when target processor has hardware
-//   enabled nested interrups. ARM7 does not have such interrupts.
-//
-#define SYS_TIMER_CRIT_SECT() // TCritSect cs
-
-//--------------------------------------------------
 // Separate return stack not required
 #define SEPARATE_RETURN_STACK   0
 
@@ -233,9 +224,23 @@ scmRTOS_ARM7_INLINE TCritSect::~TCritSect()
 }
 #endif  //__THUMBEL__
 
+//   Uncomment macro value below for system_timer() and
+//   context_switch_hook() run in critical section.
+// 
+//   This is useful (and necessary) when target processor has hardware 
+//   enabled nested interrups.
+//   User can define own macros using user-defined TCritSect capabilities.
+//
+//   ARM7 does not have nested interrupts.
+//
+#ifndef SYS_TIMER_CRIT_SECT
+#define SYS_TIMER_CRIT_SECT() // TCritSect cs
+#endif
+#ifndef CONTEXT_SWITCH_HOOK_CRIT_SECT
+#define CONTEXT_SWITCH_HOOK_CRIT_SECT() // TCritSect cs
+#endif
+
 #endif // scmRTOS_USER_DEFINED_CRITSECT_ENABLE
-
-
 
 
 namespace OS

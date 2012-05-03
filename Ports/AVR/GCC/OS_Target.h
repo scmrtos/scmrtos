@@ -150,16 +150,6 @@ typedef uint8_t status_reg_t;
 
 #define DUMMY_INSTR()   __asm__ __volatile__ ("nop" : : )
 
-//--------------------------------------------------
-//
-//   Uncomment macro value below for SystemTimer() run in critical section
-//
-//   This is useful (and necessary) when target processor has hardware
-//   enabled nested interrups. AVR does not have such interrupts.
-//
-#define SYS_TIMER_CRIT_SECT()           // TCritSect cs
-#define CONTEXT_SWITCH_HOOK_CRIT_SECT() // TCritSect cs
-
 
 //-----------------------------------------------------------------------------
 //
@@ -199,6 +189,22 @@ private:
     status_reg_t StatusReg;
 };
 #endif // scmRTOS_USER_DEFINED_CRITSECT_ENABLE
+
+//   Uncomment macro value below for system_timer() and
+//   context_switch_hook() run in critical section.
+// 
+//   This is useful (and necessary) when target processor has hardware 
+//   enabled nested interrups.
+//   User can define own macros using user-defined TCritSect capabilities.
+//
+//   AVR does not have nested interrupts.
+//
+#ifndef SYS_TIMER_CRIT_SECT
+#define SYS_TIMER_CRIT_SECT() // TCritSect cs
+#endif
+#ifndef CONTEXT_SWITCH_HOOK_CRIT_SECT
+#define CONTEXT_SWITCH_HOOK_CRIT_SECT() // TCritSect cs
+#endif
 
 //-----------------------------------------------------------------------------
 //

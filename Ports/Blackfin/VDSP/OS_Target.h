@@ -77,15 +77,6 @@ typedef uint16_t status_reg_t;
 #define DUMMY_INSTR() // asm(" nop;")
 #define INLINE_PROCESS_CTOR
 
-//--------------------------------------------------
-//
-//   Uncomment macro value below for SystemTimer() run in critical section
-// 
-//   This is useful (and necessary) when target processor has hardware 
-//   enabled nested interrups. 
-// 
-#define SYS_TIMER_CRIT_SECT()           // TCritSect cs
-#define CONTEXT_SWITCH_HOOK_CRIT_SECT()    TCritSect cs
 
 #define  SEPARATE_RETURN_STACK              0
 #define  scmRTOS_CONTEXT_SWITCH_SCHEME      1
@@ -142,6 +133,19 @@ private:
     status_reg_t StatusReg;
 };
 #endif // scmRTOS_USER_DEFINED_CRITSECT_ENABLE
+
+//   Uncomment macro value below for SystemTimer() run in critical section
+// 
+//   This is useful (and necessary) when target processor has hardware 
+//   enabled nested interrups. 
+// 
+#ifndef SYS_TIMER_CRIT_SECT
+#define SYS_TIMER_CRIT_SECT()           // TCritSect cs
+#endif
+#ifndef CONTEXT_SWITCH_HOOK_CRIT_SECT
+#define CONTEXT_SWITCH_HOOK_CRIT_SECT()    TCritSect cs
+#endif
+
 
 //-----------------------------------------------------------------------------
 //

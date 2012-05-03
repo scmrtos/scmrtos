@@ -102,15 +102,6 @@ typedef uint16_t status_reg_t;
 #define DUMMY_INSTR() __asm__ __volatile__ ("nop")
 #define INLINE_PROCESS_CTOR INLINE
 
-//-----------------------------------------------------------------------------
-//
-//   Uncomment macro value below for SystemTimer() run in critical section
-//
-//   This is useful (and necessary) when target processor has hardware
-//   enabled nested interrupts. MSP430 does not have such interrupts.
-//
-#define SYS_TIMER_CRIT_SECT() // TCritSect cs
-
 #define SEPARATE_RETURN_STACK 0
 
 //-----------------------------------------------------------------------------
@@ -173,6 +164,22 @@ private:
     }
 };
 #endif // scmRTOS_USER_DEFINED_CRITSECT_ENABLE
+
+//   Uncomment macro value below for system_timer() and
+//   context_switch_hook() run in critical section.
+// 
+//   This is useful (and necessary) when target processor has hardware 
+//   enabled nested interrups.
+//   User can define own macros using user-defined TCritSect capabilities.
+//
+//   MSP430 does not have nested interrupts.
+ 
+#ifndef SYS_TIMER_CRIT_SECT
+#define SYS_TIMER_CRIT_SECT() // TCritSect cs
+#endif
+#ifndef CONTEXT_SWITCH_HOOK_CRIT_SECT
+#define CONTEXT_SWITCH_HOOK_CRIT_SECT() // TCritSect cs
+#endif
 
 //-----------------------------------------------------------------------------
 //

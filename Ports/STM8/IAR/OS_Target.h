@@ -113,24 +113,9 @@ typedef __istate_t status_reg_t;
 #define DUMMY_INSTR() __no_operation()
 #define INLINE_PROCESS_CTOR INLINE
 
-//--------------------------------------------------
-//
-//   Uncomment macro value below for SystemTimer() run in critical section
-// 
-//   This is useful (and necessary) when target processor has hardware 
-//   enabled nested interrups.
-// 
-//   STM8 has multi-level interrupt system -- TIMER interrupt can be interrupted
-// TODO: Place this definition below #include "scmRTOS_CONFIG.h" (and above OS_Kernel.h),
-//      make SYS_TIMER_CRIT_SECT() dependent on scmRTOS_SYSTIMER_NEST_INTS_ENABLE
-#define SYS_TIMER_CRIT_SECT()           TCritSect cs
-// CONTEXT_SWITCH_HOOK_CRIT_SECT() is used only for scmRTOS_CONTEXT_SWITCH_SCHEME == 1
-// TODO: add SIM at context switching start just after push CC ?
-// Or context switch hook is better?
-#define CONTEXT_SWITCH_HOOK_CRIT_SECT() TCritSect cs
-
+//-----------------------------------------------------------------------------
+// Separate return stack not required
 #define SEPARATE_RETURN_STACK  0
-
 
 
 //-----------------------------------------------------------------------------
@@ -170,6 +155,26 @@ private:
     status_reg_t InterruptState;
 };
 #endif // scmRTOS_USER_DEFINED_CRITSECT_ENABLE
+
+//   Uncomment macro value below for system_timer() and
+//   context_switch_hook() run in critical section
+// 
+//   This is useful (and necessary) when target processor has hardware 
+//   enabled nested interrups.
+//   User can define own macros using user-defined TCritSect capabilities.
+// 
+//   STM8 has multi-level interrupt system so system timer and context switcher
+//   interrupts can be interrupted.
+//
+#ifndef SYS_TIMER_CRIT_SECT
+#define SYS_TIMER_CRIT_SECT()           TCritSect cs
+#endif
+// CONTEXT_SWITCH_HOOK_CRIT_SECT() is used only for scmRTOS_CONTEXT_SWITCH_SCHEME == 1
+// TODO: add SIM at context switching start just after push CC ?
+// Or context switch hook is better?
+#ifndef CONTEXT_SWITCH_HOOK_CRIT_SECT
+#define CONTEXT_SWITCH_HOOK_CRIT_SECT() TCritSect cs
+#endif
 
 //-----------------------------------------------------------------------------
 //
