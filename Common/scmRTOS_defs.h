@@ -66,6 +66,15 @@ private:                                                                        
 //
 //
 
+//----------------- scmRTOS_USER_DEFINED_CRITSECT_ENABLE -------------
+#ifndef scmRTOS_USER_DEFINED_CRITSECT_ENABLE
+#define scmRTOS_USER_DEFINED_CRITSECT_ENABLE  0
+#endif
+
+#if (scmRTOS_USER_DEFINED_CRITSECT_ENABLE < 0) || (scmRTOS_USER_DEFINED_CRITSECT_ENABLE > 1)
+#error "Error: scmRTOS_USER_DEFINED_CRITSECT_ENABLE must have values 0 or 1 only!"
+#endif
+
 //----------------- scmRTOS_SYSTIMER_NEST_INTS_ENABLE --------------------------
 #ifndef scmRTOS_SYSTIMER_NEST_INTS_ENABLE
 #error "Error: Config macro scmRTOS_SYSTIMER_NEST_INTS_ENABLE must be defined!"

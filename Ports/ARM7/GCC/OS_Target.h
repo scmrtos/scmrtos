@@ -155,17 +155,9 @@ typedef uint32_t status_reg_t;
 
 //-----------------------------------------------------------------------------
 //
-//     The Critital Section Wrapper
+//     CPSR access functions
 //
 //
-class TCritSect
-{
-public:
-    TCritSect ();
-    ~TCritSect();
-private:
-    status_reg_t StatusReg;
-};
 
 #ifndef __THUMBEL__
 // inline into ARM-mode code
@@ -200,8 +192,30 @@ INLINE void __set_CPSR_c_inline(status_reg_t cpsr)
 scmRTOS_ARM7_INLINE status_reg_t __get_CPSR() { return __get_CPSR_inline(); }
 scmRTOS_ARM7_INLINE void __set_CPSR_c(status_reg_t cpsr) { __set_CPSR_c_inline(cpsr); }
 
+#else   //__THUMBEL__
+extern status_reg_t __get_CPSR();
+extern void __set_CPSR_c(status_reg_t cpsr);
+#endif  //__THUMBEL__
 
-// Atmel Application Note Rev. 1156A–08/98
+
+//-----------------------------------------------------------------------------
+//
+//     The Critital Section Wrapper
+//
+//
+
+#if scmRTOS_USER_DEFINED_CRITSECT_ENABLE == 0
+class TCritSect
+{
+public:
+    TCritSect ();
+    ~TCritSect();
+private:
+    status_reg_t StatusReg;
+};
+
+#ifndef __THUMBEL__
+// Atmel Application Note Rev. 1156A 08/98
 scmRTOS_ARM7_INLINE TCritSect::TCritSect() : StatusReg( __get_CPSR_inline() )
 {
     status_reg_t Tmp = StatusReg;
@@ -217,11 +231,12 @@ scmRTOS_ARM7_INLINE TCritSect::~TCritSect()
 {
     __set_CPSR_c_inline(StatusReg);
 }
-
-#else   //__THUMBEL__
-extern status_reg_t __get_CPSR();
-extern void __set_CPSR_c(status_reg_t cpsr);
 #endif  //__THUMBEL__
+
+#endif // scmRTOS_USER_DEFINED_CRITSECT_ENABLE
+
+
+
 
 namespace OS
 {

@@ -159,6 +159,7 @@ typedef __istate_t status_reg_t;
 //     The Critital Section Wrapper
 //
 //
+#if scmRTOS_USER_DEFINED_CRITSECT_ENABLE == 0
 class TCritSect
 {
 public:
@@ -167,9 +168,8 @@ public:
 
 private:
     status_reg_t InterruptState;
-
 };
-//-----------------------------------------------------------------------------
+#endif // scmRTOS_USER_DEFINED_CRITSECT_ENABLE
 
 //-----------------------------------------------------------------------------
 //

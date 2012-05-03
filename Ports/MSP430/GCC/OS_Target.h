@@ -152,6 +152,7 @@ INLINE void DisableInterrupts() { disable_interrupts(); }
 //     The Critical Section Wrapper
 //
 //
+#if scmRTOS_USER_DEFINED_CRITSECT_ENABLE == 0
 class TCritSect
 {
 public:
@@ -171,6 +172,7 @@ private:
         __asm__ __volatile__("MOV  %0, R2" : : "r" (sr) : "memory");
     }
 };
+#endif // scmRTOS_USER_DEFINED_CRITSECT_ENABLE
 
 //-----------------------------------------------------------------------------
 //
