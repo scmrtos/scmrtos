@@ -45,9 +45,9 @@ SRC_ARM_CPP += main.cpp
 ############################
 #  ARM .s sources
 #       OS sources
-SRC_ARM_ASM = OS_Target_asm.s
+SRC_ARM_ASM = OS_Target_asm.S
 #       Application sources
-SRC_ARM_ASM += crt.s
+SRC_ARM_ASM += crt.S
 ############################
 # libraries
 LIBS =
@@ -85,9 +85,9 @@ vpath
 vpath % $(scmRTOS_DIRS)
 vpath % $(SRC_DIRS)
 
-OBJS_ARM_ASM  = $(addprefix $(OBJDIR)/,$(notdir $(SRC_ARM_ASM:.s=.o) ))
+OBJS_ARM_ASM  = $(addprefix $(OBJDIR)/,$(notdir $(SRC_ARM_ASM:.S=.o) ))
 OBJS_ARM_CPP  = $(addprefix $(OBJDIR)/,$(notdir $(SRC_ARM_CPP:.cpp=.o) ))
-OBJS_THUMB_ASM  = $(addprefix $(OBJDIR)/,$(notdir $(SRC_THUMB_ASM:.s=.o) ))
+OBJS_THUMB_ASM  = $(addprefix $(OBJDIR)/,$(notdir $(SRC_THUMB_ASM:.S=.o) ))
 OBJS_THUMB_CPP  = $(addprefix $(OBJDIR)/,$(notdir $(SRC_THUMB_CPP:.cpp=.o) ))
 OBJS = $(OBJS_ARM_CPP) $(OBJS_ARM_ASM) $(OBJS_THUMB_CPP) $(OBJS_THUMB_ASM)
 
@@ -112,7 +112,7 @@ endif
 
 ASM_FLAGS = $(FLAGS)
 ASM_FLAGS += $(ASM_DEFS)
-ASM_FLAGS += -Wa,-amhlds=$(LSTDIR)/$(notdir $(<:.s=.lst)) 
+ASM_FLAGS += -Wa,-amhlds=$(LSTDIR)/$(notdir $(<:.S=.lst)) 
 
 CPP_FLAGS = $(FLAGS)
 CPP_FLAGS += $(OPTIMIZE)
@@ -150,7 +150,7 @@ $(OBJS_ARM_CPP) : $(OBJDIR)/%.o : %.cpp
 	@echo Compiling: $<
 	$(CC) -c $(CPP_FLAGS) $< -o $@
 
-$(OBJS_ARM_ASM) : $(OBJDIR)/%.o : %.s
+$(OBJS_ARM_ASM) : $(OBJDIR)/%.o : %.S
 	@echo Assembling: $<
 	$(AS) -c $(ASM_FLAGS) $< -o $@
 
@@ -158,7 +158,7 @@ $(OBJS_THUMB_CPP) : $(OBJDIR)/%.o : %.cpp
 	@echo Compiling: $<
 	$(CC) -c -mthumb $(CPP_FLAGS) $< -o $@
 
-$(OBJS_THUMB_ASM) : $(OBJDIR)/%.o : %.s
+$(OBJS_THUMB_ASM) : $(OBJDIR)/%.o : %.S
 	@echo Assembling: $<
 	$(AS) -c  -mthumb $(ASM_FLAGS) $< -o $@
 

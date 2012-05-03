@@ -12,8 +12,8 @@
 //*
 //*     Version: 4.00
 //*
-//*     $Revision$
-//*     $Date::             $
+//*     $Revision: 260 $
+//*     $Date:: 2010-01-26 #$
 //*
 //*     Copyright (c) 2003-2012, Harry E. Zhurov
 //*
