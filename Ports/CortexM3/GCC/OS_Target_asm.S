@@ -57,15 +57,12 @@
     .syntax unified
     .thumb
     .text	
-    .align 2
+    .align 4
 
 
 //-----------------------------------------------------------------------------
 //  EQUATES
 //
-    .equ    NVIC_INT_CTRL        ,     0xE000ED04  // Interrupt control state register.
-    .equ    NVIC_PENDSVSET       ,     0x10000000  // Value to trigger PendSV exception.
-
     .equ    NVIC_SYSPRI14        ,     0xE000ED22  // System priority register (priority 14).
     .equ    NVIC_PENDSV_PRI      ,           0xFF  // PendSV priority value (lowest).
     .equ    NVIC_SYSPRI15        ,     0xE000ED23  // System priority register (priority 15).
@@ -126,8 +123,7 @@ PendSVC_ISR:
     // At this point, entire context of process has been saved                                                            
 
     PUSH    {LR}              // Save LR exc_return value
-    LDR     R1, =os_context_switch_hook    // os_context_switch_hook();
-    BLX     R1
+    BL      os_context_switch_hook    // call os_context_switch_hook();
     
     // R0 is new process SP;
     LDMIA   R0!, {R4-R11}     // Restore r4-11 from new process stack
@@ -135,7 +131,29 @@ PendSVC_ISR:
     CPSIE   I
     POP     {PC}              // Return to saved exc_return. Exception return will restore remaining context
 
-   
+    .align 2
+
+//-----------------------------------------------------------------------------
+//      Initialize system timer.
+//      void init_system_timer()
+// Perform systick timer initialization.
+//
+    .weak  init_system_timer
+    .type  init_system_timer, %function
+init_system_timer:
+
+    LDR     R1, =NVIC_SYSPRI15      // Set the SysTick exception priority (lowest)
+    LDR     R2, =NVIC_ST_PRI
+    STRB    R2, [R1]
+
+    LDR     R1, =NVIC_ST_RELOAD     // Setup SysTick
+    LDR     R2, =(SYSTICKFREQ/SYSTICKINTRATE-1)
+    STR     R2, [R1]
+    LDR     R1, =NVIC_ST_CTRL       // Enable and run SysTick
+    LDR     R2, =(NVIC_ST_CTRL_CLK_SRC | NVIC_ST_CTRL_INTEN | NVIC_ST_CTRL_ENABLE)
+    STR     R2, [R1]
+    BX      LR
+
 //-----------------------------------------------------------------------------
 //      START MULTITASKING
 //      void os_start(stack_item_t* sp)
@@ -151,27 +169,19 @@ os_start:
     LDR     R1, =NVIC_SYSPRI14      // Set the PendSV exception priority (lowest)
     LDR     R2, =NVIC_PENDSV_PRI
     STRB    R2, [R1]
-    LDR     R1, =NVIC_SYSPRI15      // Set the SysTick exception priority (lowest)
-    LDR     R2, =NVIC_ST_PRI
-    STRB    R2, [R1]
-    
-    LDR     R1, =NVIC_ST_RELOAD     // Setup SysTick
-    LDR     R2, =(SYSTICKFREQ/SYSTICKINTRATE-1)  
-    STR     R2, [R1]
-    LDR     R1, =NVIC_ST_CTRL       // Enable and run SysTick
-    LDR     R2, =(NVIC_ST_CTRL_CLK_SRC | NVIC_ST_CTRL_INTEN | NVIC_ST_CTRL_ENABLE)
-    STR     R2, [R1]
 
-    LDR     R3, [R0, #(4 * 14)]		// Load process entry point into R3
+    LDR     R4, [R0, #(4 * 14)]		// Load process entry point into R4
     ADD     R0, #(4 * 16)           // emulate context restore
     MSR     PSP, R0                 // store process SP to PSP
     MOV     R0, #2                  // Switch thread mode stack to PSP
     MSR     CONTROL, R0
     ISB                             // Insert a barrier
 
+    BL      init_system_timer      // run system timer
+
     CPSIE   I                       // Enable interrupts at processor level
 
-    BX      R3                      // Jump to process exec() function
+    BX      R4                      // Jump to process exec() function
 
     .end
 
