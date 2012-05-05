@@ -138,9 +138,8 @@ PendSVC_ISR:
 //      void init_system_timer()
 // Perform systick timer initialization.
 //
-    .weak  init_system_timer
-    .type  init_system_timer, %function
-init_system_timer:
+    .weak  __init_system_timer
+__init_system_timer:
 
     LDR     R1, =NVIC_SYSPRI15      // Set the SysTick exception priority (lowest)
     LDR     R2, =NVIC_ST_PRI
@@ -177,7 +176,7 @@ os_start:
     MSR     CONTROL, R0
     ISB                             // Insert a barrier
 
-    BL      init_system_timer      // run system timer
+    BL      __init_system_timer      // run system timer
 
     CPSIE   I                       // Enable interrupts at processor level
 
