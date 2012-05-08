@@ -157,6 +157,10 @@ Samples/CortexM3/GCC/STM32F2XX/3-Channel/bak
 Samples/CortexM3/GCC/STM32F2XX/3-Channel/exe
 Samples/CortexM3/GCC/STM32F2XX/3-Channel/lst
 Samples/CortexM3/GCC/STM32F2XX/3-Channel/obj
+Samples/CortexM3/GCC/STM32F2XX/4-Debug/bak
+Samples/CortexM3/GCC/STM32F2XX/4-Debug/exe
+Samples/CortexM3/GCC/STM32F2XX/4-Debug/lst
+Samples/CortexM3/GCC/STM32F2XX/4-Debug/obj
 Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/Debug/Exe/*.out
 Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/Debug/List/*.lst
 Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/Debug/List/*.map
