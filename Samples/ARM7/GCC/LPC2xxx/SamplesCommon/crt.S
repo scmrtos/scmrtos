@@ -91,7 +91,7 @@ DAbortAddr:
 
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 0 || defined(GCC_IRQ_PATCH_REQUIRED)
 IRQAddr:
-        .word IRQHandler
+        .word irq_handler
 #endif
 
 FIQAddr:
