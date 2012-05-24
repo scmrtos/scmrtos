@@ -10,28 +10,32 @@
 *
 *   I. Declare pin typedef:
 * typedef Pin<'A', 5, 'H', PIN_SPEED_50MHZ> PA5;    // PA5, active level = high, pin speed = 50MHZ
-* typedef Pin<'A', 6> PA6;                          // PA6, default active level ('H'), default pin speed (PIN_SPEED_2MHZ)
-* typedef Pin<'B', 12, 'L'> PB12;                   // PB12, active level = low, default pin speed (PIN_SPEED_2MHZ)
+* typedef Pin<'A', 6> PA6;               // PA6, default active level ('H'), default pin speed (PIN_SPEED_2MHZ)
+* typedef Pin<'B', 12, 'L'> PB12;        // PB12, active level = low, default pin speed (PIN_SPEED_2MHZ)
 *
 *   II. Set pin mode:
-* PA5::Mode(OUTPUT);       // configure PA5 as output (push-pull, 50MHz)
-* PA5::Direct(OUTPUT);     // the same.
-* PA6::Mode(INPUT);        // configure PA6 as input floating
-* PB12::Mode(OUTPUT);      // configure PB12 as output
-* TX::Mode(ALT_OUTPUT);    // configure TX as alternate output push-pull
-*                          // (see PinConfig enum for list of all pin modes)
+* PA5::Mode(OUTPUT);                     // configure PA5 as output (push-pull, 100MHz)
+* PA5::Direct(OUTPUT);                   // the same.
+* PA6::Mode(INPUT);                      // configure PA6 as input floating
+* PB12::Mode(OUTPUT);                    // configure PB12 as output
+* TX::Mode(ALT_OUTPUT);                  // configure TX as alternate output push-pull
+*                                        // (see PinConfig enum for list of all pin modes)
 *
-*   III. Manipulate pin:
-* PA5::On();               // switch PA5 to active state (H)
-* PB12::On();              // switch PB12 to active state (L)
-* PA5::Off();              // switch PA5 to inactive state (L)
-* PB12::Cpl();             // invert PB12 output
+*   III. Select pin alternate function:
+* TX::Alternate(ALT_FUNC_USART1);        // turn P15 alternate function on
+*                                        // (see PinAltFunction enum for list of all alternate functions)
 *
-*   IV. Check pin state:
-* if (PA5::Signalled())     // returns non-zero if pin input = active state (H for PA5)
-* if (PB12::Latched())      // returns non-zero if pin output = active state (L for PB12)
+*   IV. Manipulate pin:
+* PA5::On();                             // switch PA5 to active state (H)
+* PB12::On();                            // switch PB12 to active state (L)
+* PA5::Off();                            // switch PA5 to inactive state (L)
+* PB12::Cpl();                           // invert PB12 output
 *
-*   V. Use pin registers uniformly:
+*   V. Check pin state:
+* if (PA5::Signalled())                  // returns non-zero if pin input = active state (H for PA5)
+* if (PB12::Latched())                   // returns non-zero if pin output = active state (L for PB12)
+*
+*   VI. Use pin registers uniformly:
 * locked = PA5::GPIOx->LCKR & PA5::mask; // read PA5 lock state.
 *
 *   It is also possible to declare object of defined type:

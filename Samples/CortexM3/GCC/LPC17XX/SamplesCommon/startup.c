@@ -201,7 +201,6 @@ void __Init_Data(void)
 #pragma weak SVC_Handler = Default_Handler
 #pragma weak DebugMon_Handler = Default_Handler
 #pragma weak PendSVC_ISR = Default_Handler
-#pragma weak SystemTimer_ISR = Default_Handler
 
 #pragma weak WDT_IRQHandler = Default_Handler
 #pragma weak TIMER0_IRQHandler = Default_Handler
