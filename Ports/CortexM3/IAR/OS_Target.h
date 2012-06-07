@@ -254,7 +254,7 @@ namespace OS
     };
 
     // No software interrupt stack switching provided,
-    // TISRW_SS declared to be the same as TISRW for porting compability
+    // TISRW_SS declared to be the same as TISRW for porting compatibility
     #define TISRW_SS    TISRW
     
 } // ns OS

@@ -71,19 +71,23 @@ void TBaseProcess::init_stack_frame( stack_item_t * Stack
 }
 
 //------------------------------------------------------------------------------
+#if USE_SYSTICK_TIMER == 0
+OS_INTERRUPT void OS::SystemTimer_Handler()
+#else
 OS_INTERRUPT void OS::SysTick_Handler()
+#endif
 {
     scmRTOS_ISRW_TYPE ISR;
 
-    Kernel.system_timer();
-    
 #if scmRTOS_SYSTIMER_NEST_INTS_ENABLE == 0
     DISABLE_NESTED_INTERRUPTS();
 #endif
-    
+
 #if scmRTOS_SYSTIMER_HOOK_ENABLE == 1
     system_timer_user_hook();
 #endif
+
+    Kernel.system_timer();
 }
 //------------------------------------------------------------------------------
 
