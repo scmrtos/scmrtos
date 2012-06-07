@@ -452,16 +452,6 @@ Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/Src/main.cpp eol=crlf
 Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/Src/scmRTOS_CONFIG.h eol=crlf
 Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/Src/scmRTOS_TARGET_CFG.h eol=crlf
 Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/Src/scmRTOS_extensions.h eol=crlf
-Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/Src/stm32f10x_flash.icf eol=crlf
-Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/Src/stm32f10x_it.c eol=crlf
-Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/Src/stm32f10x_it.h eol=crlf
-Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/Src/stm32f10x_vector.c eol=crlf
-Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/settings/slon.cspy.bat eol=crlf
-Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/settings/slon.dbgdt eol=crlf
-Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/settings/slon.dni eol=crlf
-Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/settings/slon.wsdt eol=crlf
-Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/slon.dep eol=crlf
-Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/slon.ewd eol=crlf
 Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/slon.ewp eol=crlf
 Samples/CortexM3/IAR/STM32F1XX/1-EventFlag/slon.eww eol=crlf
 Samples/CortexM3/IAR/STM32F1XX/2-Message/Src/main.cpp eol=crlf
@@ -498,6 +488,9 @@ Samples/CortexM3/IAR/STM32F1XX/4-Debug/Src/stm32f10x_vector.c eol=crlf
 Samples/CortexM3/IAR/STM32F1XX/4-Debug/slon.ewd eol=crlf
 Samples/CortexM3/IAR/STM32F1XX/4-Debug/slon.ewp eol=crlf
 Samples/CortexM3/IAR/STM32F1XX/4-Debug/slon.eww eol=crlf
+Samples/CortexM3/IAR/STM32F1XX/Shared/SystemInit.c -text
+Samples/CortexM3/IAR/STM32F1XX/Shared/startup_stm32f10x_md.s -text
+Samples/CortexM3/IAR/STM32F1XX/Shared/stm32f10x_flash.icf -text
 Samples/CortexM3/IAR/STM32F1XX/switch.bat eol=crlf
 Samples/MSP430/GCC/430/1-EventFlag/.cproject eol=crlf
 Samples/MSP430/GCC/430/1-EventFlag/.project eol=crlf

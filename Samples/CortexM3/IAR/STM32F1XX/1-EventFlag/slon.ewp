@@ -87,7 +87,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.30.7.53437</state>
+          <state>6.30.4.53294</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -99,7 +99,7 @@
         </option>
         <option>
           <name>OGChipSelectEditMenu</name>
-          <state>STM32F103xB	ST STM32F103xB</state>
+          <state>STM32F10xxB	ST STM32F10xxB</state>
         </option>
         <option>
           <name>GenLowLevelInterface</name>
@@ -609,7 +609,7 @@
       <name>ILINK</name>
       <archiveVersion>0</archiveVersion>
       <data>
-        <version>15</version>
+        <version>14</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -690,7 +690,7 @@
         </option>
         <option>
           <name>IlinkIcfFile</name>
-          <state>$PROJ_DIR$\src\stm32f10x_flash.icf</state>
+          <state>$PROJ_DIR$\..\Shared\stm32f10x_flash.icf</state>
         </option>
         <option>
           <name>IlinkIcfFileSlave</name>
@@ -775,6 +775,10 @@
         </option>
         <option>
           <name>CrcAlign</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CrcAlgo</name>
           <state>1</state>
         </option>
         <option>
@@ -879,16 +883,6 @@
           <name>IlinkStackCallGraphFile</name>
           <state></state>
         </option>
-        <option>
-          <name>CrcAlgorithm</name>
-          <version>0</version>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CrcUnitSize</name>
-          <version>0</version>
-          <state>0</state>
-        </option>
       </data>
     </settings>
     <settings>
@@ -946,7 +940,7 @@
         <option>
           <name>Variant</name>
           <version>19</version>
-          <state>0</state>
+          <state>37</state>
         </option>
         <option>
           <name>GEndianMode</name>
@@ -959,16 +953,16 @@
         </option>
         <option>
           <name>Input description</name>
-          <state></state>
+          <state>Full formatting.</state>
         </option>
         <option>
           <name>Output variant</name>
           <version>2</version>
-          <state>1</state>
+          <state>7</state>
         </option>
         <option>
           <name>Output description</name>
-          <state></state>
+          <state>No specifier a, A, no specifier n, no float nor long long, no flags.</state>
         </option>
         <option>
           <name>GOutputBinary</name>
@@ -981,7 +975,7 @@
         </option>
         <option>
           <name>OGCoreOrChip</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>GRuntimeLibSelect</name>
@@ -995,7 +989,7 @@
         </option>
         <option>
           <name>RTDescription</name>
-          <state></state>
+          <state>Use the normal configuration of the C/C++ runtime library. No locale interface, C locale, no file descriptor support, no multibytes in printf and scanf, and no hex floats in strtod.</state>
         </option>
         <option>
           <name>OGProductVersion</name>
@@ -1003,7 +997,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state></state>
+          <state>6.30.4.53294</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -1015,15 +1009,15 @@
         </option>
         <option>
           <name>OGChipSelectEditMenu</name>
-          <state></state>
+          <state>STM32F10xxB	ST STM32F10xxB</state>
         </option>
         <option>
           <name>GenLowLevelInterface</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>GEndianModeBE</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OGBufferedTerminalOutput</name>
@@ -1049,17 +1043,17 @@
         </option>
         <option>
           <name>RTConfigPath2</name>
-          <state></state>
+          <state>$TOOLKIT_DIR$\INC\c\DLib_Config_Normal.h</state>
         </option>
         <option>
           <name>GFPUCoreSlave</name>
           <version>19</version>
-          <state>0</state>
+          <state>37</state>
         </option>
         <option>
           <name>GBECoreSlave</name>
           <version>19</version>
-          <state>0</state>
+          <state>37</state>
         </option>
         <option>
           <name>OGUseCmsis</name>
@@ -1141,7 +1135,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>1111111</state>
+          <state>1001010</state>
         </option>
         <option>
           <name>CCDebugInfo</name>
@@ -1193,7 +1187,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state></state>
+          <state>$FILE_BNAME$.o</state>
         </option>
         <option>
           <name>CCLibConfigHeader</name>
@@ -1209,7 +1203,9 @@
         </option>
         <option>
           <name>CCIncludePath2</name>
-          <state></state>
+          <state>$PROJ_DIR$\..\scmRTOS\Common\</state>
+          <state>$PROJ_DIR$\..\scmRTOS\CortexM3\</state>
+          <state>$PROJ_DIR$\src\</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -1229,7 +1225,7 @@
         </option>
         <option>
           <name>CCOptLevel</name>
-          <state>3</state>
+          <state>2</state>
         </option>
         <option>
           <name>CCOptStrategy</name>
@@ -1238,7 +1234,7 @@
         </option>
         <option>
           <name>CCOptLevelSlave</name>
-          <state>1</state>
+          <state>2</state>
         </option>
         <option>
           <name>CompilerMisraRules98</name>
@@ -1264,7 +1260,7 @@
         </option>
         <option>
           <name>IccLang</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IccCDialect</name>
@@ -1434,7 +1430,7 @@
         </option>
         <option>
           <name>AOutputFile</name>
-          <state></state>
+          <state>$FILE_BNAME$.o</state>
         </option>
         <option>
           <name>AMultibyteSupport</name>
@@ -1454,7 +1450,9 @@
         </option>
         <option>
           <name>AUserIncludes</name>
-          <state></state>
+          <state>$PROJ_DIR$\..\scmRTOS\Common\</state>
+          <state>$PROJ_DIR$\..\scmRTOS\CortexM3\</state>
+          <state>$PROJ_DIR$\src\</state>
         </option>
         <option>
           <name>AExtraOptionsCheckV2</name>
@@ -1484,7 +1482,7 @@
         </option>
         <option>
           <name>OOCOutputFile</name>
-          <state></state>
+          <state>slon.srec</state>
         </option>
         <option>
           <name>OOCCommandLineProducer</name>
@@ -1521,7 +1519,7 @@
       <name>ILINK</name>
       <archiveVersion>0</archiveVersion>
       <data>
-        <version>15</version>
+        <version>14</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -1538,7 +1536,7 @@
         </option>
         <option>
           <name>IlinkOutputFile</name>
-          <state>###Unitialized###</state>
+          <state>slon.out</state>
         </option>
         <option>
           <name>IlinkDebugInfoEnable</name>
@@ -1598,11 +1596,11 @@
         </option>
         <option>
           <name>IlinkIcfOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IlinkIcfFile</name>
-          <state>lnk0t.icf</state>
+          <state>$PROJ_DIR$\..\Shared\stm32f10x_flash.icf</state>
         </option>
         <option>
           <name>IlinkIcfFileSlave</name>
@@ -1662,7 +1660,7 @@
         </option>
         <option>
           <name>IlinkProgramEntryLabel</name>
-          <state></state>
+          <state>__iar_program_start</state>
         </option>
         <option>
           <name>DoFill</name>
@@ -1687,6 +1685,10 @@
         </option>
         <option>
           <name>CrcAlign</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CrcAlgo</name>
           <state>1</state>
         </option>
         <option>
@@ -1791,16 +1793,6 @@
           <name>IlinkStackCallGraphFile</name>
           <state></state>
         </option>
-        <option>
-          <name>CrcAlgorithm</name>
-          <version>0</version>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CrcUnitSize</name>
-          <version>0</version>
-          <state>0</state>
-        </option>
       </data>
     </settings>
     <settings>
@@ -1872,6 +1864,15 @@
       </file>
     </group>
   </group>
+  <group>
+    <name>Shared</name>
+    <file>
+      <name>$PROJ_DIR$\..\Shared\startup_stm32f10x_md.s</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Shared\SystemInit.c</name>
+    </file>
+  </group>
   <file>
     <name>$PROJ_DIR$\Src\main.cpp</name>
   </file>
@@ -1880,254 +1881,6 @@
   </file>
   <file>
     <name>$PROJ_DIR$\Src\scmRTOS_TARGET_CFG.h</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\Src\stm32f10x_it.c</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\Src\stm32f10x_it.h</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\Src\stm32f10x_vector.c</name>
-    <configuration>
-      <name>Debug</name>
-      <settings>
-        <name>ICCARM</name>
-        <data>
-          <version>28</version>
-          <wantNonLocal>0</wantNonLocal>
-          <debug>1</debug>
-          <option>
-            <name>CCDefines</name>
-            <state></state>
-          </option>
-          <option>
-            <name>CCPreprocFile</name>
-            <state>0</state>
-          </option>
-          <option>
-            <name>CCPreprocComments</name>
-            <state>0</state>
-          </option>
-          <option>
-            <name>CCPreprocLine</name>
-            <state>0</state>
-          </option>
-          <option>
-            <name>CCListCFile</name>
-            <state>1</state>
-          </option>
-          <option>
-            <name>CCListCMnemonics</name>
-            <state>1</state>
-          </option>
-          <option>
-            <name>CCListCMessages</name>
-            <state>0</state>
-          </option>
-          <option>
-            <name>CCListAssFile</name>
-            <state>0</state>
-          </option>
-          <option>
-            <name>CCListAssSource</name>
-            <state>0</state>
-          </option>
-          <option>
-            <name>CCEnableRemarks</name>
-            <state>0</state>
-          </option>
-          <option>
-            <name>CCDiagSuppress</name>
-            <state></state>
-          </option>
-          <option>
-            <name>CCDiagRemark</name>
-            <state></state>
-          </option>
-          <option>
-            <name>CCDiagWarning</name>
-            <state></state>
-          </option>
-          <option>
-            <name>CCDiagError</name>
-            <state></state>
-          </option>
-          <option>
-            <name>CCObjPrefix</name>
-            <state>1</state>
-          </option>
-          <option>
-            <name>CCAllowList</name>
-            <version>1</version>
-            <state>1001010</state>
-          </option>
-          <option>
-            <name>CCDebugInfo</name>
-            <state>1</state>
-          </option>
-          <option>
-            <name>IEndianMode</name>
-            <state>1</state>
-          </option>
-          <option>
-            <name>IProcessor</name>
-            <state>1</state>
-          </option>
-          <option>
-            <name>IExtraOptionsCheck</name>
-            <state>0</state>
-          </option>
-          <option>
-            <name>IExtraOptions</name>
-            <state></state>
-          </option>
-          <option>
-            <name>CCLangConformance</name>
-            <state>0</state>
-          </option>
-          <option>
-            <name>CCSignedPlainChar</name>
-            <state>1</state>
-          </option>
-          <option>
-            <name>CCRequirePrototypes</name>
-            <state>1</state>
-          </option>
-          <option>
-            <name>CCMultibyteSupport</name>
-            <state>0</state>
-          </option>
-          <option>
-            <name>CCDiagWarnAreErr</name>
-            <state>0</state>
-          </option>
-          <option>
-            <name>CCCompilerRuntimeInfo</name>
-            <state>0</state>
-          </option>
-          <option>
-            <name>IFpuProcessor</name>
-            <state>1</state>
-          </option>
-          <option>
-            <name>OutputFile</name>
-            <state>$FILE_BNAME$.o</state>
-          </option>
-          <option>
-            <name>CCLibConfigHeader</name>
-            <state>1</state>
-          </option>
-          <option>
-            <name>PreInclude</name>
-            <state></state>
-          </option>
-          <option>
-            <name>CompilerMisraOverride</name>
-            <state>0</state>
-          </option>
-          <option>
-            <name>CCIncludePath2</name>
-            <state>$PROJ_DIR$\..\scmRTOS\Common\</state>
-            <state>$PROJ_DIR$\..\scmRTOS\CortexM3\</state>
-            <state>$PROJ_DIR$\src\</state>
-            <state>$PROJ_DIR$\src\fwlib\inc\</state>
-            <state>$PROJ_DIR$\src\fwlib\src\</state>
-          </option>
-          <option>
-            <name>CCStdIncCheck</name>
-            <state>0</state>
-          </option>
-          <option>
-            <name>CCCodeSection</name>
-            <state>.text</state>
-          </option>
-          <option>
-            <name>IInterwork2</name>
-            <state>0</state>
-          </option>
-          <option>
-            <name>IProcessorMode2</name>
-            <state>1</state>
-          </option>
-          <option>
-            <name>CCOptLevel</name>
-            <state>2</state>
-          </option>
-          <option>
-            <name>CCOptStrategy</name>
-            <version>0</version>
-            <state>0</state>
-          </option>
-          <option>
-            <name>CCOptLevelSlave</name>
-            <state>2</state>
-          </option>
-          <option>
-            <name>CompilerMisraRules98</name>
-            <version>0</version>
-            <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-          </option>
-          <option>
-            <name>CompilerMisraRules04</name>
-            <version>0</version>
-            <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
-          </option>
-          <option>
-            <name>CCPosIndRopi</name>
-            <state>0</state>
-          </option>
-          <option>
-            <name>CCPosIndRwpi</name>
-            <state>0</state>
-          </option>
-          <option>
-            <name>CCPosIndNoDynInit</name>
-            <state>0</state>
-          </option>
-          <option>
-            <name>IccLang</name>
-            <state>0</state>
-          </option>
-          <option>
-            <name>IccCDialect</name>
-            <state>1</state>
-          </option>
-          <option>
-            <name>IccAllowVLA</name>
-            <state>0</state>
-          </option>
-          <option>
-            <name>IccCppDialect</name>
-            <state>1</state>
-          </option>
-          <option>
-            <name>IccExceptions</name>
-            <state>1</state>
-          </option>
-          <option>
-            <name>IccRTTI</name>
-            <state>1</state>
-          </option>
-          <option>
-            <name>IccStaticDestr</name>
-            <state>1</state>
-          </option>
-          <option>
-            <name>IccCppInlineSemantics</name>
-            <state>1</state>
-          </option>
-          <option>
-            <name>IccCmsis</name>
-            <state>1</state>
-          </option>
-          <option>
-            <name>IccFloatSemantics</name>
-            <state>0</state>
-          </option>
-        </data>
-      </settings>
-    </configuration>
   </file>
 </project>
 

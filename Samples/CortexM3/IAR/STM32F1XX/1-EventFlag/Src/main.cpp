@@ -64,10 +64,9 @@ TProc3 Proc3;
 tick_count_t T;                  // global variable for OS::GetTickCount testing
                                  //
 OS::TEventFlag ef;               //
-OS::TEventFlag Timer_B_Ovf;
+OS::TEventFlag Timer_Flag;
 
 void SetSleep(timeout_t x);
-
 
 //---------------------------------------------------------------------------
 //
@@ -88,7 +87,7 @@ template<> OS_PROCESS void TProc2::exec()
 {
     for(;;)
     {
-        Timer_B_Ovf.wait();
+        Timer_Flag.wait();
     }
 }
 //---------------------------------------------------------------------------
@@ -112,7 +111,7 @@ void OS::system_timer_user_hook()
     if (++cnt == 25)
     {
         cnt = 0;
-        Timer_B_Ovf.signal_isr();
+        Timer_Flag.signal_isr();
     }
 }
 //---------------------------------------------------------------------------
