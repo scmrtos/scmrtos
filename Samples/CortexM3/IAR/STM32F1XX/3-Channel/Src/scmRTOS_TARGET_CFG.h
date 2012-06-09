@@ -47,9 +47,31 @@
 #ifndef  scmRTOS_TARGET_CFG_H
 #define  scmRTOS_TARGET_CFG_H
 
+//------------------------------------------------------------------------------
+// If the macro value is 1 (the default), the port uses SysTick as a system
+// timer. It initializes the timer and starts it. The user must make sure that 
+// the address of the timer interrupt handler (SysTick_Handler) is in the right
+// place at the interrupt vector table.
+// If the macro value is 0, then the user has to initialize and start
+// the custom timer, which will be used as a system timer.
+// In the interrupt handler of the custom timer, the user need to call
+// OS::SystemTimer_Handler().
+//
+#define USE_SYSTICK_TIMER 1
+
+//------------------------------------------------------------------------------
 // Define SysTick clock frequency and its interrupt rate in Hz.
+// It makes sense if USE_SYSTICK_TIMER = 1.
 #define SYSTICKFREQ     8000000
 #define SYSTICKINTRATE  500
+
+//------------------------------------------------------------------------------
+// PendSVC_Handler optimization:
+// 0 - use far call for os_context_switch_hook (slower)
+// 1 (default) - use near (+- 1MB) call for os_context_switch_hook (the fastest)
+//
+#define USE_NEAR_CALL  1
+
 
 //------------------------------------------------------------------------------
 // Definitions for some processor registers in order to not include specific
@@ -67,6 +89,7 @@
 namespace OS
 {
 OS_INTERRUPT void SysTick_Handler();
+OS_INTERRUPT void SystemTimer_Handler();
 }
 
 #define  LOCK_SYSTEM_TIMER()    ( *CPU_SYSTICKCSR &= ~CPU_SYSTICKCSR_EINT )

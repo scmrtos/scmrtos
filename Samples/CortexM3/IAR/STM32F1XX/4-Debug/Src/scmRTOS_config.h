@@ -55,13 +55,20 @@ typedef uint_fast32_t tick_count_t;
 #endif // __IAR_SYSTEMS_ASM__
 
 #include <stdint.h>
-
 //------------------------------------------------------------------------------
 //
 //    Specify scmRTOS Process Count. Must be less than 31
 //
 //
 #define  scmRTOS_PROCESS_COUNT                  4
+
+//-----------------------------------------------------------------------------
+//
+//    User-defined TCritSect class implementation enable
+//        TCritSect class must be defined in scmRTOS_TARGET_CFG.h
+//        if this feature enabled.
+//
+#define scmRTOS_USER_DEFINED_CRITSECT_ENABLE  0
 
 //-----------------------------------------------------------------------------
 //

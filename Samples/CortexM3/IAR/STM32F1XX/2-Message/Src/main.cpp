@@ -15,7 +15,7 @@
 //*     $Revision: 196 $
 //*     $Date:: 2008-06-19 #$
 //*
-//*     Copyright (c) 2003-2012, Harry E. Zhurov
+//*     Copyright (c) 2003-2010, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person 
 //*     obtaining  a copy of this software and associated documentation 
@@ -42,7 +42,12 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     Ported by Andrey Chuikin, Copyright (c) 2008-2012
+//*     Ported by Andrey Chuikin, Copyright (c) 2008-2011
+//*
+//*
+//*     Demo based on STM32F103RB microcontroller from ST: www.st.com
+//*     TIMER4 used as a system timer.
+//*
 
 #include <scmRTOS.h>
                   
@@ -81,6 +86,8 @@ OS::message<TMamont> MamontMsg;  // OS::message object
 //---------------------------------------------------------------------------
 void main()
 {
+    extern void init_custom_system_timer();
+    init_custom_system_timer();
     OS::run();
 }
 //---------------------------------------------------------------------------

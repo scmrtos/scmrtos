@@ -50,7 +50,7 @@
 
 #include <scmRTOS.h>
 #include <stdio.h>
-#include <ST/iostm32f10xxB.h>
+#include "stm32F10x.h"
 
 typedef TProfiler<0> TProfilerBase;
 
@@ -68,7 +68,7 @@ uint32_t TProfilerBase::time_interval()
 {
      static uint16_t  prev_ticks;
 
-     uint16_t  ticks = TIM3_CNT;
+     uint16_t  ticks = TIM3->CNT;
      uint16_t  diff = ticks - prev_ticks;
      prev_ticks = ticks;
      return diff;
@@ -103,12 +103,12 @@ TProcProfiler Profiler;
 void main()
 {
     // Setup STM32F103 Timer3.
-    RCC_APB1ENR_bit.TIM3EN = 1; // Enable TIM3 clock.
-    TIM3_CR1 = 0;               // Count up to ARR, no divisor, auto reload.
-    TIM3_ARR = 0xFFFF;          // Period (full scale).
-    TIM3_PSC = 79;              // Set prescaler to 80: 1us tick @ 8MHz HSI. 65.536 ms period
-    TIM3_EGR_bit.UG = 1;        // Generate an update event to reload the prescaler value immediately.
-    TIM3_CR1_bit.CEN = 1;       // Run timer.
+    RCC->APB1ENR |= RCC_APB1ENR_TIM3EN; // Enable TIM3 clock.
+    TIM3->CR1 = 0;               // Count up to ARR, no divisor, auto reload.
+    TIM3->ARR = 0xFFFF;          // Period (full scale).
+    TIM3->PSC = 79;              // Set prescaler to 80: 1us tick @ 8MHz HSI. 65.536 ms period
+    TIM3->EGR = TIM_EGR_UG;      // Generate an update event to reload the prescaler value immediately.
+    TIM3->CR1 = TIM_CR1_CEN;     // Run timer.
     
     //-----------------------------------------------------------------------
     OS::run();

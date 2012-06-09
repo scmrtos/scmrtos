@@ -15,7 +15,7 @@
 //*     $Revision: 196 $
 //*     $Date:: 2008-06-19 #$
 //*
-//*     Copyright (c) 2003-2012, Harry E. Zhurov
+//*     Copyright (c) 2003-2010, Harry E. Zhurov
 //*
 //*     Permission is hereby granted, free of charge, to any person 
 //*     obtaining  a copy of this software and associated documentation 
@@ -104,7 +104,7 @@ TIndianSlon  Indian;
     
 OS::channel<TSlon*, 8> SlonQueue; // OS::channel object for 8 'TSlon*' items
 
-OS::TEventFlag Timer_B_Ovf;
+OS::TEventFlag Timer_Flag;
 
 //---------------------------------------------------------------------------
 void main()
@@ -116,7 +116,7 @@ template<> OS_PROCESS void TProc1::exec()
 {
     for(;;)
     {
-        Timer_B_Ovf.wait();
+        Timer_Flag.wait();
         SlonQueue.push(&African);
     }     
 }
@@ -151,7 +151,7 @@ template<> OS_PROCESS void TProc3::exec()
 //---------------------------------------------------------------------------
 void OS::system_timer_user_hook()
 {
-    Timer_B_Ovf.signal_isr();
+    Timer_Flag.signal_isr();
 }
 //---------------------------------------------------------------------------
 void OS::idle_process_user_hook()
