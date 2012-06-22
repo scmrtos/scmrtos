@@ -273,7 +273,7 @@ template <uint32_t addr, uint32_t pin> struct BitBand
 	enum
 	{
 		ADDR = addr,
-		BB_ADDR  = pPERIPH_BB_BASE + (addr - PERIPH_BASE) * 32 + pin * 4
+		BB_ADDR  = pPERIPH_BB_BASE + (addr - pPERIPH_BASE) * 32 + pin * 4
 	};
 };
 
