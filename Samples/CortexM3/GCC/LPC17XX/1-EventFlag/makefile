@@ -181,11 +181,8 @@ endif
 # commands to prepare flash-write
 	oocd_params_program	+= -c "halt"
 # flash-write and -verify
-	oocd_params_program	+= -c "flash write_image erase $(ELF)"
-# openOCD adds CSUM in addresses 0x1C..0x1F for write only, not for verify
-# TODO: Insert CSUM into $(EXEDIR)/$(TARGET).bin by srecord 
-#	oocd_params_program	+= -c "verify_image $(ELF)"
-# reset target
+	oocd_params_program	+= -c "flash write_image erase $(BIN)"
+	oocd_params_program	+= -c "verify_image $(BIN)"
 	oocd_params_program	+= -c "reset run"
 # terminate OOCD after programming
 	oocd_params_program	+= -c shutdown
@@ -225,11 +222,19 @@ $(HEX): $(ELF)
 	@echo --- make hex...
 	@$(OBJCOPY) -O ihex $(ELF) $(HEX)
 
-$(BIN): $(ELF)
-	@echo --- make binary...
-	@$(OBJCOPY) -O binary $(ELF) $(BIN)
+# openOCD adds CSUM in addresses 0x1C..0x1F for write only, not for verify
+# Insert csum by srec_cat
+$(BIN).nocsum: $(ELF)
+	@echo --- extract binary file $@
+	@$(OBJCOPY) -O binary $^ $@
 
-program: $(ELF)
+$(BIN): $(BIN).nocsum
+	@echo --- generate binary file with CSUM $@
+	@srec_cat $^ -BIN -CR 0 0x1c -LECN 0x1C 4 4 $^ -BIN -E 0 0x20 -O $@ -BIN
+
+.SECONDARY : $(BIN).nocsum
+
+program: $(BIN)
 	@echo "Programming with OPENOCD"
 	$(FLASHER) $(oocd_params_program)
 
