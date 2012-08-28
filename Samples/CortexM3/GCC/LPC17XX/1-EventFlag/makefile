@@ -200,7 +200,9 @@ endif
 
 all : start dirs $(ELF) $(BIN) $(LSS) $(OK)
 
-build: clean all
+build:
+	$(MAKE) clean
+	$(MAKE)
 
 start:
 	@echo --- building $(TARGET)

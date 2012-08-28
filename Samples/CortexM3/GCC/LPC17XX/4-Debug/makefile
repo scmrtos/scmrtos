@@ -18,6 +18,7 @@
 
 	TOOL	= arm-none-eabi-
 #	TOOL	= arm-kgp-eabi-
+#	TOOL	= /opt/sourcery/arm-2012.03/bin/arm-none-eabi-
 
 # compile options 
 	MCU			= cortex-m3
@@ -201,10 +202,13 @@ endif
 
 all : start dirs $(ELF) $(BIN) $(LSS) $(OK)
 
-build: clean all
+build:
+	$(MAKE) clean
+	$(MAKE)
 
 start:
-	@echo --- building $(TARGET)
+	@echo === building $(TARGET) with $(CXX)
+	$(CXX) --version
 
 $(LSS): $(ELF) makefile
 	@echo --- making asm-lst...
@@ -272,6 +276,7 @@ $(BAKDIR):
 	-@$(MD) $(BAKDIR)
 
 clean:
+	@echo === Cleaning working directories
 	-@$(RM) $(OBJDIR)/*.d 2>/dev/null
 	-@$(RM) $(OBJDIR)/*.o 2>/dev/null
 	-@$(RM) $(LSTDIR)/*.lst 2>/dev/null
