@@ -122,14 +122,15 @@ PendSVC_ISR:
     STMDB   R0!, {R4-R11}     // Save remaining regs r4-11 on process stack
     // At this point, entire context of process has been saved                                                            
 
-    PUSH    {LR}              // Save LR exc_return value
+    PUSH    {LR}              // we must save LR (exc_return value) until exception return
     BL      os_context_switch_hook    // call os_context_switch_hook();
+    POP     {LR}
     
     // R0 is new process SP;
     LDMIA   R0!, {R4-R11}     // Restore r4-11 from new process stack
     MSR     PSP, R0           // Load PSP with new process SP
     CPSIE   I
-    POP     {PC}              // Return to saved exc_return. Exception return will restore remaining context
+    BX      LR                // Exception return will restore remaining context
 
     .align 2
 
@@ -172,7 +173,7 @@ os_start:
     LDR     R4, [R0, #(4 * 14)]		// Load process entry point into R4
     ADD     R0, #(4 * 16)           // emulate context restore
     MSR     PSP, R0                 // store process SP to PSP
-    MOV     R0, #2                  // Switch thread mode stack to PSP
+    MOV     R0, #2                  // set up the current (thread) mode: use PSP as stack pointer, privileged level
     MSR     CONTROL, R0
     ISB                             // Insert a barrier
 
