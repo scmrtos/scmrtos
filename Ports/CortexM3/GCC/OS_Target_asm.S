@@ -124,13 +124,12 @@ PendSVC_ISR:
 
     PUSH    {LR}              // we must save LR (exc_return value) until exception return
     BL      os_context_switch_hook    // call os_context_switch_hook();
-    POP     {LR}
     
     // R0 is new process SP;
     LDMIA   R0!, {R4-R11}     // Restore r4-11 from new process stack
     MSR     PSP, R0           // Load PSP with new process SP
     CPSIE   I
-    BX      LR                // Exception return will restore remaining context
+    POP     {PC}              // Return to saved exc_return. Exception return will restore remaining context
 
     .align 2
 
