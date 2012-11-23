@@ -57,8 +57,8 @@
 #error "This file should only be compiled with GNU C++ Compiler"
 #endif // __GNUC__
 
-#ifndef __ARM_ARCH_7M__
-#error "This file must be compiled for ARMv7-M (Cortex-M3) processor only."
+#if (!defined __ARM_ARCH_7M__) && (!defined __ARM_ARCH_7EM__)
+#error "This file must be compiled for ARMv7-M (Cortex-M3) and ARMv7E-M (Cortex-M4) processors only."
 #endif
 
 #if (__GNUC__ < 3)
