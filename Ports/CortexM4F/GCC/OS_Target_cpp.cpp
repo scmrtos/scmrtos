@@ -58,6 +58,9 @@ void TBaseProcess::init_stack_frame( stack_item_t * Stack
 {
     // ARM Architecture Procedure Call Standard [AAPCS] requires 8-byte stack alignment:
     StackPointer = (stack_item_t*)((uintptr_t)Stack & 0xFFFFFFF8);
+#if (!defined __SOFTFP__)
+    --StackPointer;
+#endif
 
     *(--StackPointer)  = 0x01000000UL;      // xPSR
     *(--StackPointer)  = reinterpret_cast<uint32_t>(exec); // Entry Point
