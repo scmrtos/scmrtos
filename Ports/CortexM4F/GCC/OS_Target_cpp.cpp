@@ -49,6 +49,16 @@
 
 using namespace OS;
 
+namespace{
+enum {
+#if (defined __SOFTFP__)
+    CONTEXT_SIZE = 16 * sizeof(stack_item_t)   // Cortex-M3/M4 context size
+#else
+    CONTEXT_SIZE = 17 * sizeof(stack_item_t)   // Cortex-M4F initial context size
+#endif
+};
+}
+
 void TBaseProcess::init_stack_frame( stack_item_t * Stack
                                    , void (*exec)()
                                 #if scmRTOS_DEBUG_ENABLE == 1
@@ -56,11 +66,13 @@ void TBaseProcess::init_stack_frame( stack_item_t * Stack
                                 #endif
                                    )
 {
-    // ARM Architecture Procedure Call Standard [AAPCS] requires 8-byte stack alignment:
-    StackPointer = (stack_item_t*)((uintptr_t)Stack & 0xFFFFFFF8);
-#if (!defined __SOFTFP__)
-    --StackPointer;
-#endif
+    /*
+     * ARM Architecture Procedure Call Standard [AAPCS] requires 8-byte stack alignment.
+     * This means that we must get top of stack aligned _after_ context "pushing", at
+     * interrupt entry.
+     */
+    uintptr_t sptr = (((uintptr_t)Stack - CONTEXT_SIZE) & 0xFFFFFFF8UL) + CONTEXT_SIZE;
+    StackPointer = (stack_item_t*)sptr;
 
     *(--StackPointer)  = 0x01000000UL;      // xPSR
     *(--StackPointer)  = reinterpret_cast<uint32_t>(exec); // Entry Point
@@ -183,6 +195,7 @@ enum
 
 systick_t volatile * const SysTick = (systick_t volatile * const)0xE000E010UL;
 
+#if (!defined __SOFTFP__)
 // Floating point context control register stuff
 static ioregister_t<0xE000EF34UL> FPCCR;
 enum
@@ -190,6 +203,7 @@ enum
 	ASPEN =   (0x1UL << 31),  // always save enable
 	LSPEN =   (0x1UL << 30)   // lazy save enable
 };
+#endif
 
 }
 
