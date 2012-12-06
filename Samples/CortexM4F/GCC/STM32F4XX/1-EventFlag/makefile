@@ -142,7 +142,7 @@ endif
 
 	CFLAGS	= $(FLAGS)
 	CFLAGS	+= $(OPTIMIZE)
-    ifeq (,$(findstring discovery,$(MAKECMDGOALS)))
+	ifneq (,$(filter-out discovery defines,$(MAKECMDGOALS)))
 	CFLAGS	+= -MD 
     endif
 	CFLAGS	+= -std=gnu99
@@ -320,7 +320,7 @@ discovery:
 	$(CC) $(INCS) $(CFLAGS) -E -P -v -dD '$(specs_file)'
 	
 defines:
-	$(CC) $(CFLAGS) -dM -E - < /dev/null
+	$(CC) $(CFLAGS) -dM -E - < /dev/null | sort
 
 #do not include dependency info on some targets:
 ifneq (,$(filter-out docs build clean dirs discovery,$(MAKECMDGOALS)))

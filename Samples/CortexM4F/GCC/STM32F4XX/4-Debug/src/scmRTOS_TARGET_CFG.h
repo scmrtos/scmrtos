@@ -79,10 +79,6 @@ OS_INTERRUPT void SystemTimer_ISR();
 //
 namespace OS
 {
-#if scmRTOS_IDLE_HOOK_ENABLE == 1
-    void idle_process_user_hook();
-#endif
-
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
 
     INLINE void raise_context_switch() { *CPU_ICSR |= 0x10000000; }
