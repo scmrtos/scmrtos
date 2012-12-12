@@ -15,7 +15,14 @@ FAMILY=MEGA
 TOOL=GCC
 DST_DIR=.
 
-svn switch $REP/Common/                $DST_DIR/scmRTOS/Common
-svn switch $REP/Extensions/            $DST_DIR/scmRTOS/Extensions
-svn switch $REP/Ports/$TARGET/$TOOL/   $DST_DIR/scmRTOS/$TARGET
+SVN_VER="`svn --version --quiet  | sed 's/\([0-9.]*\)\.\([0-9.]*\)\.\(.*\)/\1.\2/'`"
+if [ $SVN_VER = "1.6" ]; then
+    SWITCH="svn switch"
+else
+    SWITCH="svn switch --ignore-ancestry"
+fi
+
+$SWITCH $REP/Common/                $DST_DIR/scmRTOS/Common
+$SWITCH $REP/Extensions/            $DST_DIR/scmRTOS/Extensions
+$SWITCH $REP/Ports/$TARGET/$TOOL/   $DST_DIR/scmRTOS/$TARGET
 

@@ -10,7 +10,10 @@ SET TARGET=MSP430
 SET TOOL=IAR
 SET DST_DIR=.
 
-svn switch  %REP%/Common/                   %DST_DIR%/scmRTOS/Common
-svn switch  %REP%/Ports/%TARGET%/%TOOL%/    %DST_DIR%/scmRTOS/%TARGET%
-svn switch  %REP%/Extensions/               %DST_DIR%/scmRTOS/Extensions
+for /F "usebackq tokens=1,2 delims=." %%f in (`svn --version --quiet`) do set SVNVERSION=%%f.%%g
+if "%SVNVERSION%" == "1.6" (set SWITCH=svn switch) else (set SWITCH=svn switch --ignore-ancestry)
+
+%SWITCH% %REP%/Common/                   %DST_DIR%/scmRTOS/Common
+%SWITCH% %REP%/Ports/%TARGET%/%TOOL%/    %DST_DIR%/scmRTOS/%TARGET%
+%SWITCH% %REP%/Extensions/               %DST_DIR%/scmRTOS/Extensions
 
