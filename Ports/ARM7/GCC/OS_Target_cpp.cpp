@@ -58,29 +58,23 @@ void TBaseProcess::init_stack_frame( stack_item_t * Stack
                                 #endif
                                    )
 {
-    //---------------------------------------------------------------
-    //
-    //  Prepare Process Stack Frame
-    //
-    *(--Stack) = (stack_item_t)exec;    // return from interrupt address
+    // ARM Architecture Procedure Call Standard [AAPCS] requires 8-byte stack alignment:
+    StackPointer = (stack_item_t*)((uintptr_t)Stack & 0xFFFFFFF8);
+    *(--StackPointer) = (stack_item_t)exec;    // return from interrupt address
 
-    Stack -= 14;                        // emulate "push R0-R12", "push LR"
+    StackPointer -= 14;                        // emulate "push R0-R12", "push LR"
 
-    if((uintptr_t)exec & (1 << 0))      // if exec is THUMB-mode code
-        *(--Stack) =   0x003F;          // SR value: system mode, FIQ & IRQ enabled, THUMB mode
+    if((uintptr_t)exec & (1 << 0))             // if exec is THUMB-mode code
+        *(--StackPointer) =   0x003F;          // SR value: system mode, FIQ & IRQ enabled, THUMB mode
     else
-        *(--Stack) =   0x001F;          // SR value: system mode, FIQ & IRQ enabled, ARM mode
-
-    StackPointer = Stack;               // pointer to stored context
+        *(--StackPointer) =   0x001F;          // SR value: system mode, FIQ & IRQ enabled, ARM mode
 
 #if scmRTOS_DEBUG_ENABLE == 1
     //-----------------------------------------------------------------------
     //   Fill stack pool with predefined value for stack consumption checking
     //
-    while(--Stack >= StackBegin)
-    {
-        *Stack = STACK_DEFAULT_PATTERN;
-    }
+    for (stack_item_t* pDst = StackBegin; pDst < StackPointer; pDst++)
+        *pDst = STACK_DEFAULT_PATTERN;
 #endif // scmRTOS_DEBUG_ENABLE
 }
 
