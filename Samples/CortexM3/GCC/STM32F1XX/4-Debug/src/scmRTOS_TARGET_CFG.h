@@ -48,7 +48,7 @@
 #define  scmRTOS_TARGET_CFG_H
 
 // Define SysTick clock frequency and its interrupt rate in Hz.
-#if   defined(STM32F10X_MD_VL) || defined(STM32F10X_HD_VL)
+#if   defined(STM32F10X_LD_VL) || defined(STM32F10X_MD_VL) || defined(STM32F10X_HD_VL)
 #	define SYSTICKFREQ     24000000
 #else
 #	define SYSTICKFREQ     72000000

@@ -366,6 +366,7 @@ Samples/CortexM3/GCC/STM32F1XX/1-EventFlag/.project eol=crlf
 Samples/CortexM3/GCC/STM32F1XX/1-EventFlag/makefile eol=crlf
 Samples/CortexM3/GCC/STM32F1XX/1-EventFlag/prj/STM32F10X_CL.ld eol=crlf
 Samples/CortexM3/GCC/STM32F1XX/1-EventFlag/prj/STM32F10X_HD.ld eol=crlf
+Samples/CortexM3/GCC/STM32F1XX/1-EventFlag/prj/STM32F10X_LD_VL.ld -text
 Samples/CortexM3/GCC/STM32F1XX/1-EventFlag/prj/STM32F10X_MD.ld eol=crlf
 Samples/CortexM3/GCC/STM32F1XX/1-EventFlag/prj/STM32F10X_MD_VL.ld eol=crlf
 Samples/CortexM3/GCC/STM32F1XX/1-EventFlag/src/main.cpp eol=crlf
