@@ -12,7 +12,7 @@
           
           
           
-        <Column0>177</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
+        <Column0>184</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
       </Workspace>
       <Build>
         
@@ -24,52 +24,24 @@
       <CodeCoveragePlugin/>
       <Profiling/>
       <Debug-Log/>
-    </Static>
+    <SourceBrowser><PreferedWindows><Position>3</Position><ScreenPosX>0</ScreenPosX><ScreenPosY>0</ScreenPosY><Windows/></PreferedWindows></SourceBrowser></Static>
     <Windows>
       
       
-    <Wnd2>
-        <Tabs>
-          <Tab>
-            <Identity>TabID-8395-26107</Identity>
-            <TabName>Workspace</TabName>
-            <Factory>Workspace</Factory>
-            <Session>
-              
-            <NodeDict><ExpandedNode>slon</ExpandedNode><ExpandedNode>slon/Output</ExpandedNode><ExpandedNode>slon/main.cpp</ExpandedNode><ExpandedNode>slon/main.cpp/Output</ExpandedNode></NodeDict></Session>
-          </Tab>
-        </Tabs>
-        
-      <SelectedTab>0</SelectedTab></Wnd2><Wnd3>
-        <Tabs>
-          <Tab>
-            <Identity>TabID-7872-26117</Identity>
-            <TabName>Build</TabName>
-            <Factory>Build</Factory>
-            <Session/>
-          </Tab>
-          <Tab>
-            <Identity>TabID-9504-26496</Identity>
-            <TabName>Debug Log</TabName>
-            <Factory>Debug-Log</Factory>
-            <Session/>
-          </Tab>
-        </Tabs>
-        
-      <SelectedTab>0</SelectedTab></Wnd3></Windows>
+    <Wnd1><Tabs><Tab><Identity>TabID-82-13020</Identity><TabName>Workspace</TabName><Factory>Workspace</Factory><Session><NodeDict><ExpandedNode>slon</ExpandedNode><ExpandedNode>slon/Output</ExpandedNode><ExpandedNode>slon/main.cpp</ExpandedNode></NodeDict></Session></Tab></Tabs><SelectedTab>0</SelectedTab></Wnd1><Wnd2><Tabs><Tab><Identity>TabID-17397-13105</Identity><TabName>Build</TabName><Factory>Build</Factory><Session/></Tab></Tabs><SelectedTab>0</SelectedTab></Wnd2></Windows>
     <Editor>
       
       
       
       
-    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\2-MESSAGE\SRC\scmRTOS_CONFIG.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>5645</SelStart><SelEnd>5645</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\SCMRTOS\COMMON\scmRTOS.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\2-MESSAGE\SRC\main.cpp</Filename><XPos>0</XPos><YPos>155</YPos><SelStart>6035</SelStart><SelEnd>6035</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\2-MESSAGE\LIST\slon.map</Filename><XPos>0</XPos><YPos>1022</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><ActiveTab>3</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\O\SCMRTOS\PRE-V400\SAMPLES\AVR\IAR\SCMRTOS\AVR\OS_Target.h</Filename><XPos>0</XPos><YPos>41</YPos><SelStart>2781</SelStart><SelEnd>2781</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\..\O\SCMRTOS\TRUNK\SAMPLES\AVR\IAR\MEGA\2-MESSAGE\SRC\scmRTOS_TARGET_CFG.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>761</SelStart><SelEnd>761</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\..\..\O\SCMRTOS\TRUNK\SAMPLES\AVR\IAR\MEGA\2-MESSAGE\SRC\scmRTOS_CONFIG.h</Filename><XPos>0</XPos><YPos>147</YPos><SelStart>6251</SelStart><SelEnd>6251</SelEnd></Tab><ActiveTab>1</ActiveTab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
     <Positions>
       
       
       
       
       
-    <Top><Row0><Sizes><Toolbar-00ae9880><key>iaridepm.enu1</key></Toolbar-00ae9880></Sizes></Row0></Top><Left><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>729</Bottom><Right>267</Right><x>-2</x><y>-2</y><xscreen>149</xscreen><yscreen>196</yscreen><sizeHorzCX>124895</sizeHorzCX><sizeHorzCY>175785</sizeHorzCY><sizeVertCX>225482</sizeVertCX><sizeVertCY>655605</sizeVertCY></Rect></Wnd0></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>342</Bottom><Right>1195</Right><x>-2</x><y>-2</y><xscreen>1197</xscreen><yscreen>344</yscreen><sizeHorzCX>1003353</sizeHorzCX><sizeHorzCY>308520</sizeHorzCY><sizeVertCX>124895</sizeVertCX><sizeVertCY>175785</sizeVertCY></Rect></Wnd1></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+    <Top><Row0><Sizes><Toolbar-00ae9330><key>iaridepm.enu1</key></Toolbar-00ae9330></Sizes></Row0></Top><Left><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>859</Bottom><Right>258</Right><x>-2</x><y>-2</y><xscreen>200</xscreen><yscreen>200</yscreen><sizeHorzCX>149925</sizeHorzCX><sizeHorzCY>181653</sizeHorzCY><sizeVertCX>194903</sizeVertCX><sizeVertCY>782016</sizeVertCY></Rect></Wnd1></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd2><Rect><Top>-2</Top><Left>-2</Left><Bottom>198</Bottom><Right>1336</Right><x>-2</x><y>-2</y><xscreen>1338</xscreen><yscreen>200</yscreen><sizeHorzCX>1002999</sizeHorzCX><sizeHorzCY>181653</sizeHorzCY><sizeVertCX>149925</sizeVertCX><sizeVertCY>181653</sizeVertCY></Rect></Wnd2></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
   </Desktop>
 </Workspace>
 

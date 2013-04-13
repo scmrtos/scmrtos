@@ -162,7 +162,7 @@ typedef uint_fast32_t tick_count_t;
 //    Context Switch Hook function.
 //
 //
-#define  scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE  0
+#define  scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE  1
 
 //-----------------------------------------------------------------------------
 //

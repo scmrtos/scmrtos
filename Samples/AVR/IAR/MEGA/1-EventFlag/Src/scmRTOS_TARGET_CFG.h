@@ -97,8 +97,10 @@ namespace OS
 
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
 
-    INLINE void raise_context_switch() { SPM_CONTROL_REG |= (1 << SPMIE);  } // enable SPM interrupt
-    INLINE void block_context_switch() { SPM_CONTROL_REG &= ~(1 << SPMIE); } // disable SPM interrupt
+    // enable (and raise) SPM interrupt
+    INLINE void raise_context_switch() { SPM_CONTROL_REG |= (1 << SPMIE);  }
+    // disable SPM interrupt
+    INLINE void block_context_switch() { SPM_CONTROL_REG &= ~(1 << SPMIE); }
 
     class TNestedISRW              
     {                              
@@ -114,11 +116,12 @@ namespace OS
         uint8_t State;                                                          
     };
 
-#if scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE == 1
+#  if scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE != 1
+#    error scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE must be 1\
+          for SPM_READY interrupt context switcher
+#  endif
 
     INLINE void context_switch_user_hook() { block_context_switch(); }
-
-#endif
 
     #define ENABLE_NESTED_INTERRUPTS() OS::TNestedISRW NestedISRW
 

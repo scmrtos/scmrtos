@@ -85,14 +85,10 @@
 
 namespace OS
 {
-#if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
     #pragma vector=SYSTEM_TIMER_VECTOR
     OS_INTERRUPT void OS_SystemTimer_ISR();
-#else
-    #pragma vector=SYSTEM_TIMER_VECTOR
-    __interrupt void SystemTimer_ISR();
-#endif // scmRTOS_CONTEXT_SWITCH_SCHEME
 }
+
 //------------------------------------------------------------------------------
 //
 //       Context Switch ISR stuff
@@ -100,14 +96,13 @@ namespace OS
 //
 namespace OS
 {
-    #if scmRTOS_IDLE_HOOK_ENABLE == 1
-    void idle_process_user_hook();
-    #endif
 
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
 
-    INLINE void RaiseContextSwitch() { SPM_CONTROL_REG |= (1 << SPMIE);  } // enable SPM interrupt
-    INLINE void BlockContextSwitch() { SPM_CONTROL_REG &= ~(1 << SPMIE); } // disable SPM interrupt
+    // enable (and raise) SPM interrupt
+    INLINE void RaiseContextSwitch() { SPM_CONTROL_REG |= (1 << SPMIE);  }
+    // disable SPM interrupt
+    INLINE void BlockContextSwitch() { SPM_CONTROL_REG &= ~(1 << SPMIE); }
 
     class TNestedISRW              
     {                              
@@ -123,11 +118,12 @@ namespace OS
         uint8_t State;                                                          
     };
 
-#if scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE == 1
+#  if scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE != 1
+#    error scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE must be 1\
+          for SPM_READY interrupt context switcher
+#  endif
 
     INLINE void ContextSwitchUserHook() { BlockContextSwitch(); }
-
-#endif
 
     #define ENABLE_NESTED_INTERRUPTS() OS::TNestedISRW NestedISRW
 
