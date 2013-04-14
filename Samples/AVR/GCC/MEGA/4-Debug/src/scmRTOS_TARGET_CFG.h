@@ -50,8 +50,28 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+#if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
+
+#  if defined(SPM_READY_vect)
+#    define CONTEXT_SWITCH_ISR_VECTOR  SPM_READY_vect
+#    define SPM_CONTROL_REG SPMCSR
+#  elif defined(SPM_RDY_vect)
+#    define CONTEXT_SWITCH_ISR_VECTOR  SPM_RDY_vect
+#    define SPM_CONTROL_REG SPMCR
+#  else
+#    error "SPM ready interrupt vector not defined"
+#  endif
+
+#endif
+
 
 #ifndef __ASSEMBLER__
+
+//------------------------------------------------------------------------------
+//
+//      Hook is defined in scmRTOS_extensions.h (if needed)
+//
+#define INLINE_CONTEXT_SWITCH_HOOK INLINE
 
 //------------------------------------------------------------------------------
 //
@@ -84,11 +104,42 @@
 // the hook not defined.
 //
 
-#if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
-# error "scmRTOS_CONTEXT_SWITCH_SCHEME == 1 can't be used in this version of 4-Debug example"
-#endif  // scmRTOS_CONTEXT_SWITCH_SCHEME
+namespace OS
+{
 
-#define ENABLE_NESTED_INTERRUPTS() sei()
+#if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
+
+    // enable and raise SPM interrupt
+    INLINE void raise_context_switch() { SPM_CONTROL_REG |= (1 << SPMIE);  }
+    
+    // disable SPM interrupt
+    INLINE void block_context_switch() { SPM_CONTROL_REG &= ~(1 << SPMIE); }
+
+    class TNestedISRW
+    {
+    public:
+        INLINE TNestedISRW() : State(SPM_CONTROL_REG) { block_context_switch(); sei(); }
+        INLINE ~TNestedISRW()
+        {
+            cli();
+            SPM_CONTROL_REG = State;
+        }
+    private:
+        uint8_t State;
+    };
+
+    #define ENABLE_NESTED_INTERRUPTS() OS::TNestedISRW NestedISRW
+
+#  if scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE != 1
+#    error SPM_READY ISR context switcher requires scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE == 1
+#  endif
+
+#else // scmRTOS_CONTEXT_SWITCH_SCHEME
+
+    #define ENABLE_NESTED_INTERRUPTS() sei()
+
+#endif // scmRTOS_CONTEXT_SWITCH_SCHEME
+}
 
 #endif // __ASSEMBLER__
 

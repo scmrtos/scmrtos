@@ -111,14 +111,14 @@ typedef uint_fast32_t tick_count_t;
 //    scmRTOS System Timer Hook
 //
 //
-#define  scmRTOS_SYSTIMER_HOOK_ENABLE       0
+#define  scmRTOS_SYSTIMER_HOOK_ENABLE       1
 
 //-----------------------------------------------------------------------------
 //
 //    scmRTOS Idle Process Hook
 //
 //
-#define  scmRTOS_IDLE_HOOK_ENABLE           0
+#define  scmRTOS_IDLE_HOOK_ENABLE           1
 
 
 //-----------------------------------------------------------------------------
@@ -138,7 +138,7 @@ typedef uint_fast32_t tick_count_t;
 //    interrupt. See documentation fo details.
 //
 //
-#define  scmRTOS_CONTEXT_SWITCH_SCHEME      0
+#define  scmRTOS_CONTEXT_SWITCH_SCHEME      1
 
 //-----------------------------------------------------------------------------
 //

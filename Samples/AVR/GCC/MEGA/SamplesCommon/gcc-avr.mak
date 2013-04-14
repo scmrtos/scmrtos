@@ -98,10 +98,14 @@ vpath %.S $(SRCDIRS)
 #-----------------------------------------------------------------------
 # targets of makefile
 #
-.PHONY : all debug printok depends
+.PHONY : all debug printok depends build
 
 # default target - binaries for AVR programming
 all:	begin $(TRGPGM) printok
+
+build:
+	$(MAKE) clean
+	$(MAKE)
 
 begin:
 	echo ======== Beginning of project  \"$(TRG)\"  processing. MCU=$(MCU); $(CC) --version ;\

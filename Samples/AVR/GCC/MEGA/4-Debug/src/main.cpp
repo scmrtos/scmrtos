@@ -76,6 +76,8 @@
 #define PROC1           B,1,H
 #define PROC2           B,2,H
 #define PROC3           B,3,H
+#define TIMER_HOOK      C,4,H
+#define IDLE_HOOK       C,5,H
 
 //---------------------------------------------------------------------------
 //
@@ -105,7 +107,12 @@ int main()
     TCCR2A  = 0;
     TCCR2B  = (1 << CS22); 
     TIMSK2 |= (1 << TOIE2);
-
+#if scmRTOS_SYSTIMER_HOOK_ENABLE
+    DRIVER(TIMER_HOOK,OUT);
+#endif
+#if scmRTOS_IDLE_HOOK_ENABLE
+    DRIVER(IDLE_HOOK,OUT);
+#endif
     //
     OS::run();
 }
@@ -209,14 +216,25 @@ template<> OS_PROCESS void TProc3::exec()
 
 //---------------------------------------------------------------------------
 #if scmRTOS_SYSTIMER_HOOK_ENABLE
-void OS::system_timer_user_hook() {}
+void OS::system_timer_user_hook()
+{
+#if  scmRTOS_SYSTIMER_NEST_INTS_ENABLE  &&  !PORT_TOGGLE_BY_PIN_WRITE
+    TCritSect cs;
+#endif
+    CPL(TIMER_HOOK);
+}
 #endif // scmRTOS_SYSTIMER_HOOK_ENABLE
 
 //---------------------------------------------------------------------------
 #if scmRTOS_IDLE_HOOK_ENABLE
-void OS::idle_process_user_hook() {}
+void OS::idle_process_user_hook()
+{
+#if  !PORT_TOGGLE_BY_PIN_WRITE
+    TCritSect cs;
+#endif
+    CPL(IDLE_HOOK);
+}
 #endif // scmRTOS_IDLE_HOOK_ENABLE
-
 
 //---------------------------------------------------------------------------
 OS_INTERRUPT void TIMER2_OVF_vect()

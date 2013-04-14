@@ -15,7 +15,6 @@ SamplesCommon  - Common files for all samples.
 scmRTOS        - scmRTOS Common, Extensions and AVR/GCC port files.
  
 Run switch.bat (in Windows) or switch.sh (in Linux) to obtain scmRTOS files.
-Add "^/branches/pre-v400" argument to switch script if pre-v400 branch still not merged with trunk.
 
 Run make in sample directory for project compilation.
 
