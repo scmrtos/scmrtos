@@ -22,6 +22,10 @@ Ports/AVR/GCC/OS_Target_cpp.cpp eol=crlf
 Ports/AVR/IAR/OS_Target.h eol=crlf
 Ports/AVR/IAR/OS_Target_asm.s90 eol=crlf
 Ports/AVR/IAR/OS_Target_cpp.cpp eol=crlf
+Ports/Blackfin/CCES/BF6xx/OS_Target.h -text
+Ports/Blackfin/CCES/BF6xx/OS_Target_a.asm -text
+Ports/Blackfin/CCES/BF6xx/OS_Target_cpp.cpp -text
+Ports/Blackfin/CCES/BF6xx/device_def.h -text
 Ports/Blackfin/VDSP/OS_Target.h eol=crlf
 Ports/Blackfin/VDSP/OS_Target_asm.sbf eol=crlf
 Ports/Blackfin/VDSP/OS_Target_cpp.cpp eol=crlf
