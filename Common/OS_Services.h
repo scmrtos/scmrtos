@@ -235,7 +235,8 @@ namespace OS
                void unlock();
         INLINE void unlock_isr();
 
-        INLINE bool lock_softly()     { TCritSect cs; if(ValueTag) return false; else lock(); return true; }
+        INLINE bool try_lock()       { TCritSect cs; if(ValueTag) return false; else lock(); return true; }
+               bool try_lock(timeout_t timeout);
         INLINE bool is_locked() const { TCritSect cs; return ValueTag != 0; }
 
     #if scmRTOS_OBSOLETE_NAMES == 1
@@ -244,6 +245,7 @@ namespace OS
         INLINE void UnlockISR()      { unlock_isr(); }
         INLINE bool LockSoftly()     { return lock_softly(); }
         INLINE bool IsLocked() const { return is_locked(); }
+        INLINE bool lock_softly()    { return try_lock(); }
     #endif
 
     protected:
