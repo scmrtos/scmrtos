@@ -54,7 +54,7 @@ namespace OS
     //       DESCRIPTION:
     //
     //
-    class TService : public TKernelAgent
+    class TService : protected TKernelAgent
     {
     protected:
         TService() : TKernelAgent() { }
@@ -190,7 +190,7 @@ namespace OS
     //       DESCRIPTION:
     //
     //
-    class TEventFlag : public TService
+    class TEventFlag : protected TService
     {
     public:
         enum TValue { efOn = 1, efOff= 0 };     // prefix 'ef' means: "Event Flag"
@@ -227,7 +227,7 @@ namespace OS
     //       DESCRIPTION:
     //
     //
-    class TMutex : public TService
+    class TMutex : protected TService
     {
     public:
         INLINE TMutex() : ProcessMap(0), ValueTag(0) { }
@@ -271,7 +271,7 @@ namespace OS
     //       DESCRIPTION:
     //
     //
-    class TChannel : public TService
+    class TChannel : protected TService
     {
     public:
         INLINE TChannel(uint8_t* buf, uint8_t size) : Cbuf(buf, size) { }
@@ -311,7 +311,7 @@ namespace OS
     //
     //
     template<typename T, uint16_t Size, typename S = uint8_t>
-    class channel : public TService
+    class channel : protected TService
     {
     public:
         INLINE channel() : ProducersProcessMap(0)
@@ -358,7 +358,7 @@ namespace OS
     //       DESCRIPTION:
     //
     //
-    class TBaseMessage : public TService
+    class TBaseMessage : protected TService
     {
     public:
         INLINE TBaseMessage() : ProcessMap(0), NonEmpty(false) { }
