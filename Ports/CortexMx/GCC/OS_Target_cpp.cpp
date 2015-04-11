@@ -215,8 +215,16 @@ struct iostruct_t
 };
 
 // PendSV and SysTick priority registers
+
+#if (defined __ARM_ARCH_6M__)
+// Cortex-M0 system control registers are only accessible using word transfers.
+static ioregister_t<0xE000ED20UL, uint32_t> SHPR3;
+#define SHP3_WORD_ACCESS
+#else
+// Cortex-M3/M4 system control registers allows byte transfers.
 static ioregister_t<0xE000ED22UL, uint8_t> PendSvPriority;
 static ioregister_t<0xE000ED23UL, uint8_t> SysTickPriority;
+#endif
 
 // SysTick stuff
 struct systick_t
@@ -283,7 +291,12 @@ extern "C" OS_INTERRUPT void Default_SystemTimer_ISR()
 #pragma weak __init_system_timer
 extern "C" void __init_system_timer()
 {
+	// Set SysTick priority value to lowest.
+#if (defined SHP3_WORD_ACCESS)   // word access
+	SHPR3 |= (0xFF << 24);
+#else
 	SysTickPriority = 0xFF;
+#endif
 	SysTick->LOAD = SYSTICKFREQ/SYSTICKINTRATE-1;
 	SysTick->CTRL = NVIC_ST_CTRL_CLK_SRC | NVIC_ST_CTRL_INTEN | NVIC_ST_CTRL_ENABLE;
 }
@@ -300,9 +313,15 @@ extern "C" void __init_system_timer()
  */
 extern "C" NORETURN void os_start(stack_item_t *sp)
 {
-	PendSvPriority = 0xFF;     // PendSV priority value (lowest)
+	// Set PendSV lowest priority value
+#if (defined SHP3_WORD_ACCESS)
+	SHPR3 |= (0xFF << 16);
+#else
+	PendSvPriority = 0xFF;
+#endif
+
 #if (!defined __SOFTFP__)
-    FPCCR |= ASPEN | LSPEN;    // move this to os_start
+    FPCCR |= ASPEN | LSPEN;
 #endif
 
     asm volatile (
