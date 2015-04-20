@@ -285,20 +285,28 @@ extern "C" OS_INTERRUPT void Default_SystemTimer_ISR()
 /*
  * Default system timer initialization.
  *
- * Sets SysTick timer interrupt priority to lowest.
+ * Sets SysTick timer interrupt priority a bit higher than lowest one.
  * Configures SysTick timer to interrupt with frequency SYSTICKINTRATE.
  */
+#if (!defined CORE_PRIORITY_BITS)
+#	define CORE_PRIORITY_BITS        8
+#endif
+
+namespace
+{
+enum { SYS_TIMER_PRIORITY = (0xFEUL << (8-(CORE_PRIORITY_BITS))) };
+}
+
 #pragma weak __init_system_timer
 extern "C" void __init_system_timer()
 {
-	// Set SysTick priority value to lowest.
 #if (defined SHP3_WORD_ACCESS)   // word access
-	SHPR3 |= (0xFF << 24);
+    SHPR3 = (SHPR3 & ~(0xFF << 24)) | (SYS_TIMER_PRIORITY << 24);
 #else
-	SysTickPriority = 0xFF;
+    SysTickPriority = SYS_TIMER_PRIORITY;
 #endif
-	SysTick->LOAD = SYSTICKFREQ/SYSTICKINTRATE-1;
-	SysTick->CTRL = NVIC_ST_CTRL_CLK_SRC | NVIC_ST_CTRL_INTEN | NVIC_ST_CTRL_ENABLE;
+    SysTick->LOAD = SYSTICKFREQ/SYSTICKINTRATE-1;
+    SysTick->CTRL = NVIC_ST_CTRL_CLK_SRC | NVIC_ST_CTRL_INTEN | NVIC_ST_CTRL_ENABLE;
 }
 
 
@@ -313,11 +321,11 @@ extern "C" void __init_system_timer()
  */
 extern "C" NORETURN void os_start(stack_item_t *sp)
 {
-	// Set PendSV lowest priority value
+    // Set PendSV lowest priority value
 #if (defined SHP3_WORD_ACCESS)
-	SHPR3 |= (0xFF << 16);
+    SHPR3 |= (0xFF << 16);
 #else
-	PendSvPriority = 0xFF;
+    PendSvPriority = 0xFF;
 #endif
 
 #if (!defined __SOFTFP__)
