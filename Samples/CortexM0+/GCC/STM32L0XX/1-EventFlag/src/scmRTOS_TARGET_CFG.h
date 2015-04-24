@@ -51,9 +51,11 @@
 #define SYSTICKFREQ     32000000
 #define SYSTICKINTRATE  1000
 
-//------------------------------------------------------------------------------
-// Definitions for some processor registers in order to not include specific
-// header file for various Cortex-M3 processor derivatives.
+// Define number of priority bits implemented in hardware
+#define CORE_PRIORITY_BITS  2
+
+// Define some core registers in order to not include specific
+// header file for various Cortex processor derivatives.
 #define CPU_ICSR            ( ( volatile uint32_t *) 0xE000ED04 )   // Interrupt Control State Register
 #define CPU_SYSTICKCSR      ( ( volatile uint32_t *) 0xE000E010 )   // SysTick Control and Status Register
 #define CPU_SYSTICKCSR_EINT 0x02                                    // Bit for enable/disable SysTick interrupt

@@ -294,7 +294,7 @@ extern "C" OS_INTERRUPT void Default_SystemTimer_ISR()
 
 namespace
 {
-enum { SYS_TIMER_PRIORITY = (0xFEUL << (8-(CORE_PRIORITY_BITS))) };
+enum { SYS_TIMER_PRIORITY = ((0xFEUL << (8-(CORE_PRIORITY_BITS))) & 0xFF) };
 }
 
 #pragma weak __init_system_timer
