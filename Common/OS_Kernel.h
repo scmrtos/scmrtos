@@ -313,6 +313,23 @@ namespace OS
     };
     //--------------------------------------------------------------------------
 
+
+    //--------------------------------------------------------------------------
+    //
+    //   StartState
+    // 
+    //   Initial task state.
+    //
+    //      DESCRIPTION:
+    //
+    //
+    enum StartState
+    {
+        ssRunning,
+        ssSuspended
+    };
+
+
     //--------------------------------------------------------------------------
     //
     //   process
@@ -324,59 +341,61 @@ namespace OS
     //
     #if SEPARATE_RETURN_STACK == 0
 
-        template<TPriority pr, size_t stack_size>
+        template<TPriority pr, size_t stack_size, StartState ss = ssRunning>
         class process : public TBaseProcess
         {
         public:
             INLINE_PROCESS_CTOR process();
 
             OS_PROCESS static void exec();
-            
+
         #if scmRTOS_PROCESS_RESTART_ENABLE == 1
             INLINE void terminate();
         #endif
-            
+
+        protected:
+            OS_PROCESS static void suspended_exec() { sleep(0); exec(); }
 
         private:
             stack_item_t Stack[stack_size/sizeof(stack_item_t)];
         };
 
-        template<TPriority pr, size_t stack_size>
-        OS::process<pr, stack_size>::process() : TBaseProcess( &Stack[stack_size/sizeof(stack_item_t)]
+        template<TPriority pr, size_t stack_size, StartState ss>
+        OS::process<pr, stack_size, ss>::process(): TBaseProcess(&Stack[stack_size / sizeof(stack_item_t)]
                                                              , pr
-                                                             , reinterpret_cast<void (*)()>(exec) 
+                                                             , reinterpret_cast<void (*)()>((ss == ssRunning) ? exec : suspended_exec)
                                                          #if scmRTOS_DEBUG_ENABLE == 1
                                                              , Stack
                                                          #endif
                                                              )
         {
         }
-        
+
         #if scmRTOS_PROCESS_RESTART_ENABLE == 1
-        template<TPriority pr, size_t stack_size>
-        void OS::process<pr, stack_size>::terminate()
+        template<TPriority pr, size_t stack_size, StartState ss>
+        void OS::process<pr, stack_size, ss>::terminate()
         {
             TCritSect cs;
-            
+
             reset_controls();
             init_stack_frame( &Stack[stack_size/sizeof(stack_item_t)]
-                              , reinterpret_cast<void (*)()>(exec)
+                             , reinterpret_cast<void (*)()>(exec)
                           #if scmRTOS_DEBUG_ENABLE == 1
                               , Stack
                           #endif
                             );
         }
         #endif // scmRTOS_RESTART_ENABLE
-        
+
         typedef OS::process<OS::prIDLE, scmRTOS_IDLE_PROCESS_STACK_SIZE> TIdleProc;
 
     #else  // SEPARATE_RETURN_STACK
 
-        template<TPriority pr, size_t stack_size, size_t rstack_size>
+        template<TPriority pr, size_t stack_size, size_t rstack_size, StartState ss = ssRunning>
         class process : public TBaseProcess
         {
         public:
-            INLINE_PROCESS_CTOR process();
+            INLINE_PROCESS_CTOR process(); 
 
             OS_PROCESS static void exec();
 
@@ -384,16 +403,19 @@ namespace OS
             INLINE void terminate();
         #endif
 
+        protected:
+            OS_PROCESS static void suspended_exec() { sleep(0); exec(); }
+
         private:
             stack_item_t Stack [stack_size/sizeof(stack_item_t)];
             stack_item_t RStack[rstack_size/sizeof(stack_item_t)];
         };
 
-        template<TPriority pr, size_t stack_size, size_t rstack_size>
-        process<pr, stack_size, rstack_size>::process() : TBaseProcess( &Stack[stack_size/sizeof(stack_item_t)]
+        template<TPriority pr, size_t stack_size, size_t rstack_size, StartState ss>
+        process<pr, stack_size, rstack_size, ss>::process(): TBaseProcess(&Stack[stack_size / sizeof(stack_item_t)]
                                                                       , &RStack[rstack_size/sizeof(stack_item_t)]
                                                                       , pr
-                                                                      , reinterpret_cast<void (*)()>(exec)
+                                                                      , reinterpret_cast<void (*)()>((ss == ssRunning) ? exec : suspended_exec)
                                                                  #if scmRTOS_DEBUG_ENABLE == 1
                                                                       , Stack
                                                                       , RStack
@@ -403,8 +425,8 @@ namespace OS
         }
         
         #if scmRTOS_PROCESS_RESTART_ENABLE == 1
-        template<TPriority pr, size_t stack_size, size_t rstack_size>
-        void OS::process<pr, stack_size, rstack_size>::terminate()
+        template<TPriority pr, size_t stack_size, size_t rstack_size, StartState ss>
+        void OS::process<pr, stack_size, rstack_size, ss>::terminate()
         {
             TCritSect cs;
             
