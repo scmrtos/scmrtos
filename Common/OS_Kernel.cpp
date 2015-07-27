@@ -52,6 +52,10 @@ using namespace OS;
 
 OS::TKernel OS::Kernel;
 
+#if scmRTOS_SUSPENDED_TASK_ENABLE != 0
+OS::TProcessMap OS::detail::SuspendedProcessMap = (1ul << (PROCESS_COUNT)) - 1; 
+#endif
+
 TBaseProcess * TKernel::ProcessTable[scmRTOS_PROCESS_COUNT + 1];
 
 //------------------------------------------------------------------------------

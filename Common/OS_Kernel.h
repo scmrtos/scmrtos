@@ -329,6 +329,13 @@ namespace OS
         ssSuspended
     };
 
+    #if scmRTOS_SUSPENDED_TASK_ENABLE != 0
+    namespace detail
+    {
+    extern TProcessMap SuspendedProcessMap;
+    }
+    #endif
+
 
     //--------------------------------------------------------------------------
     //
@@ -353,9 +360,6 @@ namespace OS
             INLINE void terminate();
         #endif
 
-        protected:
-            OS_PROCESS static void suspended_exec() { sleep(0); exec(); }
-
         private:
             stack_item_t Stack[stack_size/sizeof(stack_item_t)];
         };
@@ -363,12 +367,16 @@ namespace OS
         template<TPriority pr, size_t stack_size, StartState ss>
         OS::process<pr, stack_size, ss>::process(): TBaseProcess(&Stack[stack_size / sizeof(stack_item_t)]
                                                              , pr
-                                                             , reinterpret_cast<void (*)()>((ss == ssRunning) ? exec : suspended_exec)
+                                                             , exec
                                                          #if scmRTOS_DEBUG_ENABLE == 1
                                                              , Stack
                                                          #endif
                                                              )
         {
+            #if scmRTOS_SUSPENDED_TASK_ENABLE != 0
+            if ( ss == ssSuspended )
+                clr_prio_tag(detail::SuspendedProcessMap, get_prio_tag(pr));
+            #endif
         }
 
         #if scmRTOS_PROCESS_RESTART_ENABLE == 1
@@ -403,9 +411,6 @@ namespace OS
             INLINE void terminate();
         #endif
 
-        protected:
-            OS_PROCESS static void suspended_exec() { sleep(0); exec(); }
-
         private:
             stack_item_t Stack [stack_size/sizeof(stack_item_t)];
             stack_item_t RStack[rstack_size/sizeof(stack_item_t)];
@@ -415,13 +420,17 @@ namespace OS
         process<pr, stack_size, rstack_size, ss>::process(): TBaseProcess(&Stack[stack_size / sizeof(stack_item_t)]
                                                                       , &RStack[rstack_size/sizeof(stack_item_t)]
                                                                       , pr
-                                                                      , reinterpret_cast<void (*)()>((ss == ssRunning) ? exec : suspended_exec)
+                                                                      , exec
                                                                  #if scmRTOS_DEBUG_ENABLE == 1
                                                                       , Stack
                                                                       , RStack
                                                                  #endif
                                                                       )
         {
+            #if scmRTOS_SUSPENDED_TASK_ENABLE != 0
+            if ( ss == ssSuspended )
+                clr_prio_tag(detail::SuspendedProcessMap, get_prio_tag(pr));
+            #endif
         }
         
         #if scmRTOS_PROCESS_RESTART_ENABLE == 1
@@ -664,7 +673,14 @@ bool OS::TBaseProcess::is_suspended() const
 //-----------------------------------------------------------------------------
 INLINE void OS::run()
 {
-    stack_item_t *sp = Kernel.ProcessTable[pr0]->StackPointer;
+    uint_fast8_t p = pr0;
+
+    #if scmRTOS_SUSPENDED_TASK_ENABLE != 0
+    Kernel.ReadyProcessMap = detail::SuspendedProcessMap;
+    p = highest_priority(Kernel.ReadyProcessMap); 
+    #endif
+
+    stack_item_t *sp = Kernel.ProcessTable[p]->StackPointer;
     os_start(sp);
 }
 
