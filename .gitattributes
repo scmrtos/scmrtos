@@ -497,6 +497,11 @@ Samples/CortexM3/GCC/STM32F1XX/4-Debug/src/main.cpp eol=crlf
 Samples/CortexM3/GCC/STM32F1XX/4-Debug/src/scmRTOS_CONFIG.h eol=crlf
 Samples/CortexM3/GCC/STM32F1XX/4-Debug/src/scmRTOS_TARGET_CFG.h eol=crlf
 Samples/CortexM3/GCC/STM32F1XX/4-Debug/src/scmRTOS_extensions.h eol=crlf
+Samples/CortexM3/GCC/STM32F1XX/5-SuspendedTask/makefile -text
+Samples/CortexM3/GCC/STM32F1XX/5-SuspendedTask/src/main.cpp -text
+Samples/CortexM3/GCC/STM32F1XX/5-SuspendedTask/src/scmRTOS_CONFIG.h -text
+Samples/CortexM3/GCC/STM32F1XX/5-SuspendedTask/src/scmRTOS_TARGET_CFG.h -text
+Samples/CortexM3/GCC/STM32F1XX/5-SuspendedTask/src/scmRTOS_extensions.h -text
 Samples/CortexM3/GCC/STM32F1XX/SamplesCommon/core_cm3.h eol=crlf
 Samples/CortexM3/GCC/STM32F1XX/SamplesCommon/pin.h eol=crlf
 Samples/CortexM3/GCC/STM32F1XX/SamplesCommon/startup.c eol=crlf
