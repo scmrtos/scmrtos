@@ -367,7 +367,7 @@ namespace OS
         template<TPriority pr, size_t stack_size, StartState ss>
         OS::process<pr, stack_size, ss>::process(): TBaseProcess(&Stack[stack_size / sizeof(stack_item_t)]
                                                              , pr
-                                                             , exec
+                                                             , reinterpret_cast<void (*)()>(exec)
                                                          #if scmRTOS_DEBUG_ENABLE == 1
                                                              , Stack
                                                          #endif
@@ -420,7 +420,7 @@ namespace OS
         process<pr, stack_size, rstack_size, ss>::process(): TBaseProcess(&Stack[stack_size / sizeof(stack_item_t)]
                                                                       , &RStack[rstack_size/sizeof(stack_item_t)]
                                                                       , pr
-                                                                      , exec
+                                                                      , reinterpret_cast<void (*)()>(exec)
                                                                  #if scmRTOS_DEBUG_ENABLE == 1
                                                                       , Stack
                                                                       , RStack
