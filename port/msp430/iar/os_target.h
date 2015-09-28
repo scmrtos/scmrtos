@@ -256,7 +256,7 @@ namespace OS
 #endif
 }
 
-#include <OS_Kernel.h>
+#include <os_kernel.h>
 
 namespace OS
 {

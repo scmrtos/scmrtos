@@ -50,7 +50,7 @@
 
 #include "scmRTOS_CONFIG.h"
 #include "scmRTOS_TARGET_CFG.h"
-#include "OS_Target.h"  // SAVE_EIND & Co
+#include "os_target.h"  // SAVE_EIND & Co
 
 .list
 

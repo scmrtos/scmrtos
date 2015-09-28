@@ -50,10 +50,10 @@ using namespace OS;
 
 OS::TPrioMaskTable OS::PrioMaskTable;
 
-// FIXME: Context save/restore routine in OS_Target_asm.s does not depend on .vregs size
-//	But for IAR 1.20 and 1.30 .vregs size does not depend of IDE virtual regs number setting.
-//	Is .vregs section size fixed by IAR to 16 bytes and 12 bytes is compiler-limitation
-//	but 16 bytes of RAM reserved for both options?
+// FIXME: Context save/restore routine in os_target_asm.s does not depend on .vregs size
+//  But for IAR 1.20 and 1.30 .vregs size does not depend of IDE virtual regs number setting.
+//  Is .vregs section size fixed by IAR to 16 bytes and 12 bytes is compiler-limitation
+//  but 16 bytes of RAM reserved for both options?
 // #pragma section =".vregs"
 // Stack -= 5 + __section_size(".vregs") + 1;
 #warning "This scmRTOS port assumes that .vregs section occupies 16-byte area"
@@ -71,7 +71,7 @@ OS::TPrioMaskTable OS::PrioMaskTable;
  * Другий варіант наче швидший, але на етапі старту це не так важливо.
  */
 
-//  For scmRTOS_CONTEXT_SWITCH_SCHEME == 0 MCU registers are saved/restored in OS_Target_asm.s
+//  For scmRTOS_CONTEXT_SWITCH_SCHEME == 0 MCU registers are saved/restored in os_target_asm.s
 //  not in order of interrupt entry/exit process.
 #if 0
 enum {
@@ -122,7 +122,7 @@ void TBaseProcess::init_stack_frame( stack_item_t * Stack
     stack_item_t *fill_ptr = StackPool;
     while( fill_ptr <= Stack )
     {
-	*fill_ptr++ = STACK_DEFAULT_PATTERN;
+    *fill_ptr++ = STACK_DEFAULT_PATTERN;
     }
 #endif // scmRTOS_DEBUG_ENABLE
 }

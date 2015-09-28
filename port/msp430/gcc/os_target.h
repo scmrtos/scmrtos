@@ -154,7 +154,7 @@ private:
     status_reg_t StatusReg;
     INLINE status_reg_t get_status_reg()
     {
-    	status_reg_t __x;
+        status_reg_t __x;
         __asm__ __volatile__("MOV  R2, %0" : "=r" (__x));
         return __x;
     }
@@ -253,7 +253,7 @@ namespace OS
     INLINE void disable_context_switch() { disable_interrupts(); }
 }
 
-#include <OS_Kernel.h>
+#include <os_kernel.h>
 
 namespace OS
 {
@@ -282,7 +282,7 @@ namespace OS
         //-----------------------------------------------------
         INLINE void ISR_Exit()
         {
-        	disable_interrupts();
+            disable_interrupts();
             if(--Kernel.ISR_NestCount) return;
             Kernel.sched_isr();
         }
@@ -298,7 +298,7 @@ namespace OS
     private:
         INLINE stack_item_t* get_stack_pointer()
         {
-        	stack_item_t* __x;
+            stack_item_t* __x;
             __asm__ __volatile__("MOV    R1, %0" : "=r" (__x));
             return __x;
         }
@@ -317,7 +317,7 @@ namespace OS
         }
         INLINE void ISR_Exit()
         {
-        	disable_interrupts();
+            disable_interrupts();
             if(--Kernel.ISR_NestCount) return;
             set_stack_pointer(TKernel::ProcessTable[Kernel.CurProcPriority]->StackPointer);
             Kernel.sched_isr();

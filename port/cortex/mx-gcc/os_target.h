@@ -262,7 +262,7 @@ INLINE OS::TProcessMap get_prio_tag(const uint_fast8_t pr) { return static_cast<
 #else
     INLINE uint_fast8_t highest_priority(TProcessMap pm)
     {
-    	return 31 - __builtin_clz(pm);
+        return 31 - __builtin_clz(pm);
     }
 #endif // scmRTOS_PRIORITY_ORDER
 }
@@ -273,7 +273,7 @@ namespace OS
     INLINE void disable_context_switch() { disable_interrupts(); }
 }
 
-#include <OS_Kernel.h>
+#include <os_kernel.h>
 
 namespace OS
 {

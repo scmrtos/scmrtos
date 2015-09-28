@@ -694,6 +694,6 @@ namespace OS
 }   // namespace OS
 #endif
 
-#include <OS_Services.h>
+#include <os_services.h>
 
 #endif // OS_KERNEL_H

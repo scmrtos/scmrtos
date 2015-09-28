@@ -51,7 +51,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <usrlib.h>
-#include <OS_Target.h>
+#include <os_target.h>
 
 //------------------------------------------------------------------------------
 

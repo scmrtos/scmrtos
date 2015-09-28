@@ -216,7 +216,7 @@ namespace OS
     INLINE void disable_context_switch() { disable_interrupts(); }
 }
 
-#include <OS_Kernel.h>
+#include <os_kernel.h>
 
 namespace OS
 {

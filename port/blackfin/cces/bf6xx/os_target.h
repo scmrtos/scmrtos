@@ -134,8 +134,8 @@ typedef uint16_t status_reg_t;
 class TCritSect
 {
 public:
-	 TCritSect () : StatusReg(cli()) { }
-	 ~TCritSect() { sti(StatusReg); }
+     TCritSect () : StatusReg(cli()) { }
+     ~TCritSect() { sti(StatusReg); }
 
 private:
     status_reg_t StatusReg;
@@ -232,7 +232,7 @@ namespace OS
 }
 //-----------------------------------------------------------------------------
 ///////////////////////////////////////////////////////////////////////////////
-#include <OS_Kernel.h>
+#include <os_kernel.h>
 ///////////////////////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
 namespace OS

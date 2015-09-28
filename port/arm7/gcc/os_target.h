@@ -127,7 +127,7 @@ typedef uint32_t status_reg_t;
 //
 #include "scmRTOS_CONFIG.h"
 #include "scmRTOS_TARGET_CFG.h"
-#include <OS_Target_core.h>
+#include <os_target_core.h>
 #include <scmRTOS_defs.h>
 
 
@@ -366,7 +366,7 @@ INLINE void os_start(stack_item_t* sp)
     context_restore(sp);
 }
 
-#include <OS_Kernel.h>
+#include <os_kernel.h>
 
 //-----------------------------------------------------------------------------
 namespace OS

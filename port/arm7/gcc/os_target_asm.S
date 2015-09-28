@@ -47,7 +47,7 @@
 
 #include "scmRTOS_CONFIG.h"
 #include "scmRTOS_TARGET_CFG.h"
-#include "OS_Target_core.h"
+#include "os_target_core.h"
 
 //  Context structure:
 //        lo address
