@@ -329,7 +329,7 @@ namespace OS
         ssSuspended
     };
 
-    #if scmRTOS_SUSPENDED_TASK_ENABLE != 0
+    #if scmRTOS_SUSPENDED_PROCESS_ENABLE != 0
     namespace detail
     {
     extern TProcessMap SuspendedProcessMap;
@@ -373,7 +373,7 @@ namespace OS
                                                          #endif
                                                              )
         {
-            #if scmRTOS_SUSPENDED_TASK_ENABLE != 0
+            #if scmRTOS_SUSPENDED_PROCESS_ENABLE != 0
             if ( ss == ssSuspended )
                 clr_prio_tag(detail::SuspendedProcessMap, get_prio_tag(pr));
             #endif
@@ -427,7 +427,7 @@ namespace OS
                                                                  #endif
                                                                       )
         {
-            #if scmRTOS_SUSPENDED_TASK_ENABLE != 0
+            #if scmRTOS_SUSPENDED_PROCESS_ENABLE != 0
             if ( ss == ssSuspended )
                 clr_prio_tag(detail::SuspendedProcessMap, get_prio_tag(pr));
             #endif
@@ -675,7 +675,7 @@ INLINE void OS::run()
 {
     uint_fast8_t p = pr0;
 
-    #if scmRTOS_SUSPENDED_TASK_ENABLE != 0
+    #if scmRTOS_SUSPENDED_PROCESS_ENABLE != 0
     Kernel.ReadyProcessMap = detail::SuspendedProcessMap;
     p = highest_priority(Kernel.ReadyProcessMap); 
     #endif
