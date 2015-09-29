@@ -42,6 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
+//*     Blackfin/CrossCore Embedded Studio port by Evgeny Nesterov, Copyright (c) 2012
 
 #ifndef DEVICE_H
 #define DEVICE_H

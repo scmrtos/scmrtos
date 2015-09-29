@@ -42,6 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
+//*     Blackfin/CrossCore Embedded Studio port by Evgeny Nesterov, Copyright (c) 2012
 
 #ifndef scmRTOS_BLACKFIN_H
 #define scmRTOS_BLACKFIN_H

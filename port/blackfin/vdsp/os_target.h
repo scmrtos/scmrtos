@@ -42,6 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
+//*     Blackfin/VisualDSP++ port by Harry E. Zhurov, Copyright (c) 2005-2012
 
 #ifndef scmRTOS_BLACKFIN_H
 #define scmRTOS_BLACKFIN_H
