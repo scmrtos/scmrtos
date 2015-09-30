@@ -10,12 +10,10 @@
 //*
 //*     PURPOSE:   Target Dependent Stuff Source
 //*
-//*     Version: 4.00
+//*     Version: 5.0.0
 //*
-//*     $Revision$
-//*     $Date::             $
 //*
-//*     Copyright (c) 2003-2012, Harry E. Zhurov
+//*     Copyright (c) 2003-2015, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,8 +40,8 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     Cortex-M3/M4(F) GCC port by Anton B. Gusev aka AHTOXA, Copyright (c) 2012
-//*     Cortex-M0 port by Sergey A. Borshch, Copyright (c) 2011
+//*     Cortex-M3/M4(F) GCC port by Anton B. Gusev aka AHTOXA, Copyright (c) 2012-2015
+//*     Cortex-M0 port by Sergey A. Borshch, Copyright (c) 2011-2015
 
 
 #include <scmRTOS.h>

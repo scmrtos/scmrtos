@@ -10,12 +10,10 @@
 //*               
 //*     PURPOSE:   Target Dependent Low-Level Stuff
 //*               
-//*     Version: 4.00
+//*     Version: 5.0.0
 //*
-//*     $Revision$
-//*     $Date::             $
 //*
-//*     Copyright (c) 2003-2012, Harry E. Zhurov
+//*     Copyright (c) 2003-2015, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person 
 //*     obtaining  a copy of this software and associated documentation 
@@ -42,7 +40,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     Ported by Andrey Chuikin, Copyright (c) 2008-2012
+//*     Ported by Andrey Chuikin, Copyright (c) 2008-2015
 
 #include "scmRTOS_TARGET_CFG.h"
 

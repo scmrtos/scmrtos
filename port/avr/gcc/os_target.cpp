@@ -10,12 +10,10 @@
 //*
 //*     PURPOSE:   Target Dependent Stuff Source
 //*
-//*     Version: 4.00
+//*     Version: 5.0.0
 //*
-//*     $Revision$
-//*     $Date::             $
 //*
-//*     Copyright (c) 2003-2012, Harry E. Zhurov
+//*     Copyright (c) 2003-2015, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,7 +40,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     avr-gcc port by Oleksandr O. Redchuk, Copyright (c) 2007-2012
+//*     avr-gcc port by Oleksandr O. Redchuk, Copyright (c) 2007-2015
 
 #include <scmRTOS.h>
 

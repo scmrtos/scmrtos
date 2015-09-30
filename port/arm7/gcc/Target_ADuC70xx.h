@@ -10,12 +10,10 @@
 //*
 //*     PURPOSE:   Target Dependent Stuff Header. Declarations And Definitions
 //*
-//*     Version: 4.00
+//*     Version: 5.0.0
 //*
-//*     $Revision$
-//*     $Date::             $
 //*
-//*     Copyright (c) 2003-2012, Harry E. Zhurov
+//*     Copyright (c) 2003-2015, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,8 +40,8 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2012
-//*     ADuC70xx port maintenance: Anton B. Gusev aka AHTOXA, Copyright (c) 2011-2012
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2015
+//*     ADuC70xx port maintenance: Anton B. Gusev aka AHTOXA, Copyright (c) 2011-2015
 
 #ifndef TARGET_ADUC_H__
 #define TARGET_ADUC_H__
