@@ -56,17 +56,17 @@ extern "C" stack_item_t* os_context_switch_hook(stack_item_t* sp);
 #endif
 
 
-#if scmRTOS_OBSOLETE_NAMES == 1
-
-INLINE void OS_Start(stack_item_t* sp) { os_start(sp); }
-
-#if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
-INLINE void OS_ContextSwitcher(stack_item_t** Curr_SP, stack_item_t* Next_SP) { os_context_switcher(Curr_SP, Next_SP); }
-#else
-INLINE stack_item_t* OS_ContextSwitchHook(stack_item_t* sp) { return os_context_switch_hook(sp); }
-#endif
-
-#endif // scmRTOS_OBSOLETE_NAMES
+//#if scmRTOS_OBSOLETE_NAMES == 1
+//
+//INLINE void OS_Start(stack_item_t* sp) { os_start(sp); }
+//
+//#if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
+//INLINE void OS_ContextSwitcher(stack_item_t** Curr_SP, stack_item_t* Next_SP) { os_context_switcher(Curr_SP, Next_SP); }
+//#else
+//INLINE stack_item_t* OS_ContextSwitchHook(stack_item_t* sp) { return os_context_switch_hook(sp); }
+//#endif
+//
+//#endif // scmRTOS_OBSOLETE_NAMES
     
 //==============================================================================
 
@@ -99,14 +99,14 @@ namespace OS
     INLINE void clr_prio_tag(TProcessMap & pm, const TProcessMap PrioTag) { pm &= ~PrioTag; }
 
     
-#if scmRTOS_OBSOLETE_NAMES == 1
-
-    INLINE void SetPrioTag(volatile TProcessMap & pm, const TProcessMap PrioTag) { set_prio_tag(pm, PrioTag); }
-    INLINE void ClrPrioTag(volatile TProcessMap & pm, const TProcessMap PrioTag) { clr_prio_tag(pm, PrioTag); }
-    INLINE void SetPrioTag(TProcessMap & pm, const TProcessMap PrioTag) { set_prio_tag(pm, PrioTag); }
-    INLINE void ClrPrioTag(TProcessMap & pm, const TProcessMap PrioTag) { clr_prio_tag(pm, PrioTag); }
-
-#endif
+//#if scmRTOS_OBSOLETE_NAMES == 1
+//
+//    INLINE void SetPrioTag(volatile TProcessMap & pm, const TProcessMap PrioTag) { set_prio_tag(pm, PrioTag); }
+//    INLINE void ClrPrioTag(volatile TProcessMap & pm, const TProcessMap PrioTag) { clr_prio_tag(pm, PrioTag); }
+//    INLINE void SetPrioTag(TProcessMap & pm, const TProcessMap PrioTag) { set_prio_tag(pm, PrioTag); }
+//    INLINE void ClrPrioTag(TProcessMap & pm, const TProcessMap PrioTag) { clr_prio_tag(pm, PrioTag); }
+//
+//#endif
     
     //--------------------------------------------------------------------------
     //
@@ -174,11 +174,12 @@ namespace OS
 
     #if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
         INLINE bool is_context_switch_done();
-        #if scmRTOS_OBSOLETE_NAMES == 0
         INLINE void raise_context_switch() { OS::raise_context_switch(); }
-        #else
-        INLINE void raise_context_switch() { OS::RaiseContextSwitch(); }
-        #endif
+//      #if scmRTOS_OBSOLETE_NAMES == 0
+//      INLINE void raise_context_switch() { OS::raise_context_switch(); }
+//      #else
+//      INLINE void raise_context_switch() { OS::RaiseContextSwitch(); }
+//      #endif
     #endif
     
         INLINE void set_process_ready  (const uint_fast8_t pr) { TProcessMap PrioTag = get_prio_tag(pr); set_prio_tag( ReadyProcessMap, PrioTag); }
@@ -285,9 +286,9 @@ namespace OS
     
     public:
 
-    #if scmRTOS_OBSOLETE_NAMES == 1
-        INLINE static void Sleep(timeout_t timeout = 0) { sleep(timeout); }
-    #endif
+//  #if scmRTOS_OBSOLETE_NAMES == 1
+//      INLINE static void Sleep(timeout_t timeout = 0) { sleep(timeout); }
+//  #endif
     
         //-----------------------------------------------------
         //
@@ -499,43 +500,43 @@ namespace OS
     INLINE void sleep(timeout_t t = 0) { TBaseProcess::sleep(t); }
     INLINE const TBaseProcess * get_proc(uint_fast8_t Prio) { return Kernel.ProcessTable[Prio]; }
     
-#if scmRTOS_OBSOLETE_NAMES == 1
-    INLINE void Run()               { run();                 }
-    INLINE void LockSystemTimer()   { lock_system_timer();   }
-    INLINE void UnlockSystemTimer() { unlock_system_timer(); }
-#endif        
+//#if scmRTOS_OBSOLETE_NAMES == 1
+//    INLINE void Run()               { run();                 }
+//    INLINE void LockSystemTimer()   { lock_system_timer();   }
+//    INLINE void UnlockSystemTimer() { unlock_system_timer(); }
+//#endif
     
     //--------------------------------------------------------------------------
 
 #if scmRTOS_SYSTEM_TICKS_ENABLE == 1
     INLINE tick_count_t get_tick_count() { TCritSect cs; return Kernel.SysTickCount; }
-#if scmRTOS_OBSOLETE_NAMES == 1
-    INLINE tick_count_t GetTickCount() { return get_tick_count(); }
-#endif
+//#if scmRTOS_OBSOLETE_NAMES == 1
+//    INLINE tick_count_t GetTickCount() { return get_tick_count(); }
+//#endif
 #endif
 
 #if scmRTOS_TARGET_IDLE_HOOK_ENABLE == 1
     void idle_process_target_hook();
 #endif // scmRTOS_TARGET_IDLE_HOOK_ENABLE
 
-#if scmRTOS_OBSOLETE_NAMES == 1
-
-#if scmRTOS_SYSTIMER_HOOK_ENABLE == 1
-    INLINE_SYS_TIMER_HOOK void SystemTimerUserHook();
-    INLINE void system_timer_user_hook() { SystemTimerUserHook(); }
-#endif // scmRTOS_SYSTIMER_HOOK_ENABLE
-
-#if scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE == 1
-    INLINE_CONTEXT_SWITCH_HOOK void ContextSwitchUserHook();
-    INLINE void context_switch_user_hook() { ContextSwitchUserHook(); }
-#endif // scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE
-
-#if scmRTOS_IDLE_HOOK_ENABLE == 1
-    void IdleProcessUserHook();
-    INLINE void idle_process_user_hook() { IdleProcessUserHook(); }
-#endif // scmRTOS_IDLE_HOOK_ENABLE
-
-#else // scmRTOS_OBSOLETE_NAMES
+//#if scmRTOS_OBSOLETE_NAMES == 1
+//
+//#if scmRTOS_SYSTIMER_HOOK_ENABLE == 1
+//    INLINE_SYS_TIMER_HOOK void SystemTimerUserHook();
+//    INLINE void system_timer_user_hook() { SystemTimerUserHook(); }
+//#endif // scmRTOS_SYSTIMER_HOOK_ENABLE
+//
+//#if scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE == 1
+//    INLINE_CONTEXT_SWITCH_HOOK void ContextSwitchUserHook();
+//    INLINE void context_switch_user_hook() { ContextSwitchUserHook(); }
+//#endif // scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE
+//
+//#if scmRTOS_IDLE_HOOK_ENABLE == 1
+//    void IdleProcessUserHook();
+//    INLINE void idle_process_user_hook() { IdleProcessUserHook(); }
+//#endif // scmRTOS_IDLE_HOOK_ENABLE
+//
+//#else // scmRTOS_OBSOLETE_NAMES
 
 #if scmRTOS_SYSTIMER_HOOK_ENABLE == 1
     INLINE_SYS_TIMER_HOOK void system_timer_user_hook();
@@ -549,7 +550,7 @@ namespace OS
     void idle_process_user_hook();
 #endif // scmRTOS_IDLE_HOOK_ENABLE
 
-#endif // scmRTOS_OBSOLETE_NAMES
+//#endif // scmRTOS_OBSOLETE_NAMES
 
     
 }   // namespace OS
@@ -682,15 +683,15 @@ INLINE void OS::run()
     os_start(sp);
 }
 
-#if scmRTOS_OBSOLETE_NAMES == 1
-namespace OS
-{
-    INLINE void Sleep(timeout_t t = 0) { sleep(t); }
-
-    INLINE bool IsProcessSleeping(const TBaseProcess& p) { return p.is_sleeping(); }
-    INLINE bool IsProcessSuspended(const TBaseProcess& p) { return p.is_suspended(); }
-}   // namespace OS
-#endif
+//#if scmRTOS_OBSOLETE_NAMES == 1
+//namespace OS
+//{
+//    INLINE void Sleep(timeout_t t = 0) { sleep(t); }
+//
+//    INLINE bool IsProcessSleeping(const TBaseProcess& p) { return p.is_sleeping(); }
+//    INLINE bool IsProcessSuspended(const TBaseProcess& p) { return p.is_suspended(); }
+//}   // namespace OS
+//#endif
 
 #include <os_services.h>
 

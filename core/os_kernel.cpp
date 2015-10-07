@@ -39,12 +39,12 @@
 
 #include "scmRTOS.h"
 
-#ifdef scmRTOS_OBSOLETE_NAMES
-#if scmRTOS_OBSOLETE_NAMES == 1
-#warning "Obsolete RTOS names are used for now. These names will be removed from the RTOS distributive in the next release."
-#warning "Please, edit your project for eliminating of using of obsolete RTOS names."
-#endif  // scmRTOS_OBSOLETE_NAMES == 1
-#endif  // scmRTOS_OBSOLETE_NAMES
+//#ifdef scmRTOS_OBSOLETE_NAMES
+//#if scmRTOS_OBSOLETE_NAMES == 1
+//#warning "Obsolete RTOS names are used for now. These names will be removed from the RTOS distributive in the next release."
+//#warning "Please, edit your project for eliminating of using of obsolete RTOS names."
+//#endif  // scmRTOS_OBSOLETE_NAMES == 1
+//#endif  // scmRTOS_OBSOLETE_NAMES
 
 using namespace OS;
 
