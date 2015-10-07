@@ -76,10 +76,6 @@
         .global irq_handler
         .global context_restore
 
-#if scmRTOS_OBSOLETE_NAMES == 1
-        .global IRQHandler
-IRQHandler:
-#endif // scmRTOS_OBSOLETE_NAMES
 irq_handler:
         MSR     CPSR_c, #(NIRQ | MODE_SYS)  // switching to System mode, because context has to be saved
                                             // on top of user mode stack, enable FIQ

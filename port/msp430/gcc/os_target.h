@@ -130,12 +130,6 @@ typedef uint16_t status_reg_t;
 INLINE void enable_interrupts()  { __enable_interrupt();  }
 INLINE void disable_interrupts() { __disable_interrupt(); }
 
-#if scmRTOS_OBSOLETE_NAMES == 1
-INLINE void EnableInterrupts()  { enable_interrupts();  }
-INLINE void DisableInterrupts() { disable_interrupts(); }
-#endif // scmRTOS_OBSOLETE_NAMES
-
-
 //-----------------------------------------------------------------------------
 //
 //     The Critical Section Wrapper
