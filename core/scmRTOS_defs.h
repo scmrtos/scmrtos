@@ -188,11 +188,6 @@ private:                                                                        
 #define NORETURN
 #endif
 
-//------------------------- v3.10 names ----------------------------------------
-#ifndef scmRTOS_OBSOLETE_NAMES
-#define scmRTOS_OBSOLETE_NAMES    0
-#endif
-
 //------------------------------------------------------------------------------
 //
 ///    Priority and process map type definitions

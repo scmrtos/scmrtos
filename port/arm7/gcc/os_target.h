@@ -304,16 +304,6 @@ INLINE void disable_interrupts()
     while (!(Tmp & (1<<7)));
 }
 
-#if scmRTOS_OBSOLETE_NAMES == 1
-
-INLINE status_reg_t GetInterruptState( )             { return get_interrupt_state(); }
-INLINE void       SetInterruptState(status_reg_t sr) { set_interrupt_state(sr);      }
-
-INLINE void EnableInterrupts()  { enable_interrupts();  }
-INLINE void DisableInterrupts() { disable_interrupts(); }
-
-#endif // scmRTOS_OBSOLETE_NAMES
-
 namespace OS
 {
     INLINE void enable_context_switch()  { enable_interrupts(); }
@@ -406,12 +396,6 @@ namespace OS
         system_timer_user_hook();
     #endif
     }
-
-    #if scmRTOS_OBSOLETE_NAMES == 1
-
-    INLINE void SystemTimer_ISR() { system_timer_isr(); }
-
-    #endif // scmRTOS_OBSOLETE_NAMES
 
 }   //  namespace OS
 

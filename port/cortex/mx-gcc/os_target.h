@@ -186,17 +186,6 @@ INLINE status_reg_t get_interrupt_state()
     return sr;
 }
 
-#if scmRTOS_OBSOLETE_NAMES == 1
-
-INLINE status_reg_t GetInterruptState( )       { return get_interrupt_state(); }
-INLINE void SetInterruptState(status_reg_t sr) { set_interrupt_state(sr);      }
-
-INLINE void EnableInterrupts()  { enable_interrupts();  }
-INLINE void DisableInterrupts() { disable_interrupts(); }
-
-#endif // scmRTOS_OBSOLETE_NAMES
-
-
 //-----------------------------------------------------------------------------
 //
 //     The Critical Section Wrapper
