@@ -234,6 +234,8 @@ namespace OS
 
     #endif // SEPARATE_RETURN_STACK
         
+        TPriority   priority() const { return Priority; }
+
         static void sleep(timeout_t timeout = 0);
                void wake_up();
                void force_wake_up();
@@ -447,6 +449,9 @@ namespace OS
         INLINE static volatile TProcessMap & ready_process_map()       { return Kernel.ReadyProcessMap;  }
         INLINE static volatile timeout_t   & cur_proc_timeout()        { return cur_proc()->Timeout;     }
         INLINE static void reschedule()                                { Kernel.scheduler();             }
+
+        INLINE static void set_process_ready   (const uint_fast8_t pr) { Kernel.set_process_ready(pr);   }
+        INLINE static void set_process_unready (const uint_fast8_t pr) { Kernel.set_process_unready(pr); }
 
     #if scmRTOS_DEBUG_ENABLE == 1
         INLINE static TService * volatile & cur_proc_waiting_for()     { return cur_proc()->WaitingFor;  }
