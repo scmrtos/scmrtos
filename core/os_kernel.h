@@ -279,32 +279,13 @@ namespace OS
     #if scmRTOS_PROCESS_RESTART_ENABLE == 1
         volatile TProcessMap * WaitingProcessMap;
     #endif
-    };
-    //--------------------------------------------------------------------------
-
-
-    //--------------------------------------------------------------------------
-    //
-    //   StartState
-    // 
-    //   Initial task state.
-    //
-    //      DESCRIPTION:
-    //
-    //
-    enum StartState
-    {
-        ssRunning,
-        ssSuspended
-    };
 
     #if scmRTOS_SUSPENDED_PROCESS_ENABLE != 0
-    namespace detail
-    {
-    extern TProcessMap SuspendedProcessMap;
-    }
+        static TProcessMap SuspendedProcessMap;
     #endif
 
+    };
+    //--------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------
     //
@@ -317,7 +298,7 @@ namespace OS
     //
     #if SEPARATE_RETURN_STACK == 0
 
-        template<TPriority pr, size_t stack_size, StartState ss = ssRunning>
+        template<TPriority pr, size_t stack_size, TProcessStartState pss = pssRunning>
         class process : public TBaseProcess
         {
         public:
@@ -333,24 +314,24 @@ namespace OS
             stack_item_t Stack[stack_size/sizeof(stack_item_t)];
         };
 
-        template<TPriority pr, size_t stack_size, StartState ss>
-        OS::process<pr, stack_size, ss>::process(): TBaseProcess(&Stack[stack_size / sizeof(stack_item_t)]
-                                                             , pr
-                                                             , reinterpret_cast<void (*)()>(exec)
-                                                         #if scmRTOS_DEBUG_ENABLE == 1
-                                                             , Stack
-                                                         #endif
-                                                             )
+        template<TPriority pr, size_t stack_size, TProcessStartState pss>
+        OS::process<pr, stack_size, pss>::process(): TBaseProcess(&Stack[stack_size / sizeof(stack_item_t)]
+                                                                  , pr
+                                                                  , reinterpret_cast<void (*)()>(exec)
+                                                              #if scmRTOS_DEBUG_ENABLE == 1
+                                                                  , Stack
+                                                              #endif
+                                                                  )
         {
             #if scmRTOS_SUSPENDED_PROCESS_ENABLE != 0
-            if ( ss == ssSuspended )
-                clr_prio_tag(detail::SuspendedProcessMap, get_prio_tag(pr));
+            if ( pss == pssSuspended )
+                clr_prio_tag(SuspendedProcessMap, get_prio_tag(pr));
             #endif
         }
 
         #if scmRTOS_PROCESS_RESTART_ENABLE == 1
-        template<TPriority pr, size_t stack_size, StartState ss>
-        void OS::process<pr, stack_size, ss>::terminate()
+        template<TPriority pr, size_t stack_size, TProcessStartState pss>
+        void OS::process<pr, stack_size, pss>::terminate()
         {
             TCritSect cs;
 
@@ -368,7 +349,7 @@ namespace OS
 
     #else  // SEPARATE_RETURN_STACK
 
-        template<TPriority pr, size_t stack_size, size_t rstack_size, StartState ss = ssRunning>
+        template<TPriority pr, size_t stack_size, size_t rstack_size, TProcessStartState pss = pssRunning>
         class process : public TBaseProcess
         {
         public:
@@ -385,26 +366,26 @@ namespace OS
             stack_item_t RStack[rstack_size/sizeof(stack_item_t)];
         };
 
-        template<TPriority pr, size_t stack_size, size_t rstack_size, StartState ss>
-        process<pr, stack_size, rstack_size, ss>::process(): TBaseProcess(&Stack[stack_size / sizeof(stack_item_t)]
-                                                                      , &RStack[rstack_size/sizeof(stack_item_t)]
-                                                                      , pr
-                                                                      , reinterpret_cast<void (*)()>(exec)
-                                                                 #if scmRTOS_DEBUG_ENABLE == 1
-                                                                      , Stack
-                                                                      , RStack
-                                                                 #endif
-                                                                      )
+        template<TPriority pr, size_t stack_size, size_t rstack_size, TProcessStartState pss>
+        process<pr, stack_size, rstack_size, pss>::process(): TBaseProcess(&Stack[stack_size / sizeof(stack_item_t)]
+                                                                         , &RStack[rstack_size/sizeof(stack_item_t)]
+                                                                         , pr
+                                                                         , reinterpret_cast<void (*)()>(exec)
+                                                                    #if scmRTOS_DEBUG_ENABLE == 1
+                                                                         , Stack
+                                                                         , RStack
+                                                                    #endif
+                                                                         )
         {
             #if scmRTOS_SUSPENDED_PROCESS_ENABLE != 0
-            if ( ss == ssSuspended )
-                clr_prio_tag(detail::SuspendedProcessMap, get_prio_tag(pr));
+            if ( pss == pssSuspended )
+                clr_prio_tag(SuspendedProcessMap, get_prio_tag(pr));
             #endif
         }
         
         #if scmRTOS_PROCESS_RESTART_ENABLE == 1
-        template<TPriority pr, size_t stack_size, size_t rstack_size, StartState ss>
-        void OS::process<pr, stack_size, rstack_size, ss>::terminate()
+        template<TPriority pr, size_t stack_size, size_t rstack_size, TProcessStartState pss>
+        void OS::process<pr, stack_size, rstack_size, pss>::terminate()
         {
             TCritSect cs;
             
@@ -617,7 +598,7 @@ INLINE void OS::run()
     uint_fast8_t p = pr0;
 
     #if scmRTOS_SUSPENDED_PROCESS_ENABLE != 0
-    Kernel.ReadyProcessMap = detail::SuspendedProcessMap;
+    Kernel.ReadyProcessMap = TBaseProcess::SuspendedProcessMap;
     p = highest_priority(Kernel.ReadyProcessMap); 
     #endif
 

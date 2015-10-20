@@ -44,22 +44,6 @@
 
 //------------------------------------------------------------------------------
 //
-//
-///   Macro for Channel Type definition
-//
-//
-#define DefineChannel(Name, Capacity)                                            \
-class Name : public OS::TChannel                                                 \
-{                                                                                \
-public:                                                                          \
-    Name() : OS::TChannel(buf, sizeof(buf)) { }                                  \
-                                                                                 \
-private:                                                                         \
-    uint8_t buf[Capacity];                                                       \
-                                                                                 \
-}
-//------------------------------------------------------------------------------
-//
 //    Check CONFIG Macro Definitions
 //
 //
@@ -413,7 +397,18 @@ namespace OS
 #define INLINE_PROCESS_CTOR
 #endif
 
-
+//-----------------------------------------------------------------------------
+//
+//   Initial process state.
+//
+namespace OS
+{
+	enum TProcessStartState
+	{
+    	pssRunning,
+	    pssSuspended
+	};
+}
 //-----------------------------------------------------------------------------
 
 #endif // scmRTOS_DEFS_H
