@@ -296,7 +296,7 @@ INLINE void raise_context_switch() { *((volatile uint32_t*)0xE000ED04) |= 0x1000
 
 }
 
-#include <OS_Kernel.h>
+#include <os_kernel.h>
 
 namespace OS
 {

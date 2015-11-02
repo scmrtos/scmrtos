@@ -221,9 +221,12 @@ static ioregister_t<0xE000ED20UL, uint32_t> SHPR3;
 #else
 // Cortex-M3/M4 system control registers allows byte transfers.
 static ioregister_t<0xE000ED22UL, uint8_t> PendSvPriority;
+#if (USE_CUSTOM_TIMER == 0)
 static ioregister_t<0xE000ED23UL, uint8_t> SysTickPriority;
 #endif
+#endif
 
+#if (USE_CUSTOM_TIMER == 0)
 // SysTick stuff
 struct systick_t
 {
@@ -241,6 +244,7 @@ enum
 };
 
 static iostruct_t<0xE000E010UL, systick_t> SysTick;
+#endif
 
 #if (!defined __SOFTFP__)
 // Floating point context control register stuff
@@ -275,7 +279,7 @@ INLINE void system_timer_isr()
 }
 } // ns OS
 
-#if (USE_SYSTICK_TIMER != 0)
+#if (USE_CUSTOM_TIMER == 0)
 namespace OS
 {
 OS_INTERRUPT void SysTick_Handler()
@@ -300,7 +304,7 @@ namespace
 enum { SYS_TIMER_PRIORITY = ((0xFEUL << (8-(CORE_PRIORITY_BITS))) & 0xFF) };
 }
 
-#if (USE_SYSTICK_TIMER != 0)
+#if (USE_CUSTOM_TIMER == 0)
 extern "C" void __init_system_timer()
 {
 #if (defined SHP3_WORD_ACCESS)   // word access
@@ -317,7 +321,7 @@ extern "C" void __init_system_timer()
  * Default system timer lock/unlock functions.
  *
  */
-#if (USE_SYSTICK_TIMER != 0)
+#if (USE_CUSTOM_TIMER == 0)
 void LOCK_SYSTEM_TIMER()   { SysTick->CTRL &= NVIC_ST_CTRL_INTEN; }
 void UNLOCK_SYSTEM_TIMER() { SysTick->CTRL |= NVIC_ST_CTRL_INTEN; }
 #endif
