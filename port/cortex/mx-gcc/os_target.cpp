@@ -228,9 +228,9 @@ static ioregister_t<0xE000ED23UL, uint8_t> SysTickPriority;
 struct systick_t
 {
     uint32_t       CTRL;
-	uint32_t       LOAD;
-  	uint32_t       VAL;
-  	uint32_t const CALIB;
+    uint32_t       LOAD;
+    uint32_t       VAL;
+    uint32_t const CALIB;
 };
 
 enum
@@ -256,29 +256,34 @@ enum
 
 /*
  * System timer stuff.
- * This is the default (weak) system timer ISR handler.
- * The user can redefine this handler if needed.
  */
-#pragma weak SysTick_Handler = Default_SystemTimer_ISR
-#pragma weak SystemTimer_ISR = Default_SystemTimer_ISR
+namespace OS
+{ 
+INLINE void system_timer_isr() 
+{ 
+    scmRTOS_ISRW_TYPE ISR; 
+    
+#if scmRTOS_SYSTIMER_NEST_INTS_ENABLE == 0
+    DISABLE_NESTED_INTERRUPTS(); 
+#endif
+    
+#if scmRTOS_SYSTIMER_HOOK_ENABLE == 1
+    system_timer_user_hook(); 
+#endif
+    
+    Kernel.system_timer();
+}
+} // ns OS
 
+#if (USE_SYSTICK_TIMER != 0)
 namespace OS
 {
-extern "C" OS_INTERRUPT void Default_SystemTimer_ISR()
+OS_INTERRUPT void SysTick_Handler()
 {
-    scmRTOS_ISRW_TYPE ISR;
-
-#if scmRTOS_SYSTIMER_HOOK_ENABLE == 1
-    system_timer_user_hook();
-#endif
-
-    Kernel.system_timer();
-
-#if scmRTOS_SYSTIMER_NEST_INTS_ENABLE == 0
-    DISABLE_NESTED_INTERRUPTS();
-#endif
+    system_timer_isr();
 }
-}
+} // ns OS
+#endif
 
 /*
  * Default system timer initialization.
@@ -287,7 +292,7 @@ extern "C" OS_INTERRUPT void Default_SystemTimer_ISR()
  * Configures SysTick timer to interrupt with frequency SYSTICKINTRATE.
  */
 #if (!defined CORE_PRIORITY_BITS)
-#	define CORE_PRIORITY_BITS        8
+#    define CORE_PRIORITY_BITS        8
 #endif
 
 namespace
@@ -295,7 +300,7 @@ namespace
 enum { SYS_TIMER_PRIORITY = ((0xFEUL << (8-(CORE_PRIORITY_BITS))) & 0xFF) };
 }
 
-#pragma weak __init_system_timer
+#if (USE_SYSTICK_TIMER != 0)
 extern "C" void __init_system_timer()
 {
 #if (defined SHP3_WORD_ACCESS)   // word access
@@ -306,6 +311,16 @@ extern "C" void __init_system_timer()
     SysTick->LOAD = SYSTICKFREQ/SYSTICKINTRATE-1;
     SysTick->CTRL = NVIC_ST_CTRL_CLK_SRC | NVIC_ST_CTRL_INTEN | NVIC_ST_CTRL_ENABLE;
 }
+#endif
+
+/*
+ * Default system timer lock/unlock functions.
+ *
+ */
+#if (USE_SYSTICK_TIMER != 0)
+void LOCK_SYSTEM_TIMER()   { SysTick->CTRL &= NVIC_ST_CTRL_INTEN; }
+void UNLOCK_SYSTEM_TIMER() { SysTick->CTRL |= NVIC_ST_CTRL_INTEN; }
+#endif
 
 
 /*
@@ -335,16 +350,16 @@ extern "C" NORETURN void os_start(stack_item_t *sp)
         "    LDR     R4, [%[stack], #(4 * 14)] \n" // Load process entry point into R4
         "    ADD     %[stack], #(4 * 16)       \n" // emulate context restore
 #else
-    	"    LDR     R4, [%[stack], #(4 * 15)] \n" // Load process entry point into R4
+        "    LDR     R4, [%[stack], #(4 * 15)] \n" // Load process entry point into R4
         "    ADD     %[stack], #(4 * 17)       \n" // emulate context restore
 #endif
         "    MSR     PSP, %[stack]             \n" // store process SP to PSP
         "    MOV     R0, #2                    \n" // set up the current (thread) mode: use PSP as stack pointer, privileged level
         "    MSR     CONTROL, R0               \n"
         "    ISB                               \n" // Insert a barrier
-   	    "    BL      __init_system_timer       \n" // run system timer
-   	    "    CPSIE   I                         \n" // Enable interrupts at processor level
-   	    "    BX      R4                        \n" // Jump to process exec() function
+        "    BL      __init_system_timer       \n" // run system timer
+        "    CPSIE   I                         \n" // Enable interrupts at processor level
+        "    BX      R4                        \n" // Jump to process exec() function
         : [stack]"+r" (sp)  // output
     );
     __builtin_unreachable(); // suppress compiler warning "'noreturn' func does return"
@@ -406,3 +421,4 @@ namespace OS
     };
 }   //namespace
 #endif
+
