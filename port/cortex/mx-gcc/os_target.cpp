@@ -192,6 +192,13 @@ extern "C" void PendSV_Handler()
 #pragma weak PendSVC_ISR = PendSV_Handler
 
 /*
+ * By default port uses SysTick timer as a system timer.
+ */
+#if (! defined SCMRTOS_USE_CUSTOM_TIMER)
+#define SCMRTOS_USE_CUSTOM_TIMER 0
+#endif
+
+/*
  * Some Cortex-MX registers and constants.
  */
 namespace
@@ -221,11 +228,9 @@ static ioregister_t<0xE000ED20UL, uint32_t> SHPR3;
 #else
 // Cortex-M3/M4 system control registers allows byte transfers.
 static ioregister_t<0xE000ED22UL, uint8_t> PendSvPriority;
+#if (SCMRTOS_USE_CUSTOM_TIMER == 0)
 static ioregister_t<0xE000ED23UL, uint8_t> SysTickPriority;
 #endif
-
-#if (! defined SCMRTOS_USE_CUSTOM_TIMER)
-#define SCMRTOS_USE_CUSTOM_TIMER 0
 #endif
 
 #if (SCMRTOS_USE_CUSTOM_TIMER == 0)
