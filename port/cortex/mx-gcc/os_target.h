@@ -43,8 +43,8 @@
 //*     Cortex-M3/M4(F) GCC port by Anton B. Gusev aka AHTOXA, Copyright (c) 2012-2015
 //*     Cortex-M0 port by Sergey A. Borshch, Copyright (c) 2011-2015
 
-#ifndef scmRTOS_CORTEXM4_H
-#define scmRTOS_CORTEXM4_H
+#ifndef scmRTOS_CORTEXMX_H
+#define scmRTOS_CORTEXMX_H
 
 //------------------------------------------------------------------------------
 //
@@ -205,17 +205,26 @@ private:
 
 //   Uncomment macro value below for system_timer() and
 //   context_switch_hook() run in critical section.
-// 
-//   This is useful (and necessary) when target processor has hardware 
+//
+//   This is useful (and necessary) when target processor has hardware
 //   enabled nested interrupts.
 //   User can define own macros using user-defined TCritSect capabilities.
 //
 //   Cortex-M have nested interrupts but interrupts are disabled
 //   during context switch ISR. So, critical section is needed
 //   for system timer routine and not needed for context switcher.
-// 
+//
 #define SYS_TIMER_CRIT_SECT() TCritSect cs
 #define CONTEXT_SWITCH_HOOK_CRIT_SECT()
+
+
+//-----------------------------------------------------------------------------
+//
+//     Lock/unlock system timer.
+//
+//
+void LOCK_SYSTEM_TIMER();
+void UNLOCK_SYSTEM_TIMER();
 
 
 //-----------------------------------------------------------------------------
@@ -258,6 +267,33 @@ namespace OS
 {
     INLINE void enable_context_switch()  { enable_interrupts(); }
     INLINE void disable_context_switch() { disable_interrupts(); }
+}
+
+//------------------------------------------------------------------------------
+//
+//       Context Switch ISR stuff
+//
+//
+namespace OS
+{
+#if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
+
+// 0xE000ED04 - Interrupt Control State Register
+INLINE void raise_context_switch() { *((volatile uint32_t*)0xE000ED04) |= 0x10000000; }
+
+#define ENABLE_NESTED_INTERRUPTS()
+
+#if scmRTOS_SYSTIMER_NEST_INTS_ENABLE == 0
+#define DISABLE_NESTED_INTERRUPTS() TCritSect cs
+#else
+#define DISABLE_NESTED_INTERRUPTS()
+#endif
+
+#else
+#error "Cortex-M3 port supports software interrupt switch method only!"
+
+#endif // scmRTOS_CONTEXT_SWITCH_SCHEME
+
 }
 
 #include <os_kernel.h>
@@ -304,6 +340,6 @@ namespace OS
 } // namespace OS
 //-----------------------------------------------------------------------------
 
-#endif // scmRTOS_CORTEXM4_H
+#endif // scmRTOS_CORTEXMX_H
 //-----------------------------------------------------------------------------
 
