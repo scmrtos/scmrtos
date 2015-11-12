@@ -268,30 +268,12 @@ enum
 /*
  * System timer stuff.
  */
-namespace OS
-{ 
-INLINE void system_timer_isr() 
-{ 
-    scmRTOS_ISRW_TYPE ISR; 
-    
-#if scmRTOS_SYSTIMER_NEST_INTS_ENABLE == 0
-    DISABLE_NESTED_INTERRUPTS(); 
-#endif
-    
-#if scmRTOS_SYSTIMER_HOOK_ENABLE == 1
-    system_timer_user_hook(); 
-#endif
-    
-    Kernel.system_timer();
-}
-
 #if (SCMRTOS_USE_CUSTOM_TIMER == 0)
 OS_INTERRUPT void SysTick_Handler()
 {
     system_timer_isr();
 }
 #endif
-} // namespace OS
 
 /*
  * Default system timer initialization.
