@@ -300,42 +300,61 @@ INLINE void raise_context_switch() { *((volatile uint32_t*)0xE000ED04) |= 0x1000
 
 namespace OS
 {
-    //--------------------------------------------------------------------------
-    //
-    //      NAME       :   OS ISR support
-    //
-    //      PURPOSE    :   Implements common actions on interrupt enter and exit
-    //                     under the OS
-    //
-    //      DESCRIPTION:
-    //
-    //
-    class TISRW
+
+//--------------------------------------------------------------------------
+//
+//      NAME       :   OS ISR support
+//
+//      PURPOSE    :   Implements common actions on interrupt enter and exit
+//                     under the OS
+//
+//      DESCRIPTION:
+//
+//
+class TISRW
+{
+public:
+    INLINE  TISRW()  { ISR_Enter(); }
+    INLINE  ~TISRW() { ISR_Exit();  }
+
+private:
+    //-----------------------------------------------------
+    INLINE void ISR_Enter()
     {
-    public:
-        INLINE  TISRW()  { ISR_Enter(); }
-        INLINE  ~TISRW() { ISR_Exit();  }
+        TCritSect cs;
+        Kernel.ISR_NestCount++;
+    }
+    //-----------------------------------------------------
+    INLINE void ISR_Exit()
+    {
+        TCritSect cs;
+        if(--Kernel.ISR_NestCount) return;
+        Kernel.sched_isr();
+    }
+    //-----------------------------------------------------
+};
 
-    private:
-        //-----------------------------------------------------
-        INLINE void ISR_Enter()
-        {
-            TCritSect cs;
-            Kernel.ISR_NestCount++;
-        }
-        //-----------------------------------------------------
-        INLINE void ISR_Exit()
-        {
-            TCritSect cs;
-            if(--Kernel.ISR_NestCount) return;
-            Kernel.sched_isr();
-        }
-        //-----------------------------------------------------
-    };
+// No software interrupt stack switching provided,
+// TISRW_SS declared to be the same as TISRW for porting compatibility
+#define TISRW_SS    TISRW
 
-    // No software interrupt stack switching provided,
-    // TISRW_SS declared to be the same as TISRW for porting compatibility
-    #define TISRW_SS    TISRW
+/*
+ * System timer interrupt handler.
+ */
+INLINE void system_timer_isr()
+{
+	OS::TISRW ISR;
+
+#if scmRTOS_SYSTIMER_NEST_INTS_ENABLE == 0
+    DISABLE_NESTED_INTERRUPTS();
+#endif
+
+#if scmRTOS_SYSTIMER_HOOK_ENABLE == 1
+    system_timer_user_hook();
+#endif
+
+    Kernel.system_timer();
+}
 
 } // namespace OS
 //-----------------------------------------------------------------------------
