@@ -124,7 +124,8 @@ extern "C" void PendSV_Handler()
 
         // At this point, entire context of process has been saved
         "    PUSH    {LR}              \n" // we must save LR (exc_return value) until exception return
-        "    BL      os_context_switch_hook  \n" // call os_context_switch_hook();
+        "    LDR     R1, =os_context_switch_hook  \n"   // call os_context_switch_hook();
+        "    BLX     R1                \n"
 
         // R0 is new process SP;
         "    ADD     R0, R0, #16       \n" // Adjust R0 to point to high registers (r8-11)
@@ -151,7 +152,8 @@ extern "C" void PendSV_Handler()
 
         // At this point, entire context of process has been saved
         "    PUSH    {LR}              \n" // we must save LR (exc_return value) until exception return
-        "    BL      os_context_switch_hook  \n" // call os_context_switch_hook();
+        "    LDR     R1, =os_context_switch_hook  \n"   // call os_context_switch_hook();
+        "    BLX     R1                \n"
 
         // R0 is new process SP;
         "    LDMIA   R0!, {R4-R11}     \n" // Restore r4-11 from new process stack
@@ -172,7 +174,8 @@ extern "C" void PendSV_Handler()
         "    STMDB     R0!, {R4-R11, LR} \n" // save remaining regs r4-11 and LR on process stack
 
         // At this point, entire context of process has been saved
-        "    BL        os_context_switch_hook  \n" // call os_context_switch_hook();
+        "    LDR     R1, =os_context_switch_hook  \n"   // call os_context_switch_hook();
+        "    BLX     R1                \n"
 
         // R0 is new process SP;
         "    LDMIA     R0!, {R4-R11, LR} \n" // Restore r4-11 and LR from new process stack
@@ -346,7 +349,8 @@ extern "C" NORETURN void os_start(stack_item_t *sp)
         "    MOV     R0, #2                    \n" // set up the current (thread) mode: use PSP as stack pointer, privileged level
         "    MSR     CONTROL, R0               \n"
         "    ISB                               \n" // Insert a barrier
-        "    BL      __init_system_timer       \n" // run system timer
+        "    LDR     R1, =__init_system_timer  \n" //
+        "    BLX     R1                        \n" //
         "    CPSIE   I                         \n" // Enable interrupts at processor level
         "    BX      R4                        \n" // Jump to process exec() function
         : [stack]"+r" (sp)  // output
