@@ -35,8 +35,10 @@
 //*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //*
 //*     =================================================================
-//*     See http://scmrtos.sourceforge.net for documentation, latest
-//*     information, license and contact details.
+//*     Project sources: https://github.com/scmrtos/scmrtos
+//*     Documentation:   https://github.com/scmrtos/scmrtos/wiki/Documentation
+//*     Wiki:            https://github.com/scmrtos/scmrtos/wiki
+//*     Sample projects: https://github.com/scmrtos/scmrtos-sample-projects
 //*     =================================================================
 //*
 //******************************************************************************
