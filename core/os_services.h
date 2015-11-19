@@ -237,14 +237,17 @@ namespace OS
 
     };
     //--------------------------------------------------------------------------
-    class TMutexLocker
+    template <typename Mutex>
+    class TScopedLock
     {
     public:
-        TMutexLocker(OS::TMutex & mutex) : Mutex(mutex) { Mutex.lock(); }
-        ~TMutexLocker() { Mutex.unlock(); }
-    protected:
-        TMutex & Mutex;
+        TScopedLock(Mutex& m): mx(m) { mx.lock(); }
+        ~TScopedLock() { mx.unlock(); }
+    private:
+        Mutex & mx;
     };
+
+    typedef TScopedLock<OS::TMutex> TMutexLocker;
     //--------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------
