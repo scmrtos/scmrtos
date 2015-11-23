@@ -41,7 +41,7 @@
 #ifndef RECURSIVE_MUTEX_H
 #define RECURSIVE_MUTEX_H
 
-#include "scmRTOS.h"
+#include <scmRTOS.h>
 
 
 namespace OS
@@ -51,7 +51,7 @@ namespace OS
 //
 // Recursive mutex.
 //
-// Recursive mutex is similar TMutex.
+// Recursive mutex is similar to TMutex.
 // But it can be locked several times by the same thread.
 // To fully unlock the mutex, the thread has to unlock the mutex the same times
 // it has locked it.
