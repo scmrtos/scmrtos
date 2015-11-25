@@ -35,8 +35,10 @@
 //*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //*
 //*     =================================================================
-//*     See http://scmrtos.sourceforge.net for documentation, latest
-//*     information, license and contact details.
+//*     Project sources: https://github.com/scmrtos/scmrtos
+//*     Documentation:   https://github.com/scmrtos/scmrtos/wiki/Documentation
+//*     Wiki:            https://github.com/scmrtos/scmrtos/wiki
+//*     Sample projects: https://github.com/scmrtos/scmrtos-sample-projects
 //*     =================================================================
 //*
 //******************************************************************************
@@ -222,37 +224,10 @@ INLINE void        set_isr_stack_pointer() { __set_SP_register( reinterpret_cast
 INLINE void        set_stack_pointer(stack_item_t* sp) { __set_SP_register( reinterpret_cast<uint16_t>(sp) ); }
 #pragma diag_default=Ta20
 
-
-#if scmRTOS_OBSOLETE_NAMES == 1
-
-INLINE status_reg_t GetInterruptState( )             { return get_interrupt_state(); }
-INLINE void       SetInterruptState(status_reg_t sr) { set_interrupt_state(sr);      }
-
-INLINE void EnableInterrupts()  { enable_interrupts();  }
-INLINE void DisableInterrupts() { disable_interrupts(); }
-
-INLINE stack_item_t* GetStackPointer()    { return get_stack_pointer(); }
-
-#pragma diag_suppress=Ta20
-INLINE void        SetISRStackPointer() { set_isr_stack_pointer(); }
-#pragma diag_default=Ta20
-
-#pragma diag_suppress=Ta20
-INLINE void        SetStackPointer(stack_item_t* sp) { set_stack_pointer(sp); }
-
-#endif // scmRTOS_OBSOLETE_NAMES
-
 namespace OS
 {
     INLINE void enable_context_switch()  { enable_interrupts(); }
     INLINE void disable_context_switch() { disable_interrupts(); }
-
-#if scmRTOS_OBSOLETE_NAMES == 1
-
-    INLINE void EnableContextSwitch()  { enable_context_switch(); }
-    INLINE void DisableContextSwitch() { disable_context_switch(); }
-
-#endif
 }
 
 #include <os_kernel.h>

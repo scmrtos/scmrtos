@@ -31,8 +31,10 @@
 //*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //*
 //*     =================================================================
-//*     See http://scmrtos.sourceforge.net for documentation, latest
-//*     information, license and contact details.
+//*     Project sources: https://github.com/scmrtos/scmrtos
+//*     Documentation:   https://github.com/scmrtos/scmrtos/wiki/Documentation
+//*     Wiki:            https://github.com/scmrtos/scmrtos/wiki
+//*     Sample projects: https://github.com/scmrtos/scmrtos-sample-projects
 //*     =================================================================
 //*
 //*****************************************************************************
@@ -54,19 +56,6 @@ extern "C" void os_context_switcher(stack_item_t** Curr_SP, stack_item_t* Next_S
 #else
 extern "C" stack_item_t* os_context_switch_hook(stack_item_t* sp);
 #endif
-
-
-#if scmRTOS_OBSOLETE_NAMES == 1
-
-INLINE void OS_Start(stack_item_t* sp) { os_start(sp); }
-
-#if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
-INLINE void OS_ContextSwitcher(stack_item_t** Curr_SP, stack_item_t* Next_SP) { os_context_switcher(Curr_SP, Next_SP); }
-#else
-INLINE stack_item_t* OS_ContextSwitchHook(stack_item_t* sp) { return os_context_switch_hook(sp); }
-#endif
-
-#endif // scmRTOS_OBSOLETE_NAMES
     
 //==============================================================================
 
@@ -98,16 +87,6 @@ namespace OS
     INLINE void set_prio_tag(TProcessMap & pm, const TProcessMap PrioTag) { pm |=  PrioTag; }
     INLINE void clr_prio_tag(TProcessMap & pm, const TProcessMap PrioTag) { pm &= ~PrioTag; }
 
-    
-#if scmRTOS_OBSOLETE_NAMES == 1
-
-    INLINE void SetPrioTag(volatile TProcessMap & pm, const TProcessMap PrioTag) { set_prio_tag(pm, PrioTag); }
-    INLINE void ClrPrioTag(volatile TProcessMap & pm, const TProcessMap PrioTag) { clr_prio_tag(pm, PrioTag); }
-    INLINE void SetPrioTag(TProcessMap & pm, const TProcessMap PrioTag) { set_prio_tag(pm, PrioTag); }
-    INLINE void ClrPrioTag(TProcessMap & pm, const TProcessMap PrioTag) { clr_prio_tag(pm, PrioTag); }
-
-#endif
-    
     //--------------------------------------------------------------------------
     //
     //     NAME       :   TKernel
@@ -174,11 +153,7 @@ namespace OS
 
     #if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
         INLINE bool is_context_switch_done();
-        #if scmRTOS_OBSOLETE_NAMES == 0
         INLINE void raise_context_switch() { OS::raise_context_switch(); }
-        #else
-        INLINE void raise_context_switch() { OS::RaiseContextSwitch(); }
-        #endif
     #endif
     
         INLINE void set_process_ready  (const uint_fast8_t pr) { TProcessMap PrioTag = get_prio_tag(pr); set_prio_tag( ReadyProcessMap, PrioTag); }
@@ -261,6 +236,8 @@ namespace OS
 
     #endif // SEPARATE_RETURN_STACK
         
+        TPriority   priority() const { return Priority; }
+
         static void sleep(timeout_t timeout = 0);
                void wake_up();
                void force_wake_up();
@@ -272,8 +249,10 @@ namespace OS
     #if scmRTOS_DEBUG_ENABLE == 1
         INLINE TService * waiting_for() const { return WaitingFor; }
     public:
+               size_t     stack_size() const { return StackSize; }
                size_t     stack_slack() const; 
         #if SEPARATE_RETURN_STACK == 1
+               size_t     rstack_size() const { return RStackSize; }
                size_t     rstack_slack() const;
         #endif               
     #endif // scmRTOS_DEBUG_ENABLE
@@ -285,10 +264,6 @@ namespace OS
     
     public:
 
-    #if scmRTOS_OBSOLETE_NAMES == 1
-        INLINE static void Sleep(timeout_t timeout = 0) { sleep(timeout); }
-    #endif
-    
         //-----------------------------------------------------
         //
         //    Data members
@@ -300,40 +275,23 @@ namespace OS
     #if scmRTOS_DEBUG_ENABLE == 1
         TService           * volatile WaitingFor;
         const stack_item_t * const StackPool;
+        const size_t       StackSize; // as number of stack_item_t items
         #if SEPARATE_RETURN_STACK == 1
             const stack_item_t * const RStackPool;
+            const size_t               RStackSize;
         #endif
     #endif // scmRTOS_DEBUG_ENABLE
     
     #if scmRTOS_PROCESS_RESTART_ENABLE == 1
         volatile TProcessMap * WaitingProcessMap;
     #endif
-    };
-    //--------------------------------------------------------------------------
-
-
-    //--------------------------------------------------------------------------
-    //
-    //   StartState
-    // 
-    //   Initial task state.
-    //
-    //      DESCRIPTION:
-    //
-    //
-    enum StartState
-    {
-        ssRunning,
-        ssSuspended
-    };
 
     #if scmRTOS_SUSPENDED_PROCESS_ENABLE != 0
-    namespace detail
-    {
-    extern TProcessMap SuspendedProcessMap;
-    }
+        static TProcessMap SuspendedProcessMap;
     #endif
 
+    };
+    //--------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------
     //
@@ -346,7 +304,7 @@ namespace OS
     //
     #if SEPARATE_RETURN_STACK == 0
 
-        template<TPriority pr, size_t stack_size, StartState ss = ssRunning>
+        template<TPriority pr, size_t stk_size, TProcessStartState pss = pssRunning>
         class process : public TBaseProcess
         {
         public:
@@ -359,32 +317,32 @@ namespace OS
         #endif
 
         private:
-            stack_item_t Stack[stack_size/sizeof(stack_item_t)];
+            stack_item_t Stack[stk_size/sizeof(stack_item_t)];
         };
 
-        template<TPriority pr, size_t stack_size, StartState ss>
-        OS::process<pr, stack_size, ss>::process(): TBaseProcess(&Stack[stack_size / sizeof(stack_item_t)]
-                                                             , pr
-                                                             , reinterpret_cast<void (*)()>(exec)
-                                                         #if scmRTOS_DEBUG_ENABLE == 1
-                                                             , Stack
-                                                         #endif
-                                                             )
+        template<TPriority pr, size_t stk_size, TProcessStartState pss>
+        OS::process<pr, stk_size, pss>::process(): TBaseProcess(&Stack[stk_size / sizeof(stack_item_t)]
+                                                                  , pr
+                                                                  , reinterpret_cast<void (*)()>(exec)
+                                                              #if scmRTOS_DEBUG_ENABLE == 1
+                                                                  , Stack
+                                                              #endif
+                                                                  )
         {
             #if scmRTOS_SUSPENDED_PROCESS_ENABLE != 0
-            if ( ss == ssSuspended )
-                clr_prio_tag(detail::SuspendedProcessMap, get_prio_tag(pr));
+            if ( pss == pssSuspended )
+                clr_prio_tag(SuspendedProcessMap, get_prio_tag(pr));
             #endif
         }
 
         #if scmRTOS_PROCESS_RESTART_ENABLE == 1
-        template<TPriority pr, size_t stack_size, StartState ss>
-        void OS::process<pr, stack_size, ss>::terminate()
+        template<TPriority pr, size_t stk_size, TProcessStartState pss>
+        void OS::process<pr, stk_size, pss>::terminate()
         {
             TCritSect cs;
 
             reset_controls();
-            init_stack_frame( &Stack[stack_size/sizeof(stack_item_t)]
+            init_stack_frame( &Stack[stk_size/sizeof(stack_item_t)]
                              , reinterpret_cast<void (*)()>(exec)
                           #if scmRTOS_DEBUG_ENABLE == 1
                               , Stack
@@ -397,7 +355,7 @@ namespace OS
 
     #else  // SEPARATE_RETURN_STACK
 
-        template<TPriority pr, size_t stack_size, size_t rstack_size, StartState ss = ssRunning>
+        template<TPriority pr, size_t stk_size, size_t rstk_size, TProcessStartState pss = pssRunning>
         class process : public TBaseProcess
         {
         public:
@@ -410,36 +368,36 @@ namespace OS
         #endif
 
         private:
-            stack_item_t Stack [stack_size/sizeof(stack_item_t)];
-            stack_item_t RStack[rstack_size/sizeof(stack_item_t)];
+            stack_item_t Stack [stk_size/sizeof(stack_item_t)];
+            stack_item_t RStack[rstk_size/sizeof(stack_item_t)];
         };
 
-        template<TPriority pr, size_t stack_size, size_t rstack_size, StartState ss>
-        process<pr, stack_size, rstack_size, ss>::process(): TBaseProcess(&Stack[stack_size / sizeof(stack_item_t)]
-                                                                      , &RStack[rstack_size/sizeof(stack_item_t)]
-                                                                      , pr
-                                                                      , reinterpret_cast<void (*)()>(exec)
-                                                                 #if scmRTOS_DEBUG_ENABLE == 1
-                                                                      , Stack
-                                                                      , RStack
-                                                                 #endif
-                                                                      )
+        template<TPriority pr, size_t stk_size, size_t rstk_size, TProcessStartState pss>
+        process<pr, stk_size, rstk_size, pss>::process(): TBaseProcess(&Stack[stk_size / sizeof(stack_item_t)]
+                                                                         , &RStack[rstk_size/sizeof(stack_item_t)]
+                                                                         , pr
+                                                                         , reinterpret_cast<void (*)()>(exec)
+                                                                    #if scmRTOS_DEBUG_ENABLE == 1
+                                                                         , Stack
+                                                                         , RStack
+                                                                    #endif
+                                                                         )
         {
             #if scmRTOS_SUSPENDED_PROCESS_ENABLE != 0
-            if ( ss == ssSuspended )
-                clr_prio_tag(detail::SuspendedProcessMap, get_prio_tag(pr));
+            if ( pss == pssSuspended )
+                clr_prio_tag(SuspendedProcessMap, get_prio_tag(pr));
             #endif
         }
         
         #if scmRTOS_PROCESS_RESTART_ENABLE == 1
-        template<TPriority pr, size_t stack_size, size_t rstack_size, StartState ss>
-        void OS::process<pr, stack_size, rstack_size, ss>::terminate()
+        template<TPriority pr, size_t stk_size, size_t rstk_size, TProcessStartState pss>
+        void OS::process<pr, stk_size, rstk_size, pss>::terminate()
         {
             TCritSect cs;
             
             reset_controls();
-            init_stack_frame( &Stack[stack_size/sizeof(stack_item_t)]
-                            , &RStack[rstack_size/sizeof(stack_item_t)]
+            init_stack_frame( &Stack[stk_size/sizeof(stack_item_t)]
+                            , &RStack[rstk_size/sizeof(stack_item_t)]
                             , reinterpret_cast<void (*)()>(exec)
                         #if scmRTOS_DEBUG_ENABLE == 1
                             , Stack
@@ -479,6 +437,9 @@ namespace OS
         INLINE static volatile timeout_t   & cur_proc_timeout()        { return cur_proc()->Timeout;     }
         INLINE static void reschedule()                                { Kernel.scheduler();             }
 
+        INLINE static void set_process_ready   (const uint_fast8_t pr) { Kernel.set_process_ready(pr);   }
+        INLINE static void set_process_unready (const uint_fast8_t pr) { Kernel.set_process_unready(pr); }
+
     #if scmRTOS_DEBUG_ENABLE == 1
         INLINE static TService * volatile & cur_proc_waiting_for()     { return cur_proc()->WaitingFor;  }
     #endif
@@ -499,43 +460,15 @@ namespace OS
     INLINE void sleep(timeout_t t = 0) { TBaseProcess::sleep(t); }
     INLINE const TBaseProcess * get_proc(uint_fast8_t Prio) { return Kernel.ProcessTable[Prio]; }
     
-#if scmRTOS_OBSOLETE_NAMES == 1
-    INLINE void Run()               { run();                 }
-    INLINE void LockSystemTimer()   { lock_system_timer();   }
-    INLINE void UnlockSystemTimer() { unlock_system_timer(); }
-#endif        
-    
     //--------------------------------------------------------------------------
 
 #if scmRTOS_SYSTEM_TICKS_ENABLE == 1
     INLINE tick_count_t get_tick_count() { TCritSect cs; return Kernel.SysTickCount; }
-#if scmRTOS_OBSOLETE_NAMES == 1
-    INLINE tick_count_t GetTickCount() { return get_tick_count(); }
-#endif
 #endif
 
 #if scmRTOS_TARGET_IDLE_HOOK_ENABLE == 1
     void idle_process_target_hook();
 #endif // scmRTOS_TARGET_IDLE_HOOK_ENABLE
-
-#if scmRTOS_OBSOLETE_NAMES == 1
-
-#if scmRTOS_SYSTIMER_HOOK_ENABLE == 1
-    INLINE_SYS_TIMER_HOOK void SystemTimerUserHook();
-    INLINE void system_timer_user_hook() { SystemTimerUserHook(); }
-#endif // scmRTOS_SYSTIMER_HOOK_ENABLE
-
-#if scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE == 1
-    INLINE_CONTEXT_SWITCH_HOOK void ContextSwitchUserHook();
-    INLINE void context_switch_user_hook() { ContextSwitchUserHook(); }
-#endif // scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE
-
-#if scmRTOS_IDLE_HOOK_ENABLE == 1
-    void IdleProcessUserHook();
-    INLINE void idle_process_user_hook() { IdleProcessUserHook(); }
-#endif // scmRTOS_IDLE_HOOK_ENABLE
-
-#else // scmRTOS_OBSOLETE_NAMES
 
 #if scmRTOS_SYSTIMER_HOOK_ENABLE == 1
     INLINE_SYS_TIMER_HOOK void system_timer_user_hook();
@@ -548,9 +481,6 @@ namespace OS
 #if scmRTOS_IDLE_HOOK_ENABLE == 1
     void idle_process_user_hook();
 #endif // scmRTOS_IDLE_HOOK_ENABLE
-
-#endif // scmRTOS_OBSOLETE_NAMES
-
     
 }   // namespace OS
 //------------------------------------------------------------------------------
@@ -674,23 +604,13 @@ INLINE void OS::run()
     uint_fast8_t p = pr0;
 
     #if scmRTOS_SUSPENDED_PROCESS_ENABLE != 0
-    Kernel.ReadyProcessMap = detail::SuspendedProcessMap;
+    Kernel.ReadyProcessMap = TBaseProcess::SuspendedProcessMap;
     p = highest_priority(Kernel.ReadyProcessMap); 
     #endif
 
     stack_item_t *sp = Kernel.ProcessTable[p]->StackPointer;
     os_start(sp);
 }
-
-#if scmRTOS_OBSOLETE_NAMES == 1
-namespace OS
-{
-    INLINE void Sleep(timeout_t t = 0) { sleep(t); }
-
-    INLINE bool IsProcessSleeping(const TBaseProcess& p) { return p.is_sleeping(); }
-    INLINE bool IsProcessSuspended(const TBaseProcess& p) { return p.is_suspended(); }
-}   // namespace OS
-#endif
 
 #include <os_services.h>
 

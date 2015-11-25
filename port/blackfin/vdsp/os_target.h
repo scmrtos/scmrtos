@@ -35,8 +35,10 @@
 //*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //*
 //*     =================================================================
-//*     See http://scmrtos.sourceforge.net for documentation, latest
-//*     information, license and contact details.
+//*     Project sources: https://github.com/scmrtos/scmrtos
+//*     Documentation:   https://github.com/scmrtos/scmrtos/wiki/Documentation
+//*     Wiki:            https://github.com/scmrtos/scmrtos/wiki
+//*     Sample projects: https://github.com/scmrtos/scmrtos-sample-projects
 //*     =================================================================
 //*
 //******************************************************************************
@@ -194,22 +196,6 @@ INLINE void disable_interrupts() { }
 INLINE void enable_context_switch()  { sti( 0xc000 );  }
 INLINE void disable_context_switch() { cli( ); }
 
-
-#if scmRTOS_OBSOLETE_NAMES == 1
-        
-INLINE status_reg_t GetInterruptState( )               { return get_interrupt_state(); }
-INLINE void         SetInterruptState(status_reg_t sr) { set_interrupt_state(sr); }
-
-INLINE void EnableInterrupts()  { enable_interrupts(); }
-INLINE void DisableInterrupts() { }
-
-INLINE void EnableContextSwitch()  { enable_context_switch();  }
-INLINE void DisableContextSwitch() { disable_context_switch(); }
-        
-        
-#endif // scmRTOS_OBSOLETE_NAMES      
-
-
 //-----------------------------------------------------------------------------
 //
 //    ISR prototypes
@@ -224,13 +210,7 @@ namespace OS
 {
     void system_timer_isr();
 
-#if scmRTOS_OBSOLETE_NAMES == 0
     inline void raise_context_switch() { raise_intr(14); } // raise software interrupt
-#else    
-    inline void RaiseContextSwitch() { asm(" raise 14;"); } // raise software interrupt
-#endif        
-    
-    
 }
 //-----------------------------------------------------------------------------
 ///////////////////////////////////////////////////////////////////////////////

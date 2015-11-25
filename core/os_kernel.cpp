@@ -31,27 +31,22 @@
 //*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //*
 //*     =================================================================
-//*     See http://scmrtos.sourceforge.net for documentation, latest
-//*     information, license and contact details.
+//*     Project sources: https://github.com/scmrtos/scmrtos
+//*     Documentation:   https://github.com/scmrtos/scmrtos/wiki/Documentation
+//*     Wiki:            https://github.com/scmrtos/scmrtos/wiki
+//*     Sample projects: https://github.com/scmrtos/scmrtos-sample-projects
 //*     =================================================================
 //*
 //******************************************************************************
 
 #include "scmRTOS.h"
 
-#ifdef scmRTOS_OBSOLETE_NAMES
-#if scmRTOS_OBSOLETE_NAMES == 1
-#warning "Obsolete RTOS names are used for now. These names will be removed from the RTOS distributive in the next release."
-#warning "Please, edit your project for eliminating of using of obsolete RTOS names."
-#endif  // scmRTOS_OBSOLETE_NAMES == 1
-#endif  // scmRTOS_OBSOLETE_NAMES
-
 using namespace OS;
 
 OS::TKernel OS::Kernel;
 
 #if scmRTOS_SUSPENDED_PROCESS_ENABLE != 0
-OS::TProcessMap OS::detail::SuspendedProcessMap = (1ul << (PROCESS_COUNT)) - 1; 
+OS::TProcessMap OS::TBaseProcess::SuspendedProcessMap = (1ul << (PROCESS_COUNT)) - 1; 
 #endif
 
 TBaseProcess * TKernel::ProcessTable[scmRTOS_PROCESS_COUNT + 1];
@@ -123,6 +118,7 @@ TBaseProcess::TBaseProcess( stack_item_t * StackPoolEnd
                       #if scmRTOS_DEBUG_ENABLE == 1
                             , WaitingFor(0)
                             , StackPool(aStackPool)
+                            , StackSize(StackPoolEnd - aStackPool)
                       #endif 
                       #if scmRTOS_PROCESS_RESTART_ENABLE == 1
                             , WaitingProcessMap(0)
@@ -154,7 +150,9 @@ TBaseProcess::TBaseProcess( stack_item_t * Stack
                       #if scmRTOS_DEBUG_ENABLE == 1
                             , WaitingFor(0)
                             , StackPool(aStackPool)
+                            , StackSize(Stack - aStackPool)
                             , RStackPool(aRStackPool)
+                            , RStackSize(RStack - aRStackPool)
                       #endif 
                       #if scmRTOS_PROCESS_RESTART_ENABLE == 1
                             , WaitingProcessMap(0)

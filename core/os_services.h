@@ -31,8 +31,10 @@
 //*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //*
 //*     =================================================================
-//*     See http://scmrtos.sourceforge.net for documentation, latest
-//*     information, license and contact details.
+//*     Project sources: https://github.com/scmrtos/scmrtos
+//*     Documentation:   https://github.com/scmrtos/scmrtos/wiki/Documentation
+//*     Wiki:            https://github.com/scmrtos/scmrtos/wiki
+//*     Sample projects: https://github.com/scmrtos/scmrtos-sample-projects
 //*     =================================================================
 //*
 //******************************************************************************
@@ -202,14 +204,6 @@ namespace OS
         INLINE void signal_isr();
         INLINE bool is_signaled() { TCritSect cs; return Value == efOn; }
 
-    #if scmRTOS_OBSOLETE_NAMES == 1
-        INLINE bool Wait(timeout_t timeout = 0) { return wait(timeout); }
-        INLINE void Signal()                    { signal();             }
-        INLINE void Clear()                     { clear();              }
-        INLINE void SignalISR()                 { signal_isr();         }
-        INLINE bool IsSignaled()                { return is_signaled(); }
-    #endif
-
     protected:
         volatile TProcessMap ProcessMap;
         volatile TValue      Value;
@@ -237,29 +231,23 @@ namespace OS
                bool try_lock(timeout_t timeout);
         INLINE bool is_locked() const { TCritSect cs; return ValueTag != 0; }
 
-    #if scmRTOS_OBSOLETE_NAMES == 1
-        INLINE void Lock()           { lock(); }
-        INLINE void Unlock()         { unlock(); }
-        INLINE void UnlockISR()      { unlock_isr(); }
-        INLINE bool LockSoftly()     { return lock_softly(); }
-        INLINE bool IsLocked() const { return is_locked(); }
-        INLINE bool lock_softly()    { return try_lock(); }
-    #endif
-
     protected:
         volatile TProcessMap ProcessMap;
         volatile TProcessMap ValueTag;
 
     };
     //--------------------------------------------------------------------------
-    class TMutexLocker
+    template <typename Mutex>
+    class TScopedLock
     {
     public:
-        TMutexLocker(OS::TMutex & mutex) : Mutex(mutex) { Mutex.lock(); }
-        ~TMutexLocker() { Mutex.unlock(); }
-    protected:
-        TMutex & Mutex;
+        TScopedLock(Mutex& m): mx(m) { mx.lock(); }
+        ~TScopedLock() { mx.unlock(); }
+    private:
+        Mutex & mx;
     };
+
+    typedef TScopedLock<OS::TMutex> TMutexLocker;
     //--------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------
@@ -283,14 +271,6 @@ namespace OS
         void read(uint8_t* const data, const uint8_t count);
 
         INLINE uint8_t get_count() const { TCritSect cs; return Cbuf.get_count(); }
-
-    #if scmRTOS_OBSOLETE_NAMES == 1
-        INLINE void    Push(uint8_t x)     { push(x); }
-        INLINE uint8_t Pop()               { return pop(); }
-        INLINE void    Write(const uint8_t* data, const uint8_t count) { write(data, count); }
-        INLINE void    Read(uint8_t* const data, const uint8_t count)  { read(data, count); }
-        INLINE uint8_t GetCount() const { return get_count(); }
-    #endif
 
     protected:
         volatile TProcessMap ProducersProcessMap;
@@ -368,10 +348,6 @@ namespace OS
         INLINE void send_isr();
         INLINE bool is_non_empty() const { TCritSect cs; return NonEmpty;  }
         INLINE void reset       ()       { TCritSect cs; NonEmpty = false; }
-
-    #if scmRTOS_OBSOLETE_NAMES == 1
-        INLINE void sendISR()   { send_isr(); }
-    #endif
 
     protected:
         volatile TProcessMap ProcessMap;

@@ -35,8 +35,10 @@
 //*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //*
 //*     =================================================================
-//*     See http://scmrtos.sourceforge.net for documentation, latest
-//*     information, license and contact details.
+//*     Project sources: https://github.com/scmrtos/scmrtos
+//*     Documentation:   https://github.com/scmrtos/scmrtos/wiki/Documentation
+//*     Wiki:            https://github.com/scmrtos/scmrtos/wiki
+//*     Sample projects: https://github.com/scmrtos/scmrtos-sample-projects
 //*     =================================================================
 //*
 //******************************************************************************
@@ -240,30 +242,6 @@ namespace OS
     INLINE void enable_context_switch()  { enable_interrupts();  }
     INLINE void disable_context_switch() { disable_interrupts(); }
 }
-
-#if scmRTOS_OBSOLETE_NAMES == 1
-
-INLINE status_reg_t GetInterruptState( )               { return get_interrupt_state(); }
-INLINE void         SetInterruptState(status_reg_t sr) { set_interrupt_state(sr);      }
-
-INLINE void EnableInterrupts()  { enable_interrupts();  }
-INLINE void DisableInterrupts() { disable_interrupts(); }
-
-INLINE stack_item_t* GetDataSP()                   { return get_data_sp();     }
-INLINE stack_item_t* GetReturnSP()                 { return get_return_sp();   }
-INLINE void          SetDataSP(stack_item_t* sp)   { set_data_sp(sp);          }
-INLINE void          SetReturnSP(stack_item_t* sp) { set_return_sp(sp);        }
-INLINE void          SetISRStackPointers()         { set_isr_stack_pointers(); }
-
-namespace OS
-{
-    INLINE void EnableContextSwitch()  { enable_context_switch();  }
-    INLINE void DisableContextSwitch() { disable_context_switch(); }
-}
-
-#endif // scmRTOS_OBSOLETE_NAMES
-
-
 
 //-----------------------------------------------------------------------------
 ///////////////////////////////////////////////////////////////////////////////

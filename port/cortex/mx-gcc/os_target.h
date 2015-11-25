@@ -35,16 +35,18 @@
 //*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //*
 //*     =================================================================
-//*     See http://scmrtos.sourceforge.net for documentation, latest
-//*     information, license and contact details.
+//*     Project sources: https://github.com/scmrtos/scmrtos
+//*     Documentation:   https://github.com/scmrtos/scmrtos/wiki/Documentation
+//*     Wiki:            https://github.com/scmrtos/scmrtos/wiki
+//*     Sample projects: https://github.com/scmrtos/scmrtos-sample-projects
 //*     =================================================================
 //*
 //******************************************************************************
 //*     Cortex-M3/M4(F) GCC port by Anton B. Gusev aka AHTOXA, Copyright (c) 2012-2015
 //*     Cortex-M0 port by Sergey A. Borshch, Copyright (c) 2011-2015
 
-#ifndef scmRTOS_CORTEXM4_H
-#define scmRTOS_CORTEXM4_H
+#ifndef scmRTOS_CORTEXMX_H
+#define scmRTOS_CORTEXMX_H
 
 //------------------------------------------------------------------------------
 //
@@ -186,17 +188,6 @@ INLINE status_reg_t get_interrupt_state()
     return sr;
 }
 
-#if scmRTOS_OBSOLETE_NAMES == 1
-
-INLINE status_reg_t GetInterruptState( )       { return get_interrupt_state(); }
-INLINE void SetInterruptState(status_reg_t sr) { set_interrupt_state(sr);      }
-
-INLINE void EnableInterrupts()  { enable_interrupts();  }
-INLINE void DisableInterrupts() { disable_interrupts(); }
-
-#endif // scmRTOS_OBSOLETE_NAMES
-
-
 //-----------------------------------------------------------------------------
 //
 //     The Critical Section Wrapper
@@ -216,17 +207,26 @@ private:
 
 //   Uncomment macro value below for system_timer() and
 //   context_switch_hook() run in critical section.
-// 
-//   This is useful (and necessary) when target processor has hardware 
+//
+//   This is useful (and necessary) when target processor has hardware
 //   enabled nested interrupts.
 //   User can define own macros using user-defined TCritSect capabilities.
 //
 //   Cortex-M have nested interrupts but interrupts are disabled
 //   during context switch ISR. So, critical section is needed
 //   for system timer routine and not needed for context switcher.
-// 
+//
 #define SYS_TIMER_CRIT_SECT() TCritSect cs
 #define CONTEXT_SWITCH_HOOK_CRIT_SECT()
+
+
+//-----------------------------------------------------------------------------
+//
+//     Lock/unlock system timer.
+//
+//
+void LOCK_SYSTEM_TIMER();
+void UNLOCK_SYSTEM_TIMER();
 
 
 //-----------------------------------------------------------------------------
@@ -271,50 +271,96 @@ namespace OS
     INLINE void disable_context_switch() { disable_interrupts(); }
 }
 
+//------------------------------------------------------------------------------
+//
+//       Context Switch ISR stuff
+//
+//
+namespace OS
+{
+#if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
+
+// 0xE000ED04 - Interrupt Control State Register
+INLINE void raise_context_switch() { *((volatile uint32_t*)0xE000ED04) |= 0x10000000; }
+
+#define ENABLE_NESTED_INTERRUPTS()
+
+#if scmRTOS_SYSTIMER_NEST_INTS_ENABLE == 0
+#define DISABLE_NESTED_INTERRUPTS() TCritSect cs
+#else
+#define DISABLE_NESTED_INTERRUPTS()
+#endif
+
+#else
+#error "Cortex-M3 port supports software interrupt switch method only!"
+
+#endif // scmRTOS_CONTEXT_SWITCH_SCHEME
+
+}
+
 #include <os_kernel.h>
 
 namespace OS
 {
-    //--------------------------------------------------------------------------
-    //
-    //      NAME       :   OS ISR support
-    //
-    //      PURPOSE    :   Implements common actions on interrupt enter and exit
-    //                     under the OS
-    //
-    //      DESCRIPTION:
-    //
-    //
-    class TISRW
+
+//--------------------------------------------------------------------------
+//
+//      NAME       :   OS ISR support
+//
+//      PURPOSE    :   Implements common actions on interrupt enter and exit
+//                     under the OS
+//
+//      DESCRIPTION:
+//
+//
+class TISRW
+{
+public:
+    INLINE  TISRW()  { ISR_Enter(); }
+    INLINE  ~TISRW() { ISR_Exit();  }
+
+private:
+    //-----------------------------------------------------
+    INLINE void ISR_Enter()
     {
-    public:
-        INLINE  TISRW()  { ISR_Enter(); }
-        INLINE  ~TISRW() { ISR_Exit();  }
+        TCritSect cs;
+        Kernel.ISR_NestCount++;
+    }
+    //-----------------------------------------------------
+    INLINE void ISR_Exit()
+    {
+        TCritSect cs;
+        if(--Kernel.ISR_NestCount) return;
+        Kernel.sched_isr();
+    }
+    //-----------------------------------------------------
+};
 
-    private:
-        //-----------------------------------------------------
-        INLINE void ISR_Enter()
-        {
-            TCritSect cs;
-            Kernel.ISR_NestCount++;
-        }
-        //-----------------------------------------------------
-        INLINE void ISR_Exit()
-        {
-            TCritSect cs;
-            if(--Kernel.ISR_NestCount) return;
-            Kernel.sched_isr();
-        }
-        //-----------------------------------------------------
-    };
+// No software interrupt stack switching provided,
+// TISRW_SS declared to be the same as TISRW for porting compatibility
+#define TISRW_SS    TISRW
 
-    // No software interrupt stack switching provided,
-    // TISRW_SS declared to be the same as TISRW for porting compatibility
-    #define TISRW_SS    TISRW
+/*
+ * System timer interrupt handler.
+ */
+INLINE void system_timer_isr()
+{
+	OS::TISRW ISR;
+
+#if scmRTOS_SYSTIMER_NEST_INTS_ENABLE == 0
+    DISABLE_NESTED_INTERRUPTS();
+#endif
+
+#if scmRTOS_SYSTIMER_HOOK_ENABLE == 1
+    system_timer_user_hook();
+#endif
+
+    Kernel.system_timer();
+}
 
 } // namespace OS
 //-----------------------------------------------------------------------------
 
-#endif // scmRTOS_CORTEXM4_H
+#endif // scmRTOS_CORTEXMX_H
 //-----------------------------------------------------------------------------
 

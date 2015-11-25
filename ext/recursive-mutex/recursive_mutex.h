@@ -4,8 +4,6 @@
 //*
 //*     NICKNAME:  scmRTOS
 //*
-//*     PURPOSE:   Definitions for compatibility with v3.10
-//*
 //*     Version: 5.0.0
 //*
 //*
@@ -31,31 +29,51 @@
 //*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //*
 //*     =================================================================
-//*     See http://scmrtos.sourceforge.net for documentation, latest
-//*     information, license and contact details.
+//*     Project sources: https://github.com/scmrtos/scmrtos
+//*     Documentation:   https://github.com/scmrtos/scmrtos/wiki/Documentation
+//*     Wiki:            https://github.com/scmrtos/scmrtos/wiki
+//*     Sample projects: https://github.com/scmrtos/scmrtos-sample-projects
 //*     =================================================================
 //*
 //******************************************************************************
+//*     Recursive mutex extension by Andrey Chuykin, Copyright (c) 2015
 
-#ifndef scmRTOS_310_COMPAT_H
-#define scmRTOS_310_COMPAT_H
+#ifndef RECURSIVE_MUTEX_H
+#define RECURSIVE_MUTEX_H
 
-//-----------------------------------------------------------------------------
-//
-//    
-//
-#define scmRTOS_OBSOLETE_NAMES  1
-
-typedef uint8_t  byte;
-typedef int8_t   sbyte;
-typedef uint16_t word;
-typedef uint32_t dword;
+#include <scmRTOS.h>
 
 
-typedef timeout_t TTimeout;
+namespace OS
+{
 
 //------------------------------------------------------------------------------
+//
+// Recursive mutex.
+//
+// Recursive mutex is similar to TMutex.
+// But it can be locked several times by the same thread.
+// To fully unlock the mutex, the thread has to unlock the mutex the same times
+// it has locked it.
+//
+class TRecursiveMutex : protected TService
+{
+public:
+    TRecursiveMutex(): ProcessMap(0), ValueTag(0), NestCount(0) { }
 
+    void lock();
+    void unlock();
+    bool try_lock();
+    bool try_lock(timeout_t timeout);
+    bool is_locked() const { TCritSect cs; return (ValueTag != 0); }
 
-#endif // scmRTOS_310_COMPAT_H
+protected:
+    volatile TProcessMap ProcessMap;
+    volatile TProcessMap ValueTag;
+    volatile size_t NestCount;
+}; 
+
+} // ns OS
+
+#endif /* RECURSIVE_MUTEX_H */
 

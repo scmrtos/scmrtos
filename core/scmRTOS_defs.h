@@ -31,8 +31,10 @@
 //*     THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //*
 //*     =================================================================
-//*     See http://scmrtos.sourceforge.net for documentation, latest
-//*     information, license and contact details.
+//*     Project sources: https://github.com/scmrtos/scmrtos
+//*     Documentation:   https://github.com/scmrtos/scmrtos/wiki/Documentation
+//*     Wiki:            https://github.com/scmrtos/scmrtos/wiki
+//*     Sample projects: https://github.com/scmrtos/scmrtos-sample-projects
 //*     =================================================================
 //*
 //******************************************************************************
@@ -42,22 +44,6 @@
 
 //------------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------
-//
-//
-///   Macro for Channel Type definition
-//
-//
-#define DefineChannel(Name, Capacity)                                            \
-class Name : public OS::TChannel                                                 \
-{                                                                                \
-public:                                                                          \
-    Name() : OS::TChannel(buf, sizeof(buf)) { }                                  \
-                                                                                 \
-private:                                                                         \
-    uint8_t buf[Capacity];                                                       \
-                                                                                 \
-}
 //------------------------------------------------------------------------------
 //
 //    Check CONFIG Macro Definitions
@@ -186,11 +172,6 @@ private:                                                                        
 //----------------- NORETURN Macro ---------------------------------------------
 #ifndef NORETURN
 #define NORETURN
-#endif
-
-//------------------------- v3.10 names ----------------------------------------
-#ifndef scmRTOS_OBSOLETE_NAMES
-#define scmRTOS_OBSOLETE_NAMES    0
 #endif
 
 //------------------------------------------------------------------------------
@@ -418,7 +399,18 @@ namespace OS
 #define INLINE_PROCESS_CTOR
 #endif
 
-
+//-----------------------------------------------------------------------------
+//
+//   Initial process state.
+//
+namespace OS
+{
+	enum TProcessStartState
+	{
+    	pssRunning,
+	    pssSuspended
+	};
+}
 //-----------------------------------------------------------------------------
 
 #endif // scmRTOS_DEFS_H
