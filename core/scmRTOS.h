@@ -42,8 +42,6 @@
 #ifndef scmRTOS_H
 #define scmRTOS_H
 
-#define scmRTOS_VERSION 400
-
 //-----------------------------------------------------------------------------
 //
 //    !!! The order of includes is important !!!

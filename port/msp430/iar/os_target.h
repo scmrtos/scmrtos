@@ -196,7 +196,7 @@ INLINE OS::TProcessMap get_prio_tag(const uint_fast8_t pr) { return PrioMaskTabl
             pr--;
             pm <<= 1;
         }
-        return (TPriority)pr;
+        return pr;
     }
 #endif // scmRTOS_PRIORITY_ORDER
 }

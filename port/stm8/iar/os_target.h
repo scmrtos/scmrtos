@@ -213,10 +213,10 @@ INLINE OS::TProcessMap get_prio_tag(const uint_fast8_t pr) { return PrioMaskTabl
             pr++;
             pm >>= 1;
         }
-        return (TPriority)pr;
+        return pr;
     }
 #else
-    INLINE TPriority highest_priority(TProcessMap pm)
+    INLINE uint8_t highest_priority(TProcessMap pm)
     {
         uint8_t pr = scmRTOS_PROCESS_COUNT;
 
@@ -225,7 +225,7 @@ INLINE OS::TProcessMap get_prio_tag(const uint_fast8_t pr) { return PrioMaskTabl
             pr--;
             pm <<= 1;
         }
-        return (TPriority)pr;
+        return pr;
     }
 #endif // scmRTOS_PRIORITY_ORDER
 
