@@ -311,7 +311,7 @@ extern "C" void __init_system_timer()
  * Default system timer lock/unlock functions.
  *
  */
-void LOCK_SYSTEM_TIMER()   { SysTick->CTRL &= NVIC_ST_CTRL_INTEN; }
+void LOCK_SYSTEM_TIMER()   { SysTick->CTRL &= ~NVIC_ST_CTRL_INTEN; }
 void UNLOCK_SYSTEM_TIMER() { SysTick->CTRL |= NVIC_ST_CTRL_INTEN; }
 
 #endif  // #if (SCMRTOS_USE_CUSTOM_TIMER == 0)
