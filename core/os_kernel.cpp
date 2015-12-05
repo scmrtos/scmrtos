@@ -118,8 +118,7 @@ TBaseProcess::TBaseProcess( stack_item_t * StackPoolEnd
                       #if scmRTOS_DEBUG_ENABLE == 1
                             , WaitingFor(0)
                             , StackPool(aStackPool)
-                            , StackSize(StackPoolEnd - aStackPool)
-                      #endif 
+                      #endif
                       #if scmRTOS_PROCESS_RESTART_ENABLE == 1
                             , WaitingProcessMap(0)
                       #endif
@@ -150,10 +149,8 @@ TBaseProcess::TBaseProcess( stack_item_t * Stack
                       #if scmRTOS_DEBUG_ENABLE == 1
                             , WaitingFor(0)
                             , StackPool(aStackPool)
-                            , StackSize(Stack - aStackPool)
                             , RStackPool(aRStackPool)
-                            , RStackSize(RStack - aRStackPool)
-                      #endif 
+                      #endif
                       #if scmRTOS_PROCESS_RESTART_ENABLE == 1
                             , WaitingProcessMap(0)
                       #endif

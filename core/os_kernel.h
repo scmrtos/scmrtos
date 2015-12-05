@@ -249,12 +249,10 @@ namespace OS
     #if scmRTOS_DEBUG_ENABLE == 1
         INLINE TService * waiting_for() const { return WaitingFor; }
     public:
-               size_t     stack_size() const { return StackSize; }
-               size_t     stack_slack() const; 
+               size_t     stack_slack() const;
         #if SEPARATE_RETURN_STACK == 1
-               size_t     rstack_size() const { return RStackSize; }
                size_t     rstack_slack() const;
-        #endif               
+        #endif
     #endif // scmRTOS_DEBUG_ENABLE
 
     #if scmRTOS_PROCESS_RESTART_ENABLE == 1
@@ -275,13 +273,11 @@ namespace OS
     #if scmRTOS_DEBUG_ENABLE == 1
         TService           * volatile WaitingFor;
         const stack_item_t * const StackPool;
-        const size_t       StackSize; // as number of stack_item_t items
         #if SEPARATE_RETURN_STACK == 1
             const stack_item_t * const RStackPool;
-            const size_t               RStackSize;
         #endif
     #endif // scmRTOS_DEBUG_ENABLE
-    
+
     #if scmRTOS_PROCESS_RESTART_ENABLE == 1
         volatile TProcessMap * WaitingProcessMap;
     #endif
@@ -315,6 +311,10 @@ namespace OS
         #if scmRTOS_PROCESS_RESTART_ENABLE == 1
             INLINE void terminate();
         #endif
+
+    #if scmRTOS_DEBUG_ENABLE == 1
+            size_t stack_size() const { return stk_size; }
+    #endif // scmRTOS_DEBUG_ENABLE
 
         private:
             stack_item_t Stack[stk_size/sizeof(stack_item_t)];
@@ -366,6 +366,11 @@ namespace OS
         #if scmRTOS_PROCESS_RESTART_ENABLE == 1
             INLINE void terminate();
         #endif
+
+    #if scmRTOS_DEBUG_ENABLE == 1
+            size_t stack_size() const { return stk_size; }
+            size_t rstack_size() const { return rstk_size; }
+    #endif // scmRTOS_DEBUG_ENABLE
 
         private:
             stack_item_t Stack [stk_size/sizeof(stack_item_t)];
