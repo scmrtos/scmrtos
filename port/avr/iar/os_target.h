@@ -223,7 +223,7 @@ INLINE void disable_interrupts() { __disable_interrupt(); }
 #pragma segment="CSTACK"
 #pragma segment="RSTACK"
 
-#define  ABS_WORD(x)  (*((volatile uint16_t*)x))
+#define  ABS_WORD(x)  ( *(reinterpret_cast<volatile uint16_t*>(x)) )
 
 INLINE stack_item_t* get_data_sp()   { return reinterpret_cast<stack_item_t*>(ABS_WORD(28)); }
 INLINE stack_item_t* get_return_sp() { return reinterpret_cast<stack_item_t*>(SP); }
