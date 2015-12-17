@@ -6,7 +6,7 @@
 //*
 //*     PURPOSE:  OS Services Source
 //*
-//*     Version: 5.0.0
+//*     Version: v5.0.1
 //*
 //*
 //*     Copyright (c) 2003-2015, scmRTOS Team
