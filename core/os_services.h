@@ -6,7 +6,7 @@
 //*
 //*     PURPOSE:  OS Services Header. Declarations And Definitions
 //*
-//*     Version: 5.0.0
+//*     Version: v5.0.1
 //*
 //*
 //*     Copyright (c) 2003-2015, scmRTOS Team
@@ -63,7 +63,7 @@ namespace OS
         INLINE static TProcessMap  highest_prio_tag(TProcessMap map)
         {
         #if scmRTOS_PRIORITY_ORDER == 0
-            return map & -map;                              // Isolate rightmost 1-bit.
+            return map & (~static_cast<unsigned>(map) + 1);                              // Isolate rightmost 1-bit.
         #else   // scmRTOS_PRIORITY_ORDER == 1
             return get_prio_tag(highest_priority(map));
         #endif
@@ -140,14 +140,14 @@ namespace OS
     //--------------------------------------------------------------------------
     bool OS::TService::resume_all_isr (TProcessMap volatile & waiters_map)
     {
-        TProcessMap Timeouted = ready_process_map();        // Process has its tag set in ReadyProcessMap if timeout expired,
-                                                            // or it was waked up by OS::ForceWakeUpProcess()
-
-        TProcessMap CachedMap = waiters_map;                // cache volatile
-        if( CachedMap & ~Timeouted )                        // if any process has to be waked up
-        {
-            set_prio_tag(ready_process_map(), CachedMap);   // place all waiting processes to the ready map
-            clr_prio_tag(CachedMap, ~Timeouted);            // remove all non-timeouted processes from the waiting map.
+        TProcessMap Timeouted = ready_process_map();                      // Process has its tag set in ReadyProcessMap if timeout expired,
+                                                                          // or it was waked up by OS::ForceWakeUpProcess()
+                                                                          
+        TProcessMap CachedMap = waiters_map;                              // cache volatile
+        if( CachedMap & ~static_cast<unsigned>(Timeouted) )                                      // if any process has to be waked up
+        {                                                                 
+            set_prio_tag(ready_process_map(), CachedMap);                 // place all waiting processes to the ready map
+            clr_prio_tag(CachedMap, ~static_cast<unsigned>(Timeouted) );  // remove all non-timeouted processes from the waiting map.
             waiters_map = CachedMap;
             return true;
         }
@@ -156,18 +156,18 @@ namespace OS
     //--------------------------------------------------------------------------
     bool OS::TService::resume_next_ready_isr (TProcessMap volatile & waiters_map)
     {
-        TProcessMap Active = ready_process_map();           // Cache volatile
-        TProcessMap Waiters = waiters_map;                  // Cache volatile
+        TProcessMap Active = ready_process_map();                         // Cache volatile
+        TProcessMap Waiters = waiters_map;                                // Cache volatile
+                                                                          
+        TProcessMap Timeouted = Active;                                   // Process has its tag set in ReadyProcessMap if timeout expired,
+                                                                          // or it was waked up by OS::ForceWakeUpProcess()
     
-        TProcessMap Timeouted = Active;                     // Process has its tag set in ReadyProcessMap if timeout expired,
-                                                            // or it was waked up by OS::ForceWakeUpProcess()
-    
-        TProcessMap Ready = Waiters & ~Timeouted;
-        if( Ready )                                         // if any process has to be waked up
-        {
-            TProcessMap PrioTag = highest_prio_tag(Ready);  // get next ready process tag
-            set_prio_tag(Active, PrioTag);                  // place next ready process to the ready map
-            clr_prio_tag(Waiters, PrioTag);                 // remove process from the waiting map.
+        TProcessMap Ready = Waiters & ~static_cast<unsigned>(Timeouted);
+        if( Ready )                                                       // if any process has to be waked up
+        {                                                                 
+            TProcessMap PrioTag = highest_prio_tag(Ready);                // get next ready process tag
+            set_prio_tag(Active, PrioTag);                                // place next ready process to the ready map
+            clr_prio_tag(Waiters, PrioTag);                               // remove process from the waiting map.
     
             ready_process_map() = Active;
             waiters_map = Waiters;

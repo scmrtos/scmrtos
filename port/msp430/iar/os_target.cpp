@@ -10,7 +10,7 @@
 //*               
 //*     PURPOSE:   Target Dependent Stuff Source
 //*               
-//*     Version: 5.0.0
+//*     Version: v5.0.1
 //*
 //*
 //*     Copyright (c) 2003-2015, scmRTOS Team
@@ -69,8 +69,8 @@ void TBaseProcess::init_stack_frame( stack_item_t * Stack
     //-----------------------------------------------------------------------
     //   Fill stack pool with predefined value for stack consumption checking
     //
-    size_t StackSize = (Stack - StackBegin) - (CONTEXT_SIZE*STACK_ITEM_SIZE + 2);
-    for(size_t i = 0; i < StackSize; ++i)
+    size_t StackSz = (Stack - StackBegin) - (CONTEXT_SIZE*STACK_ITEM_SIZE + 2);
+    for(size_t i = 0; i < StackSz; ++i)
     {
         StackBegin[i] = STACK_DEFAULT_PATTERN;
     }

@@ -6,7 +6,7 @@
 //*
 //*     PURPOSE:  OS Kernel Header. Declarations And Definitions
 //*
-//*     Version: 5.0.0
+//*     Version: v5.0.1
 //*
 //*
 //*     Copyright (c) 2003-2015, scmRTOS Team
@@ -83,9 +83,9 @@ namespace OS
     class TBaseProcess;
 
     INLINE void set_prio_tag(volatile TProcessMap & pm, const TProcessMap PrioTag) { pm |=  PrioTag; }
-    INLINE void clr_prio_tag(volatile TProcessMap & pm, const TProcessMap PrioTag) { pm &= ~PrioTag; }
+    INLINE void clr_prio_tag(volatile TProcessMap & pm, const TProcessMap PrioTag) { pm &= ~static_cast<unsigned>(PrioTag); }
     INLINE void set_prio_tag(TProcessMap & pm, const TProcessMap PrioTag) { pm |=  PrioTag; }
-    INLINE void clr_prio_tag(TProcessMap & pm, const TProcessMap PrioTag) { pm &= ~PrioTag; }
+    INLINE void clr_prio_tag(TProcessMap & pm, const TProcessMap PrioTag) { pm &= ~static_cast<unsigned>(PrioTag); }
 
     //--------------------------------------------------------------------------
     //

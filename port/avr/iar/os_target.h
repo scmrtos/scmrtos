@@ -10,7 +10,7 @@
 //*               
 //*     PURPOSE:   Target Dependent Stuff Header. Declarations And Definitions
 //*               
-//*     Version: 5.0.0
+//*     Version: v5.0.1
 //*
 //*
 //*     Copyright (c) 2003-2015, scmRTOS Team
@@ -192,10 +192,10 @@ INLINE OS::TProcessMap get_prio_tag(const uint_fast8_t pr) { return PrioMaskTabl
             pr++;
             pm >>= 1;
         }
-        return (TPriority)pr;
+        return pr;
     }
 #else
-    INLINE TPriority highest_priority(TProcessMap pm)
+    INLINE uint8_t highest_priority(TProcessMap pm)
     {
         uint8_t pr = scmRTOS_PROCESS_COUNT;
 
@@ -204,7 +204,7 @@ INLINE OS::TProcessMap get_prio_tag(const uint_fast8_t pr) { return PrioMaskTabl
             pr--;
             pm <<= 1;
         }
-        return (TPriority)pr;
+        return pr;
     }
 #endif // scmRTOS_PRIORITY_ORDER
 }
@@ -223,7 +223,7 @@ INLINE void disable_interrupts() { __disable_interrupt(); }
 #pragma segment="CSTACK"
 #pragma segment="RSTACK"
 
-#define  ABS_WORD(x)  (*((volatile uint16_t*)x))
+#define  ABS_WORD(x)  ( *(reinterpret_cast<volatile uint16_t*>(x)) )
 
 INLINE stack_item_t* get_data_sp()   { return reinterpret_cast<stack_item_t*>(ABS_WORD(28)); }
 INLINE stack_item_t* get_return_sp() { return reinterpret_cast<stack_item_t*>(SP); }

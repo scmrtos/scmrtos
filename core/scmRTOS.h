@@ -6,7 +6,7 @@
 //*
 //*     PURPOSE:  Main RTOS header file
 //*
-//*     Version: 5.0.0
+//*     Version: v5.0.1
 //*
 //*
 //*     Copyright (c) 2003-2015, scmRTOS Team
@@ -41,8 +41,6 @@
 
 #ifndef scmRTOS_H
 #define scmRTOS_H
-
-#define scmRTOS_VERSION 400
 
 //-----------------------------------------------------------------------------
 //

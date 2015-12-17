@@ -10,7 +10,7 @@
 //*
 //*     PURPOSE:   Target Dependent Stuff Source
 //*
-//*     Version: 5.0.0
+//*     Version: v5.0.1
 //*
 //*
 //*     Copyright (c) 2003-2015, scmRTOS Team
@@ -101,29 +101,29 @@ namespace OS {
     extern TPriority const PriorityTable[] =
     {
         #if scmRTOS_PROCESS_COUNT == 1
-            (TPriority)0xFF,
+            static_cast<TPriority>(0xFF),
             pr0,
             prIDLE, pr0
         #elif scmRTOS_PROCESS_COUNT == 2
-            (TPriority)0xFF,
+            static_cast<TPriority>(0xFF),
             pr0,
             pr1, pr0,
             prIDLE, pr0, pr1, pr0
         #elif scmRTOS_PROCESS_COUNT == 3
-            (TPriority)0xFF,
+            static_cast<TPriority>(0xFF),
             pr0,
             pr1, pr0,
             pr2, pr0, pr1, pr0,
             prIDLE, pr0, pr1, pr0, pr2, pr0, pr1, pr0
         #elif scmRTOS_PROCESS_COUNT == 4
-            (TPriority)0xFF,
+            static_cast<TPriority>(0xFF),
             pr0,
             pr1, pr0,
             pr2, pr0, pr1, pr0,
             pr3, pr0, pr1, pr0, pr2, pr0, pr1, pr0,
             prIDLE, pr0, pr1, pr0, pr2, pr0, pr1, pr0, pr3, pr0, pr1, pr0, pr2, pr0, pr1, pr0
         #elif scmRTOS_PROCESS_COUNT == 5
-            (TPriority)0xFF,
+            static_cast<TPriority>(0xFF),
             pr0,
             pr1, pr0,
             pr2, pr0, pr1, pr0,
@@ -131,22 +131,22 @@ namespace OS {
             pr4, pr0, pr1, pr0, pr2, pr0, pr1, pr0, pr3, pr0, pr1, pr0, pr2, pr0, pr1, pr0,
             prIDLE, pr0, pr1, pr0, pr2, pr0, pr1, pr0, pr3, pr0, pr1, pr0, pr2, pr0, pr1, pr0, pr4, pr0, pr1, pr0, pr2, pr0, pr1, pr0, pr3, pr0, pr1, pr0, pr2, pr0, pr1, pr0
         #else // scmRTOS_PROCESS_COUNT > 5
-            (TPriority)32,      (TPriority)0,       (TPriority)1,       (TPriority)12,
-            (TPriority)2,       (TPriority)6,       (TPriority)0xFF,    (TPriority)13,
-            (TPriority)3,       (TPriority)0xFF,    (TPriority)7,       (TPriority)0xFF,
-            (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)14,
-            (TPriority)10,      (TPriority)4,       (TPriority)0xFF,    (TPriority)0xFF,
-            (TPriority)8,       (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)25,
-            (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)0xFF,
-            (TPriority)0xFF,    (TPriority)21,      (TPriority)27,      (TPriority)15,
-            (TPriority)31,      (TPriority)11,      (TPriority)5,       (TPriority)0xFF,
-            (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)0xFF,
-            (TPriority)9,       (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)24,
-            (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)20,      (TPriority)26,
-            (TPriority)30,      (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)0xFF,
-            (TPriority)0xFF,    (TPriority)23,      (TPriority)0xFF,    (TPriority)19,
-            (TPriority)29,      (TPriority)0xFF,    (TPriority)22,      (TPriority)18,
-            (TPriority)28,      (TPriority)17,      (TPriority)16,      (TPriority)0xFF
+            static_cast<TPriority>(32),      static_cast<TPriority>(0),       static_cast<TPriority>(1),       static_cast<TPriority>(12),
+            static_cast<TPriority>(2),       static_cast<TPriority>(6),       static_cast<TPriority>(0xFF),    static_cast<TPriority>(13),
+            static_cast<TPriority>(3),       static_cast<TPriority>(0xFF),    static_cast<TPriority>(7),       static_cast<TPriority>(0xFF),
+            static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),    static_cast<TPriority>(14),
+            static_cast<TPriority>(10),      static_cast<TPriority>(4),       static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),
+            static_cast<TPriority>(8),       static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),    static_cast<TPriority>(25),
+            static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),
+            static_cast<TPriority>(0xFF),    static_cast<TPriority>(21),      static_cast<TPriority>(27),      static_cast<TPriority>(15),
+            static_cast<TPriority>(31),      static_cast<TPriority>(11),      static_cast<TPriority>(5),       static_cast<TPriority>(0xFF),
+            static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),
+            static_cast<TPriority>(9),       static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),    static_cast<TPriority>(24),
+            static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),    static_cast<TPriority>(20),      static_cast<TPriority>(26),
+            static_cast<TPriority>(30),      static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),
+            static_cast<TPriority>(0xFF),    static_cast<TPriority>(23),      static_cast<TPriority>(0xFF),    static_cast<TPriority>(19),
+            static_cast<TPriority>(29),      static_cast<TPriority>(0xFF),    static_cast<TPriority>(22),      static_cast<TPriority>(18),
+            static_cast<TPriority>(28),      static_cast<TPriority>(17),      static_cast<TPriority>(16),      static_cast<TPriority>(0xFF)
         #endif  // scmRTOS_PROCESS_COUNT
     };
 }   //namespace
