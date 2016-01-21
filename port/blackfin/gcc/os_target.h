@@ -73,9 +73,8 @@ typedef uint16_t status_reg_t;
 //    Configuration macros
 //
 //
-#define REGS "r0-r7 p0-p5 ASTAT i0-i3 b0-b3 l0-l3 m0-m3 lt0 lt1 lb0 lb1 lc0 lc1 a0 a1 cc"
-#define OS_PROCESS _Pragma("regs_clobbered REGS")
-#define DUMMY_INSTR() // asm(" nop;")
+#define OS_PROCESS __attribute__((noreturn))
+#define DUMMY_INSTR() 
 #define INLINE_PROCESS_CTOR
 
 
