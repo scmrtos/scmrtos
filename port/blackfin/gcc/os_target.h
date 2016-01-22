@@ -4,9 +4,9 @@
 //*
 //*     NICKNAME:  scmRTOS
 //*
-//*     PROCESSOR: ADSP-BF533 (Analog Devices)
+//*     PROCESSOR: ADSP-BF533 (Analog Devices Inc.)
 //*
-//*     TOOLKIT:   VDSP (Analog Devices)
+//*     TOOLKIT:   bfin-elf (GCC)
 //*               
 //*     PURPOSE:   Target Dependent Stuff Header. Declarations And Definitions
 //*               

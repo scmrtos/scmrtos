@@ -4,9 +4,9 @@
 //*
 //*     NICKNAME:  scmRTOS
 //*
-//*     PROCESSOR: ADSP-BF533 (Analog Devices)
+//*     PROCESSOR: ADSP-BF533 (Analog Devices Inc.)
 //*
-//*     TOOLKIT:   VDSP (Analog Devices)
+//*     TOOLKIT:   bfin-elf (GCC)
 //*               
 //*     PURPOSE:   Target Dependent Low-Level Stuff
 //*               
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     Blackfin/VisualDSP++ port by Harry E. Zhurov, Copyright (c) 2005-2015
+//*     Blackfin/bfin-elf port by Harry E. Zhurov, Copyright (c) 2005-2016
 
 #include "scmRTOS_target_cfg.h"
 #include <sys/platform.h>
