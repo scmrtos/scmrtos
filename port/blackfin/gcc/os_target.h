@@ -42,14 +42,16 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     Blackfin/VisualDSP++ port by Harry E. Zhurov, Copyright (c) 2005-2015
+//*     Blackfin/bfin-elf port by Harry E. Zhurov, Copyright (c) 2005-2016
 
 #ifndef scmRTOS_BLACKFIN_H
 #define scmRTOS_BLACKFIN_H
 
-#ifndef __ADSPBLACKFIN__
-#error "This file should only be compiled with VDSP Blackfin Compiler!"
+#if !defined __ADSPBLACKFIN__ || !defined __GNUC__
+#error "This file should only be compiled with GNU C++ Compiler for ADI Blackfin processors!"
 #endif
+
+
 
 //------------------------------------------------------------------------------
 //
@@ -57,7 +59,7 @@
 //
 //
 #ifndef INLINE
-#define INLINE _Pragma("always_inline") inline
+#define INLINE  __attribute__((__always_inline__)) inline
 #endif
 
 //-----------------------------------------------------------------------------
@@ -211,8 +213,6 @@ namespace OS
 
     inline void raise_context_switch() { __builtin_raise((14)); } // raise software interrupt
 
-    //inline void raise_context_switch() { raise_intr(14); } // raise software interrupt
-    //inline void raise_context_switch() { __asm__ __volatile__ ("raise %0;" : : "n"(14)); } // raise software interrupt
 }
 //-----------------------------------------------------------------------------
 ///////////////////////////////////////////////////////////////////////////////
