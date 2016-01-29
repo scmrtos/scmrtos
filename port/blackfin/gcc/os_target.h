@@ -128,8 +128,8 @@ typedef uint16_t status_reg_t;
 class TCritSect
 {
 public:
-    TCritSect () : StatusReg(cli()) { }
-    ~TCritSect() { sti(StatusReg); }
+    TCritSect () : StatusReg(__cli()) { }
+    ~TCritSect() { __sti(StatusReg); }
 
 private:
     status_reg_t StatusReg;
