@@ -485,6 +485,7 @@ namespace OS
 }   // namespace OS
 //------------------------------------------------------------------------------
 
+#include <os_services.h>
 #include "scmRTOS_extensions.h"
 
 //------------------------------------------------------------------------------
@@ -611,7 +612,6 @@ INLINE void OS::run()
     stack_item_t *sp = Kernel.ProcessTable[p]->StackPointer;
     os_start(sp);
 }
-
-#include <os_services.h>
+//------------------------------------------------------------------------------
 
 #endif // OS_KERNEL_H
