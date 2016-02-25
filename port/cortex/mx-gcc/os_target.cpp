@@ -255,7 +255,7 @@ enum
     NVIC_ST_CTRL_ENABLE  = 0x00000001        // Counter mode.
 };
 
-static iostruct_t<0xE000E010UL, systick_t> SysTick;
+static iostruct_t<0xE000E010UL, systick_t> SysTickRegisters;
 #endif
 
 #if (!defined __SOFTFP__)
@@ -303,16 +303,16 @@ extern "C" void __init_system_timer()
 #else
     SysTickPriority = SYS_TIMER_PRIORITY;
 #endif
-    SysTick->LOAD = SYSTICKFREQ/SYSTICKINTRATE-1;
-    SysTick->CTRL = NVIC_ST_CTRL_CLK_SRC | NVIC_ST_CTRL_INTEN | NVIC_ST_CTRL_ENABLE;
+    SysTickRegisters->LOAD = SYSTICKFREQ/SYSTICKINTRATE-1;
+    SysTickRegisters->CTRL = NVIC_ST_CTRL_CLK_SRC | NVIC_ST_CTRL_INTEN | NVIC_ST_CTRL_ENABLE;
 }
 
 /*
  * Default system timer lock/unlock functions.
  *
  */
-void LOCK_SYSTEM_TIMER()   { SysTick->CTRL &= ~NVIC_ST_CTRL_INTEN; }
-void UNLOCK_SYSTEM_TIMER() { SysTick->CTRL |= NVIC_ST_CTRL_INTEN; }
+void LOCK_SYSTEM_TIMER()   { SysTickRegisters->CTRL &= ~NVIC_ST_CTRL_INTEN; }
+void UNLOCK_SYSTEM_TIMER() { SysTickRegisters->CTRL |= NVIC_ST_CTRL_INTEN; }
 
 #endif  // #if (SCMRTOS_USE_CUSTOM_TIMER == 0)
 
