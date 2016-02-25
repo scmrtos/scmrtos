@@ -109,7 +109,7 @@ void TBaseProcess::init_stack_frame( stack_item_t * Stack
  * we can be sure that it will run only when no other exception or interrupt is active, and
  * therefore safe to assume that context being switched out was using the process stack (PSP).
  */
-extern "C" void PendSV_Handler()
+extern "C" __attribute__((naked)) void PendSV_Handler()
 {
 #if (defined __ARM_ARCH_6M__)   // Cortex-M0(+)/Cortex-M1
     asm volatile (
@@ -209,7 +209,7 @@ extern "C" void PendSV_Handler()
 namespace
 {
 
-template<uint32_t addr, typename type = uint32_t>
+template<uintptr_t addr, typename type = uint32_t>
 struct ioregister_t
 {
     type operator=(type value) { *(volatile type*)addr = value; return value; }
@@ -218,7 +218,7 @@ struct ioregister_t
     operator type() { return *(volatile type*)addr; }
 };
 
-template<uint32_t addr, class T>
+template<uintptr_t addr, class T>
 struct iostruct_t
 {
     volatile T* operator->() { return (volatile T*)addr; }
@@ -255,7 +255,7 @@ enum
     NVIC_ST_CTRL_ENABLE  = 0x00000001        // Counter mode.
 };
 
-static iostruct_t<0xE000E010UL, systick_t> SysTick;
+static iostruct_t<0xE000E010UL, systick_t> SysTickRegisters;
 #endif
 
 #if (!defined __SOFTFP__)
@@ -303,16 +303,16 @@ extern "C" void __init_system_timer()
 #else
     SysTickPriority = SYS_TIMER_PRIORITY;
 #endif
-    SysTick->LOAD = SYSTICKFREQ/SYSTICKINTRATE-1;
-    SysTick->CTRL = NVIC_ST_CTRL_CLK_SRC | NVIC_ST_CTRL_INTEN | NVIC_ST_CTRL_ENABLE;
+    SysTickRegisters->LOAD = SYSTICKFREQ/SYSTICKINTRATE-1;
+    SysTickRegisters->CTRL = NVIC_ST_CTRL_CLK_SRC | NVIC_ST_CTRL_INTEN | NVIC_ST_CTRL_ENABLE;
 }
 
 /*
  * Default system timer lock/unlock functions.
  *
  */
-void LOCK_SYSTEM_TIMER()   { SysTick->CTRL &= ~NVIC_ST_CTRL_INTEN; }
-void UNLOCK_SYSTEM_TIMER() { SysTick->CTRL |= NVIC_ST_CTRL_INTEN; }
+void LOCK_SYSTEM_TIMER()   { SysTickRegisters->CTRL &= ~NVIC_ST_CTRL_INTEN; }
+void UNLOCK_SYSTEM_TIMER() { SysTickRegisters->CTRL |= NVIC_ST_CTRL_INTEN; }
 
 #endif  // #if (SCMRTOS_USE_CUSTOM_TIMER == 0)
 
