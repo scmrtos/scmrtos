@@ -209,7 +209,7 @@ extern "C" __attribute__((naked)) void PendSV_Handler()
 namespace
 {
 
-template<uint32_t addr, typename type = uint32_t>
+template<uintptr_t addr, typename type = uint32_t>
 struct ioregister_t
 {
     type operator=(type value) { *(volatile type*)addr = value; return value; }
@@ -218,7 +218,7 @@ struct ioregister_t
     operator type() { return *(volatile type*)addr; }
 };
 
-template<uint32_t addr, class T>
+template<uintptr_t addr, class T>
 struct iostruct_t
 {
     volatile T* operator->() { return (volatile T*)addr; }
