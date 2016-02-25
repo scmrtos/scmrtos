@@ -109,7 +109,7 @@ void TBaseProcess::init_stack_frame( stack_item_t * Stack
  * we can be sure that it will run only when no other exception or interrupt is active, and
  * therefore safe to assume that context being switched out was using the process stack (PSP).
  */
-extern "C" void PendSV_Handler()
+extern "C" __attribute__((naked)) void PendSV_Handler()
 {
 #if (defined __ARM_ARCH_6M__)   // Cortex-M0(+)/Cortex-M1
     asm volatile (
