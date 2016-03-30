@@ -122,9 +122,14 @@ namespace OS
     private:
         uint_fast8_t          CurProcPriority;
         volatile TProcessMap  ReadyProcessMap;
-        static TBaseProcess*  ProcessTable[PROCESS_COUNT];
         volatile uint_fast8_t ISR_NestCount;
-
+    #if scmRTOS_DEBUG_ENABLE == 1
+        const uint_fast8_t    PROC_COUNT;
+    #endif 
+        
+    private:
+        static TBaseProcess*  ProcessTable[PROCESS_COUNT];
+        
     #if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
         volatile uint_fast8_t SchedProcPriority;
     #endif
@@ -141,6 +146,9 @@ namespace OS
     INLINE TKernel() : CurProcPriority(pr0)
                      , ReadyProcessMap( (1ul << (PROCESS_COUNT)) - 1)  // set all processes ready
                      , ISR_NestCount(0)
+                #if scmRTOS_DEBUG_ENABLE == 1
+                     , PROC_COUNT(PROCESS_COUNT)
+                #endif
     {
     }
     
@@ -535,7 +543,7 @@ void OS::TKernel::system_timer()
 //
 //     ISR optimized scheduler
 // 
-//     !!! IMPORTANT: This function must be call from ISR services only !!!
+//     !!! IMPORTANT: This function must be called from ISR services only !!!
 //
 //
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
