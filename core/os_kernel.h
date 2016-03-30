@@ -143,8 +143,8 @@ namespace OS
     //      Functions
     //
     public:
-    INLINE TKernel() : CurProcPriority(pr0)
-                     , ReadyProcessMap( (1ul << (PROCESS_COUNT)) - 1)  // set all processes ready
+    INLINE TKernel() : CurProcPriority( MAX_PROCESS_COUNT )           // 'MAX_PROCESS_COUNT' means that OS not run yet
+                     , ReadyProcessMap( (1ul << (PROCESS_COUNT)) - 1) // set all processes ready
                      , ISR_NestCount(0)
                 #if scmRTOS_DEBUG_ENABLE == 1
                      , PROC_COUNT(PROCESS_COUNT)
@@ -610,13 +610,15 @@ bool OS::TBaseProcess::is_suspended() const
 //-----------------------------------------------------------------------------
 INLINE void OS::run()
 {
-    uint_fast8_t p = pr0;
 
-    #if scmRTOS_SUSPENDED_PROCESS_ENABLE != 0
+#if scmRTOS_SUSPENDED_PROCESS_ENABLE != 0
     Kernel.ReadyProcessMap = TBaseProcess::SuspendedProcessMap;
-    p = highest_priority(Kernel.ReadyProcessMap); 
-    #endif
+    uint_fast8_t p = highest_priority(Kernel.ReadyProcessMap); 
+#else 
+    uint_fast8_t p = pr0;
+#endif
 
+    Kernel.CurProcPriority = p;
     stack_item_t *sp = Kernel.ProcessTable[p]->StackPointer;
     os_start(sp);
 }

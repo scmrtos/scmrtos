@@ -181,6 +181,8 @@
 //
 namespace OS
 {
+    const uint_fast8_t MAX_PROCESS_COUNT = 32;
+
     #if scmRTOS_PROCESS_COUNT < 8
         typedef uint_fast8_t TProcessMap;
     #elif scmRTOS_PROCESS_COUNT < 16
@@ -405,11 +407,11 @@ namespace OS
 //
 namespace OS
 {
-	enum TProcessStartState
-	{
-    	pssRunning,
-	    pssSuspended
-	};
+    enum TProcessStartState
+    {
+        pssRunning,
+        pssSuspended
+    };
 }
 //-----------------------------------------------------------------------------
 
