@@ -70,7 +70,6 @@ extern "C" stack_item_t* os_context_switch_hook(stack_item_t* sp);
 //                               Processes,
 //                               Mutexes,
 //                               Event Flags,
-//                               Byte-wide Channels,
 //                               Arbitrary-type Channels,
 //                               Messages
 //
@@ -110,6 +109,7 @@ namespace OS
         friend class TKernelAgent;
         
         friend void                 run();
+        friend bool                 os_running();
         friend const TBaseProcess * get_proc(uint_fast8_t Prio);
     #if scmRTOS_SYSTEM_TICKS_ENABLE == 1
         friend inline tick_count_t  get_tick_count();
@@ -463,6 +463,7 @@ namespace OS
     //
     //
     INLINE NORETURN void run();
+    INLINE bool os_running();
     INLINE void lock_system_timer()    { TCritSect cs; LOCK_SYSTEM_TIMER();   }
     INLINE void unlock_system_timer()  { TCritSect cs; UNLOCK_SYSTEM_TIMER(); }
     INLINE void sleep(timeout_t t = 0) { TBaseProcess::sleep(t); }
@@ -622,6 +623,13 @@ INLINE void OS::run()
     stack_item_t *sp = Kernel.ProcessTable[p]->StackPointer;
     os_start(sp);
 }
-//------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+INLINE bool OS::os_running()
+{
+    return Kernel.CurProcPriority < MAX_PROCESS_COUNT;
+}
+//-----------------------------------------------------------------------------
+
+#include <os_services.h>
 
 #endif // OS_KERNEL_H
