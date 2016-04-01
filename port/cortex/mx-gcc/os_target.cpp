@@ -104,7 +104,7 @@ void TBaseProcess::init_stack_frame( stack_item_t * Stack
     StackPointer = (stack_item_t*)sptr;
 
     *(--StackPointer)  = 0x01000000UL;      // xPSR
-    *(--StackPointer)  = reinterpret_cast<uint32_t>(exec); // Entry Point
+    *(--StackPointer)  = reinterpret_cast<stack_item_t>(exec); // Entry Point
 #if (defined __SOFTFP__)    // core without FPU
     StackPointer -= 14;                     // emulate "push LR,R12,R3,R2,R1,R0,R11-R4"
 #else                       // core with FPU
