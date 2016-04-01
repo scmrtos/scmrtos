@@ -56,6 +56,28 @@
 
 using namespace OS;
 
+namespace OS
+{
+
+#if scmRTOS_DEBUG_ENABLE == 1
+
+struct TDebugSupportInfo
+{
+    uint8_t PROCESS_COUNT;
+    uint8_t TIMEOUT_SIZE;
+};
+
+
+__attribute__((used))
+extern const TDebugSupportInfo DebugInfo =
+{
+    PROCESS_COUNT,
+    sizeof(timeout_t)
+};
+#endif // scmRTOS_DEBUG_ENABLE
+
+} // namespace OS
+
 namespace{
 enum {
 #if (defined __SOFTFP__)
@@ -90,9 +112,10 @@ void TBaseProcess::init_stack_frame( stack_item_t * Stack
     *(--StackPointer)  = 0xFFFFFFFDUL;      // exc_return: Return to Thread mode, floating-point context inactive, execution uses PSP after return.
     StackPointer -= 8;                      // emulate "push R4-R11"
 #endif
-
 #if scmRTOS_DEBUG_ENABLE == 1
-    for (stack_item_t* pDst = StackBegin; pDst < StackPointer; pDst++)
+    *(StackPointer)  = reinterpret_cast<stack_item_t>(&DebugInfo); // dummy load to keep 'DebugInfo' in output binary
+
+    for (stack_item_t *pDst = StackBegin; pDst < StackPointer; pDst++)
         *pDst = STACK_DEFAULT_PATTERN;
 #endif // scmRTOS_DEBUG_ENABLE
 }
