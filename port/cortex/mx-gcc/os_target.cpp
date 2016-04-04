@@ -65,6 +65,7 @@ struct TDebugSupportInfo
 {
     uint8_t PROCESS_COUNT;
     uint8_t TIMEOUT_SIZE;
+    uint8_t NAME_OFFSET;
 };
 
 
@@ -72,7 +73,8 @@ __attribute__((used))
 extern const TDebugSupportInfo DebugInfo =
 {
     PROCESS_COUNT,
-    sizeof(timeout_t)
+    sizeof(timeout_t),
+    sizeof(OS::TBaseProcess)
 };
 #endif // scmRTOS_DEBUG_ENABLE
 

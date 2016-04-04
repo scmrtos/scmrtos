@@ -276,8 +276,8 @@ namespace OS
         const TPriority    Priority;
     #if scmRTOS_DEBUG_ENABLE == 1
         TService           * volatile WaitingFor;
-        const stack_item_t * const StackPool;
-        const size_t       StackSize; // as number of stack_item_t items
+        const stack_item_t * const    StackPool;
+        const size_t                  StackSize; // as number of stack_item_t items
         #if SEPARATE_RETURN_STACK == 1
             const stack_item_t * const RStackPool;
             const size_t               RStackSize;
@@ -310,7 +310,11 @@ namespace OS
         class process : public TBaseProcess
         {
         public:
-            INLINE_PROCESS_CTOR process();
+            INLINE_PROCESS_CTOR process(
+            #if scmRTOS_DEBUG_ENABLE == 1
+            const char * name = ""
+            #endif
+            );
 
             OS_PROCESS static void exec();
 
@@ -319,17 +323,28 @@ namespace OS
         #endif
 
         private:
+        #if scmRTOS_DEBUG_ENABLE == 1
+            const char * Name;
+        #endif
             stack_item_t Stack[stk_size/sizeof(stack_item_t)];
         };
 
         template<TPriority pr, size_t stk_size, TProcessStartState pss>
-        OS::process<pr, stk_size, pss>::process(): TBaseProcess(&Stack[stk_size / sizeof(stack_item_t)]
-                                                                  , pr
-                                                                  , reinterpret_cast<void (*)()>(exec)
-                                                              #if scmRTOS_DEBUG_ENABLE == 1
-                                                                  , Stack
-                                                              #endif
-                                                                  )
+        OS::process<pr, stk_size, pss>::process(
+            #if scmRTOS_DEBUG_ENABLE == 1
+            const char * name
+            #endif
+            ) : TBaseProcess(&Stack[stk_size / sizeof(stack_item_t)]
+                             , pr
+                             , reinterpret_cast<void (*)()>(exec)
+                          #if scmRTOS_DEBUG_ENABLE == 1
+                             , Stack
+                          #endif
+                             )
+            #if scmRTOS_DEBUG_ENABLE == 1
+              , Name(name)
+            #endif
+            
         {
             #if scmRTOS_SUSPENDED_PROCESS_ENABLE != 0
             if ( pss == pssSuspended )
