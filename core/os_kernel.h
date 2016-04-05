@@ -199,6 +199,7 @@ namespace OS
                     , void (*exec)()
                 #if scmRTOS_DEBUG_ENABLE == 1
                     , stack_item_t * aStackPool
+                    , const char   * name = 0
                 #endif
                     );
 
@@ -251,8 +252,9 @@ namespace OS
     #if scmRTOS_DEBUG_ENABLE == 1
         INLINE TService * waiting_for() const { return WaitingFor; }
     public:
-               size_t     stack_size() const { return StackSize; }
-               size_t     stack_slack() const; 
+               size_t       stack_size()  const { return StackSize; }
+               size_t       stack_slack() const; 
+               const char * name()        const { return Name; }
         #if SEPARATE_RETURN_STACK == 1
                size_t     rstack_size() const { return RStackSize; }
                size_t     rstack_slack() const;
@@ -278,6 +280,7 @@ namespace OS
         TService           * volatile WaitingFor;
         const stack_item_t * const    StackPool;
         const size_t                  StackSize; // as number of stack_item_t items
+        const char                  * Name;
         #if SEPARATE_RETURN_STACK == 1
             const stack_item_t * const RStackPool;
             const size_t               RStackSize;
@@ -310,40 +313,31 @@ namespace OS
         class process : public TBaseProcess
         {
         public:
-            INLINE_PROCESS_CTOR process(
-            #if scmRTOS_DEBUG_ENABLE == 1
-            const char * name = ""
-            #endif
-            );
+            INLINE_PROCESS_CTOR process( const char * name = 0 );
 
             OS_PROCESS static void exec();
 
         #if scmRTOS_PROCESS_RESTART_ENABLE == 1
             INLINE void terminate();
         #endif
-
+        
         private:
-        #if scmRTOS_DEBUG_ENABLE == 1
-            const char * Name;
-        #endif
             stack_item_t Stack[stk_size/sizeof(stack_item_t)];
         };
 
         template<TPriority pr, size_t stk_size, TProcessStartState pss>
-        OS::process<pr, stk_size, pss>::process(
+        OS::process<pr, stk_size, pss>::process( const char *
             #if scmRTOS_DEBUG_ENABLE == 1
-            const char * name
+            name
             #endif
             ) : TBaseProcess(&Stack[stk_size / sizeof(stack_item_t)]
                              , pr
                              , reinterpret_cast<void (*)()>(exec)
                           #if scmRTOS_DEBUG_ENABLE == 1
                              , Stack
+                             , name
                           #endif
                              )
-            #if scmRTOS_DEBUG_ENABLE == 1
-              , Name(name)
-            #endif
             
         {
             #if scmRTOS_SUSPENDED_PROCESS_ENABLE != 0
