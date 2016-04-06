@@ -112,7 +112,7 @@ TBaseProcess::TBaseProcess( stack_item_t * StackPoolEnd
                           , void (*exec)()
                       #if scmRTOS_DEBUG_ENABLE == 1
                           , stack_item_t * aStackPool
-                          , const char   * name
+                          , const char   * name_str
                       #endif
                           ) : Timeout(0)
                             , Priority(pr)
@@ -120,7 +120,7 @@ TBaseProcess::TBaseProcess( stack_item_t * StackPoolEnd
                             , WaitingFor(0)
                             , StackPool(aStackPool)
                             , StackSize(StackPoolEnd - aStackPool)
-                            , Name(name)
+                            , Name(name_str)
                       #endif 
                       #if scmRTOS_PROCESS_RESTART_ENABLE == 1
                             , WaitingProcessMap(0)

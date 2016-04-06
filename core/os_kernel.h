@@ -313,7 +313,7 @@ namespace OS
         class process : public TBaseProcess
         {
         public:
-            INLINE_PROCESS_CTOR process( const char * name = 0 );
+            INLINE_PROCESS_CTOR process( const char * name_str = 0 );
 
             OS_PROCESS static void exec();
 
@@ -328,14 +328,14 @@ namespace OS
         template<TPriority pr, size_t stk_size, TProcessStartState pss>
         OS::process<pr, stk_size, pss>::process( const char *
             #if scmRTOS_DEBUG_ENABLE == 1
-            name
+            name_str
             #endif
             ) : TBaseProcess(&Stack[stk_size / sizeof(stack_item_t)]
                              , pr
                              , reinterpret_cast<void (*)()>(exec)
                           #if scmRTOS_DEBUG_ENABLE == 1
                              , Stack
-                             , name
+                             , name_str
                           #endif
                              )
             
