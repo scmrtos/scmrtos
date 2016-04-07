@@ -145,6 +145,7 @@ TBaseProcess::TBaseProcess( stack_item_t * Stack
                       #if scmRTOS_DEBUG_ENABLE == 1
                           , stack_item_t * aStackPool
                           , stack_item_t * aRStackPool
+                          , const char   * name_str
                       #endif
                           ) : StackPointer(Stack)
                             , Timeout(0)
@@ -153,6 +154,7 @@ TBaseProcess::TBaseProcess( stack_item_t * Stack
                             , WaitingFor(0)
                             , StackPool(aStackPool)
                             , StackSize(Stack - aStackPool)
+                            , Name(name_str)
                             , RStackPool(aRStackPool)
                             , RStackSize(RStack - aRStackPool)
                       #endif 
