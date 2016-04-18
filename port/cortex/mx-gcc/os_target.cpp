@@ -74,7 +74,7 @@ extern const TDebugSupportInfo DebugInfo =
 {
     PROCESS_COUNT,
     sizeof(timeout_t),
-    24
+    sizeof(timeout_t) == 2 ? 20 : 24
 };
 #endif // scmRTOS_DEBUG_ENABLE
 
