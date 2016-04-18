@@ -86,7 +86,7 @@ void TBaseProcess::init_stack_frame( stack_item_t * Stack
     
 }
 //------------------------------------------------------------------------------
-EX_INTERRUPT_HANDLER(OS::system_timer_isr)
+void OS::system_timer_isr()
 {
     TISRW ISR;
 
