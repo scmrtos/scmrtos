@@ -10,10 +10,10 @@
 //*
 //*     PURPOSE:   Target Dependent Stuff Header. Declarations And Definitions
 //*
-//*     Version: v5.0.1
+//*     Version: v5.1.0
 //*
 //*
-//*     Copyright (c) 2003-2015, scmRTOS Team
+//*     Copyright (c) 2003-2016, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     avr-gcc port by Oleksandr O. Redchuk, Copyright (c) 2007-2015
+//*     avr-gcc port by Oleksandr O. Redchuk, Copyright (c) 2007-2016
 
 #ifndef scmRTOS_AVR_H
 #define scmRTOS_AVR_H
