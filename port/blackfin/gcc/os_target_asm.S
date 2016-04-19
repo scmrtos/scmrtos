@@ -4,9 +4,9 @@
 //*
 //*     NICKNAME:  scmRTOS
 //*
-//*     PROCESSOR: ADSP-BF533 (Analog Devices)
+//*     PROCESSOR: ADSP-BF533 (Analog Devices Inc.)
 //*
-//*     TOOLKIT:   VDSP (Analog Devices)
+//*     TOOLKIT:   bfin-elf (GCC)
 //*               
 //*     PURPOSE:   Target Dependent Low-Level Stuff
 //*               
@@ -42,26 +42,24 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     Blackfin/VisualDSP++ port by Harry E. Zhurov, Copyright (c) 2005-2016
+//*     Blackfin/bfin-elf port by Harry E. Zhurov, Copyright (c) 2005-2016
 
-#include "scmRTOS_TARGET_CFG.h"
+#include "scmRTOS_target_cfg.h"
+#include <sys/platform.h>
+#include <sys/anomaly_macros_rtl.h>
 
     .global _os_start
     .global _context_switcher_isr
  
-    .extern _os_context_switch_hook
-    
-    .extern ldf_stack_end;
-          
-    .section program;
+    .section .text;
     .align 2;
 
 //------------------------------------------------------------------------------
 _os_start:
     sp   = r0;                              // load highest priority process stack pointer
     nop;  nop;                              //
-    p0.l = lo(IMASK);                       //
-    p0.h = hi(IMASK);                       //
+    p0.l = IMASK & 0xffff;                  //
+    p0.h = IMASK >> 16;                     //
     r1   = [sp++];                          // enable interrupts at CEC level
     [p0] = r1;                              //
                                             //
@@ -123,8 +121,8 @@ _context_switcher_isr:
     //
     //   Switch stack pointers and manage interrupt enable status
     //
-    p5.l    = lo(IMASK);                      // save IMASK value
-    p5.h    = hi(IMASK);                      // (global interrupts enable state)
+    p5.l    = IMASK & 0xffff;                 // save IMASK value
+    p5.h    = IMASK >> 16;                    // (global interrupts enable state)
     r7      = [p5];                           //
     [--sp]  = r7;                             //
     r0      = sp;
@@ -169,7 +167,7 @@ _context_switcher_isr:
     i2     = [sp++];
     i1     = [sp++];
     i0     = [sp++];
-   (r7:0,
+   (r7:0,\
     p5:0)  = [sp++];
     fp     = [sp++];
     astat  = [sp++];

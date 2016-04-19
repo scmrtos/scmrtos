@@ -6,10 +6,10 @@
 //*
 //*     PURPOSE:  OS Kernel Source
 //*
-//*     Version: 5.0.0
+//*     Version: v5.1.0
 //*
 //*
-//*     Copyright (c) 2003-2015, scmRTOS Team
+//*     Copyright (c) 2003-2016, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person 
 //*     obtaining  a copy of this software and associated documentation 
@@ -112,6 +112,7 @@ TBaseProcess::TBaseProcess( stack_item_t * StackPoolEnd
                           , void (*exec)()
                       #if scmRTOS_DEBUG_ENABLE == 1
                           , stack_item_t * aStackPool
+                          , const char   * name_str
                       #endif
                           ) : Timeout(0)
                             , Priority(pr)
@@ -119,6 +120,7 @@ TBaseProcess::TBaseProcess( stack_item_t * StackPoolEnd
                             , WaitingFor(0)
                             , StackPool(aStackPool)
                             , StackSize(StackPoolEnd - aStackPool)
+                            , Name(name_str)
                       #endif 
                       #if scmRTOS_PROCESS_RESTART_ENABLE == 1
                             , WaitingProcessMap(0)
@@ -143,6 +145,7 @@ TBaseProcess::TBaseProcess( stack_item_t * Stack
                       #if scmRTOS_DEBUG_ENABLE == 1
                           , stack_item_t * aStackPool
                           , stack_item_t * aRStackPool
+                          , const char   * name_str
                       #endif
                           ) : StackPointer(Stack)
                             , Timeout(0)
@@ -151,6 +154,7 @@ TBaseProcess::TBaseProcess( stack_item_t * Stack
                             , WaitingFor(0)
                             , StackPool(aStackPool)
                             , StackSize(Stack - aStackPool)
+                            , Name(name_str)
                             , RStackPool(aRStackPool)
                             , RStackSize(RStack - aRStackPool)
                       #endif 
@@ -212,7 +216,13 @@ namespace OS
     template<> void TIdleProc::exec();
 #endif
 
+#if scmRTOS_DEBUG_ENABLE == 1
+    TIdleProc IdleProc("Idle");
+#else
     TIdleProc IdleProc;
+#endif
+
+
 }
 
 namespace OS

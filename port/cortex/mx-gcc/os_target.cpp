@@ -10,10 +10,10 @@
 //*
 //*     PURPOSE:   Target Dependent Stuff Source
 //*
-//*     Version: 5.0.0
+//*     Version: v5.1.0
 //*
 //*
-//*     Copyright (c) 2003-2015, scmRTOS Team
+//*     Copyright (c) 2003-2016, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,8 +42,8 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     Cortex-M3/M4(F) GCC port by Anton B. Gusev aka AHTOXA, Copyright (c) 2012-2015
-//*     Cortex-M0 port by Sergey A. Borshch, Copyright (c) 2011-2015
+//*     Cortex-M3/M4(F) GCC port by Anton B. Gusev aka AHTOXA, Copyright (c) 2012-2016
+//*     Cortex-M0 port by Sergey A. Borshch, Copyright (c) 2011-2016
 
 
 #include <scmRTOS.h>
@@ -55,6 +55,30 @@
  */
 
 using namespace OS;
+
+namespace OS
+{
+
+#if scmRTOS_DEBUG_ENABLE == 1
+
+struct TDebugSupportInfo
+{
+    uint8_t PROCESS_COUNT;
+    uint8_t TIMEOUT_SIZE;
+    uint8_t NAME_OFFSET;
+};
+
+
+__attribute__((used))
+extern const TDebugSupportInfo DebugInfo =
+{
+    PROCESS_COUNT,
+    sizeof(timeout_t),
+    sizeof(timeout_t) == 2 ? 20 : 24
+};
+#endif // scmRTOS_DEBUG_ENABLE
+
+} // namespace OS
 
 namespace{
 enum {
@@ -82,7 +106,7 @@ void TBaseProcess::init_stack_frame( stack_item_t * Stack
     StackPointer = (stack_item_t*)sptr;
 
     *(--StackPointer)  = 0x01000000UL;      // xPSR
-    *(--StackPointer)  = reinterpret_cast<uint32_t>(exec); // Entry Point
+    *(--StackPointer)  = reinterpret_cast<stack_item_t>(exec); // Entry Point
 #if (defined __SOFTFP__)    // core without FPU
     StackPointer -= 14;                     // emulate "push LR,R12,R3,R2,R1,R0,R11-R4"
 #else                       // core with FPU
@@ -90,9 +114,10 @@ void TBaseProcess::init_stack_frame( stack_item_t * Stack
     *(--StackPointer)  = 0xFFFFFFFDUL;      // exc_return: Return to Thread mode, floating-point context inactive, execution uses PSP after return.
     StackPointer -= 8;                      // emulate "push R4-R11"
 #endif
-
 #if scmRTOS_DEBUG_ENABLE == 1
-    for (stack_item_t* pDst = StackBegin; pDst < StackPointer; pDst++)
+    *(StackPointer)  = reinterpret_cast<stack_item_t>(&DebugInfo); // dummy load to keep 'DebugInfo' in output binary
+
+    for (stack_item_t *pDst = StackBegin; pDst < StackPointer; pDst++)
         *pDst = STACK_DEFAULT_PATTERN;
 #endif // scmRTOS_DEBUG_ENABLE
 }
@@ -109,7 +134,7 @@ void TBaseProcess::init_stack_frame( stack_item_t * Stack
  * we can be sure that it will run only when no other exception or interrupt is active, and
  * therefore safe to assume that context being switched out was using the process stack (PSP).
  */
-extern "C" void PendSV_Handler()
+extern "C" __attribute__((naked)) void PendSV_Handler()
 {
 #if (defined __ARM_ARCH_6M__)   // Cortex-M0(+)/Cortex-M1
     asm volatile (
@@ -209,7 +234,7 @@ extern "C" void PendSV_Handler()
 namespace
 {
 
-template<uint32_t addr, typename type = uint32_t>
+template<uintptr_t addr, typename type = uint32_t>
 struct ioregister_t
 {
     type operator=(type value) { *(volatile type*)addr = value; return value; }
@@ -218,7 +243,7 @@ struct ioregister_t
     operator type() { return *(volatile type*)addr; }
 };
 
-template<uint32_t addr, class T>
+template<uintptr_t addr, class T>
 struct iostruct_t
 {
     volatile T* operator->() { return (volatile T*)addr; }
@@ -255,7 +280,7 @@ enum
     NVIC_ST_CTRL_ENABLE  = 0x00000001        // Counter mode.
 };
 
-static iostruct_t<0xE000E010UL, systick_t> SysTick;
+static iostruct_t<0xE000E010UL, systick_t> SysTickRegisters;
 #endif
 
 #if (!defined __SOFTFP__)
@@ -303,16 +328,16 @@ extern "C" void __init_system_timer()
 #else
     SysTickPriority = SYS_TIMER_PRIORITY;
 #endif
-    SysTick->LOAD = SYSTICKFREQ/SYSTICKINTRATE-1;
-    SysTick->CTRL = NVIC_ST_CTRL_CLK_SRC | NVIC_ST_CTRL_INTEN | NVIC_ST_CTRL_ENABLE;
+    SysTickRegisters->LOAD = SYSTICKFREQ/SYSTICKINTRATE-1;
+    SysTickRegisters->CTRL = NVIC_ST_CTRL_CLK_SRC | NVIC_ST_CTRL_INTEN | NVIC_ST_CTRL_ENABLE;
 }
 
 /*
  * Default system timer lock/unlock functions.
  *
  */
-void LOCK_SYSTEM_TIMER()   { SysTick->CTRL &= NVIC_ST_CTRL_INTEN; }
-void UNLOCK_SYSTEM_TIMER() { SysTick->CTRL |= NVIC_ST_CTRL_INTEN; }
+void LOCK_SYSTEM_TIMER()   { SysTickRegisters->CTRL &= ~NVIC_ST_CTRL_INTEN; }
+void UNLOCK_SYSTEM_TIMER() { SysTickRegisters->CTRL |= NVIC_ST_CTRL_INTEN; }
 
 #endif  // #if (SCMRTOS_USE_CUSTOM_TIMER == 0)
 
@@ -366,29 +391,29 @@ namespace OS
     extern TPriority const PriorityTable[] =
     {
         #if scmRTOS_PROCESS_COUNT == 1
-            (TPriority)0xFF,
+            static_cast<TPriority>(0xFF),
             pr0,
             prIDLE, pr0
         #elif scmRTOS_PROCESS_COUNT == 2
-            (TPriority)0xFF,
+            static_cast<TPriority>(0xFF),
             pr0,
             pr1, pr0,
             prIDLE, pr0, pr1, pr0
         #elif scmRTOS_PROCESS_COUNT == 3
-            (TPriority)0xFF,
+            static_cast<TPriority>(0xFF),
             pr0,
             pr1, pr0,
             pr2, pr0, pr1, pr0,
             prIDLE, pr0, pr1, pr0, pr2, pr0, pr1, pr0
         #elif scmRTOS_PROCESS_COUNT == 4
-            (TPriority)0xFF,
+            static_cast<TPriority>(0xFF),
             pr0,
             pr1, pr0,
             pr2, pr0, pr1, pr0,
             pr3, pr0, pr1, pr0, pr2, pr0, pr1, pr0,
             prIDLE, pr0, pr1, pr0, pr2, pr0, pr1, pr0, pr3, pr0, pr1, pr0, pr2, pr0, pr1, pr0
         #elif scmRTOS_PROCESS_COUNT == 5
-            (TPriority)0xFF,
+            static_cast<TPriority>(0xFF),
             pr0,
             pr1, pr0,
             pr2, pr0, pr1, pr0,
@@ -396,22 +421,22 @@ namespace OS
             pr4, pr0, pr1, pr0, pr2, pr0, pr1, pr0, pr3, pr0, pr1, pr0, pr2, pr0, pr1, pr0,
             prIDLE, pr0, pr1, pr0, pr2, pr0, pr1, pr0, pr3, pr0, pr1, pr0, pr2, pr0, pr1, pr0, pr4, pr0, pr1, pr0, pr2, pr0, pr1, pr0, pr3, pr0, pr1, pr0, pr2, pr0, pr1, pr0
         #else // scmRTOS_PROCESS_COUNT > 5
-            (TPriority)32,      (TPriority)0,       (TPriority)1,       (TPriority)12,
-            (TPriority)2,       (TPriority)6,       (TPriority)0xFF,    (TPriority)13,
-            (TPriority)3,       (TPriority)0xFF,    (TPriority)7,       (TPriority)0xFF,
-            (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)14,
-            (TPriority)10,      (TPriority)4,       (TPriority)0xFF,    (TPriority)0xFF,
-            (TPriority)8,       (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)25,
-            (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)0xFF,
-            (TPriority)0xFF,    (TPriority)21,      (TPriority)27,      (TPriority)15,
-            (TPriority)31,      (TPriority)11,      (TPriority)5,       (TPriority)0xFF,
-            (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)0xFF,
-            (TPriority)9,       (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)24,
-            (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)20,      (TPriority)26,
-            (TPriority)30,      (TPriority)0xFF,    (TPriority)0xFF,    (TPriority)0xFF,
-            (TPriority)0xFF,    (TPriority)23,      (TPriority)0xFF,    (TPriority)19,
-            (TPriority)29,      (TPriority)0xFF,    (TPriority)22,      (TPriority)18,
-            (TPriority)28,      (TPriority)17,      (TPriority)16,      (TPriority)0xFF
+            static_cast<TPriority>(32),      static_cast<TPriority>(0),       static_cast<TPriority>(1),       static_cast<TPriority>(12),
+            static_cast<TPriority>(2),       static_cast<TPriority>(6),       static_cast<TPriority>(0xFF),    static_cast<TPriority>(13),
+            static_cast<TPriority>(3),       static_cast<TPriority>(0xFF),    static_cast<TPriority>(7),       static_cast<TPriority>(0xFF),
+            static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),    static_cast<TPriority>(14),
+            static_cast<TPriority>(10),      static_cast<TPriority>(4),       static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),
+            static_cast<TPriority>(8),       static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),    static_cast<TPriority>(25),
+            static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),
+            static_cast<TPriority>(0xFF),    static_cast<TPriority>(21),      static_cast<TPriority>(27),      static_cast<TPriority>(15),
+            static_cast<TPriority>(31),      static_cast<TPriority>(11),      static_cast<TPriority>(5),       static_cast<TPriority>(0xFF),
+            static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),
+            static_cast<TPriority>(9),       static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),    static_cast<TPriority>(24),
+            static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),    static_cast<TPriority>(20),      static_cast<TPriority>(26),
+            static_cast<TPriority>(30),      static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),    static_cast<TPriority>(0xFF),
+            static_cast<TPriority>(0xFF),    static_cast<TPriority>(23),      static_cast<TPriority>(0xFF),    static_cast<TPriority>(19),
+            static_cast<TPriority>(29),      static_cast<TPriority>(0xFF),    static_cast<TPriority>(22),      static_cast<TPriority>(18),
+            static_cast<TPriority>(28),      static_cast<TPriority>(17),      static_cast<TPriority>(16),      static_cast<TPriority>(0xFF)
         #endif  // scmRTOS_PROCESS_COUNT
     };
 }   //namespace

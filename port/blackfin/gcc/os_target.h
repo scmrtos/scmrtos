@@ -4,9 +4,9 @@
 //*
 //*     NICKNAME:  scmRTOS
 //*
-//*     PROCESSOR: ADSP-BF533 (Analog Devices)
+//*     PROCESSOR: ADSP-BF533 (Analog Devices Inc.)
 //*
-//*     TOOLKIT:   VDSP (Analog Devices)
+//*     TOOLKIT:   bfin-elf (GCC)
 //*               
 //*     PURPOSE:   Target Dependent Stuff Header. Declarations And Definitions
 //*               
@@ -42,14 +42,16 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     Blackfin/VisualDSP++ port by Harry E. Zhurov, Copyright (c) 2005-2016
+//*     Blackfin/bfin-elf port by Harry E. Zhurov, Copyright (c) 2005-2016
 
 #ifndef scmRTOS_BLACKFIN_H
 #define scmRTOS_BLACKFIN_H
 
-#ifndef __ADSPBLACKFIN__
-#error "This file should only be compiled with VDSP Blackfin Compiler!"
+#if !defined __ADSPBLACKFIN__ || !defined __GNUC__
+#error "This file should only be compiled with GNU C++ Compiler for ADI Blackfin processors!"
 #endif
+
+
 
 //------------------------------------------------------------------------------
 //
@@ -57,7 +59,7 @@
 //
 //
 #ifndef INLINE
-#define INLINE _Pragma("always_inline") inline
+#define INLINE  __attribute__((__always_inline__)) inline
 #endif
 
 //-----------------------------------------------------------------------------
@@ -73,9 +75,8 @@ typedef uint16_t status_reg_t;
 //    Configuration macros
 //
 //
-#define REGS "r0-r7 p0-p5 ASTAT i0-i3 b0-b3 l0-l3 m0-m3 lt0 lt1 lb0 lb1 lc0 lc1 a0 a1 cc"
-#define OS_PROCESS _Pragma("regs_clobbered REGS")
-#define DUMMY_INSTR() // asm(" nop;")
+#define OS_PROCESS __attribute__((noreturn))
+#define DUMMY_INSTR() 
 #define INLINE_PROCESS_CTOR
 
 
@@ -95,7 +96,7 @@ typedef uint16_t status_reg_t;
 //    !!! The order of includes is important !!!
 //
 #include "scmRTOS_config.h"
-#include "scmRTOS_TARGET_CFG.h"
+#include "scmRTOS_target_cfg.h"
 #include <scmRTOS_defs.h>
 
 //-----------------------------------------------------------------------------
@@ -127,8 +128,8 @@ typedef uint16_t status_reg_t;
 class TCritSect
 {
 public:
-    TCritSect () : StatusReg(cli()) { }
-    ~TCritSect() { sti(StatusReg); }
+    TCritSect () : StatusReg(__cli()) { }
+    ~TCritSect() { __sti(StatusReg); }
 
 private:
     status_reg_t StatusReg;
@@ -200,7 +201,7 @@ INLINE void disable_context_switch() { cli( ); }
 //
 //    ISR prototypes
 //
-extern "C" void context_switcher_isr();
+extern "C" void context_switcher_isr() __attribute__ ((interrupt_handler));
 
 #define  LOCK_SYSTEM_TIMER()
 #define  UNLOCK_SYSTEM_TIMER()
@@ -208,9 +209,10 @@ extern "C" void context_switcher_isr();
 
 namespace OS
 {
-    void system_timer_isr();
+    void system_timer_isr() __attribute__ ((interrupt_handler));
 
-    inline void raise_context_switch() { raise_intr(14); } // raise software interrupt
+    inline void raise_context_switch() { __builtin_raise((14)); } // raise software interrupt
+
 }
 //-----------------------------------------------------------------------------
 ///////////////////////////////////////////////////////////////////////////////

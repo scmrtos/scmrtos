@@ -10,10 +10,10 @@
 //*
 //*     PURPOSE:   Target Dependent Stuff Header. Declarations And Definitions
 //*
-//*     Version: 5.0.0
+//*     Version: v5.1.0
 //*
 //*
-//*     Copyright (c) 2003-2015, scmRTOS Team
+//*     Copyright (c) 2003-2016, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     mspgcc port by Anton B. Gusev aka AHTOXA, Copyright (c) 2008-2015
+//*     mspgcc port by Anton B. Gusev aka AHTOXA, Copyright (c) 2008-2016
 
 #ifndef scmRTOS_MSP430_H
 #define scmRTOS_MSP430_H
@@ -210,10 +210,10 @@ INLINE OS::TProcessMap get_prio_tag(const uint_fast8_t pr) { return PrioMaskTabl
             pr++;
             pm >>= 1;
         }
-        return (TPriority)pr;
+        return pr;
     }
 #else
-    INLINE TPriority highest_priority(TProcessMap pm)
+    INLINE uint_fast8_t highest_priority(TProcessMap pm)
     {
         uint_fast8_t pr = scmRTOS_PROCESS_COUNT;
 
@@ -222,7 +222,7 @@ INLINE OS::TProcessMap get_prio_tag(const uint_fast8_t pr) { return PrioMaskTabl
             pr--;
             pm <<= 1;
         }
-        return (TPriority)pr;
+        return pr;
     }
 #endif // scmRTOS_PRIORITY_ORDER
 }

@@ -10,10 +10,10 @@
 //*               
 //*     PURPOSE:   Target Dependent Stuff Source
 //*               
-//*     Version: 5.0.0
+//*     Version: v5.1.0
 //*
 //*
-//*     Copyright (c) 2003-2015, scmRTOS Team
+//*     Copyright (c) 2003-2016, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person 
 //*     obtaining  a copy of this software and associated documentation 
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     IAR/MSP430 port by Harry E. Zhurov, Copyright (c) 2003-2015
+//*     IAR/MSP430 port by Harry E. Zhurov, Copyright (c) 2003-2016
 
 #include <scmRTOS.h>
 
@@ -69,8 +69,8 @@ void TBaseProcess::init_stack_frame( stack_item_t * Stack
     //-----------------------------------------------------------------------
     //   Fill stack pool with predefined value for stack consumption checking
     //
-    size_t StackSize = (Stack - StackBegin) - (CONTEXT_SIZE*STACK_ITEM_SIZE + 2);
-    for(size_t i = 0; i < StackSize; ++i)
+    size_t StackSz = (Stack - StackBegin) - (CONTEXT_SIZE*STACK_ITEM_SIZE + 2);
+    for(size_t i = 0; i < StackSz; ++i)
     {
         StackBegin[i] = STACK_DEFAULT_PATTERN;
     }

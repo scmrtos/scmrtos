@@ -4,9 +4,9 @@
 //*
 //*     NICKNAME:  scmRTOS
 //*
-//*     PROCESSOR: AVR (Atmel)
+//*     PROCESSOR: ADSP-BF533 (Analog Devices Inc.)
 //*
-//*     TOOLKIT:   EWAVR (IAR Systems)
+//*     TOOLKIT:   bfin-elf (GCC)
 //*               
 //*     PURPOSE:   Target Dependent Stuff Source
 //*               
@@ -42,84 +42,53 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     AVR/IAR port by Harry E. Zhurov, Copyright (c) 2003-2016
+//*     Blackfin/bfin-elf port by Harry E. Zhurov, Copyright (c) 2005-2016
 
 #include <scmRTOS.h>
 
 using namespace OS;
 
-OS::TPrioMaskTable OS::PrioMaskTable;
-
-OS::TSavedSP OS::SavedSP;
-
-#define REGS_COUNT 29     //  29 regs : r0:r15 (16 regs), r17:r27 (11 regs), r30:r31
-
-#ifdef __HAS_RAMPZ__
-    #define RAMPZ_PLACE 1
-#else
-    #define RAMPZ_PLACE 0
-#endif
-
-#ifdef __HAS_EIND__
-    #define EIND_PLACE 1
-#else
-    #define EIND_PLACE 0
-#endif
-
-#define STACK_CORRECTION (REGS_COUNT + RAMPZ_PLACE + EIND_PLACE)
-
 //------------------------------------------------------------------------------
 void TBaseProcess::init_stack_frame( stack_item_t * Stack
-                                   , stack_item_t * RStack
                                    , void (*exec)() 
                                 #if scmRTOS_DEBUG_ENABLE == 1
-                                   , stack_item_t * StackPool
-                                   , stack_item_t * RStackPool
+                                   , stack_item_t * StackBegin
                                 #endif
                                    )
 {
-    // Can we use __HAS_EIND__ instead of explcit MCU names ?
-#if defined(__ATmega2560__)  || \
-    defined(__ATmega2561__)
-    *(--RStack) = reinterpret_cast<uint32_t>(exec);                // return from interrupt address (low  byte)
-    *(--RStack) = reinterpret_cast<uint32_t>(exec) >> 8;           // return from interrupt address (middle byte)
-    *(--RStack) = reinterpret_cast<uint32_t>(exec) >> 16;          // return from interrupt address (high byte)
-#else
-    *(--RStack) = reinterpret_cast<uint16_t>(exec);                // return from interrupt address (low  byte)
-    *(--RStack) = reinterpret_cast<uint16_t>(exec) >> 8;           // return from interrupt address (high byte)
-#endif
-
-    StackPointer = Stack;
-    --StackPointer;                                            // emulate saving r31
-    *(--StackPointer) =   0x80;                                // SREG value: I-bit set, enable interrupts
-    *(--StackPointer) = reinterpret_cast<uint16_t>(RStack-1) >> 8; // SP (high byte)
-    *(--StackPointer) = reinterpret_cast<uint16_t>(RStack-1);      // SP (low  byte)
-    StackPointer     -= STACK_CORRECTION;                          // emulate saving regs (except r31) and SFRS
-
+    const uint_fast8_t CONTEXT_SIZE           = 43;
+    const uint_fast8_t FUN_INCOMING_ARGS_SIZE = 3;
+    const uint_fast8_t STACK_FRAME_SIZE     = CONTEXT_SIZE + FUN_INCOMING_ARGS_SIZE + 2;    
+    
 #if scmRTOS_DEBUG_ENABLE == 1
     //-----------------------------------------------------------------------
-    //   Fill stack pools with predefined value for stack consumption checking
-    //   Do not fill area for GPR and SFR on data stack
-    stack_item_t *fill_ptr;
-    fill_ptr = RStack;
-    while( fill_ptr > RStackPool )
+    //   Fill stack pool with predefined value for stack consumption checking
+    //
+    const size_t STACK_SIZE = Stack - StackBegin;
+    const size_t FILL_SIZE  = STACK_SIZE - STACK_FRAME_SIZE;
+          size_t i          = 0;
+          
+    for(; i < FILL_SIZE; ++i)
     {
-	*--fill_ptr = STACK_DEFAULT_PATTERN;
+        StackBegin[i] = STACK_DEFAULT_PATTERN;
     }
-    fill_ptr = StackPointer;
-    while( fill_ptr > StackPool )
+    for(; i < STACK_SIZE; ++i)
     {
-	*--fill_ptr = STACK_DEFAULT_PATTERN;
+        StackBegin[i] = 0;
     }
 #endif // scmRTOS_DEBUG_ENABLE
+    
+    Stack       -= FUN_INCOMING_ARGS_SIZE;           // reserve space for calling function incoming parameters
+    *(--Stack)   = reinterpret_cast<uint32_t>(exec); // process main function address
+    Stack       -= CONTEXT_SIZE;                     // emulate 43 "push rxx"
+    *(--Stack)   =   0xffe0;                         // enable interrupts
+    StackPointer = Stack;
+    
 }
-
-
 //------------------------------------------------------------------------------
-#pragma vector=SYSTEM_TIMER_VECTOR
-OS_INTERRUPT void OS_SystemTimer_ISR()
+void OS::system_timer_isr()
 {
-    scmRTOS_ISRW_TYPE ISR;
+    TISRW ISR;
 
 #if scmRTOS_SYSTIMER_HOOK_ENABLE == 1
     system_timer_user_hook();
@@ -127,9 +96,6 @@ OS_INTERRUPT void OS_SystemTimer_ISR()
 
     Kernel.system_timer();
 
-#if scmRTOS_SYSTIMER_NEST_INTS_ENABLE == 1
-    ENABLE_NESTED_INTERRUPTS();
-#endif
-
 }
+//------------------------------------------------------------------------------
 
