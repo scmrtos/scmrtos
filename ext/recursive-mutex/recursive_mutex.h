@@ -66,6 +66,8 @@ public:
     bool try_lock();
     bool try_lock(timeout_t timeout);
     bool is_locked() const { TCritSect cs; return (ValueTag != 0); }
+    // Unlock the mutex despite of how many times it has been locked.
+    void force_unlock();
 
 protected:
     volatile TProcessMap ProcessMap;

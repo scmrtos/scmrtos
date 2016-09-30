@@ -87,6 +87,20 @@ void TRecursiveMutex::unlock()
 
 //------------------------------------------------------------------------------
 //
+void TRecursiveMutex::force_unlock()
+{
+    TCritSect cs;
+
+    if ( ValueTag != cur_proc_prio_tag() || 0 == NestCount )
+        return;
+    NestCount = 0;
+    ValueTag = 0;
+    resume_next_ready(ProcessMap);
+}
+
+
+//------------------------------------------------------------------------------
+//
 bool TRecursiveMutex::try_lock()
 {
     TCritSect cs;
