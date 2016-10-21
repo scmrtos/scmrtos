@@ -69,7 +69,7 @@ struct TDebugSupportInfo
 };
 
 
-__attribute__((used))
+__attribute__((used, aligned(2)))
 extern const TDebugSupportInfo DebugInfo =
 {
     PROCESS_COUNT,
