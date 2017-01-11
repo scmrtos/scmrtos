@@ -197,8 +197,8 @@ INLINE status_reg_t get_interrupt_state()
 class TCritSect
 {
 public:
-    TCritSect () : StatusReg(get_interrupt_state()) { disable_interrupts(); }
-    ~TCritSect() { set_interrupt_state(StatusReg); }
+    INLINE TCritSect () : StatusReg(get_interrupt_state()) { disable_interrupts(); }
+    INLINE ~TCritSect() { set_interrupt_state(StatusReg); }
 
 private:
     status_reg_t StatusReg;
