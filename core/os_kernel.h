@@ -576,11 +576,9 @@ void OS::TKernel::sched_isr()
 void OS::TKernel::sched_isr()
 {
     uint_fast8_t NextPrty = highest_priority(ReadyProcessMap);
+    SchedProcPriority = NextPrty;
     if(NextPrty != CurProcPriority)
-    {
-        SchedProcPriority = NextPrty;
         raise_context_switch();
-    }
 }
 //------------------------------------------------------------------------------
 #ifndef CONTEXT_SWITCH_HOOK_CRIT_SECT
