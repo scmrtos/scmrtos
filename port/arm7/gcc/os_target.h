@@ -349,7 +349,11 @@ extern "C" INLINE void os_context_switcher(stack_item_t** Curr_SP, stack_item_t*
     );
 }
 #endif
-extern "C" __attribute__((__noreturn__)) void context_restore(stack_item_t* sp);
+extern "C" __attribute__((__noreturn__
+#ifdef  __THUMBEL__
+    , __long_call__
+#endif
+)) void context_restore(stack_item_t* sp);
 extern "C" __attribute__((__noreturn__))
 INLINE void os_start(stack_item_t* sp)
 {
