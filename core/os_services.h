@@ -304,8 +304,11 @@ namespace OS
         //
         //    Data transfer functions
         //
-        void write(const T* data, const S cnt);
-        bool read (T* const data, const S cnt, timeout_t timeout = 0);
+        void write     (const T* data, const S cnt);
+        S    write_isr (const T* data, const S cnt);
+
+        bool read      (T* const data, const S cnt, timeout_t timeout = 0);
+        S    read_isr  (T* const data, const S max_size);
 
         void push      (const T& item);
         void push_front(const T& item);
@@ -519,6 +522,18 @@ void OS::channel<T, Size, S>::write(const T* data, const S count)
 }
 //------------------------------------------------------------------------------
 template<typename T, uint16_t Size, typename S>
+S OS::channel<T, Size, S>::write_isr(const T* data, const S count)
+{
+    TCritSect cs;
+
+    const S free = pool.get_free_size();
+    S qty = free < count ? free : count;
+    pool.write(data, qty);
+    resume_all_isr(ConsumersProcessMap);
+    return qty;
+}
+//------------------------------------------------------------------------------
+template<typename T, uint16_t Size, typename S>
 bool OS::channel<T, Size, S>::read(T* const data, const S count, timeout_t timeout)
 {
     TCritSect cs;
@@ -538,6 +553,18 @@ bool OS::channel<T, Size, S>::read(T* const data, const S count, timeout_t timeo
     resume_all(ProducersProcessMap);
 
     return true;
+}
+//------------------------------------------------------------------------------
+template<typename T, uint16_t Size, typename S>
+S OS::channel<T, Size, S>::read_isr(T* const data, const S max_size)
+{
+    TCritSect cs;
+
+    const S avail = pool.get_count();
+    S count = avail < max_size ? avail : max_size;
+    pool.read(data, count);
+    resume_all_isr(ProducersProcessMap);
+    return count;
 }
 //------------------------------------------------------------------------------
 
