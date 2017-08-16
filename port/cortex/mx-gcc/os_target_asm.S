@@ -45,8 +45,6 @@
 //*     Cortex-M3/M4(F) GCC port by Anton B. Gusev aka AHTOXA, Copyright (c) 2012-2016
 //*     Cortex-M0 port by Sergey A. Borshch, Copyright (c) 2011-2016
 
-#include "scmRTOS_TARGET_CFG.h"
-
     .syntax unified
     .text
     .align 2
