@@ -78,7 +78,7 @@ PendSV_Handler:
     // Cortex-M0(+)/Cortex-M1
     CPSID   I                   // Prevent interruption during context switch
     MRS     R0, PSP             // Load process stack pointer to R0
-    SUB     R0, R0, #32         // Adjust R0 to point to top of saved context in stack
+    SUBS    R0, #32             // Adjust R0 to point to top of saved context in stack
     MOV     R1, R0              // Preserve R0 (needed for os_context_switch_hook() call)
     STMIA   R1!, {R4-R7}        // Save low portion of remaining registers (r4-7) on process stack
     MOV     R4, R8              // Move high portion of remaining registers (r8-11) to low registers
@@ -93,14 +93,14 @@ PendSV_Handler:
     BLX     R1
 
 // R0 is new process SP;
-    ADD     R0, R0, #16        // Adjust R0 to point to high registers (r8-11)
+    ADDS    R0, #16            // Adjust R0 to point to high registers (r8-11)
     LDMIA   R0!, {R4-R7}       // Restore r8-11 from new process stack
     MOV     R8, R4             // Move restored values to high registers (r8-11)
     MOV     R9, R5
     MOV     R10, R6
     MOV     R11, R7
     MSR     PSP, R0            // R0 at this point is new process SP
-    SUB     R0, R0, #32        // Adjust R0 to point to low registers
+    SUBS    R0, #32            // Adjust R0 to point to low registers
     LDMIA   R0!, {R4-R7}       // Restore r4-7
     CPSIE   I
     POP     {PC}               // Return to saved exc_return. Exception return will restore remaining context
