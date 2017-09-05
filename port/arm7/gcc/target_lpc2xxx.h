@@ -13,7 +13,7 @@
 //*     Version: v5.1.0
 //*
 //*
-//*     Copyright (c) 2003-2016, scmRTOS Team
+//*     Copyright (c) 2003-2017, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2016
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2017
 //*     lpc2xxx gcc port by Anton Gusev, Copyright (c) 2010-2016
 
 #ifndef TARGET_LPC2XXX_H__
@@ -95,15 +95,8 @@ INLINE void IRQ_DONE()
         .macro  IRQ_DONE
         LDR     R1, =(VIC_BASE_ADDR)
         MOV     R2, #(1 << CONTEXT_SWITCH_INT)
-        STR     R2, [R1, #0x01C]    // VICSoftIntClr = 1 << CONTEXT_SWITCH_INT; (clear soft int request)
-        STR     R1, [R1, #0x030]    // VICVectAddr = smth; (reset VIC)
-        .endm
-
-        .macro  IRQ_DONE_OLD
-        LDR     R1, =VICVectAddr
-        MOV     R2, #(1 << CONTEXT_SWITCH_INT)
-        STR     R2, [R1, #(VICSoftIntClr - VICVectAddr)]	// clear soft int request
-        STR     R1, [R1]                                    // reset VIC
+        STR     R2, [R1, #(VICSoftIntClr - VIC_BASE_ADDR)]  // VICSoftIntClr = 1 << CONTEXT_SWITCH_INT; (clear soft int request)
+        STR     R1, [R1, #(VICVectAddr - VIC_BASE_ADDR)]    // VICVectAddr = smth; (reset VIC)
         .endm
 #endif  // scmRTOS_CONTEXT_SWITCH_SCHEME
 
