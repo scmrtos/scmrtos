@@ -222,6 +222,7 @@ extern "C" __attribute__((used)) void __init_system_timer()
     SysTickPriority = SYS_TIMER_PRIORITY;
 #endif
     SysTickRegisters->LOAD = SYSTICKFREQ/SYSTICKINTRATE-1;
+    SysTickRegisters->VAL = 0;
     SysTickRegisters->CTRL = NVIC_ST_CTRL_CLK_SRC | NVIC_ST_CTRL_INTEN | NVIC_ST_CTRL_ENABLE;
 }
 
