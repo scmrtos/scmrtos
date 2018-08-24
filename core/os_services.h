@@ -262,7 +262,12 @@ namespace OS
     class TChannel : protected TService
     {
     public:
-        INLINE TChannel(uint8_t* buf, uint8_t size) : Cbuf(buf, size) { }
+        INLINE TChannel(uint8_t* buf, uint8_t size) 
+            : ProducersProcessMap(0)
+            , ConsumersProcessMap(0)
+            , Cbuf(buf, size)
+        { 
+        }
 
         void    push(uint8_t x);
         uint8_t pop();
