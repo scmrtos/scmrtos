@@ -281,7 +281,8 @@ namespace OS
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
 
 // 0xE000ED04 - Interrupt Control State Register
-INLINE void raise_context_switch() { *((volatile uint32_t*)0xE000ED04) |= 0x10000000; }
+// set PENDSVSET bit
+INLINE void raise_context_switch() { *((volatile uint32_t*)0xE000ED04) = 0x10000000; }
 
 #define ENABLE_NESTED_INTERRUPTS()
 
