@@ -77,6 +77,15 @@
 #error "Error: scmRTOS_SYSTEM_TICKS_ENABLE must have values 0 or 1 only!"
 #endif
 
+//----------------- scmRTOS_SYSTEM_TICKS_ATOMIC --------------------------------
+#ifndef scmRTOS_SYSTEM_TICKS_ATOMIC
+#define scmRTOS_SYSTEM_TICKS_ATOMIC 0
+#endif
+
+#if (scmRTOS_SYSTEM_TICKS_ATOMIC < 0) || (scmRTOS_SYSTEM_TICKS_ATOMIC > 1)
+#error "Error: scmRTOS_SYSTEM_TICKS_ATOMIC must have values 0 or 1 only!"
+#endif
+
 
 //----------------- scmRTOS_SYSTIMER_HOOK_ENABLE -------------------------------
 #ifndef scmRTOS_SYSTIMER_HOOK_ENABLE

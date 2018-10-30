@@ -481,8 +481,12 @@ namespace OS
     //--------------------------------------------------------------------------
 
 #if scmRTOS_SYSTEM_TICKS_ENABLE == 1
+#if scmRTOS_SYSTEM_TICKS_ATOMIC == 1
+    INLINE tick_count_t get_tick_count() { return Kernel.SysTickCount; }
+#else
     INLINE tick_count_t get_tick_count() { TCritSect cs; return Kernel.SysTickCount; }
 #endif
+#endif // scmRTOS_SYSTEM_TICKS_ENABLE
 
 #if scmRTOS_TARGET_IDLE_HOOK_ENABLE == 1
     void idle_process_target_hook();
