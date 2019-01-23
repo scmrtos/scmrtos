@@ -72,16 +72,6 @@ extern const TDebugSupportInfo DebugInfo =
 
 } // namespace OS
 
-namespace{
-enum {
-#if (defined __SOFTFP__)
-    CONTEXT_SIZE = 16 * sizeof(stack_item_t)   // Cortex-M0/M0+/M3/M4 context size
-#else
-    CONTEXT_SIZE = 17 * sizeof(stack_item_t)   // Cortex-M4F initial context size (without FPU context)
-#endif
-};
-}
-
 void OS::TBaseProcess::init_stack_frame( stack_item_t * Stack
                                    , void (*exec)()
                                 #if scmRTOS_DEBUG_ENABLE == 1
@@ -89,13 +79,8 @@ void OS::TBaseProcess::init_stack_frame( stack_item_t * Stack
                                 #endif
                                    )
 {
-    /*
-     * ARM Architecture Procedure Call Standard [AAPCS] requires 8-byte stack alignment.
-     * This means that we must get top of stack aligned _after_ context "pushing", at
-     * interrupt entry.
-     */
-    uintptr_t sptr = (((uintptr_t)Stack - CONTEXT_SIZE) & 0xFFFFFFF8UL) + CONTEXT_SIZE;
-    StackPointer = (stack_item_t*)sptr;
+    // ARM Architecture Procedure Call Standard [AAPCS] requires 8-byte stack alignment:
+    StackPointer = (stack_item_t*)((uintptr_t)Stack & 0xFFFFFFF8UL);
 
     *(--StackPointer)  = 0x01000000UL;      // xPSR
     *(--StackPointer)  = reinterpret_cast<stack_item_t>(exec); // Entry Point
