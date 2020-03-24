@@ -67,9 +67,8 @@
  *
  * Defines to determine ach:
  * M0(+) core     : __CORE__ == __ARM6M__
- * M3, M4 core    : (__CORE__ == __ARM7M__ || !defined(__ARMVFP__) ) &&
-                __CORE__ != __ARM6M__    
- * M4F core       : not any of two above 
+ * M3/M4 core     : ((__CORE__ == __ARM7M__) || (__CORE__ == __ARM7EM__)) && !defined(__ARMVFP__)
+ * M4F core       : not any above case
  */
     RSEG CODE:CODE(2)
     THUMB     
@@ -106,9 +105,7 @@ PendSV_Handler
     LDMIA   R0!, {R4-R7}       // Restore r4-7
     CPSIE   I
     POP     {PC}               // Return to saved exc_return. Exception return will restore remaining context
-
-
-#elif (__CORE__ == __ARM7M__ || !defined(__ARMVFP__) )
+#elif (((__CORE__ == __ARM7M__) || (__CORE__ == __ARM7EM__)) && !defined(__ARMVFP__))
     // M3/M4 cores without FPU
     CPSID   I                  // Prevent interruption during context switch
     MRS     R0, PSP            // PSP is process stack pointer
@@ -124,8 +121,6 @@ PendSV_Handler
     MSR     PSP, R0            // Load PSP with new process SP
     CPSIE   I
     POP     {PC}               // Return to saved exc_return. Exception return will restore remaining context
-
-
 #else
     // Core with FPU (cortex-M4F)
     CPSID     I                  // Prevent interruption during context switch
