@@ -62,9 +62,11 @@
 #error "This file must be compiled for ARM processor only"
 #endif // __GNUC__
 
-#if (__CORE__ != __ARM6M__ && __CORE__ != __ARM7M__)
+#if (__CORE__ != __ARM6M__ && __CORE__ != __ARM7M__ && __CORE__ != __ARM7EM__)
 #error "This file must be compiled for ARMv6-M (Cortex-M0(+)), ARMv7-M (Cortex-M3) and ARMv7E-M (Cortex-M4(F)) processors only."
 #endif
+
+#include <intrinsics.h>
 
 //------------------------------------------------------------------------------
 //
@@ -261,7 +263,7 @@ INLINE OS::TProcessMap get_prio_tag(const uint_fast8_t pr) { return static_cast<
 #else
     INLINE uint_fast8_t highest_priority(TProcessMap pm)
     {
-        return 31 - __builtin_clz(pm);
+        return 31 - __CLZ(pm);
     }
 #endif // scmRTOS_PRIORITY_ORDER
 }

@@ -193,7 +193,7 @@ extern "C" NORETURN void os_start(stack_item_t *sp)
         "    ADDS     %[stack], #(4 * 16)      \n" // emulate context restore
 #else
         "    LDR     R4, [%[stack], #(4 * 15)] \n" // Load process entry point into R4
-        "    ADD     %[stack], #(4 * 17)       \n" // emulate context restore
+        "    ADDS     %[stack], #(4 * 17)      \n" // emulate context restore
 #endif
         "    MSR     PSP, %[stack]             \n" // store process SP to PSP
         "    MOVS     R0, #2                   \n" // set up the current (thread) mode: use PSP as stack pointer, privileged level
