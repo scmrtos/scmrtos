@@ -260,6 +260,8 @@ extern "C" NORETURN void os_start(stack_item_t *sp)
         "    CPSIE   I                         \n" // Enable interrupts at processor level
         "    BX      R4                        \n" // Jump to process exec() function
         : [stack]"+r" (sp)  // output
+        :                   // no input
+        : "r0", "r1", "r4"  // clobbers
     );
 
     __builtin_unreachable(); // suppress compiler warning "'noreturn' func does return"
