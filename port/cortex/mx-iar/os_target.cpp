@@ -6,7 +6,7 @@
 //*
 //*     PROCESSOR: ARM Cortex-M0(+), Cortex-M1, Cortex-M3, Cortex-M4(F)
 //*
-//*     TOOLKIT:   ARM GCC
+//*     TOOLKIT:   ARM IAR
 //*
 //*     PURPOSE:   Target Dependent Stuff Source
 //*
