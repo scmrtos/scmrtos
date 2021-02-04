@@ -10,10 +10,10 @@
 //*
 //*     PURPOSE:   Target Dependent Low-Level Stuff
 //*
-//*     Version: v5.1.0
+//*     Version: v5.2.0
 //*
 //*
-//*     Copyright (c) 2003-2016, scmRTOS Team
+//*     Copyright (c) 2003-2021, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person 
 //*     obtaining  a copy of this software and associated documentation 
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     ARM port by Sergey A. Borshch, Copyright (c) 2007-2016
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2007-2021
 
 
 #include "scmRTOS_CONFIG.h"

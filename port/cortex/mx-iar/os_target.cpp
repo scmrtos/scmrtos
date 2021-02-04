@@ -10,10 +10,10 @@
 //*
 //*     PURPOSE:   Target Dependent Stuff Source
 //*
-//*     Version: v5.1.0
+//*     Version: v5.2.0
 //*
 //*
-//*     Copyright (c) 2003-2016, scmRTOS Team
+//*     Copyright (c) 2003-2021, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,9 +42,9 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     Cortex-M3/M4(F) GCC port by Anton B. Gusev aka AHTOXA, Copyright (c) 2012-2016
-//*     Cortex-M0 port by Sergey A. Borshch, Copyright (c) 2011-2016
-//*     Cortex-M0/M3/M4(F) IAR port by Yury A. Yakimov aka haker_fox, Copyright (c) 2020
+//*     Cortex-M3/M4(F) GCC port by Anton B. Gusev aka AHTOXA, Copyright (c) 2012-2021
+//*     Cortex-M0 port by Sergey A. Borshch, Copyright (c) 2011-2021
+//*     Cortex-M0/M3/M4(F) IAR port by Yury A. Yakimov aka haker_fox, Copyright (c) 2020-2021
 
 
 #include <scmRTOS.h>

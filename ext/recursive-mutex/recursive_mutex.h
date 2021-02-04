@@ -4,10 +4,10 @@
 //*
 //*     NICKNAME:  scmRTOS
 //*
-//*     Version: v5.1.0
+//*     Version: v5.2.0
 //*
 //*
-//*     Copyright (c) 2003-2016, scmRTOS Team
+//*     Copyright (c) 2003-2021, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -36,7 +36,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     Recursive mutex extension by Andrey Chuykin, Copyright (c) 2015-2016
+//*     Recursive mutex extension by Andrey Chuykin, Copyright (c) 2015-2021
 
 #ifndef RECURSIVE_MUTEX_H
 #define RECURSIVE_MUTEX_H

@@ -10,10 +10,10 @@
 //*
 //*     PURPOSE:   Target Dependent Stuff Header. Declarations And Definitions
 //*
-//*     Version: v5.1.0
+//*     Version: v5.2.0
 //*
 //*
-//*     Copyright (c) 2003-2017, scmRTOS Team
+//*     Copyright (c) 2003-2021, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,8 +42,8 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2017
-//*     lpc2xxx gcc port by Anton Gusev, Copyright (c) 2010-2016
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2021
+//*     lpc2xxx gcc port by Anton Gusev, Copyright (c) 2010-2021
 
 #ifndef TARGET_LPC2XXX_H__
 #define TARGET_LPC2XXX_H__

@@ -10,10 +10,10 @@
 //*               
 //*     PURPOSE:   Target Dependent Low-Level Stuff
 //*               
-//*     Version: v5.1.0
+//*     Version: v5.2.0
 //*
 //*
-//*     Copyright (c) 2003-2016, scmRTOS Team
+//*     Copyright (c) 2003-2021, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person 
 //*     obtaining  a copy of this software and associated documentation 
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     Blackfin/CrossCore Embedded Studio port by Evgeny Nesterov, Copyright (c) 2012-2016
+//*     Blackfin/CrossCore Embedded Studio port by Evgeny Nesterov, Copyright (c) 2012-2021
 
 #include "scmRTOS_TARGET_CFG.h"
 
