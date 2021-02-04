@@ -6,10 +6,10 @@
 //*
 //*     PURPOSE:  Process Profiler definitions
 //*
-//*     Version: v5.1.0
+//*     Version: v5.2.0
 //*
 //*
-//*     Copyright (c) 2003-2016, scmRTOS Team
+//*     Copyright (c) 2003-2021, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -38,7 +38,7 @@
 //*     =================================================================
 //*
 //*****************************************************************************
-//*     Profiler extension by Harry E. Zhurov, Copyright (c) 2012-2016
+//*     Profiler extension by Harry E. Zhurov, Copyright (c) 2012-2021
 
 
 #ifndef PROFILER_H

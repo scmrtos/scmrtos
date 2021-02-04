@@ -10,10 +10,10 @@
 //*
 //*     PURPOSE:   Target Dependent Stuff Source
 //*
-//*     Version: v5.1.0
+//*     Version: v5.2.0
 //*
 //*
-//*     Copyright (c) 2003-2016, scmRTOS Team
+//*     Copyright (c) 2003-2021, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,19 +42,11 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     Cortex-M3/M4(F) GCC port by Anton B. Gusev aka AHTOXA, Copyright (c) 2012-2016
-//*     Cortex-M0 port by Sergey A. Borshch, Copyright (c) 2011-2016
+//*     Cortex-M3/M4(F) GCC port by Anton B. Gusev aka AHTOXA, Copyright (c) 2012-2021
+//*     Cortex-M0 port by Sergey A. Borshch, Copyright (c) 2011-2021
 
 
 #include <scmRTOS.h>
-
-/*
- * M0(+) core : __ARM_ARCH_6M__ defined.
- * M3 core    : __SOFTFP__ defined, __ARM_ARCH_6M__ not defined.
- * M4F core   : __SOFTFP__ not defined.
- */
-
-using namespace OS;
 
 namespace OS
 {
@@ -69,7 +61,7 @@ struct TDebugSupportInfo
 };
 
 
-__attribute__((used))
+__attribute__((used, aligned(2)))
 extern const TDebugSupportInfo DebugInfo =
 {
     PROCESS_COUNT,
@@ -80,30 +72,15 @@ extern const TDebugSupportInfo DebugInfo =
 
 } // namespace OS
 
-namespace{
-enum {
-#if (defined __SOFTFP__)
-    CONTEXT_SIZE = 16 * sizeof(stack_item_t)   // Cortex-M0/M0+/M3/M4 context size
-#else
-    CONTEXT_SIZE = 17 * sizeof(stack_item_t)   // Cortex-M4F initial context size (without FPU context)
-#endif
-};
-}
-
-void TBaseProcess::init_stack_frame( stack_item_t * Stack
+void OS::TBaseProcess::init_stack_frame( stack_item_t * Stack
                                    , void (*exec)()
                                 #if scmRTOS_DEBUG_ENABLE == 1
                                    , stack_item_t * StackBegin
                                 #endif
                                    )
 {
-    /*
-     * ARM Architecture Procedure Call Standard [AAPCS] requires 8-byte stack alignment.
-     * This means that we must get top of stack aligned _after_ context "pushing", at
-     * interrupt entry.
-     */
-    uintptr_t sptr = (((uintptr_t)Stack - CONTEXT_SIZE) & 0xFFFFFFF8UL) + CONTEXT_SIZE;
-    StackPointer = (stack_item_t*)sptr;
+    // ARM Architecture Procedure Call Standard [AAPCS] requires 8-byte stack alignment:
+    StackPointer = (stack_item_t*)((uintptr_t)Stack & 0xFFFFFFF8UL);
 
     *(--StackPointer)  = 0x01000000UL;      // xPSR
     *(--StackPointer)  = reinterpret_cast<stack_item_t>(exec); // Entry Point
@@ -119,107 +96,8 @@ void TBaseProcess::init_stack_frame( stack_item_t * Stack
 
     for (stack_item_t *pDst = StackBegin; pDst < StackPointer; pDst++)
         *pDst = STACK_DEFAULT_PATTERN;
-#endif // scmRTOS_DEBUG_ENABLE
+#endif
 }
-
-/*
- * PendSV is used to perform a context switch. This is a recommended method for Cortex-M.
- * This is because the Cortex-M automatically saves half of the processor context
- * on any exception, and restores same on return from exception.  So only saving of R4-R11
- * and fixing up the stack pointers is required.  Using the PendSV exception this way means
- * that context saving and restoring is identical whether it is initiated from a thread
- * or occurs due to an interrupt or exception.
- *
- * Since PendSV interrupt has the lowest priority in the system (set by os_start() below),
- * we can be sure that it will run only when no other exception or interrupt is active, and
- * therefore safe to assume that context being switched out was using the process stack (PSP).
- */
-extern "C" __attribute__((naked)) void PendSV_Handler()
-{
-#if (defined __ARM_ARCH_6M__)   // Cortex-M0(+)/Cortex-M1
-    asm volatile (
-        "    CPSID   I                 \n"  // Prevent interruption during context switch
-        "    MRS     R0, PSP           \n"  // Load process stack pointer to R0
-        "    SUB     R0, R0, #32       \n"  // Adjust R0 to point to top of saved context in stack
-        "    MOV     R1, R0            \n"  // Preserve R0 (needed for os_context_switch_hook() call)
-        "    STMIA   R1!, {R4-R7}      \n"  // Save low portion of remaining registers (r4-7) on process stack
-        "    MOV     R4, R8            \n"  // Move high portion of remaining registers (r8-11) to low registers
-        "    MOV     R5, R9            \n"
-        "    MOV     R6, R10           \n"
-        "    MOV     R7, R11           \n"
-        "    STMIA   R1!, {R4-R7}      \n"  // Save high portion of remaining registers (r8-11) on process stack
-
-        // At this point, entire context of process has been saved
-        "    PUSH    {LR}              \n" // we must save LR (exc_return value) until exception return
-        "    LDR     R1, =os_context_switch_hook  \n"   // call os_context_switch_hook();
-        "    BLX     R1                \n"
-
-        // R0 is new process SP;
-        "    ADD     R0, R0, #16       \n" // Adjust R0 to point to high registers (r8-11)
-        "    LDMIA   R0!, {R4-R7}      \n" // Restore r8-11 from new process stack
-        "    MOV     R8, R4            \n" // Move restored values to high registers (r8-11)
-        "    MOV     R9, R5            \n"
-        "    MOV     R10, R6           \n"
-        "    MOV     R11, R7           \n"
-        "    MSR     PSP, R0           \n" // R0 at this point is new process SP
-        "    SUB     R0, R0, #32       \n" // Adjust R0 to point to low registers
-        "    LDMIA   R0!, {R4-R7}      \n" // Restore r4-7
-        "    CPSIE   I                 \n"
-        "    POP     {PC}              \n" // Return to saved exc_return. Exception return will restore remaining context
-        : :
-    );
-#else  // #if (defined __ARM_ARCH_6M__)
-
-#if (defined __SOFTFP__)
-    // M3/M4 cores without FPU
-    asm volatile (
-        "    CPSID   I                 \n" // Prevent interruption during context switch
-        "    MRS     R0, PSP           \n" // PSP is process stack pointer
-        "    STMDB   R0!, {R4-R11}     \n" // Save remaining regs r4-11 on process stack
-
-        // At this point, entire context of process has been saved
-        "    PUSH    {LR}              \n" // we must save LR (exc_return value) until exception return
-        "    LDR     R1, =os_context_switch_hook  \n"   // call os_context_switch_hook();
-        "    BLX     R1                \n"
-
-        // R0 is new process SP;
-        "    LDMIA   R0!, {R4-R11}     \n" // Restore r4-11 from new process stack
-        "    MSR     PSP, R0           \n" // Load PSP with new process SP
-        "    CPSIE   I                 \n"
-        "    POP     {PC}              \n" // Return to saved exc_return. Exception return will restore remaining context
-        : :
-    );
-
-#else // #if (defined __SOFTFP__)
-    // Core with FPU (cortex-M4F)
-    asm volatile (
-        "    CPSID     I                 \n" // Prevent interruption during context switch
-        "    MRS       R0, PSP           \n" // PSP is process stack pointer
-        "    TST       LR, #0x10         \n" // exc_return[4]=0? (it means that current process
-        "    IT        EQ                \n" // has active floating point context)
-        "    VSTMDBEQ  R0!, {S16-S31}    \n" // if so - save it.
-        "    STMDB     R0!, {R4-R11, LR} \n" // save remaining regs r4-11 and LR on process stack
-
-        // At this point, entire context of process has been saved
-        "    LDR     R1, =os_context_switch_hook  \n"   // call os_context_switch_hook();
-        "    BLX     R1                \n"
-
-        // R0 is new process SP;
-        "    LDMIA     R0!, {R4-R11, LR} \n" // Restore r4-11 and LR from new process stack
-        "    TST       LR, #0x10         \n" // exc_return[4]=0? (it means that new process
-        "    IT        EQ                \n" // has active floating point context)
-        "    VLDMIAEQ  R0!, {S16-S31}    \n" // if so - restore it.
-        "    MSR       PSP, R0           \n" // Load PSP with new process SP
-        "    CPSIE     I                 \n"
-        "    BX        LR                \n" // Return to saved exc_return. Exception return will restore remaining context
-        : :
-    );
-#endif  // #if (defined __SOFTFP__)
-#endif  // #if (defined __ARM_ARCH_6M__)
-}
-
-// weak alias to support old name of PendSV_Handler.
-#pragma weak PendSVC_ISR = PendSV_Handler
 
 /*
  * By default port uses SysTick timer as a system timer.
@@ -301,7 +179,7 @@ enum
 #if (SCMRTOS_USE_CUSTOM_TIMER == 0)
 OS_INTERRUPT void SysTick_Handler()
 {
-    system_timer_isr();
+    OS::system_timer_isr();
 }
 #endif
 
@@ -321,7 +199,7 @@ enum { SYS_TIMER_PRIORITY = ((0xFEUL << (8-(CORE_PRIORITY_BITS))) & 0xFF) };
 }
 
 #if (SCMRTOS_USE_CUSTOM_TIMER == 0)
-extern "C" void __init_system_timer()
+extern "C" __attribute__((used)) void __init_system_timer()
 {
 #if (defined SHP3_WORD_ACCESS)   // word access
     SHPR3 = (SHPR3 & ~(0xFF << 24)) | (SYS_TIMER_PRIORITY << 24);
@@ -329,6 +207,7 @@ extern "C" void __init_system_timer()
     SysTickPriority = SYS_TIMER_PRIORITY;
 #endif
     SysTickRegisters->LOAD = SYSTICKFREQ/SYSTICKINTRATE-1;
+    SysTickRegisters->VAL = 0;
     SysTickRegisters->CTRL = NVIC_ST_CTRL_CLK_SRC | NVIC_ST_CTRL_INTEN | NVIC_ST_CTRL_ENABLE;
 }
 
@@ -381,7 +260,10 @@ extern "C" NORETURN void os_start(stack_item_t *sp)
         "    CPSIE   I                         \n" // Enable interrupts at processor level
         "    BX      R4                        \n" // Jump to process exec() function
         : [stack]"+r" (sp)  // output
+        :                   // no input
+        : "r0", "r1", "r4"  // clobbers
     );
+
     __builtin_unreachable(); // suppress compiler warning "'noreturn' func does return"
 }
 

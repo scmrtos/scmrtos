@@ -10,10 +10,10 @@
 //*
 //*     PURPOSE:   Target Dependent Stuff Header. Declarations And Definitions
 //*
-//*     Version: v5.1.0
+//*     Version: v5.2.0
 //*
 //*
-//*     Copyright (c) 2003-2016, scmRTOS Team
+//*     Copyright (c) 2003-2021, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,8 +42,8 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     Cortex-M3/M4(F) GCC port by Anton B. Gusev aka AHTOXA, Copyright (c) 2012-2016
-//*     Cortex-M0 port by Sergey A. Borshch, Copyright (c) 2011-2016
+//*     Cortex-M3/M4(F) GCC port by Anton B. Gusev aka AHTOXA, Copyright (c) 2012-2021
+//*     Cortex-M0 port by Sergey A. Borshch, Copyright (c) 2011-2021
 
 #ifndef scmRTOS_CORTEXMX_H
 #define scmRTOS_CORTEXMX_H
@@ -197,8 +197,8 @@ INLINE status_reg_t get_interrupt_state()
 class TCritSect
 {
 public:
-    TCritSect () : StatusReg(get_interrupt_state()) { disable_interrupts(); }
-    ~TCritSect() { set_interrupt_state(StatusReg); }
+    INLINE TCritSect () : StatusReg(get_interrupt_state()) { disable_interrupts(); }
+    INLINE ~TCritSect() { set_interrupt_state(StatusReg); }
 
 private:
     status_reg_t StatusReg;
@@ -281,7 +281,8 @@ namespace OS
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
 
 // 0xE000ED04 - Interrupt Control State Register
-INLINE void raise_context_switch() { *((volatile uint32_t*)0xE000ED04) |= 0x10000000; }
+// set PENDSVSET bit
+INLINE void raise_context_switch() { *((volatile uint32_t*)0xE000ED04) = 0x10000000; }
 
 #define ENABLE_NESTED_INTERRUPTS()
 

@@ -6,10 +6,10 @@
 //*
 //*     PURPOSE:  Macros And Common Definitions
 //*
-//*     Version: v5.1.0
+//*     Version: v5.2.0
 //*
 //*
-//*     Copyright (c) 2003-2016, scmRTOS Team
+//*     Copyright (c) 2003-2021, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -75,6 +75,15 @@
 
 #if (scmRTOS_SYSTEM_TICKS_ENABLE < 0) || (scmRTOS_SYSTEM_TICKS_ENABLE > 1)
 #error "Error: scmRTOS_SYSTEM_TICKS_ENABLE must have values 0 or 1 only!"
+#endif
+
+//----------------- scmRTOS_SYSTEM_TICKS_ATOMIC --------------------------------
+#ifndef scmRTOS_SYSTEM_TICKS_ATOMIC
+#define scmRTOS_SYSTEM_TICKS_ATOMIC 0
+#endif
+
+#if (scmRTOS_SYSTEM_TICKS_ATOMIC < 0) || (scmRTOS_SYSTEM_TICKS_ATOMIC > 1)
+#error "Error: scmRTOS_SYSTEM_TICKS_ATOMIC must have values 0 or 1 only!"
 #endif
 
 

@@ -10,10 +10,10 @@
 //*
 //*     PURPOSE:   Target Dependent Stuff Source
 //*
-//*     Version: v5.1.0
+//*     Version: v5.2.0
 //*
 //*
-//*     Copyright (c) 2003-2016, scmRTOS Team
+//*     Copyright (c) 2003-2021, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person 
 //*     obtaining  a copy of this software and associated documentation 
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     ARM port by Sergey A. Borshch, Copyright (c) 2007-2016
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2007-2021
 
 // to create non-inlined ARM-mode CPSR-related routines
 #define scmRTOS_OS_TARGET_CPP
@@ -50,6 +50,30 @@
 #include <scmRTOS.h>
 
 using namespace OS;
+
+namespace OS
+{
+
+#if scmRTOS_DEBUG_ENABLE == 1
+
+struct TDebugSupportInfo
+{
+    uint8_t PROCESS_COUNT;
+    uint8_t TIMEOUT_SIZE;
+    uint8_t NAME_OFFSET;
+};
+
+
+__attribute__((used, aligned(2)))
+extern const TDebugSupportInfo DebugInfo =
+{
+    PROCESS_COUNT,
+    sizeof(timeout_t),
+    sizeof(timeout_t) == 2 ? 20 : 24
+};
+#endif // scmRTOS_DEBUG_ENABLE
+
+} // namespace OS
 
 void TBaseProcess::init_stack_frame( stack_item_t * Stack
                                    , void (*exec)()
@@ -70,6 +94,7 @@ void TBaseProcess::init_stack_frame( stack_item_t * Stack
         *(--StackPointer) =   0x001F;          // SR value: system mode, FIQ & IRQ enabled, ARM mode
 
 #if scmRTOS_DEBUG_ENABLE == 1
+    *StackBegin = reinterpret_cast<stack_item_t>(&DebugInfo); // dummy load to keep 'DebugInfo' in output binary
     //-----------------------------------------------------------------------
     //   Fill stack pool with predefined value for stack consumption checking
     //

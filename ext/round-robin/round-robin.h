@@ -10,10 +10,10 @@
 //*
 //*     PURPOSE:   Round-Robin extension definitions
 //*
-//*     Version: v5.1.0
+//*     Version: v5.2.0
 //*
 //*
-//*     Copyright (c) 2003-2016, scmRTOS Team
+//*     Copyright (c) 2003-2021, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person 
 //*     obtaining  a copy of this software and associated documentation 
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     Round-Robin extension by Harry E. Zhurov, Copyright (c) 2015-2016
+//*     Round-Robin extension by Harry E. Zhurov, Copyright (c) 2015-2021
 
 #ifndef  ROUND_ROBIN_H
 #define  ROUND_ROBIN_H

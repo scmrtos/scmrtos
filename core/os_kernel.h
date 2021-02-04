@@ -6,10 +6,10 @@
 //*
 //*     PURPOSE:  OS Kernel Header. Declarations And Definitions
 //*
-//*     Version: v5.1.0
+//*     Version: v5.2.0
 //*
 //*
-//*     Copyright (c) 2003-2016, scmRTOS Team
+//*     Copyright (c) 2003-2021, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -481,8 +481,12 @@ namespace OS
     //--------------------------------------------------------------------------
 
 #if scmRTOS_SYSTEM_TICKS_ENABLE == 1
+#if scmRTOS_SYSTEM_TICKS_ATOMIC == 1
+    INLINE tick_count_t get_tick_count() { return Kernel.SysTickCount; }
+#else
     INLINE tick_count_t get_tick_count() { TCritSect cs; return Kernel.SysTickCount; }
 #endif
+#endif // scmRTOS_SYSTEM_TICKS_ENABLE
 
 #if scmRTOS_TARGET_IDLE_HOOK_ENABLE == 1
     void idle_process_target_hook();
@@ -576,11 +580,9 @@ void OS::TKernel::sched_isr()
 void OS::TKernel::sched_isr()
 {
     uint_fast8_t NextPrty = highest_priority(ReadyProcessMap);
+    SchedProcPriority = NextPrty;
     if(NextPrty != CurProcPriority)
-    {
-        SchedProcPriority = NextPrty;
         raise_context_switch();
-    }
 }
 //------------------------------------------------------------------------------
 #ifndef CONTEXT_SWITCH_HOOK_CRIT_SECT

@@ -6,10 +6,10 @@
 //*
 //*     PURPOSE:  OS Services Header. Declarations And Definitions
 //*
-//*     Version: v5.1.0
+//*     Version: v5.2.0
 //*
 //*
-//*     Copyright (c) 2003-2016, scmRTOS Team
+//*     Copyright (c) 2003-2021, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -262,7 +262,12 @@ namespace OS
     class TChannel : protected TService
     {
     public:
-        INLINE TChannel(uint8_t* buf, uint8_t size) : Cbuf(buf, size) { }
+        INLINE TChannel(uint8_t* buf, uint8_t size) 
+            : ProducersProcessMap(0)
+            , ConsumersProcessMap(0)
+            , Cbuf(buf, size)
+        { 
+        }
 
         void    push(uint8_t x);
         uint8_t pop();
@@ -304,8 +309,11 @@ namespace OS
         //
         //    Data transfer functions
         //
-        void write(const T* data, const S cnt);
-        bool read (T* const data, const S cnt, timeout_t timeout = 0);
+        void write     (const T* data, const S cnt);
+        S    write_isr (const T* data, const S cnt);
+
+        bool read      (T* const data, const S cnt, timeout_t timeout = 0);
+        S    read_isr  (T* const data, const S max_size);
 
         void push      (const T& item);
         void push_front(const T& item);
@@ -519,6 +527,18 @@ void OS::channel<T, Size, S>::write(const T* data, const S count)
 }
 //------------------------------------------------------------------------------
 template<typename T, uint16_t Size, typename S>
+S OS::channel<T, Size, S>::write_isr(const T* data, const S count)
+{
+    TCritSect cs;
+
+    const S free = pool.get_free_size();
+    S qty = free < count ? free : count;
+    pool.write(data, qty);
+    resume_all_isr(ConsumersProcessMap);
+    return qty;
+}
+//------------------------------------------------------------------------------
+template<typename T, uint16_t Size, typename S>
 bool OS::channel<T, Size, S>::read(T* const data, const S count, timeout_t timeout)
 {
     TCritSect cs;
@@ -538,6 +558,18 @@ bool OS::channel<T, Size, S>::read(T* const data, const S count, timeout_t timeo
     resume_all(ProducersProcessMap);
 
     return true;
+}
+//------------------------------------------------------------------------------
+template<typename T, uint16_t Size, typename S>
+S OS::channel<T, Size, S>::read_isr(T* const data, const S max_size)
+{
+    TCritSect cs;
+
+    const S avail = pool.get_count();
+    S count = avail < max_size ? avail : max_size;
+    pool.read(data, count);
+    resume_all_isr(ProducersProcessMap);
+    return count;
 }
 //------------------------------------------------------------------------------
 

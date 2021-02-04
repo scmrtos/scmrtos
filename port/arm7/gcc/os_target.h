@@ -10,10 +10,10 @@
 //*
 //*     PURPOSE:   Target Dependent Stuff Header. Declarations And Definitions
 //*
-//*     Version: v5.1.0
+//*     Version: v5.2.0
 //*
 //*
-//*     Copyright (c) 2003-2016, scmRTOS Team
+//*     Copyright (c) 2003-2021, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -42,7 +42,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2016
+//*     ARM port by Sergey A. Borshch, Copyright (c) 2006-2021
 
 #ifndef scmRTOS_ARM_H
 #define scmRTOS_ARM_H
@@ -349,7 +349,11 @@ extern "C" INLINE void os_context_switcher(stack_item_t** Curr_SP, stack_item_t*
     );
 }
 #endif
-extern "C" __attribute__((__noreturn__)) void context_restore(stack_item_t* sp);
+extern "C" __attribute__((__noreturn__
+#ifdef  __THUMBEL__
+    , __long_call__
+#endif
+)) void context_restore(stack_item_t* sp);
 extern "C" __attribute__((__noreturn__))
 INLINE void os_start(stack_item_t* sp)
 {
