@@ -68,8 +68,10 @@ namespace OS {
         // call asleep() ONLY before your task sleeps for unknow time
         // CALL alive() just as your task is awakend. If you call asleep() in such case (twice)
         // the system will be rebooted
+        // if you call it for unregistered task an immediate reset will occur
         INLINE void asleep();
         // call this method within the allowed timeout of your task
+        // if you call it for unregistered task an immediate reset will occur
         INLINE void alive();
         // call this method every system timer tick
         INLINE void run();
@@ -97,7 +99,7 @@ namespace OS {
     void WatchdogExtension::asleep() {
         TCritSect cs;
         TItem &item = get_current_proc_item();
-        if (item.timeout == 0) { // if call asleep() twice
+        if (item.p == nullptr || item.timeout == 0) { // if call asleep() twice
             wdg_force_reboot_user_hook(item.p->priority());
             while (1);
         }
@@ -107,6 +109,10 @@ namespace OS {
     void WatchdogExtension::alive() {
         TCritSect cs;
         TItem &item = get_current_proc_item();
+        if (item.p == nullptr) {
+            wdg_force_reboot_user_hook(item.p->priority());
+            while (1);
+        }
         if (item.timeout == 0) { // if call after asleep() after some event has been received
             item.timeout = item.initialTimeout;
             return;
