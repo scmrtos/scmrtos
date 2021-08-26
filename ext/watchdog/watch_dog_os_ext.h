@@ -76,7 +76,8 @@ namespace OS {
         // if you call it just after asleep() it only clear 'alseep' state and timeout decrementing
         // resumes, you must call it second time within allowed timeout
         INLINE void alive();
-        // call this method every system timer tick
+        // call this method every system timer tick, period of systick interrupt must be
+        // lower than hardware watchdog period
         INLINE void run();
 
     private:
@@ -128,10 +129,17 @@ namespace OS {
 
     void WatchdogExtension::run() {
         for ( auto &it : m_table ) {
-            if (it.p == nullptr)
+            if (it.p == nullptr) // no task is registerd, skip it
                 continue;
+            if (it.timeout == 0 || // may be some process corrupt this variable?
+                it.initialTimeout == 0 || // or this variable has been affected
+                ( it.timeout > it.initialTimeout )) { // timeout can't be grater than its initial value
+                TCritSect cs;
+                wdg_force_reboot_user_hook(it.p->priority());
+                while (1);
+            }
             const TProcessMap tag = get_prio_tag(it.p->priority());
-            if (m_asleep & tag)
+            if (m_asleep & tag) // task is in asleep mode, it can be there forever((
                 continue;
             if (--it.timeout == 0) {
                 TCritSect cs;
