@@ -90,7 +90,7 @@ namespace OS {
         TItem &get_proc_item( const TPriority pr );
         TItem &get_current_proc_item();
 
-        TItem       m_table[scmRTOS_PROCESS_COUNT+1];
+        TItem       m_table[scmRTOS_PROCESS_COUNT+1]; // +1 means slot for IDLE task
         TProcessMap m_asleep;
     };
 
