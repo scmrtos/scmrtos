@@ -57,7 +57,8 @@ namespace OS {
 
     class WatchdogExtension : public TKernelAgent {
     public:
-        WatchdogExtension() {
+        WatchdogExtension()
+            : m_asleep(0) {
             wdg_init_user_hook();
             for ( auto &it : m_table )
                 it.p = nullptr;
@@ -70,10 +71,13 @@ namespace OS {
         // the system will be rebooted
         // if you call it for unregistered task an immediate reset will occur
         INLINE void asleep();
-        // call this method within the allowed timeout of your task
+        // call alive() within the allowed timeout of your task
         // if you call it for unregistered task an immediate reset will occur
+        // if you call it just after asleep() it only clear 'alseep' state and timeout decrementing
+        // resumes, you must call it second time within allowed timeout
         INLINE void alive();
-        // call this method every system timer tick
+        // call this method every system timer tick, period of systick interrupt must be
+        // lower than hardware watchdog period
         INLINE void run();
 
     private:
@@ -86,7 +90,8 @@ namespace OS {
         TItem &get_proc_item( const TPriority pr );
         TItem &get_current_proc_item();
 
-        TItem   m_table[scmRTOS_PROCESS_COUNT+1];
+        TItem       m_table[scmRTOS_PROCESS_COUNT+1]; // +1 means slot for IDLE task
+        TProcessMap m_asleep;
     };
 
     void WatchdogExtension::register_process( const OS::TBaseProcess &proc, const timeout_t timeout ) {
@@ -99,11 +104,12 @@ namespace OS {
     void WatchdogExtension::asleep() {
         TCritSect cs;
         TItem &item = get_current_proc_item();
-        if (item.p == nullptr || item.timeout == 0) { // if call asleep() twice
+        const TProcessMap tag = get_prio_tag(cur_proc_priority());
+        if (item.p == nullptr || m_asleep & tag) { // if call asleep() twice
             wdg_force_reboot_user_hook(item.p->priority());
             while (1);
         }
-        item.timeout = 0;
+        m_asleep |= tag;
     }
 
     void WatchdogExtension::alive() {
@@ -113,8 +119,9 @@ namespace OS {
             wdg_force_reboot_user_hook(item.p->priority());
             while (1);
         }
-        if (item.timeout == 0) { // if call after asleep() after some event has been received
-            item.timeout = item.initialTimeout;
+        const TProcessMap tag = get_prio_tag(cur_proc_priority());
+        if (m_asleep & tag) { // if call after asleep()
+            m_asleep &= ~tag;
             return;
         }
         item.timeout = item.initialTimeout;
@@ -122,9 +129,17 @@ namespace OS {
 
     void WatchdogExtension::run() {
         for ( auto &it : m_table ) {
-            if (it.p == nullptr)
+            if (it.p == nullptr) // no task is registerd, skip it
                 continue;
-            if (it.timeout == 0)
+            if (it.timeout == 0 || // may be some process corrupt this variable?
+                it.initialTimeout == 0 || // or this variable has been affected
+                ( it.timeout > it.initialTimeout )) { // timeout can't be grater than its initial value
+                TCritSect cs;
+                wdg_force_reboot_user_hook(it.p->priority());
+                while (1);
+            }
+            const TProcessMap tag = get_prio_tag(it.p->priority());
+            if (m_asleep & tag) // task is in asleep mode, it can be there forever((
                 continue;
             if (--it.timeout == 0) {
                 TCritSect cs;
