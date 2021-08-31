@@ -108,7 +108,7 @@ namespace OS {
 
         // call this method every system timer tick, period of systick interrupt must be
         // lower than hardware watchdog period
-        INLINE void run() {
+        INLINE void tick() {
             for ( auto &it : m_table ) {
                 if (it.p == nullptr) // no task is registerd, skip it
                     continue;
