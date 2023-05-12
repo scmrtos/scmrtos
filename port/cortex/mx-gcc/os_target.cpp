@@ -259,7 +259,8 @@ extern "C" NORETURN void os_start(stack_item_t *sp)
         "    BLX     R1                        \n" //
         "    CPSIE   I                         \n" // Enable interrupts at processor level
         "    BX      R4                        \n" // Jump to process exec() function
-        : [stack]"+r" (sp)  // output
+        "   .ltorg                             \n" // To prevent assembler error "offset out of range" with LTO enabled
+    	: [stack]"+r" (sp)  // output
         :                   // no input
         : "r0", "r1", "r4"  // clobbers
     );
