@@ -331,8 +331,9 @@ private:
     INLINE void ISR_Exit()
     {
         TCritSect cs;
-        Kernel.ISR_NestCount = Kernel.ISR_NestCount - 1;
-        if(Kernel.ISR_NestCount) return;
+        uint_fast8_t cnt = Kernel.ISR_NestCount - 1;
+        Kernel.ISR_NestCount = cnt;
+        if(cnt) return;
         Kernel.sched_isr();
     }
     //-----------------------------------------------------

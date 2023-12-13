@@ -271,13 +271,15 @@ namespace OS
         //-----------------------------------------------------
         INLINE void ISR_Enter()
         {
-            Kernel.ISR_NestCount++;
+            Kernel.ISR_NestCount = Kernel.ISR_NestCount + 1;
         }
         //-----------------------------------------------------
         INLINE void ISR_Exit()
         {
             disable_interrupts();
-            if(--Kernel.ISR_NestCount) return;
+            uint_fast8_t cnt = Kernel.ISR_NestCount - 1;
+            Kernel.ISR_NestCount = cnt;
+            if(cnt) return;
             Kernel.sched_isr();
         }
         //-----------------------------------------------------
@@ -303,7 +305,9 @@ namespace OS
 
         INLINE void ISR_Enter()
         {
-            if(Kernel.ISR_NestCount++ == 0)
+        	uint_fast8_t cnt = Kernel.ISR_NestCount;
+        	Kernel.ISR_NestCount = cnt + 1;
+            if(cnt == 0)  // first level
             {
                 TKernel::ProcessTable[Kernel.CurProcPriority]->StackPointer = get_stack_pointer();
                 set_stack_pointer(GetInitialStack());
@@ -312,7 +316,9 @@ namespace OS
         INLINE void ISR_Exit()
         {
             disable_interrupts();
-            if(--Kernel.ISR_NestCount) return;
+            uint_fast8_t cnt = Kernel.ISR_NestCount - 1;
+            Kernel.ISR_NestCount = cnt;
+            if(cnt) return;
             set_stack_pointer(TKernel::ProcessTable[Kernel.CurProcPriority]->StackPointer);
             Kernel.sched_isr();
         }
