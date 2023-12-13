@@ -325,13 +325,14 @@ private:
     INLINE void ISR_Enter()
     {
         TCritSect cs;
-        Kernel.ISR_NestCount++;
+        Kernel.ISR_NestCount = Kernel.ISR_NestCount + 1;
     }
     //-----------------------------------------------------
     INLINE void ISR_Exit()
     {
         TCritSect cs;
-        if(--Kernel.ISR_NestCount) return;
+        Kernel.ISR_NestCount = Kernel.ISR_NestCount - 1;
+        if(Kernel.ISR_NestCount) return;
         Kernel.sched_isr();
     }
     //-----------------------------------------------------
