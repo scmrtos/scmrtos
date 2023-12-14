@@ -7,7 +7,7 @@
 //*     Version: v5.2.0
 //*
 //*
-//*     Copyright (c) 2003-2021, scmRTOS Team
+//*     Copyright (c) 2003-2023, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -36,7 +36,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     Recursive mutex extension by Andrey Chuykin, Copyright (c) 2015-2021
+//*     Recursive mutex extension by Andrey Chuykin, Copyright (c) 2015-2023
 
 #include "recursive_mutex.h"
 
@@ -57,7 +57,7 @@ void TRecursiveMutex::lock()
     }
     else if ( ValueTag == curr_tag )
     {
-        ++NestCount;
+        NestCount = NestCount + 1;
     }
     else
     {
@@ -77,7 +77,8 @@ void TRecursiveMutex::unlock()
 
     if ( ValueTag != cur_proc_prio_tag() || 0 == NestCount )
         return;
-    if ( --NestCount == 0 )
+    NestCount = NestCount - 1;
+    if ( 0 == NestCount )
     {
         ValueTag = 0;
         resume_next_ready(ProcessMap);

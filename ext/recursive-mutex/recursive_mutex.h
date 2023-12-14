@@ -7,7 +7,7 @@
 //*     Version: v5.2.0
 //*
 //*
-//*     Copyright (c) 2003-2021, scmRTOS Team
+//*     Copyright (c) 2003-2023, scmRTOS Team
 //*
 //*     Permission is hereby granted, free of charge, to any person
 //*     obtaining  a copy of this software and associated documentation
@@ -36,7 +36,7 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     Recursive mutex extension by Andrey Chuykin, Copyright (c) 2015-2021
+//*     Recursive mutex extension by Andrey Chuykin, Copyright (c) 2015-2023
 
 #ifndef RECURSIVE_MUTEX_H
 #define RECURSIVE_MUTEX_H
@@ -83,10 +83,14 @@ inline void TRecursiveMutex::unlock_isr()
 {
     TCritSect cs;
 
-    if ( NestCount && --NestCount == 0 )
+    if ( NestCount )
     {
-        ValueTag = 0;
-        resume_next_ready_isr(ProcessMap);
+        NestCount = NestCount - 1;
+        if ( 0 == NestCount )
+        {
+            ValueTag = 0;
+            resume_next_ready_isr(ProcessMap);
+        }
     }
 }
 
