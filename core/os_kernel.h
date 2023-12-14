@@ -531,7 +531,7 @@ void OS::TKernel::system_timer()
 {
     SYS_TIMER_CRIT_SECT();
 #if scmRTOS_SYSTEM_TICKS_ENABLE == 1
-    SysTickCount++;
+    SysTickCount = SysTickCount + 1;
 #endif
 
 #if scmRTOS_PRIORITY_ORDER == 0
@@ -546,7 +546,8 @@ void OS::TKernel::system_timer()
 
         if(p->Timeout > 0)
         {
-            if(--p->Timeout == 0)
+            p->Timeout = p->Timeout - 1;
+            if(p->Timeout == 0)
             {
                 set_process_ready(p->Priority);
             }

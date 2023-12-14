@@ -293,13 +293,15 @@ namespace OS
         {
             // STM8 can (atomically) increment byte in memory, but IAR 1.20 and 1.30 - can't :-(
             TCritSect cs;
-            Kernel.ISR_NestCount++;
+            Kernel.ISR_NestCount = Kernel.ISR_NestCount + 1;
         }
         //-----------------------------------------------------
         INLINE void ISR_Exit()
         {
             TCritSect cs; // FIXME: disable_interrupts() is enough ?
-            if(--Kernel.ISR_NestCount) return;
+            uint_fast8_t cnt = Kernel.ISR_NestCount - 1;
+            Kernel.ISR_NestCount = cnt;
+            if(cnt) return;
             Kernel.sched_isr();
         }
         //-----------------------------------------------------
@@ -321,7 +323,9 @@ namespace OS
         INLINE void ISR_Enter() // volatile
         {
             TCritSect cs;
-            if(Kernel.ISR_NestCount++ == 0)
+            uint_fast8_t cnt = Kernel.ISR_NestCount;
+            Kernel.ISR_NestCount = cnt + 1;
+            if(cnt == 0)  // first level
             {
                 Kernel.ProcessTable[Kernel.CurProcPriority]->StackPointer = get_stack_pointer();
                 set_isr_stack_pointer();
@@ -331,7 +335,9 @@ namespace OS
         INLINE void ISR_Exit()
         {
             TCritSect cs; // FIXME: disable_interrupts() is enough ?
-            if(--Kernel.ISR_NestCount) return;
+            uint_fast8_t cnt = Kernel.ISR_NestCount - 1;
+            Kernel.ISR_NestCount = cnt;
+            if(cnt) return;
             set_stack_pointer(Kernel.ProcessTable[Kernel.CurProcPriority]->StackPointer);
             Kernel.sched_isr();
         }

@@ -241,13 +241,15 @@ namespace OS
         INLINE void ISR_Enter()
         {
             TCritSect cs;
-            Kernel.ISR_NestCount++;
+            Kernel.ISR_NestCount = Kernel.ISR_NestCount + 1;
         }
         //-----------------------------------------------------
         INLINE void ISR_Exit()
         {
             TCritSect cs;
-            if(--Kernel.ISR_NestCount) return;
+            uint_fast8_t cnt = Kernel.ISR_NestCount - 1;
+            Kernel.ISR_NestCount = cnt;
+            if(cnt) return;
             Kernel.sched_isr();
         }
         //-----------------------------------------------------

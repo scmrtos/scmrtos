@@ -428,14 +428,18 @@ inline void OS::TISRW::load_sp(stack_item_t* New_SP)
 }
 inline OS::TISRW::TISRW()
 {
-    if(Kernel.ISR_NestCount++ == 0)
+    uint_fast8_t cnt = Kernel.ISR_NestCount;
+    Kernel.ISR_NestCount = cnt + 1;
+    if(cnt == 0)  // first level
     {
         save_sp(&TKernel::ProcessTable[Kernel.CurProcPriority]->StackPointer);
     }
 }
 inline OS::TISRW::~TISRW()
 {
-    if(--Kernel.ISR_NestCount) return;
+    uint_fast8_t cnt = Kernel.ISR_NestCount - 1;
+    Kernel.ISR_NestCount = cnt;
+    if(cnt) return;
 
     TPriority NextProcPriority = highest_priority(Kernel.ReadyProcessMap);
     stack_item_t*  Next_SP = TKernel::ProcessTable[NextProcPriority]->StackPointer;
@@ -445,12 +449,14 @@ inline OS::TISRW::~TISRW()
 #else
 inline OS::TISRW::TISRW()
 {
-    Kernel.ISR_NestCount++;
+    Kernel.ISR_NestCount = Kernel.ISR_NestCount + 1;
 }
 INLINE OS::TISRW::~TISRW()
 {
     disable_interrupts();
-    if(--Kernel.ISR_NestCount) return;
+    uint_fast8_t cnt = Kernel.ISR_NestCount - 1;
+    Kernel.ISR_NestCount = cnt;
+    if(cnt) return;
     Kernel.sched_isr();
 }
 #endif

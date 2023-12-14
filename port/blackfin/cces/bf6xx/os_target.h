@@ -235,14 +235,16 @@ namespace OS
         //-----------------------------------------------------
         INLINE void isr_enter()
         {
-            Kernel.ISR_NestCount++;
+            Kernel.ISR_NestCount = Kernel.ISR_NestCount + 1;
         }
         //-----------------------------------------------------
         INLINE void isr_exit()
         {
             TCritSect cs;
             
-            if(--Kernel.ISR_NestCount) return;
+            uint_fast8_t cnt = Kernel.ISR_NestCount - 1;
+            Kernel.ISR_NestCount = cnt;
+            if(cnt) return;
             Kernel.sched_isr();
         }
         //-----------------------------------------------------
