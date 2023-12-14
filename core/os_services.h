@@ -250,40 +250,6 @@ namespace OS
     typedef TScopedLock<OS::TMutex> TMutexLocker;
     //--------------------------------------------------------------------------
 
-    //--------------------------------------------------------------------------
-    //
-    //   TChannel
-    // 
-    //   Byte-wide data channel for transferring "raw" data
-    //
-    //       DESCRIPTION:
-    //
-    //
-    class TChannel : protected TService
-    {
-    public:
-        INLINE TChannel(uint8_t* buf, uint8_t size) 
-            : ProducersProcessMap(0)
-            , ConsumersProcessMap(0)
-            , Cbuf(buf, size)
-        { 
-        }
-
-        void    push(uint8_t x);
-        uint8_t pop();
-
-        void write(const uint8_t* data, const uint8_t count);
-        void read(uint8_t* const data, const uint8_t count);
-
-        INLINE uint8_t get_count() const { TCritSect cs; return Cbuf.get_count(); }
-
-    protected:
-        volatile TProcessMap ProducersProcessMap;
-        volatile TProcessMap ConsumersProcessMap;
-        usr::TCbuf Cbuf;
-    };
-    //--------------------------------------------------------------------------
-
 
     //--------------------------------------------------------------------------
     //

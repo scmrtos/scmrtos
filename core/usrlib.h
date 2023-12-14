@@ -51,66 +51,21 @@
 //
 namespace usr
 {
-    //------------------------------------------------------------------------------
-    //
-    ///     The Circular Buffer
-    //
-    ///         Byte-wide FIFO.
-    //
-    ///         Allows to:
-    ///             add byte,
-    ///             get byte,
-    ///             write bytes from array,
-    ///             read bytes to array,
-    ///             and some other service actions.
-    //
-    class TCbuf
-    {
-    public:
-        TCbuf(uint8_t* const Address, const uint8_t Size);
-        bool write(const uint8_t* data, const uint8_t Count);
-        void read(uint8_t* const data, const uint8_t Count);
-        uint8_t get_count() const { return count; }
-        uint8_t get_free_size() const { return size - count; }
-        uint8_t get_byte(const uint8_t index) const;
-        void clear() { count = 0; last = first; }
-        bool put(const uint8_t item);
-        uint8_t get();
-
-    private:
-       //------------------------------------------------------------------------------
-       //
-       //  DESCRIPTON: For internal purposes
-       //
-        void push(const uint8_t item); ///< Use this function with care - it doesn't perform free size check
-        uint8_t pop();                 ///< Use this function with care - it doesn't perform count check
-       //------------------------------------------------------------------------------
-
-    private:
-        uint8_t* buf;
-        uint8_t  size;
-        volatile uint8_t count;
-        uint8_t  first;
-        uint8_t  last;
-    };
-    //------------------------------------------------------------------------------
-
-
 
     //-----------------------------------------------------------------------
     //
-    ///     The Ring Buffer Template
-    ///
-    ///         Carries out FIFO functionality for
-    ///         arbitrary data types
-    ///
-    ///         Allows to:
-    ///             add item to back (default),
-    ///             add item to front,
-    ///             get item at front (default),
-    ///             get item from back,
-    ///             write items from array,
-    ///             read items to array and some other actions
+    //     The Ring Buffer Template
+    //
+    //         Carries out FIFO functionality for
+    //         arbitrary data types
+    //
+    //         Allows to:
+    //             add item to back (default),
+    //             add item to front,
+    //             get item at front (default),
+    //             get item from back,
+    //             write items from array,
+    //             read items to array and some other actions
     //
     //
     //
