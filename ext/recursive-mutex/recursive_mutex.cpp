@@ -49,13 +49,14 @@ void TRecursiveMutex::lock()
 {
     TCritSect cs;
     TProcessMap curr_tag = cur_proc_prio_tag();
+    TProcessMap ValueTag_tmp = ValueTag;
 
-    if ( 0 == ValueTag )
+    if ( 0 == ValueTag_tmp )
     {
         ValueTag = curr_tag;
         NestCount = 1;
     }
-    else if ( ValueTag == curr_tag )
+    else if ( ValueTag_tmp == curr_tag )
     {
         NestCount = NestCount + 1;
     }
@@ -74,11 +75,13 @@ void TRecursiveMutex::lock()
 void TRecursiveMutex::unlock()
 {
     TCritSect cs;
+    size_t NestCount_tmp = NestCount;
 
-    if ( ValueTag != cur_proc_prio_tag() || 0 == NestCount )
+    if ( ValueTag != cur_proc_prio_tag() || 0 == NestCount_tmp )
         return;
-    NestCount = NestCount - 1;
-    if ( 0 == NestCount )
+    --NestCount_tmp;
+    NestCount = NestCount_tmp;
+    if ( 0 == NestCount_tmp )
     {
         ValueTag = 0;
         resume_next_ready(ProcessMap);
@@ -105,8 +108,9 @@ void TRecursiveMutex::force_unlock()
 bool TRecursiveMutex::try_lock()
 {
     TCritSect cs;
+    TProcessMap ValueTag_tmp = ValueTag; 
 
-    if ( ValueTag && ValueTag != cur_proc_prio_tag() ) 
+    if ( ValueTag_tmp && ValueTag_tmp != cur_proc_prio_tag() ) 
         return false;
     else
         lock();
@@ -119,11 +123,12 @@ bool TRecursiveMutex::try_lock()
 bool TRecursiveMutex::try_lock(timeout_t timeout)
 {
     TCritSect cs;
+    TProcessMap ValueTag_tmp = ValueTag;
 
-    if ( ValueTag && ValueTag != cur_proc_prio_tag() ) 
+    if ( ValueTag_tmp && ValueTag_tmp != cur_proc_prio_tag() )
     {
         // mutex already locked by another process, suspend current process
-        while ( ValueTag ) 
+        while ( ValueTag )               
         {
             cur_proc_timeout() = timeout;
             suspend(ProcessMap);

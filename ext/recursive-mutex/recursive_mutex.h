@@ -83,10 +83,12 @@ inline void TRecursiveMutex::unlock_isr()
 {
     TCritSect cs;
 
-    if ( NestCount )
+    size_t NestCount_tmp = NestCount;
+    if ( NestCount_tmp )
     {
-        NestCount = NestCount - 1;
-        if ( 0 == NestCount )
+        --NestCount_tmp;
+        NestCount = NestCount_tmp;
+        if ( 0 == NestCount_tmp )
         {
             ValueTag = 0;
             resume_next_ready_isr(ProcessMap);
