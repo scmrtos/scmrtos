@@ -60,13 +60,22 @@ struct TDebugSupportInfo
     uint8_t NAME_OFFSET;
 };
 
+namespace {
+
+// declare TBaseProcess descedant to access protected field
+struct BaseProcessHack : public TBaseProcess
+{
+    static uint8_t get_name_offset() { return  offsetof(BaseProcessHack, Name); }
+};
+
+} // anon namespace
 
 __attribute__((used, aligned(2)))
 extern const TDebugSupportInfo DebugInfo =
 {
     PROCESS_COUNT,
     sizeof(timeout_t),
-    sizeof(timeout_t) == 2 ? 20 : 24
+    BaseProcessHack::get_name_offset()
 };
 #endif // scmRTOS_DEBUG_ENABLE
 
