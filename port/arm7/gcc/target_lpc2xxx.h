@@ -81,6 +81,9 @@ INLINE void IRQ_DONE()
 
 #else   //__ASSEMBLER__
 
+#define VICSoftIntClrOffset 0x01C
+#define VICVectAddrOffset   0x030
+
 #if scmRTOS_CONTEXT_SWITCH_SCHEME == 0
         .macro  IRQ_SWITCH
         LDR     R1,=VICVectAddr
@@ -95,8 +98,8 @@ INLINE void IRQ_DONE()
         .macro  IRQ_DONE
         LDR     R1, =(VIC_BASE_ADDR)
         MOV     R2, #(1 << CONTEXT_SWITCH_INT)
-        STR     R2, [R1, #(VICSoftIntClr - VIC_BASE_ADDR)]  // VICSoftIntClr = 1 << CONTEXT_SWITCH_INT; (clear soft int request)
-        STR     R1, [R1, #(VICVectAddr - VIC_BASE_ADDR)]    // VICVectAddr = smth; (reset VIC)
+        STR     R2, [R1, #VICSoftIntClrOffset]  // VICSoftIntClr = 1 << CONTEXT_SWITCH_INT; (clear soft int request)
+        STR     R1, [R1, #VICVectAddrOffset]    // VICVectAddr = smth; (reset VIC)
         .endm
 #endif  // scmRTOS_CONTEXT_SWITCH_SCHEME
 
