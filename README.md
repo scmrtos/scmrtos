@@ -16,6 +16,8 @@ List of supported platforms for now:
 * Cortex-M0
 * Cortex-M3
 * Cortex-M4
+* Cortex-M7
+* Cortex-A9
 * STM8
 
 Key Features
