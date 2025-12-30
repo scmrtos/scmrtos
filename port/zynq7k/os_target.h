@@ -97,7 +97,7 @@ typedef uint32_t status_reg_t;
 #define OS_PROCESS __attribute__((__noreturn__))
 #define OS_INTERRUPT extern "C"
 
-#define DUMMY_INSTR() __asm__ __volatile__ ("nop")
+#define DUMMY_INSTR() __asm__ __volatile__ ("    nop\n")
 #define INLINE_PROCESS_CTOR INLINE
 
 //-----------------------------------------------------------------------------
@@ -222,7 +222,7 @@ INLINE void            disable_context_switch()            {  }
 //
 namespace OS
 {
-INLINE void raise_context_switch() { asm __volatile__("    svc #0\n"); }
+INLINE void raise_context_switch() { asm __volatile__("    svc #0\n" ::: "memory"); }
 
 //#define ENABLE_NESTED_INTERRUPTS()
 
