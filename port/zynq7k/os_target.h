@@ -210,8 +210,8 @@ namespace OS
 
 INLINE OS::TProcessMap get_prio_tag(const uint_fast8_t pr) { return static_cast<OS::TProcessMap> (1 << pr); }
 INLINE uint_fast8_t    highest_priority(TProcessMap pm)    { return 31 - __builtin_clz(pm); }
-INLINE void            enable_context_switch()             { enable_interrupts();  }
-INLINE void            disable_context_switch()            { disable_interrupts(); }
+INLINE void            enable_context_switch()             {  }
+INLINE void            disable_context_switch()            {  }
 
 }
 
