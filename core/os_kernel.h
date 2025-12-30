@@ -56,7 +56,7 @@ extern "C" void os_context_switcher(stack_item_t** Curr_SP, stack_item_t* Next_S
 #else
 extern "C" stack_item_t* os_context_switch_hook(stack_item_t* sp);
 #endif
-    
+
 //==============================================================================
 
 //------------------------------------------------------------------------------
@@ -75,10 +75,10 @@ extern "C" stack_item_t* os_context_switch_hook(stack_item_t* sp);
 //
 namespace OS
 {
-    
+
     const uint_fast8_t PROCESS_COUNT         = scmRTOS_PROCESS_COUNT + 1;
     const stack_item_t STACK_DEFAULT_PATTERN = scmRTOS_STACK_PATTERN;
-    
+
     class TBaseProcess;
 
     INLINE void set_prio_tag(volatile TProcessMap & pm, const TProcessMap PrioTag) { pm |=  PrioTag; }
@@ -107,7 +107,7 @@ namespace OS
         friend class TISRW_SS;
         friend class TBaseProcess;
         friend class TKernelAgent;
-        
+
         friend void                 run();
         friend bool                 os_running();
         friend const TBaseProcess * get_proc(uint_fast8_t Prio);
@@ -123,10 +123,10 @@ namespace OS
         uint_fast8_t          CurProcPriority;
         volatile TProcessMap  ReadyProcessMap;
         volatile uint_fast8_t ISR_NestCount;
-        
+
     private:
         static TBaseProcess*  ProcessTable[PROCESS_COUNT];
-        
+
     #if scmRTOS_CONTEXT_SWITCH_SCHEME == 1
         volatile uint_fast8_t SchedProcPriority;
     #endif
@@ -145,10 +145,11 @@ namespace OS
                      , ISR_NestCount(0)
     {
     }
-    
+
     private:
         INLINE static void register_process(TBaseProcess* const p);
 
+        INLINE bool update_sched_prio();
                void sched();
         INLINE void scheduler() { if(ISR_NestCount) return; else  sched(); }
         INLINE void sched_isr();
@@ -157,7 +158,7 @@ namespace OS
         INLINE bool is_context_switch_done();
         INLINE void raise_context_switch() { OS::raise_context_switch(); }
     #endif
-    
+
         INLINE void set_process_ready  (const uint_fast8_t pr) { TProcessMap PrioTag = get_prio_tag(pr); set_prio_tag( ReadyProcessMap, PrioTag); }
         INLINE void set_process_unready(const uint_fast8_t pr) { TProcessMap PrioTag = get_prio_tag(pr); clr_prio_tag( ReadyProcessMap, PrioTag); }
 
@@ -173,7 +174,7 @@ namespace OS
     //--------------------------------------------------------------------------
     //
     //  BaseProcess
-    // 
+    //
     //  Implements base class-type for application processes
     //
     //      DESCRIPTION:
@@ -206,7 +207,7 @@ namespace OS
     protected:
         INLINE void set_unready() { Kernel.set_process_unready(this->Priority); }
         void init_stack_frame( stack_item_t * StackPoolEnd
-                             , void (*exec)() 
+                             , void (*exec)()
         #if scmRTOS_DEBUG_ENABLE == 1
                              , stack_item_t * StackPool
         #endif
@@ -218,7 +219,7 @@ namespace OS
         TBaseProcess( stack_item_t* StackPoolEnd
                     , stack_item_t* RStack
                     , TPriority pr
-                    , void (*exec)() 
+                    , void (*exec)()
                 #if scmRTOS_DEBUG_ENABLE == 1
                     , stack_item_t * aStackPool
                     , stack_item_t * aRStackPool
@@ -229,17 +230,17 @@ namespace OS
     protected:
         void init_stack_frame( stack_item_t * Stack
                              , stack_item_t * RStack
-                             , void (*exec)() 
+                             , void (*exec)()
         #if scmRTOS_DEBUG_ENABLE == 1
                              , stack_item_t * StackPool
                              , stack_item_t * RStackPool
         #endif
                              );
-        
+
     public:
 
     #endif // SEPARATE_RETURN_STACK
-        
+
         TPriority   priority() const { return Priority; }
 
         static void sleep(timeout_t timeout = 0);
@@ -254,19 +255,19 @@ namespace OS
         INLINE TService * waiting_for() const { return WaitingFor; }
     public:
                size_t       stack_size()  const { return StackSize; }
-               size_t       stack_slack() const; 
+               size_t       stack_slack() const;
                const char * name()        const { return Name; }
         #if SEPARATE_RETURN_STACK == 1
                size_t     rstack_size() const { return RStackSize; }
                size_t     rstack_slack() const;
-        #endif               
+        #endif
     #endif // scmRTOS_DEBUG_ENABLE
 
     #if scmRTOS_PROCESS_RESTART_ENABLE == 1
     protected:
                void reset_controls();
     #endif
-    
+
     public:
 
         //-----------------------------------------------------
@@ -287,7 +288,7 @@ namespace OS
             const size_t               RStackSize;
         #endif
     #endif // scmRTOS_DEBUG_ENABLE
-    
+
     #if scmRTOS_PROCESS_RESTART_ENABLE == 1
         volatile TProcessMap * WaitingProcessMap;
     #endif
@@ -302,7 +303,7 @@ namespace OS
     //--------------------------------------------------------------------------
     //
     //   process
-    // 
+    //
     //   Implements template for application processes instantiation
     //
     //      DESCRIPTION:
@@ -407,13 +408,13 @@ namespace OS
                 clr_prio_tag(SuspendedProcessMap, get_prio_tag(pr));
             #endif
         }
-        
+
         #if scmRTOS_PROCESS_RESTART_ENABLE == 1
         template<TPriority pr, size_t stk_size, size_t rstk_size, TProcessStartState pss>
         void OS::process<pr, stk_size, rstk_size, pss>::terminate(void (*func)())
         {
             TCritSect cs;
-            
+
             reset_controls();
             init_stack_frame( &Stack[stk_size/sizeof(stack_item_t)]
                             , &RStack[rstk_size/sizeof(stack_item_t)]
@@ -435,11 +436,11 @@ namespace OS
 
 
     extern TIdleProc IdleProc;
-        
+
     //--------------------------------------------------------------------------
     //
     //   TKernelAgent
-    // 
+    //
     //   Grants access to some RTOS kernel internals for services implementation
     //
     //      DESCRIPTION:
@@ -462,12 +463,12 @@ namespace OS
     #if scmRTOS_DEBUG_ENABLE == 1
         INLINE static TService * volatile & cur_proc_waiting_for()     { return cur_proc()->WaitingFor;  }
     #endif
-    
+
     #if scmRTOS_PROCESS_RESTART_ENABLE == 1
         INLINE static volatile TProcessMap * & cur_proc_waiting_map()  { return cur_proc()->WaitingProcessMap; }
     #endif
     };
-    
+
     //--------------------------------------------------------------------------
     //
     //       Miscellaneous
@@ -479,7 +480,7 @@ namespace OS
     INLINE void unlock_system_timer()  { TCritSect cs; UNLOCK_SYSTEM_TIMER(); }
     INLINE void sleep(timeout_t t = 0) { TBaseProcess::sleep(t); }
     INLINE const TBaseProcess * get_proc(uint_fast8_t Prio) { return Kernel.ProcessTable[Prio]; }
-    
+
     //--------------------------------------------------------------------------
 
 #if scmRTOS_SYSTEM_TICKS_ENABLE == 1
@@ -505,7 +506,7 @@ namespace OS
 #if scmRTOS_IDLE_HOOK_ENABLE == 1
     void idle_process_user_hook();
 #endif // scmRTOS_IDLE_HOOK_ENABLE
-    
+
 }   // namespace OS
 //------------------------------------------------------------------------------
 
@@ -515,7 +516,7 @@ namespace OS
 //------------------------------------------------------------------------------
 //
 //   Register Process
-// 
+//
 //   Places pointer to process in kernel's process table
 //
 void OS::TKernel::register_process(OS::TBaseProcess* const p)
@@ -525,7 +526,7 @@ void OS::TKernel::register_process(OS::TBaseProcess* const p)
 //------------------------------------------------------------------------------
 //
 //    System Timer Implementation
-// 
+//
 //    Performs process's timeouts checking and
 //    moving processes to ready-to-run state
 //
@@ -559,7 +560,7 @@ void OS::TKernel::system_timer()
 //------------------------------------------------------------------------------
 //
 //     ISR optimized scheduler
-// 
+//
 //     !!! IMPORTANT: This function must be called from ISR services only !!!
 //
 //
@@ -572,7 +573,7 @@ void OS::TKernel::sched_isr()
     #if scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE == 1
         context_switch_user_hook();
     #endif
-    
+
         stack_item_t*  Next_SP = ProcessTable[NextPrty]->StackPointer;
         stack_item_t** Curr_SP_addr = &(ProcessTable[CurProcPriority]->StackPointer);
         CurProcPriority = NextPrty;
@@ -580,12 +581,24 @@ void OS::TKernel::sched_isr()
     }
 }
 #else
-void OS::TKernel::sched_isr()
+bool OS::TKernel::update_sched_prio()
 {
     uint_fast8_t NextPrty = highest_priority(ReadyProcessMap);
-    SchedProcPriority = NextPrty;
+
     if(NextPrty != CurProcPriority)
+    {
+        SchedProcPriority = NextPrty;
+        return true;
+    }
+
+    return false;
+}
+void OS::TKernel::sched_isr()
+{
+    if(update_sched_prio())
+    {
         raise_context_switch();
+    }
 }
 //------------------------------------------------------------------------------
 #ifndef CONTEXT_SWITCH_HOOK_CRIT_SECT
@@ -598,7 +611,7 @@ stack_item_t* OS::TKernel::context_switch_hook(stack_item_t* sp)
 
     ProcessTable[CurProcPriority]->StackPointer = sp;
     sp = ProcessTable[SchedProcPriority]->StackPointer;
-    
+
 #if scmRTOS_CONTEXT_SWITCH_USER_HOOK_ENABLE == 1
     context_switch_user_hook();
 #endif
@@ -628,8 +641,8 @@ INLINE void OS::run()
 
 #if scmRTOS_SUSPENDED_PROCESS_ENABLE != 0
     Kernel.ReadyProcessMap = TBaseProcess::SuspendedProcessMap;
-    uint_fast8_t p = highest_priority(Kernel.ReadyProcessMap); 
-#else 
+    uint_fast8_t p = highest_priority(Kernel.ReadyProcessMap);
+#else
     uint_fast8_t p = pr0;
 #endif
 
@@ -644,6 +657,6 @@ INLINE bool OS::os_running()
 }
 //-----------------------------------------------------------------------------
 
-#include <os_services.h>
+//#include <os_services.h>
 
 #endif // OS_KERNEL_H
