@@ -243,47 +243,28 @@ namespace OS
 //
 //      NAME       :   OS ISR support
 //
-//      PURPOSE    :   Implements common actions on interrupt enter and exit
-//                     under the OS
-//
-//      DESCRIPTION:
-//
+//      PURPOSE    :   Provide access to update scheduling priority function
+//                     call
 //
 class TISRW
 {
 public:
-    INLINE  TISRW()  { ISR_Enter(); }
-    INLINE  ~TISRW() { ISR_Exit();  }
+    bool context_switch_pending() { return Kernel.update_sched_prio(); }
 
-private:
-    //-----------------------------------------------------
-    INLINE void ISR_Enter()
-    {
-        TCritSect cs;
-        Kernel.ISR_NestCount = Kernel.ISR_NestCount + 1;
-    }
-    //-----------------------------------------------------
-    INLINE void ISR_Exit()
-    {
-        TCritSect cs;
-        uint_fast8_t cnt = Kernel.ISR_NestCount - 1;
-        Kernel.ISR_NestCount = cnt;
-        if(cnt) return;
-        Kernel.sched_isr();
-    }
-    //-----------------------------------------------------
 };
-//--------------------------------------------------------------------------
 
+//------------------------------------------------------------------------------
+//
 //    No software interrupt stack switching provided,
 //    TISRW_SS declared to be the same as TISRW for porting compatibility
+//
 #define TISRW_SS    TISRW
 
-//--------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 //
 //    System timer
 //
-//--------------------------------------------------------------------------
+//--------------------------------------------------------------------
 //
 //    Setup and start system timer
 //
@@ -321,8 +302,8 @@ INLINE void start_system_timer(uint32_t f, uint32_t t, size_t pr)
 }
 
 } // namespace OS
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 #endif // scmRTOS_CORTEXA9_H
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
