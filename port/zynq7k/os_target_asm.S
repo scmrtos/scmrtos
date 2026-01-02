@@ -178,7 +178,7 @@ prefetch_abort_addr:      .word
 
 //------------------------------------------------------------------------------
 //
-//    Macros
+//    OS start
 //
 .text
 .align 4
@@ -192,6 +192,9 @@ os_start:
 os_start.end:
 
 //------------------------------------------------------------------------------
+//
+//    Synchronous process switch
+//
 .align 4
 process_switch_exc:
 
@@ -210,6 +213,9 @@ process_switch_exc:
 context_switch_exc.end:
 
 //------------------------------------------------------------------------------
+//
+//    IRQ handler + asynchronous process switch
+//
 .align 4
 interrupt_request_exc:
 
