@@ -314,14 +314,14 @@ namespace OS
         class process : public TBaseProcess
         {
         public:
-            INLINE_PROCESS_CTOR process( const char * name_str = 0 );
+            INLINE_PROCESS_CTOR process( const char * name_str = 0, void (*func)() = 0 );
 
             OS_PROCESS static void exec();
 
         #if scmRTOS_PROCESS_RESTART_ENABLE == 1
-            INLINE void terminate();
+            INLINE void terminate( void (*func)() = 0 );
         #endif
-        
+
         private:
             stack_item_t Stack[stk_size/sizeof(stack_item_t)];
         };
@@ -331,15 +331,16 @@ namespace OS
             #if scmRTOS_DEBUG_ENABLE == 1
             name_str
             #endif
+            , void (*func)()
             ) : TBaseProcess(&Stack[stk_size / sizeof(stack_item_t)]
                              , pr
-                             , reinterpret_cast<void (*)()>(exec)
+                             , func ? func : exec
                           #if scmRTOS_DEBUG_ENABLE == 1
                              , Stack
                              , name_str
                           #endif
                              )
-            
+
         {
             #if scmRTOS_SUSPENDED_PROCESS_ENABLE != 0
             if ( pss == pssSuspended )
@@ -349,13 +350,13 @@ namespace OS
 
         #if scmRTOS_PROCESS_RESTART_ENABLE == 1
         template<TPriority pr, size_t stk_size, TProcessStartState pss>
-        void OS::process<pr, stk_size, pss>::terminate()
+        void OS::process<pr, stk_size, pss>::terminate(void (*func)())
         {
             TCritSect cs;
 
             reset_controls();
             init_stack_frame( &Stack[stk_size/sizeof(stack_item_t)]
-                             , reinterpret_cast<void (*)()>(exec)
+                             , func ? func : exec
                           #if scmRTOS_DEBUG_ENABLE == 1
                               , Stack
                           #endif
@@ -371,12 +372,12 @@ namespace OS
         class process : public TBaseProcess
         {
         public:
-            INLINE_PROCESS_CTOR process( const char * name_str = 0 );
+            INLINE_PROCESS_CTOR process( const char * name_str = 0, void (*func)() = 0 );
 
             OS_PROCESS static void exec();
 
         #if scmRTOS_PROCESS_RESTART_ENABLE == 1
-            INLINE void terminate();
+            INLINE void terminate(void (*func)() = 0);
         #endif
 
         private:
@@ -389,10 +390,11 @@ namespace OS
             #if scmRTOS_DEBUG_ENABLE == 1
             name_str
             #endif
+            , void (*func)()
            ): TBaseProcess(&Stack[stk_size / sizeof(stack_item_t)]
                            , &RStack[rstk_size/sizeof(stack_item_t)]
                            , pr
-                           , reinterpret_cast<void (*)()>(exec)
+                           , func ? func : exec
                       #if scmRTOS_DEBUG_ENABLE == 1
                            , Stack
                            , RStack
@@ -408,14 +410,14 @@ namespace OS
         
         #if scmRTOS_PROCESS_RESTART_ENABLE == 1
         template<TPriority pr, size_t stk_size, size_t rstk_size, TProcessStartState pss>
-        void OS::process<pr, stk_size, rstk_size, pss>::terminate()
+        void OS::process<pr, stk_size, rstk_size, pss>::terminate(void (*func)())
         {
             TCritSect cs;
             
             reset_controls();
             init_stack_frame( &Stack[stk_size/sizeof(stack_item_t)]
                             , &RStack[rstk_size/sizeof(stack_item_t)]
-                            , reinterpret_cast<void (*)()>(exec)
+                            , func ? func : exec
                         #if scmRTOS_DEBUG_ENABLE == 1
                             , Stack
                             , RStack
