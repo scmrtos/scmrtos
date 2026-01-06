@@ -50,3 +50,10 @@ Key Features
 
 * User defined extensions
 * Debug features
+
+Online Documentation
+--------------------
+en: https://scmrtos.github.io/doc-en/
+
+ru: https://scmrtos.github.io/doc-ru/
+
