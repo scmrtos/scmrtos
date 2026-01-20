@@ -46,6 +46,7 @@
 
 #include <scmRTOS.h>
 
+//------------------------------------------------------------------------------
 namespace OS
 {
 void OS::TBaseProcess::init_stack_frame( stack_item_t * Stack
@@ -65,7 +66,7 @@ void OS::TBaseProcess::init_stack_frame( stack_item_t * Stack
 
     *(--StackPointer) = reinterpret_cast<stack_item_t>(exec);      // process root function start address
     *(--StackPointer) = reinterpret_cast<stack_item_t>(exec);      // lr in stack frame
-    
+
 
     for(size_t i = 12; i; --i)
     {
@@ -74,9 +75,9 @@ void OS::TBaseProcess::init_stack_frame( stack_item_t * Stack
     *(--StackPointer) = 0x12345678;                                // r0
 
 #if FPU_ENABLE
-    const size_t FPU_CONTEXT_SIZE = 32*2;                          // 32 64-bit registers +
-    StackPointer -= FPU_CONTEXT_SIZE ;                             // 1 32-bit FPU status register (fpcsr)
     *(--StackPointer) = 0;                                         // fpcsr initial value
+    const size_t FPU_CONTEXT_SIZE = 32*2 + 1;                      // 32 64-bit registers + 1 dummy pop for SP alignment
+    StackPointer -= FPU_CONTEXT_SIZE ;                             // 1 32-bit FPU status register (fpcsr)
 #endif
 
 #if scmRTOS_DEBUG_ENABLE == 1
@@ -88,5 +89,24 @@ void OS::TBaseProcess::init_stack_frame( stack_item_t * Stack
 }
 
 } // namespace OS
+//------------------------------------------------------------------------------
+extern "C"
+{
+
+bool irq_handler()
+{
+    const uint32_t INT_ID = rpa(GIC_ICCIAR);
+    if (INT_ID < PS7_MAX_IRQ_ID)
+    {
+        (*ps7_handlers[INT_ID])();
+
+    }
+    wpa(GIC_ICCEOIR, INT_ID);
+
+    OS::TISRW isr;
+    return isr.context_switch_pending();
+}
+
+}  // extern "C"
 //------------------------------------------------------------------------------
 

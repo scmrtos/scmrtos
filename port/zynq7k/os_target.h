@@ -97,7 +97,7 @@ typedef uint32_t status_reg_t;
 #define OS_PROCESS __attribute__((__noreturn__))
 #define OS_INTERRUPT extern "C"
 
-#define DUMMY_INSTR() __asm__ __volatile__ ("nop")
+#define DUMMY_INSTR() __asm__ __volatile__ ("    nop\n")
 #define INLINE_PROCESS_CTOR INLINE
 
 //-----------------------------------------------------------------------------
@@ -210,8 +210,8 @@ namespace OS
 
 INLINE OS::TProcessMap get_prio_tag(const uint_fast8_t pr) { return static_cast<OS::TProcessMap> (1 << pr); }
 INLINE uint_fast8_t    highest_priority(TProcessMap pm)    { return 31 - __builtin_clz(pm); }
-INLINE void            enable_context_switch()             { enable_interrupts();  }
-INLINE void            disable_context_switch()            { disable_interrupts(); }
+INLINE void            enable_context_switch()             {  }
+INLINE void            disable_context_switch()            {  }
 
 }
 
@@ -222,7 +222,7 @@ INLINE void            disable_context_switch()            { disable_interrupts(
 //
 namespace OS
 {
-INLINE void raise_context_switch() { asm __volatile__("    svc #0\n"); }
+INLINE void raise_context_switch() { asm __volatile__("    svc #0\n" ::: "memory"); }
 
 //#define ENABLE_NESTED_INTERRUPTS()
 
@@ -243,47 +243,28 @@ namespace OS
 //
 //      NAME       :   OS ISR support
 //
-//      PURPOSE    :   Implements common actions on interrupt enter and exit
-//                     under the OS
-//
-//      DESCRIPTION:
-//
+//      PURPOSE    :   Provide access to update scheduling priority function
+//                     call
 //
 class TISRW
 {
 public:
-    INLINE  TISRW()  { ISR_Enter(); }
-    INLINE  ~TISRW() { ISR_Exit();  }
+    bool context_switch_pending() { return Kernel.update_sched_prio(); }
 
-private:
-    //-----------------------------------------------------
-    INLINE void ISR_Enter()
-    {
-        TCritSect cs;
-        Kernel.ISR_NestCount = Kernel.ISR_NestCount + 1;
-    }
-    //-----------------------------------------------------
-    INLINE void ISR_Exit()
-    {
-        TCritSect cs;
-        uint_fast8_t cnt = Kernel.ISR_NestCount - 1;
-        Kernel.ISR_NestCount = cnt;
-        if(cnt) return;
-        Kernel.sched_isr();
-    }
-    //-----------------------------------------------------
 };
-//--------------------------------------------------------------------------
 
+//------------------------------------------------------------------------------
+//
 //    No software interrupt stack switching provided,
 //    TISRW_SS declared to be the same as TISRW for porting compatibility
+//
 #define TISRW_SS    TISRW
 
-//--------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 //
 //    System timer
 //
-//--------------------------------------------------------------------------
+//--------------------------------------------------------------------
 //
 //    Setup and start system timer
 //
@@ -321,8 +302,8 @@ INLINE void start_system_timer(uint32_t f, uint32_t t, size_t pr)
 }
 
 } // namespace OS
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 #endif // scmRTOS_CORTEXA9_H
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 

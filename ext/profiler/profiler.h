@@ -40,13 +40,17 @@
 //*****************************************************************************
 //*     Profiler extension by Harry E. Zhurov, Copyright (c) 2012-2021
 
-
 #ifndef PROFILER_H
 #define PROFILER_H
 
+#include <type_traits>
 #include <scmRTOS.h>
+#include <uart.h>
 
 //------------------------------------------------------------------------------
+//
+//    Performance optimized process profiler
+//
 template < uint_fast8_t sum_shift_bits = 0 >
 class TProfiler : public OS::TKernelAgent
 {
@@ -100,6 +104,71 @@ void TProfiler<sum_shift_bits>::process_data()
     for(uint_fast8_t i = 0; i < OS::PROCESS_COUNT; ++i)
     {
         Result[i]  = (CounterCache[i] >> sum_shift_bits) * K / Sum;
+    }
+}
+//------------------------------------------------------------------------------
+//
+//    Generic process profiler
+//
+template <typename T>
+class process_profiler : public OS::TKernelAgent
+{
+    uint32_t time_interval();
+public:
+    INLINE process_profiler();
+
+    INLINE void advance_counters()
+    {
+        uint32_t elapsed = time_interval();
+        counters[ cur_proc_priority() ] += elapsed;
+    }
+
+    INLINE T    get_result(uint_fast8_t index) { return result[index]; }
+    INLINE void process_data();
+
+protected:
+    volatile uint32_t  counters[OS::PROCESS_COUNT];
+             T         result  [OS::PROCESS_COUNT];
+};
+//------------------------------------------------------------------------------
+template <typename T>
+process_profiler<T>::process_profiler()
+    : counters (   )
+    , result   (   )
+{
+}
+
+template <typename T>
+void process_profiler<T>::process_data()
+{
+    // Use cache to make critical section fast as possible
+    uint32_t counters_cache[OS::PROCESS_COUNT];
+
+    {
+        CritSect cs;
+        for(uint_fast8_t i = 0; i < OS::PROCESS_COUNT; ++i)
+        {
+            counters_cache[i] = counters[i];
+            counters[i]       = 0;
+        }
+    }
+
+    uint32_t sum = 0;
+    for(uint_fast8_t i = 0; i < OS::PROCESS_COUNT; ++i)
+    {
+        sum += counters_cache[i];
+    }
+
+    for(uint_fast8_t i = 0; i < OS::PROCESS_COUNT; ++i)
+    {
+        if constexpr(std::is_integral_v<T>)
+        {
+            result[i] = static_cast<uint64_t>(counters_cache[i])*10000/sum;
+        }
+        else
+        {
+            result[i] = static_cast<T>(counters_cache[i])/sum*100;
+        }
     }
 }
 //------------------------------------------------------------------------------
