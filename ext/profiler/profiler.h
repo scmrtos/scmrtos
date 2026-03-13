@@ -144,7 +144,7 @@ void process_profiler<T>::process_data()
     uint32_t counters_cache[OS::PROCESS_COUNT];
 
     {
-        CritSect cs;
+        TCritSect cs;
         for(uint_fast8_t i = 0; i < OS::PROCESS_COUNT; ++i)
         {
             counters_cache[i] = counters[i];
