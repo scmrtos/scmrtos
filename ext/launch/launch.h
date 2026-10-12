@@ -43,6 +43,7 @@
 #pragma once
 
 #include <new>
+#include <type_traits>
 #include <utility>
 
 #include <scmRTOS.h>
@@ -75,27 +76,33 @@ namespace OS
         }
 
         /**
-         * Process of priority pr with Stk-byte stack, start state Pss and
-         * body supplied at run time (the body is passed to the kernel as the
-         * exec pointer).
+         * Process of priority pr, Stk-byte stack, start state Pss and a
+         * callable body stored in the object (captures allowed).
+         *
+         * The static exec() finds its object through ProcessTable[pr]: pr is
+         * a compile-time constant, and launch() guarantees the object type.
          */
-        template<TPriority pr, size_t Stk, TProcessStartState Pss = pssRunning>
+        template<TPriority pr, size_t Stk, TProcessStartState Pss, class F>
         class func_process : public TBaseProcess
         {
+            // Stk bytes as a whole number of stack_item_t
+            static constexpr size_t stk_items = round_up(Stk, sizeof(stack_item_t)) / sizeof(stack_item_t);
+
         public:
             INLINE func_process(const char*
                            #if scmRTOS_DEBUG_ENABLE == 1
                                name_str
                            #endif
-                               , void (*body)())
-                 : TBaseProcess(&Stack[round_up(Stk, sizeof(stack_item_t)) / sizeof(stack_item_t)]
+                               , F&& body_)
+                 : TBaseProcess(&Stack[stk_items]
                                , pr
-                               , body
+                               , &exec
                            #if scmRTOS_DEBUG_ENABLE == 1
                                , Stack
                                , name_str
                            #endif
                                )
+                 , body(std::forward<F>(body_))
             {
                 #if scmRTOS_SUSPENDED_PROCESS_ENABLE != 0
                     if ( Pss == pssSuspended )
@@ -104,8 +111,14 @@ namespace OS
             }
 
         private:
-            // Stk bytes, rounded up to a whole number of stack_item_t
-            stack_item_t Stack[round_up(Stk, sizeof(stack_item_t)) / sizeof(stack_item_t)];
+            OS_PROCESS static void exec()
+            {
+                static_cast<func_process*>(const_cast<TBaseProcess*>(get_proc(pr)))->body();
+                for (;;);   // the body must never return
+            }
+
+            F            body;
+            stack_item_t Stack[stk_items];
         };
 
         /**
@@ -124,22 +137,19 @@ namespace OS
         template<class... Desc, size_t... Is>
         constexpr size_t launch_align(std::index_sequence<Is...>)
         {
-            return max_alignof<alignof(func_process<launch_priority(Is), Desc::stack_size, Desc::start_state>)...>();
+            return max_alignof<alignof(func_process<launch_priority(Is), Desc::stack_size, Desc::start_state, typename Desc::body_type>)...>();
         }
 
         /**
-         * Byte offset of the I-th process in the OS::launch() storage buffer.
-         *
-         * Every process size is rounded up to the maximum alignment of the set,
-         * so each process is placed at an address properly aligned for its type
-         * (sizeof() is a multiple of alignof() of the same type, but not necessarily
-         * of the alignof() of the following one).
+         * Byte offset of the I-th process in the storage buffer; each size is
+         * rounded up to the maximum alignment of the set, so every process is
+         * properly aligned for its own type.
          */
         template<size_t I, class... Desc, size_t... Is>
         constexpr size_t launch_offset(std::index_sequence<Is...>)
         {
             constexpr size_t align = launch_align<Desc...>(std::index_sequence_for<Desc...>{});
-            constexpr size_t sizes[] = { round_up(sizeof(func_process<launch_priority(Is), Desc::stack_size, Desc::start_state>), align)... };
+            constexpr size_t sizes[] = { round_up(sizeof(func_process<launch_priority(Is), Desc::stack_size, Desc::start_state, typename Desc::body_type>), align)... };
             size_t off = 0;
             for (size_t i = 0; i < I; ++i)
                 off += sizes[i];
@@ -156,31 +166,29 @@ namespace OS
         }
 
         /**
-         * Construct one OS::launch() process at the given address.
+         * Construct the I-th process at addr, moving the body out of the description.
          */
         template<size_t I, class D>
-        void launch_create_one(uint8_t* addr, const D& d)
+        void launch_create_one(uint8_t* addr, D&& d)
         {
-            new (addr) func_process<launch_priority(I), D::stack_size, D::start_state>(d.name, d.body);
+            new (addr) func_process<launch_priority(I), D::stack_size, D::start_state, typename D::body_type>(
+                d.name, std::forward<D>(d).body);
         }
 
         /**
          * Construct all OS::launch() processes in the storage buffer (left to right).
          */
         template<class... Desc, size_t... Is>
-        void launch_create_all(uint8_t* storage, std::index_sequence<Is...>, const Desc&... desc)
+        void launch_create_all(uint8_t* storage, std::index_sequence<Is...>, Desc&&... desc)
         {
-            (launch_create_one<Is, Desc>(storage + launch_offset<Is, Desc...>(std::index_sequence_for<Desc...>{}), desc), ...);
+            (launch_create_one<Is, Desc>(storage + launch_offset<Is, Desc...>(std::index_sequence_for<Desc...>{}), std::forward<Desc>(desc)), ...);
         }
 
     #if scmRTOS_DEBUG_ENABLE == 1
         /**
-         * Check that no process was created outside OS::launch(): every user
-         * priority slot must be empty before the launch creates its processes
-         * (a non-empty slot means a global/static/heap process object).
-         *
-         * Stops in an endless loop at the offending priority - inspectable
-         * with a debugger (the 'pr' local variable, ProcessTable[]).
+         * Debug: all user priority slots must be empty before launch - a
+         * non-empty one means a process created outside launch(); stops in an
+         * endless loop at the offending priority (inspect 'pr', ProcessTable[]).
          */
         inline void launch_precheck()
         {
@@ -197,63 +205,53 @@ namespace OS
     }   // namespace detail
 
     /**
-     * Process description for OS::launch(): stack size in bytes (compile time),
-     * start state (pssSuspended requires scmRTOS_SUSPENDED_PROCESS_ENABLE == 1),
-     * name (used when scmRTOS_DEBUG_ENABLE == 1) and body.
-     *
-     * Use OS::proc<StackBytes[, pssSuspended]>(name, body) to make one.
+     * Process description for OS::launch() - made by OS::proc(), see below.
      */
-    template<size_t Stk, TProcessStartState Pss = pssRunning>
+    template<size_t Stk, TProcessStartState Pss, class F>
     struct proc_desc
     {
         static constexpr size_t stack_size = Stk;
         static constexpr TProcessStartState start_state = Pss;
+        using body_type = F;
 
         const char* name;
-        void (*body)();     // plain function or captureless lambda; must never return
+        F body;     // function or lambda (captures allowed); must never return
     };
 
     /**
-     * Make a process description for OS::launch().
+     * Process description: stack size in bytes, start state (pssSuspended
+     * requires scmRTOS_SUSPENDED_PROCESS_ENABLE == 1), name (used when
+     * scmRTOS_DEBUG_ENABLE == 1) and body.
+     *
+     * The body closure is stored inside the process object, so a reference
+     * capture must outlive the process.
      */
-    template<size_t Stk, TProcessStartState Pss = pssRunning>
-    INLINE constexpr proc_desc<Stk, Pss> proc(const char* name, void (*body)())
+    template<size_t Stk, TProcessStartState Pss = pssRunning, class F>
+    INLINE proc_desc<Stk, Pss, typename std::decay<F>::type> proc(const char* name, F&& body)
     {
         static_assert(Pss == pssRunning || scmRTOS_SUSPENDED_PROCESS_ENABLE != 0,
             "scmRTOS: OS::proc<..., pssSuspended> requires scmRTOS_SUSPENDED_PROCESS_ENABLE == 1 in scmRTOS_CONFIG.h");
-        return proc_desc<Stk, Pss>{ name, body };
+        static_assert(std::is_invocable<typename std::decay<F>::type>::value,
+            "scmRTOS: OS::proc() body must be callable with no arguments");
+        return proc_desc<Stk, Pss, typename std::decay<F>::type>{ name, std::forward<F>(body) };
     }
 
     /**
-     * launch: Create processes from the descriptions and run the kernel.
+     * Create processes from the descriptions and run the kernel.
      *
-     * Processes are defined by descriptions rather than by types: each
-     * OS::proc<StackBytes>(name, body) becomes a process with the body called
-     * as the process entry point, so no process type declarations and no
-     * exec() specializations are needed.
-     *
-     * Priorities are assigned automatically - the first description gets the
-     * highest priority, the following ones get priorities in descending order;
-     * the descriptions count must be exactly scmRTOS_PROCESS_COUNT, so the
-     * process set is complete and duplicate/omission-free by construction
-     * (checked at compile time).
-     *
-     * The process bodies must never return (infinite loops) and must be
-     * captureless lambdas or plain functions.
-     *
-     * A description made as OS::proc<Stk, pssSuspended>(...) starts suspended
-     * (scmRTOS_SUSPENDED_PROCESS_ENABLE == 1 is required); such a process is
-     * started later by other code via OS::proc_by_prio()/proc_by_idx() handle.
-     *
-     * The required RAM is computed at compile time (sum of the process object
-     * sizes, each rounded up to the maximum alignment of the set) and allocated
-     * as a static buffer (visible in the linker size report).
+     * - Priorities are assigned by position: the first description gets the
+     *   highest one; their count must be exactly scmRTOS_PROCESS_COUNT
+     *   (static_assert), so the set is complete and duplicate-free.
+     * - Body: any callable invocable with no arguments (function, lambda,
+     *   captures allowed); it runs as the process entry, must never return.
+     * - OS::proc<Stk, pssSuspended>(...) starts suspended; start it later via
+     *   OS::proc_by_prio() / OS::proc_by_idx().
+     * - Process RAM is computed at compile time and allocated as a static
+     *   buffer (visible in the linker size report).
      *
      * Warning: launch must be the only process creation facility - do not mix
-     * it with global process objects. When scmRTOS_DEBUG_ENABLE == 1 launch
-     * checks at run time that all priority slots are empty before creating its
-     * processes, so such a mix stops in a debugger instead of silently making
-     * the outside process orphaned.
+     * it with global process objects (with scmRTOS_DEBUG_ENABLE == 1 such a
+     * mix stops in a debugger instead of silently orphaning the process).
      */
     template<class... Desc>
     INLINE NORETURN void launch(Desc... desc)
@@ -270,19 +268,17 @@ namespace OS
         alignas(detail::launch_align<Desc...>(std::index_sequence_for<Desc...>{}))
             static uint8_t storage[RAM ? RAM : 1];
 
-        detail::launch_create_all(storage, std::index_sequence_for<Desc...>{}, desc...);
+        detail::launch_create_all(storage, std::index_sequence_for<Desc...>{}, std::move(desc)...);
         run();
     }
 
     /**
-     * Handle of the process with the given priority (the kernel knows its
-     * processes by priority only). Allows to start() a process created as
-     * pssSuspended, to wake_up() it, to query is_sleeping()/is_suspended()
-     * and (when scmRTOS_DEBUG_ENABLE == 1) name()/stack_slack() etc.
+     * Handle of the process by priority: start() a pssSuspended one, wake_up(),
+     * is_sleeping()/is_suspended(), name()/stack_slack() (debug builds).
      *
-     * Must be called after the OS is launched (from a process body or an ISR);
-     * with scmRTOS_DEBUG_ENABLE == 1 a call for an unregistered priority
-     * stops in an endless loop instead of dereferencing a null handle.
+     * Call after the OS is launched (from a process or an ISR); in a debug
+     * build an unregistered priority stops in an endless loop instead of a
+     * null dereference.
      */
     INLINE TBaseProcess& proc_by_prio(const TPriority pr)
     {
@@ -295,12 +291,9 @@ namespace OS
     }
 
     /**
-     * Handle of the I-th process of the OS::launch() description list
-     * (the first description has index 0, its priority is the highest).
-     *
-     * Warning: the mapping index -> priority shifts silently when the list
-     * is edited (reordered/extended), prefer proc_by_prio() in code that
-     * refers to a specific process.
+     * Handle of the I-th process of the launch() list (index 0 = highest
+     * priority). Warning: indices shift silently when the list is edited -
+     * prefer proc_by_prio() to refer to a specific process.
      */
     INLINE TBaseProcess& proc_by_idx(const size_t i)
     {
