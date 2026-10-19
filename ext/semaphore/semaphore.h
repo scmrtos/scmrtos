@@ -82,6 +82,10 @@ namespace OS
         size_t get_count()     const { TCritSect cs; return Count;    }
         size_t get_max_count() const { return MaxCount; }
 
+        // true if at least one process is currently waiting in acquire();
+        // lets an owner refuse to destroy a semaphore that is still in use.
+        bool has_waiters()   const { TCritSect cs; return ProcessMap != 0; }
+
     protected:
         volatile TProcessMap ProcessMap;
         volatile size_t      Count;

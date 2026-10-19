@@ -81,6 +81,10 @@ namespace OS
         uint32_t clear   (uint32_t Bits);         // value before clearing
         uint32_t get     () const { TCritSect cs; return Value; }
 
+        // true if at least one process is currently waiting in wait();
+        // lets an owner refuse to destroy flags that are still in use.
+        bool has_waiters () const { TCritSect cs; return ProcessMap != 0; }
+
     protected:
         static bool is_satisfied(uint32_t Value, uint32_t Bits, uint32_t Options)
         {
