@@ -47,15 +47,16 @@ bool OS::TSemaphore::acquire(timeout_t timeout)
 {
     TCritSect cs;
 
+    cur_proc_timeout() = timeout;
+
     for(;;)
     {
         if(Count)
         {
             --Count;                              // take a token
+            cur_proc_timeout() = 0;
             return true;
         }
-
-        cur_proc_timeout() = timeout;
 
         // no tokens, suspend until release() or timeout
         suspend(ProcessMap);
