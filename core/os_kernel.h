@@ -549,6 +549,11 @@ void OS::TKernel::system_timer()
         TBaseProcess *p = ProcessTable[i];
 
         timeout_t t = p->Timeout;
+
+        // Skip processes that are ready but not yet running: their timeout
+        // must not expire before they re-enter suspend(), otherwise
+        // Timeout == 0  would turn the next suspend() into an infinite wait
+        // and the operation's  timeout would be lost.
         if( t > 0 && !is_process_ready(p->Priority) )
         {
             if(--t == 0) set_process_ready(p->Priority);
