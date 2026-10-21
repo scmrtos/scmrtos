@@ -551,10 +551,7 @@ void OS::TKernel::system_timer()
         timeout_t t = p->Timeout;
         if( t > 0 && !is_process_ready(p->Priority) )
         {
-            if(--t == 0)
-            {
-                set_process_ready(p->Priority);
-            }
+            if(--t == 0) set_process_ready(p->Priority);
             p->Timeout = t;
         }
     }
