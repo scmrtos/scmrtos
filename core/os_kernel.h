@@ -161,6 +161,7 @@ namespace OS
 
         INLINE void set_process_ready  (const uint_fast8_t pr) { TProcessMap PrioTag = get_prio_tag(pr); set_prio_tag( ReadyProcessMap, PrioTag); }
         INLINE void set_process_unready(const uint_fast8_t pr) { TProcessMap PrioTag = get_prio_tag(pr); clr_prio_tag( ReadyProcessMap, PrioTag); }
+        INLINE bool is_process_ready(const uint_fast8_t pr)    { return ReadyProcessMap & get_prio_tag(pr); }
 
     public:
         INLINE void system_timer();
@@ -538,22 +539,25 @@ void OS::TKernel::system_timer()
 #endif
 
 #if scmRTOS_PRIORITY_ORDER == 0
-    const uint_fast8_t BaseIndex = 0;
+    const uint_fast8_t BASE_INDEX = 0;
 #else
-    const uint_fast8_t BaseIndex = 1;
+    const uint_fast8_t BASE_INDEX = 1;
 #endif
 
-    for(uint_fast8_t i = BaseIndex; i < (PROCESS_COUNT - 1 + BaseIndex); i++)
+    for(uint_fast8_t i = BASE_INDEX; i < (PROCESS_COUNT - 1 + BASE_INDEX); ++i)
     {
-        TBaseProcess* p = ProcessTable[i];
+        TBaseProcess *p = ProcessTable[i];
 
-        if(p->Timeout > 0)
+        timeout_t t = p->Timeout;
+
+        // Skip processes that are ready but not yet running: their timeout
+        // must not expire before they re-enter suspend(), otherwise
+        // Timeout == 0  would turn the next suspend() into an infinite wait
+        // and the operation's  timeout would be lost.
+        if( t > 0 && !is_process_ready(p->Priority) )
         {
-            p->Timeout = p->Timeout - 1;
-            if(p->Timeout == 0)
-            {
-                set_process_ready(p->Priority);
-            }
+            if(--t == 0) set_process_ready(p->Priority);
+            p->Timeout = t;
         }
     }
 }

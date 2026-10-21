@@ -68,7 +68,7 @@ bool OS::TEventFlags::wait(uint32_t Bits, uint32_t Options, timeout_t timeout, u
         // condition not met yet, suspend until set() or timeout
         suspend(ProcessMap);
 
-        if(is_timeouted(ProcessMap))
+        if(is_waked_up(ProcessMap))
         {
             cur_proc_timeout() = 0;
             return false;                         // waked up by timeout or by wake_up()

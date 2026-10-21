@@ -61,7 +61,7 @@ bool OS::TSemaphore::acquire(timeout_t timeout)
         // no tokens, suspend until release() or timeout
         suspend(ProcessMap);
 
-        if(is_timeouted(ProcessMap))
+        if(is_waked_up(ProcessMap))
         {
             cur_proc_timeout() = 0;
             return false;                         // waked up by timeout or by wake_up()
