@@ -78,7 +78,7 @@ namespace OS
         INLINE void suspend(TProcessMap volatile & waiters_map);
 
         // returns false if waked-up by timeout or TBaseProcess::wake_up() | force_wake_up()
-        INLINE static bool is_timeouted(TProcessMap volatile & waiters_map);
+        INLINE static bool is_waked_up(TProcessMap volatile & waiters_map);
 
         // wake-up all processes from waiters map
         // return false if no one process was waked-up
@@ -123,7 +123,7 @@ namespace OS
 
     }
     //--------------------------------------------------------------------------
-    bool OS::TService::is_timeouted(TProcessMap volatile & waiters_map)
+    bool OS::TService::is_waked_up(TProcessMap volatile & waiters_map)
     {
         TProcessMap PrioTag = cur_proc_prio_tag();
 
@@ -419,7 +419,7 @@ bool OS::channel<T, Size, S>::pop(T& item, timeout_t timeout)
         {
             // channel is empty, suspend current process until data received or timeout
             suspend(ConsumersProcessMap);
-            if(is_timeouted(ConsumersProcessMap))
+            if(is_waked_up(ConsumersProcessMap))
                 return false;
 
             if(pool.get_count())
@@ -453,7 +453,7 @@ bool OS::channel<T, Size, S>::pop_back(T& item, timeout_t timeout)
         {
             // channel is empty, suspend current process until data received or timeout
             suspend(ConsumersProcessMap);
-            if(is_timeouted(ConsumersProcessMap))
+            if(is_waked_up(ConsumersProcessMap))
                 return false;
 
             if(pool.get_count())
@@ -515,7 +515,7 @@ bool OS::channel<T, Size, S>::read(T* const data, const S count, timeout_t timeo
     {
         // channel doesn't contain enough data, suspend current process until data received or timeout
         suspend(ConsumersProcessMap);
-        if(is_timeouted(ConsumersProcessMap))
+        if(is_waked_up(ConsumersProcessMap))
             return false;
     }
 

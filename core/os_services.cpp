@@ -108,7 +108,7 @@ bool OS::TEventFlag::wait(timeout_t timeout)
 
         suspend(ProcessMap);
 
-        if(is_timeouted(ProcessMap))
+        if(is_waked_up(ProcessMap))
             return false;                               // waked up by timeout or by externals
 
         cur_proc_timeout() = 0;
@@ -145,7 +145,7 @@ bool OS::TMutex::try_lock(timeout_t timeout)
         // mutex already locked by another process, suspend current process
         cur_proc_timeout() = timeout;
         suspend(ProcessMap);
-        if(is_timeouted(ProcessMap))
+        if(is_waked_up(ProcessMap))
             return false;             // waked up by timeout or by externals
         cur_proc_timeout() = 0;
     }
@@ -189,7 +189,7 @@ bool OS::TBaseMessage::wait(timeout_t timeout)
 
         suspend(ProcessMap);
 
-        if(is_timeouted(ProcessMap))
+        if(is_waked_up(ProcessMap))
             return false;
 
         cur_proc_timeout() = 0;

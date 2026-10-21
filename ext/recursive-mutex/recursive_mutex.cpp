@@ -108,13 +108,13 @@ void TRecursiveMutex::force_unlock()
 bool TRecursiveMutex::try_lock()
 {
     TCritSect cs;
-    TProcessMap ValueTag_tmp = ValueTag; 
+    TProcessMap ValueTag_tmp = ValueTag;
 
-    if ( ValueTag_tmp && ValueTag_tmp != cur_proc_prio_tag() ) 
+    if ( ValueTag_tmp && ValueTag_tmp != cur_proc_prio_tag() )
         return false;
     else
         lock();
-    return true; 
+    return true;
 }
 
 
@@ -128,11 +128,11 @@ bool TRecursiveMutex::try_lock(timeout_t timeout)
     if ( ValueTag_tmp && ValueTag_tmp != cur_proc_prio_tag() )
     {
         // mutex already locked by another process, suspend current process
-        while ( ValueTag )               
+        while ( ValueTag )
         {
             cur_proc_timeout() = timeout;
             suspend(ProcessMap);
-            if ( is_timeouted(ProcessMap) )
+            if ( is_waked_up(ProcessMap) )
                 return false;             // waked up by timeout or by externals
             cur_proc_timeout() = 0;
         }
