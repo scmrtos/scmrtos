@@ -77,7 +77,7 @@ namespace OS
         // add prio_tag proc to waiters map, reschedule
         INLINE void suspend(TProcessMap volatile & waiters_map);
 
-        // returns false if waked-up by timeout or TBaseProcess::wake_up() | force_wake_up()
+        // returns true if waked-up by timeout or TBaseProcess::wake_up() | force_wake_up()
         INLINE static bool is_waked_up(TProcessMap volatile & waiters_map);
 
         // wake-up all processes from waiters map
@@ -287,6 +287,10 @@ namespace OS
         bool pop     (T& item, timeout_t timeout = 0);
         bool pop_back(T& item, timeout_t timeout = 0);
 
+        bool try_push       (const T& item);
+        bool try_push_front (const T& item);
+        bool try_pop        (T& item);
+        bool try_pop_back   (T& item);
 
         //----------------------------------------------------------------
         //
@@ -466,6 +470,56 @@ bool OS::channel<T, Size, S>::pop_back(T& item, timeout_t timeout)
             // otherwise another process caught data
         }
     }
+}
+//------------------------------------------------------------------------------
+template<typename T, uint16_t Size, typename S>
+bool OS::channel<T, Size, S>::try_push(const T& item)
+{
+    TCritSect cs;
+
+    if(!pool.get_free_size())
+        return false;
+
+    pool.push_back(item);
+    resume_all(ConsumersProcessMap);
+    return true;
+}
+//------------------------------------------------------------------------------
+template<typename T, uint16_t Size, typename S>
+bool OS::channel<T, Size, S>::try_push_front(const T& item)
+{
+    TCritSect cs;
+
+    if(!pool.get_free_size())
+        return false;
+
+    pool.push_front(item);
+    resume_all(ConsumersProcessMap);
+    return true;
+}
+//------------------------------------------------------------------------------
+template<typename T, uint16_t Size, typename S>
+bool OS::channel<T, Size, S>::try_pop(T& item)
+{
+    TCritSect cs;
+
+    if(!pool.get_count())
+        return false;
+    item = pool.pop();
+    resume_all(ProducersProcessMap);
+    return true;
+}
+//------------------------------------------------------------------------------
+template<typename T, uint16_t Size, typename S>
+bool OS::channel<T, Size, S>::try_pop_back(T& item)
+{
+    TCritSect cs;
+
+    if(pool.get_count())
+        return false;
+    item = pool.pop_back();
+    resume_all(ProducersProcessMap);
+    return true;
 }
 //------------------------------------------------------------------------------
 template<typename T, uint16_t Size, typename S>
