@@ -589,11 +589,10 @@ bool OS::TKernel::update_sched_prio()
 {
     uint_fast8_t NextPrty = highest_priority(ReadyProcessMap);
 
+    SchedProcPriority = NextPrty;
+
     if(NextPrty != CurProcPriority)
-    {
-        SchedProcPriority = NextPrty;
         return true;
-    }
 
     return false;
 }
