@@ -4,7 +4,7 @@
 //*
 //*     NICKNAME:  scmRTOS
 //*
-//*     PROCESSOR: ARM Cortex-M0(+), Cortex-M1, Cortex-M3, Cortex-M4(F)
+//*     PROCESSOR: ARM Cortex-M0(+), Cortex-M1, Cortex-M3, Cortex-M4(F), Cortex-M7(F)
 //*
 //*     TOOLKIT:   ARM GCC
 //*
@@ -42,8 +42,9 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     Cortex-M3/M4(F) GCC port by Anton B. Gusev aka AHTOXA, Copyright (c) 2012-2021
+//*     Cortex-M3/M4(F)/M7(F) GCC port by Anton B. Gusev aka AHTOXA, Copyright (c) 2012-2021
 //*     Cortex-M0 port by Sergey A. Borshch, Copyright (c) 2011-2021
+//*     Cortex-M7 support based on Cortex-M4(F) port
 
 #ifndef scmRTOS_CORTEXMX_H
 #define scmRTOS_CORTEXMX_H
@@ -58,7 +59,7 @@
 #endif // __GNUC__
 
 #if (!defined __ARM_ARCH_7M__) && (!defined __ARM_ARCH_7EM__) && (!defined __ARM_ARCH_6M__)
-#error "This file must be compiled for ARMv6-M (Cortex-M0(+)), ARMv7-M (Cortex-M3) and ARMv7E-M (Cortex-M4(F)) processors only."
+#error "This file must be compiled for ARMv6-M (Cortex-M0(+)/M1), ARMv7-M (Cortex-M3) or ARMv7E-M (Cortex-M4(F)/M7(F)) processors only."
 #endif
 
 #if (__GNUC__ < 3)
@@ -136,7 +137,7 @@ typedef uint32_t status_reg_t;
 //    Default (corresponding to ascending order) value of macro is 0.
 //    Alternative (corresponding to descending order) value of macro is 1.
 //
-//    On Cortex-M3/M4 the descending order is used for performance reason.
+//    On Cortex-M3/M4/M7 the descending order is used for performance reason.
 //    Cortex-M0 lacks CLZ instruction, so only ascending order is implemented for it.
 //
 #if (defined __ARM_ARCH_6M__)
@@ -293,7 +294,7 @@ INLINE void raise_context_switch() { *((volatile uint32_t*)0xE000ED04) = 0x10000
 #endif
 
 #else
-#error "Cortex-M3 port supports software interrupt switch method only!"
+#error "Cortex-M port supports software interrupt switch method only!"
 
 #endif // scmRTOS_CONTEXT_SWITCH_SCHEME
 

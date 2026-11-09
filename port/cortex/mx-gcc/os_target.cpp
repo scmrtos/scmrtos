@@ -4,7 +4,7 @@
 //*
 //*     NICKNAME:  scmRTOS
 //*
-//*     PROCESSOR: ARM Cortex-M0(+), Cortex-M1, Cortex-M3, Cortex-M4(F)
+//*     PROCESSOR: ARM Cortex-M0(+), Cortex-M1, Cortex-M3, Cortex-M4(F), Cortex-M7(F)
 //*
 //*     TOOLKIT:   ARM GCC
 //*
@@ -42,8 +42,9 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     Cortex-M3/M4(F) GCC port by Anton B. Gusev aka AHTOXA, Copyright (c) 2012-2021
+//*     Cortex-M3/M4(F)/M7(F) GCC port by Anton B. Gusev aka AHTOXA, Copyright (c) 2012-2021
 //*     Cortex-M0 port by Sergey A. Borshch, Copyright (c) 2011-2021
+//*     Cortex-M7 support based on Cortex-M4(F) port
 
 
 #include <scmRTOS.h>
@@ -95,7 +96,7 @@ void OS::TBaseProcess::init_stack_frame( stack_item_t * Stack
     *(--StackPointer)  = reinterpret_cast<stack_item_t>(exec); // Entry Point
 #if (defined __SOFTFP__)    // core without FPU
     StackPointer -= 14;                     // emulate "push LR,R12,R3,R2,R1,R0,R11-R4"
-#else                       // core with FPU
+#else                       // core with FPU (M4F / M7F)
     StackPointer -= 6;                      // emulate "push LR,R12,R3,R2,R1,R0"
     *(--StackPointer)  = 0xFFFFFFFDUL;      // exc_return: Return to Thread mode, floating-point context inactive, execution uses PSP after return.
     StackPointer -= 8;                      // emulate "push R4-R11"
@@ -143,7 +144,7 @@ struct iostruct_t
 static ioregister_t<0xE000ED20UL, uint32_t> SHPR3;
 #define SHP3_WORD_ACCESS
 #else
-// Cortex-M3/M4 system control registers allows byte transfers.
+// Cortex-M3/M4/M7 system control registers allow byte transfers.
 static ioregister_t<0xE000ED22UL, uint8_t> PendSvPriority;
 #if (SCMRTOS_USE_CUSTOM_TIMER == 0)
 static ioregister_t<0xE000ED23UL, uint8_t> SysTickPriority;

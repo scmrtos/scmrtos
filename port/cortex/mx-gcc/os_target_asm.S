@@ -4,7 +4,7 @@
 //*
 //*     NICKNAME:  scmRTOS
 //*
-//*     PROCESSOR: ARM Cortex-M0(+), Cortex-M1, Cortex-M3, Cortex-M4(F)
+//*     PROCESSOR: ARM Cortex-M0(+), Cortex-M1, Cortex-M3, Cortex-M4(F), Cortex-M7(F)
 //*
 //*     TOOLKIT:   ARM GCC
 //*
@@ -42,8 +42,9 @@
 //*     =================================================================
 //*
 //******************************************************************************
-//*     Cortex-M3/M4(F) GCC port by Anton B. Gusev aka AHTOXA, Copyright (c) 2012-2021
+//*     Cortex-M3/M4(F)/M7(F) GCC port by Anton B. Gusev aka AHTOXA, Copyright (c) 2012-2021
 //*     Cortex-M0 port by Sergey A. Borshch, Copyright (c) 2011-2021
+//*     Cortex-M7 support based on Cortex-M4(F) port
 
     .syntax unified
     .text
@@ -67,8 +68,8 @@
  *
  * Defines to determine ach:
  * M0(+) core : __ARM_ARCH_6M__ defined.
- * M3 core    : __SOFTFP__ defined, __ARM_ARCH_6M__ not defined.
- * M4F core   : __SOFTFP__ not defined.
+ * M3/M4/M7 without FPU : __SOFTFP__ defined, __ARM_ARCH_6M__ not defined.
+ * M4F/M7F core : __SOFTFP__ not defined (FPU present).
  */
 
 .thumb_func
@@ -107,7 +108,7 @@ PendSV_Handler:
 
 
 #elif (defined __SOFTFP__)
-    // M3/M4 cores without FPU
+    // M3/M4/M7 cores without FPU
     CPSID   I                  // Prevent interruption during context switch
     MRS     R0, PSP            // PSP is process stack pointer
     STMDB   R0!, {R4-R11}      // Save remaining regs r4-11 on process stack
@@ -125,7 +126,7 @@ PendSV_Handler:
 
 
 #else
-    // Core with FPU (cortex-M4F)
+    // Core with FPU (Cortex-M4F / Cortex-M7F)
     CPSID     I                  // Prevent interruption during context switch
     MRS       R0, PSP            // PSP is process stack pointer
     TST       LR, #0x10          // exc_return[4]=0? (it means that current process
