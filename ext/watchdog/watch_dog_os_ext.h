@@ -81,7 +81,7 @@ namespace OS {
             TItem &item = get_current_proc_item();
             const TProcessMap tag = get_prio_tag(cur_proc_priority());
             if (item.p == nullptr || m_asleep & tag) { // if call asleep() twice
-                wdg_force_reboot_user_hook(item.p->priority());
+                wdg_force_reboot_user_hook(cur_proc_priority());
                 while (1);
             }
             m_asleep |= tag;
@@ -95,7 +95,7 @@ namespace OS {
             TCritSect cs;
             TItem &item = get_current_proc_item();
             if (item.p == nullptr) {
-                wdg_force_reboot_user_hook(item.p->priority());
+                wdg_force_reboot_user_hook(cur_proc_priority());
                 while (1);
             }
             const TProcessMap tag = get_prio_tag(cur_proc_priority());
