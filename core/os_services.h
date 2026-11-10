@@ -515,7 +515,7 @@ bool OS::channel<T, Size, S>::try_pop_back(T& item)
 {
     TCritSect cs;
 
-    if(pool.get_count())
+    if(!pool.get_count())
         return false;
     item = pool.pop_back();
     resume_all(ProducersProcessMap);
