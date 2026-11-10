@@ -172,8 +172,8 @@ typedef uint32_t status_reg_t;
 //
 //     Interrupt and Interrupt Service Routines support
 //
-#define enable_interrupts() asm volatile ("cpsie i")
-#define disable_interrupts() asm volatile ("cpsid i")
+#define enable_interrupts() asm volatile ("cpsie i" ::: "memory")
+#define disable_interrupts() asm volatile ("cpsid i" ::: "memory")
 
 INLINE void set_interrupt_state(status_reg_t status)
 {
@@ -187,7 +187,7 @@ INLINE void set_interrupt_state(status_reg_t status)
 INLINE status_reg_t get_interrupt_state()
 {
     status_reg_t sr;
-    asm volatile ("MRS %0, PRIMASK" : "=r"(sr) );
+    asm volatile ("MRS %0, PRIMASK" : "=r"(sr) : : "memory" );
     return sr;
 }
 

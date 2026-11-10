@@ -170,8 +170,8 @@ typedef uint32_t status_reg_t;
 //
 //     Interrupt and Interrupt Service Routines support
 //
-#define enable_interrupts() __asm__ __volatile__ ("cpsie i")
-#define disable_interrupts() __asm__ __volatile__ ("cpsid i")
+#define enable_interrupts() __asm__ __volatile__ ("cpsie i" ::: "memory")
+#define disable_interrupts() __asm__ __volatile__ ("cpsid i" ::: "memory")
 
 INLINE void set_interrupt_state(status_reg_t status)
 {
@@ -185,7 +185,7 @@ INLINE void set_interrupt_state(status_reg_t status)
 INLINE status_reg_t get_interrupt_state()
 {
     status_reg_t sr;
-    __asm__ __volatile__ ("MRS %0, PRIMASK" : "=r"(sr) );
+    __asm__ __volatile__ ("MRS %0, PRIMASK" : "=r"(sr) : : "memory");
     return sr;
 }
 
