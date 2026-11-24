@@ -102,7 +102,7 @@ void TProfiler<sum_shift_bits>::process_data()
     const uint32_t K = 10000;
     for(uint_fast8_t i = 0; i < OS::PROCESS_COUNT; ++i)
     {
-        Result[i]  = (CounterCache[i] >> sum_shift_bits) * K / Sum;
+        Result[i] = Sum ? (CounterCache[i] >> sum_shift_bits) * K / Sum : 0;
     }
 }
 //------------------------------------------------------------------------------
@@ -160,6 +160,11 @@ void process_profiler<T>::process_data()
 
     for(uint_fast8_t i = 0; i < OS::PROCESS_COUNT; ++i)
     {
+        if(sum == 0)
+        {
+            result[i] = 0;
+            continue;
+        }
         if constexpr(std::is_integral_v<T>)
         {
             result[i] = static_cast<uint64_t>(counters_cache[i])*10000/sum;
