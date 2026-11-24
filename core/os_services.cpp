@@ -140,13 +140,19 @@ bool OS::TMutex::try_lock(timeout_t timeout)
 {
     TCritSect cs;
 
-    while (ValueTag)
+    if (ValueTag)
     {
         // mutex already locked by another process, suspend current process
         cur_proc_timeout() = timeout;
-        suspend(ProcessMap);
-        if(is_waked_up(ProcessMap))
-            return false;             // waked up by timeout or by externals
+        while (ValueTag)
+        {
+            suspend(ProcessMap);
+            if(is_waked_up(ProcessMap))
+            {
+                cur_proc_timeout() = 0;
+                return false;             // waked up by timeout or by externals
+            }
+        }
         cur_proc_timeout() = 0;
     }
     ValueTag = cur_proc_prio_tag();   // mutex has been successfully locked
