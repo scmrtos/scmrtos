@@ -346,7 +346,7 @@ namespace OS
         {
             #if scmRTOS_SUSPENDED_PROCESS_ENABLE != 0
             if ( pss == pssSuspended )
-                clr_prio_tag(SuspendedProcessMap, get_prio_tag(pr));
+                clr_prio_tag(SuspendedProcessMap, static_cast<TProcessMap>(1) << pr);
             #endif
         }
 
@@ -406,7 +406,7 @@ namespace OS
         {
             #if scmRTOS_SUSPENDED_PROCESS_ENABLE != 0
             if ( pss == pssSuspended )
-                clr_prio_tag(SuspendedProcessMap, get_prio_tag(pr));
+                clr_prio_tag(SuspendedProcessMap, static_cast<TProcessMap>(1) << pr);
             #endif
         }
 
