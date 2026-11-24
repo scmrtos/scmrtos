@@ -128,14 +128,18 @@ bool TRecursiveMutex::try_lock(timeout_t timeout)
     if ( ValueTag_tmp && ValueTag_tmp != cur_proc_prio_tag() )
     {
         // mutex already locked by another process, suspend current process
+        cur_proc_timeout() = timeout;
+
         while ( ValueTag )
         {
-            cur_proc_timeout() = timeout;
             suspend(ProcessMap);
             if ( is_waked_up(ProcessMap) )
+            {
+                cur_proc_timeout() = 0;
                 return false;             // waked up by timeout or by externals
-            cur_proc_timeout() = 0;
+            }
         }
+        cur_proc_timeout() = 0;
     }
     lock();
     return true;
