@@ -56,7 +56,7 @@ class TSoftwareTimer {
     TSoftwareTimer(callback_t cb, void* arg, bool periodic);
     ~TSoftwareTimer();                       // unregisters the timer
 
-    bool start(timeout_t ticks);   // start/restart; false if ticks == 0
+    bool start(timeout_t ticks);   // start/restart; false if ticks == 0 or cb == 0
     bool stop();                   // false if the timer was not running
     bool is_running() const;
 
@@ -64,9 +64,12 @@ class TSoftwareTimer {
 };
 ```
 
+The class is non-copyable and non-movable: a registered timer is
+identified by its address in the registry list.
+
 - `start()` arms the timer: the callback fires `ticks` ticks later. Calling
-  `start()` on a running timer restarts it. `ticks == 0` is not a valid
-  period; the function returns `false`.
+  `start()` on a running timer restarts it. `ticks == 0` and a null callback
+  pointer are rejected: `start()` returns `false` and registers nothing.
 - On a one-shot timer (`periodic == false`) the callback fires once; a
   periodic timer reloads automatically. The reload is taken from the expiry
   point, so the period does not drift over time.
@@ -117,6 +120,16 @@ Notes
 
 - A `TSoftwareTimer` object takes about 4 pointers, plus whatever the
   callback does.
+- The registry is a delta list sorted by expiry, so the per-tick cost in
+  `service()` does not grow with the number of timers: a tick decrements
+  only the list head - O(1) when nothing expires. The linear work moved to
+  the explicit calls: `start()`, `stop()`, deletion, and the re-insertion of
+  an expired periodic timer each scan the list up to the affected position,
+  O(n) worst case. A callback dispatch costs the same re-insertion scan;
+  timers expiring at the same tick are dispatched without rescanning.
+  Degenerate case worth knowing: several periodic timers sharing one period
+  all fire on the same tick and all re-insert at the end of the group, so
+  such a tick costs O(k^2/2) once per period instead of once per tick.
 - A timer absent from the registry (never started, already expired, or
   stopped) costs nothing in `service()`: only running timers are linked.
 - Deleting a timer from an ISR that preempts the system tick exactly while

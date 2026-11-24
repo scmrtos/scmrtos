@@ -67,6 +67,12 @@ namespace OS
     //   All members are non-blocking and callable from processes and ISRs
     //   alike (registry mutations happen under TCritSect).
     //
+    //   The registry is a delta list sorted by expiry: service() decrements
+    //   only the head, so a tick with no expiries costs O(1) no matter how
+    //   many timers are running. start()/stop()/deletion and the
+    //   re-insertion of an expired periodic timer cost O(position in the
+    //   list) - see README for the complexity summary.
+    //
     class TSoftwareTimer
     {
     public:
@@ -90,8 +96,9 @@ namespace OS
         TSoftwareTimer(TSoftwareTimer&&) = delete;
         TSoftwareTimer& operator=(TSoftwareTimer&&) = delete;
 
-        // Start or restart: the next expiry comes `ticks` ticks later
-        // (ticks == 0 is not a valid period - returns false).
+        // Start or restart: the next expiry comes `ticks` ticks later.
+        // Returns false (and registers nothing) if `ticks` is 0 or if the
+        // callback pointer is null.
         bool start(const timeout_t ticks);
 
         // Returns false if the timer was not running.
@@ -110,8 +117,13 @@ namespace OS
         // m_next links the registered timers; every field below is mutated
         // under TCritSect only (except reads of plain flags, which are
         // volatile). Invariant: m_running == (timer is in the registry).
+        //
+        // The registry is a delta list sorted by expiry: m_remain of a node
+        // counts the ticks from the expiry of the previous node (from the
+        // current tick, for the head). A zero delta is possible in the head
+        // only, between the tick decrement and the dispatch of that timer.
         TSoftwareTimer*     m_next = nullptr;
-        volatile timeout_t  m_remain = 0;   // ticks left until expiry
+        volatile timeout_t  m_remain = 0;   // delta ticks to the expiry
         volatile timeout_t  m_period = 0;   // reload value (periodic timers)
 
         const callback_t    m_cb;
@@ -120,6 +132,10 @@ namespace OS
         volatile bool       m_running = false;
 
         inline static TSoftwareTimer* Registry = nullptr;
+
+        // Registry maintenance; the caller must hold TCritSect.
+        static void insert_sorted(TSoftwareTimer* const t, timeout_t delta);
+        static void unlink(TSoftwareTimer* const t);
     };
 
 }   // namespace OS
