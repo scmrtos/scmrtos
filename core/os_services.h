@@ -63,7 +63,7 @@ namespace OS
         INLINE static TProcessMap  highest_prio_tag(TProcessMap map)
         {
         #if scmRTOS_PRIORITY_ORDER == 0
-            return map & (~static_cast<unsigned>(map) + 1);                              // Isolate rightmost 1-bit.
+            return map & static_cast<TProcessMap>(~map + 1);                             // Isolate rightmost 1-bit.
         #else   // scmRTOS_PRIORITY_ORDER == 1
             return get_prio_tag(highest_priority(map));
         #endif
@@ -144,10 +144,10 @@ namespace OS
                                                                           // or it was waked up by OS::ForceWakeUpProcess()
 
         TProcessMap CachedMap = waiters_map;                              // cache volatile
-        if( CachedMap & ~static_cast<unsigned>(Timeouted) )               // if any process has to be waked up
+        if( CachedMap & static_cast<TProcessMap>(~Timeouted) )            // if any process has to be waked up
         {
             set_prio_tag(ready_process_map(), CachedMap);                 // place all waiting processes to the ready map
-            clr_prio_tag(CachedMap, ~static_cast<unsigned>(Timeouted) );  // remove all non-timeouted processes from the waiting map.
+            CachedMap &= Timeouted;                                       // remove all non-timeouted processes from the waiting map.
             waiters_map = CachedMap;
             return true;
         }
@@ -162,7 +162,7 @@ namespace OS
         TProcessMap Timeouted = Active;                                   // Process has its tag set in ReadyProcessMap if timeout expired,
                                                                           // or it was waked up by OS::ForceWakeUpProcess()
 
-        TProcessMap Ready = Waiters & ~static_cast<unsigned>(Timeouted);
+        TProcessMap Ready = Waiters & static_cast<TProcessMap>(~Timeouted);
         if( Ready )                                                       // if any process has to be waked up
         {
             TProcessMap PrioTag = highest_prio_tag(Ready);                // get next ready process tag

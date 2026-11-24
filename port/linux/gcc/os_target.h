@@ -292,7 +292,7 @@ namespace OS
     extern TPrioMaskTable PrioMaskTable;
     INLINE TProcessMap get_prio_tag(const uint_fast8_t pr) { return PrioMaskTable.Table[pr]; }
 #else
-    INLINE TProcessMap get_prio_tag(const uint_fast8_t pr) { return static_cast<TProcessMap>(static_cast<TProcessMap>(1) << pr); }
+    INLINE TProcessMap get_prio_tag(const uint_fast8_t pr) { return static_cast<TProcessMap>(1) << pr; }
 #endif
 
 #if scmRTOS_PRIORITY_ORDER == 0

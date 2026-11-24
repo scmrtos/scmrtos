@@ -148,7 +148,7 @@ private:
 //
 namespace OS
 {
-    INLINE TProcessMap get_prio_tag(const uint_fast8_t pr) { return 1<<pr; }
+    INLINE TProcessMap get_prio_tag(const uint_fast8_t pr) { return static_cast<TProcessMap>(1) << pr; }
     
     #if scmRTOS_PRIORITY_ORDER == 0
     inline uint8_t highest_priority(TProcessMap pm)

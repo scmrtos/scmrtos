@@ -199,7 +199,7 @@ INLINE OS::TProcessMap get_prio_tag(const uint_fast8_t pr) { return PrioMaskTabl
     {
         uint8_t pr = scmRTOS_PROCESS_COUNT;
 
-        while( !(pm & (1 << scmRTOS_PROCESS_COUNT) ) )
+        while( !(pm & (static_cast<TProcessMap>(1) << scmRTOS_PROCESS_COUNT) ) )
         {
             pr--;
             pm <<= 1;

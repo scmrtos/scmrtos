@@ -260,7 +260,7 @@ namespace OS
 
     INLINE TProcessMap get_prio_tag(const uint_fast8_t pr)
     {
-        return static_cast<TProcessMap> (1 << pr);
+        return static_cast<TProcessMap>(1) << pr;
     }
 
     INLINE TPriority highest_priority(TProcessMap pm)

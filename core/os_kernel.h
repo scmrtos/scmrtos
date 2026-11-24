@@ -82,9 +82,9 @@ namespace OS
     class TBaseProcess;
 
     INLINE void set_prio_tag(volatile TProcessMap & pm, const TProcessMap PrioTag) { pm |=  PrioTag; }
-    INLINE void clr_prio_tag(volatile TProcessMap & pm, const TProcessMap PrioTag) { pm &= ~static_cast<unsigned>(PrioTag); }
+    INLINE void clr_prio_tag(volatile TProcessMap & pm, const TProcessMap PrioTag) { pm &= static_cast<TProcessMap>(~PrioTag); }
     INLINE void set_prio_tag(TProcessMap & pm, const TProcessMap PrioTag) { pm |=  PrioTag; }
-    INLINE void clr_prio_tag(TProcessMap & pm, const TProcessMap PrioTag) { pm &= ~static_cast<unsigned>(PrioTag); }
+    INLINE void clr_prio_tag(TProcessMap & pm, const TProcessMap PrioTag) { pm &= static_cast<TProcessMap>(~PrioTag); }
 
     //--------------------------------------------------------------------------
     //

@@ -237,7 +237,7 @@ void UNLOCK_SYSTEM_TIMER();
 //
 namespace OS
 {
-INLINE OS::TProcessMap get_prio_tag(const uint_fast8_t pr) { return static_cast<OS::TProcessMap> (1 << pr); }
+INLINE OS::TProcessMap get_prio_tag(const uint_fast8_t pr) { return static_cast<OS::TProcessMap>(1) << pr; }
 
 #if scmRTOS_PRIORITY_ORDER == 0
     INLINE uint_fast8_t highest_priority(TProcessMap pm)

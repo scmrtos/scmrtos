@@ -107,7 +107,7 @@ namespace OS
     private:
         static constexpr TProcessMap get_tag(const int pr)
         {
-            return static_cast<TProcessMap>(1u << pr);
+            return static_cast<TProcessMap>(1) << pr;
         }
 
         static constexpr bool valid_prio(const int pr)
