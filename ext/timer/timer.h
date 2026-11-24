@@ -82,6 +82,14 @@ namespace OS
         // Unregisters the timer; safe whether it is running or not.
         ~TSoftwareTimer();
 
+        // A registered timer is identified by its address in the registry
+        // list, so duplicating or relocating a live object would break the
+        // m_running == (timer is in the registry) invariant.
+        TSoftwareTimer(const TSoftwareTimer&) = delete;
+        TSoftwareTimer& operator=(const TSoftwareTimer&) = delete;
+        TSoftwareTimer(TSoftwareTimer&&) = delete;
+        TSoftwareTimer& operator=(TSoftwareTimer&&) = delete;
+
         // Start or restart: the next expiry comes `ticks` ticks later
         // (ticks == 0 is not a valid period - returns false).
         bool start(const timeout_t ticks);
